@@ -33,8 +33,30 @@ function RankingsCtrl($scope){
 	$scope.rankings = [];
 }
 
-function GreyhoundCtrl($scope) {
-	$scope.greyhounds = [];
+function GreyhoundCtrl($scope, $http) {
+    $http.get('/greyhound').success(function(data) {
+        $scope.greyhounds = data;
+    });
+    $scope.createFormOpen = false;
+    $scope.toggleCreateForm = function Open(){
+        $scope.createFormOpen = !$scope.createFormOpen;
+    };
+
+    $scope.clearForm = function(){
+        $scope.toggleCreateForm();
+        $scope.greyhound = null;
+    };
+
+    $scope.save = function(){
+        $scope.toggleCreateForm();
+        $scope.greyhound = null;
+    };
+
+    $scope.delete = function(){
+        $scope.toggleCreateForm();
+        $scope.greyhound = null;
+    };
+
 }
 
 function RaceCtrl($scope) {
