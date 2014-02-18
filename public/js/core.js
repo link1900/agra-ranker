@@ -1,9 +1,9 @@
-var app = angular.module('core',['ngRoute']).config(function($routeProvider) {
+var app = angular.module('core',['ngRoute','ui.bootstrap'])
+    .config(function($routeProvider) {
 	$routeProvider.when('/', {
 		controller : RankingsCtrl,
 		templateUrl : 'rankings.html'
 	}).when('/greyhound', {
-		controller : GreyhoundCtrl,
 		templateUrl : 'greyhound.html'
 	}).when('/race', {
 		controller : RaceCtrl,
@@ -33,10 +33,14 @@ function RankingsCtrl($scope){
 	$scope.rankings = [];
 }
 
-function GreyhoundCtrl($scope, $http) {
+function GreyhoundListCtrl($scope, $http) {
     $http.get('/greyhound').success(function(data) {
         $scope.greyhounds = data;
     });
+}
+
+function GreyhoundFormCtrl($scope, $http) {
+
     $scope.createFormOpen = false;
     $scope.toggleCreateForm = function Open(){
         $scope.createFormOpen = !$scope.createFormOpen;
@@ -45,11 +49,35 @@ function GreyhoundCtrl($scope, $http) {
     $scope.clearForm = function(){
         $scope.toggleCreateForm();
         $scope.greyhound = null;
+        $scope.resultMessage = null;
+        $scope.alerts = null;
     };
 
     $scope.save = function(){
-        $scope.toggleCreateForm();
-        $scope.greyhound = null;
+        $http.post('/greyhound', $scope.greyhound)
+            .success(function(data, status, headers, config) {
+                $scope.alerts = [
+                    { type: 'success', msg: "Created new greyhound " + data.name }
+                ];
+            })
+            .error(function(data, status, headers, config) {
+                $scope.alerts = [
+                    { type: 'danger', msg: data }
+                ];
+            });
+    };
+
+    $scope.searchGreyhound = function(val) {
+        return $http.get('/greyhound', {
+            params: {
+                like: val
+            }
+        }).then(function(res){
+                return _.chain(res.data)
+                    .pluck('name')
+                    .map(function(v){return v.toUpperCase()})
+                    .value();
+            });
     };
 
     $scope.delete = function(){
