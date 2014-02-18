@@ -97,7 +97,12 @@ greyhoundController.getOne = function(req, res) {
  * List of greyhounds
  */
 greyhoundController.getMany = function(req, res) {
-    Greyhound.find().exec(function(err, greyhounds) {
+    var search = {};
+    var like = req.param('like');
+    if (like){
+        search = {'name': {'$regex': like.toLowerCase()}};
+    }
+    Greyhound.find(search, function(err, greyhounds) {
         if (err) {
             res.render('error', {
                 status: 500
