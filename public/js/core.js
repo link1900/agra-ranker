@@ -1,7 +1,8 @@
 var app = angular.module('core',
         ['ngRoute',
          'ui.bootstrap',
-         'controllers'])
+         'controllers',
+         'services'])
     .config(function($routeProvider) {
 	$routeProvider.when('/', {
 		controller : RankingsCtrl,
@@ -26,6 +27,7 @@ var app = angular.module('core',
 });
 
 angular.module('controllers', []);
+angular.module('services', []);
 
 
 
@@ -39,14 +41,6 @@ function MenuCtrl($scope, $location){
 function RankingsCtrl($scope){
 	$scope.rankings = [];
 }
-
-function GreyhoundListCtrl($scope, $http) {
-    $http.get('/greyhound').success(function(data) {
-        $scope.greyhounds = data;
-    });
-}
-
-
 
 function RaceCtrl($scope) {
 	$scope.races = [];

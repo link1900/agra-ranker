@@ -1,0 +1,9 @@
+<div id="greyhoundDetail" data-ng-controller="GreyhoundDetailCtrl">
+    <div data-ng-show="greyhound">
+        <dl class="dl-horizontal">
+            <dt>Name</dt>
+            <dd>{{greyhound.name | uppercase}}</dd>
+        </dl>
+        <button data-ng-click="closeDetails()" class="btn btn-default">Close</button>
+    </div>
+</div>
