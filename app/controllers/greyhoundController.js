@@ -37,7 +37,7 @@ greyhoundController.create = function(req, res) {
         }
 		console.log(existingGreyhound);
 		if (existingGreyhound) {
-			return res.send(400, 'greyhound already exist with this name');
+			return res.send(400, 'greyhound already exist with the name ' + existingGreyhound.name);
         }
 		
 		greyhound.save(function(err) {

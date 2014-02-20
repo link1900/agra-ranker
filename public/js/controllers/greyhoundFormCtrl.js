@@ -26,11 +26,11 @@ angular.module('controllers').controller('GreyhoundFormCtrl', ['$scope','$http',
     };
 
     $scope.isInvalid = function(formField){
-        return formField.$dirty && $scope.createFormOpen && (formField.$invalid || $scope.hasServerErrors());
+        return formField.$dirty && (formField.$invalid || $scope.hasServerErrors());
     };
 
     $scope.isValid =  function(formField){
-        return formField.$dirty && $scope.createFormOpen && !formField.$invalid;
+        return formField.$dirty && !formField.$invalid && !$scope.hasServerErrors();
     };
 
     $scope.hasServerErrors = function(){
