@@ -99,8 +99,12 @@ greyhoundController.getOne = function(req, res) {
 greyhoundController.getMany = function(req, res) {
     var search = {};
     var like = req.param('like');
+    var name = req.param('name');
     if (like){
         search = {'name': {'$regex': like.toLowerCase()}};
+    }
+    if (name){
+        search = {'name': name.toLowerCase()};
     }
     Greyhound.find(search, function(err, greyhounds) {
         if (err) {
