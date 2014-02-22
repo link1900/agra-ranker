@@ -18,10 +18,14 @@ Clone this repository
 -(DONE) have an edit mode
 -(DONE) delete an existing greyhound
 -(DONE) edit an existing greyhound
-- sire & dam fields (navigiation, edit, smart creation)
-- have the look up of the name to say if it is new or not (off focus for the parent fields)
+-(DONE) sire & dam fields (nav, edit, view)
+- limit all server queries to 100 records (try to make it for all mongo queries in mongoose)
+- backend pass through for limit and size
 - table pagination
 - search greyhound table
+- correctly display sire and dam on greyhound list
+- list offspring on view page
+- have the look up of the name to say if it is new or not (off focus for the parent fields)
 - greyhound data auto importer (progress bars, streaming backend) http://ngmodules.org/modules/angular-file-upload
 - setup prod key
 - setup login http://ngmodules.org/modules/http-auth-interceptor
@@ -34,6 +38,7 @@ Clone this repository
 
 ### Races
 - list races
+- list a race calendar
 - update when greyhound is deleted
 - update greyhound when race is deleted
 
@@ -45,5 +50,7 @@ Clone this repository
 
 ## Round 2
 - Add prompts for delete actions
-- Add a finder for parents
+- Add a find parents button
 - Add a loading bar https://github.com/chieffancypants/angular-loading-bar
+- inline create form on greyhound
+- inline edit form on greyhound

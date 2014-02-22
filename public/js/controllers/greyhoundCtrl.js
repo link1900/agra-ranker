@@ -1,6 +1,10 @@
 angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routeParams', 'greyhoundService', '$location',
     function($scope, $routeParams, greyhoundService, $location) {
 
+        $scope.select2Options = {
+            allowClear:true
+        };
+
         $scope.findOne = function() {
             greyhoundService.get({
                 greyhoundId: $routeParams.id
@@ -47,6 +51,13 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         $scope.setSire = function(){
             if ($scope.selectedSireId){
                 $scope.greyhound.sireRef = $scope.selectedSireId;
+                $scope.save();
+            }
+        };
+
+        $scope.setDam = function(){
+            if ($scope.selectedDamId){
+                $scope.greyhound.damRef = $scope.selectedDamId;
                 $scope.save();
             }
         };

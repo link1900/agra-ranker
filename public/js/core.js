@@ -4,10 +4,13 @@ angular.module('core',
          'ui.bootstrap',
          'ui.select2',
          'controllers',
-         'services']);
+         'services',
+         'directives']);
+
 
 angular.module('controllers', []);
 angular.module('services', []);
+angular.module('directives', []);
 
 
 

@@ -32,11 +32,23 @@
                 <div class="form-group" data-ng-init="loadGreyhounds()" data-ng-hide="sireGreyhound">
                     <label class="col-sm-2 control-label" for="sireSelector">Sire</label>
                     <div class="col-sm-10">
-                        <select style="width:75%;" id="sireSelector" data-ui-select2 ng-model="selectedSireId" data-placeholder="Pick a sire">
+                        <select style="width:75%;" id="sireSelector" data-ui-select2="select2Options" ng-model="selectedSireId" data-placeholder="Pick a sire">
                             <option value=""></option>
                             <option ng-repeat="sHound in greyhounds" value="{{sHound._id}}">{{sHound.name | uppercase}}</option>
                         </select>
                         <button data-ng-click="setSire()" data-ng-show="selectedSireId" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span> Set as sire</button>
+                        <a href="#/greyhound/create" data-ng-hide="selectedSireId" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus-sign"></span> Create a sire</a>
+                    </div>
+                </div>
+                <div class="form-group" data-ng-init="loadGreyhounds()" data-ng-hide="damGreyhound">
+                    <label class="col-sm-2 control-label" for="damSelector">Dam</label>
+                    <div class="col-sm-10">
+                        <select style="width:75%;" id="damSelector" data-ui-select2="select2Options" ng-model="selectedDamId" data-placeholder="Pick a dam">
+                            <option value=""></option>
+                            <option ng-repeat="dHound in greyhounds" value="{{dHound._id}}">{{dHound.name | uppercase}}</option>
+                        </select>
+                        <button data-ng-click="setDam()" data-ng-show="selectedDamId" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span> Set as dam</button>
+                        <a href="#/greyhound/create" data-ng-hide="selectedDamId" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus-sign"></span> Create a dam</a>
                     </div>
                 </div>
                 <div class="form-group" data-ng-show="damGreyhound">
