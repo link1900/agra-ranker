@@ -2,6 +2,7 @@ angular.module('core',
         ['ngRoute',
          'ngResource',
          'ui.bootstrap',
+         'ui.select2',
          'controllers',
          'services']);
 

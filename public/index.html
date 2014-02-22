@@ -13,6 +13,7 @@
 		<link href="/img/favicon.ico" rel="shortcut icon" type="image/x-icon">
 
 		<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/lib/select2/select2.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
 
 	<!--[if lt IE 9]>
@@ -26,18 +27,26 @@
 			<div id="content" data-ng-view></div>
 		</div>
 		<div id="footer" data-ng-include data-src="'footer.html'"></div>
-		
-			<!-- Angular JS -->
+
+
+        <!-- jQuery -->
+        <script type="text/javascript" src="/lib/jquery/dist/jquery.min.js"></script>
+
+	    <!-- Angular JS -->
 		<script type="text/javascript" src="/lib/angular/angular.min.js"></script>
 		<script type="text/javascript" src="/lib/angular-cookies/angular-cookies.min.js"></script>
 		<script type="text/javascript" src="/lib/angular-resource/angular-resource.min.js"></script>
 		<script type="text/javascript" src="/lib/angular-route/angular-route.js"></script>
+        
+        <!-- UI Libs -->
+        <script type="text/javascript" src="/lib/select2/select2.js"></script>
+        <script type="text/javascript" src="/lib/lodash/dist/lodash.js"></script>
 
 		<!-- Angular UI -->
 		<script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap.js"></script>
 		<script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 		<script type="text/javascript" src="/lib/angular-ui-utils/ui-utils.min.js"></script>
-        <script type="text/javascript" src="/lib/lodash/dist/lodash.js"></script>
+        <script type="text/javascript" src="/lib/angular-ui-select2/src/select2.js"></script>
 
 		<!-- Application Core JS -->
 		<script type="text/javascript" src="/js/core.js"></script>

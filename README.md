@@ -22,9 +22,9 @@ Clone this repository
 - have the look up of the name to say if it is new or not (off focus for the parent fields)
 - table pagination
 - search greyhound table
-- greyhound data auto importer (progress bars, streaming backend)
+- greyhound data auto importer (progress bars, streaming backend) http://ngmodules.org/modules/angular-file-upload
 - setup prod key
-- setup login
+- setup login http://ngmodules.org/modules/http-auth-interceptor
 - setup action security around editing greyhounds and creating greyhounds
 
 ### Deployment
@@ -46,3 +46,4 @@ Clone this repository
 ## Round 2
 - Add prompts for delete actions
 - Add a finder for parents
+- Add a loading bar https://github.com/chieffancypants/angular-loading-bar

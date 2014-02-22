@@ -5,7 +5,7 @@ var greyhoundController = require('./controllers/greyhoundController');
 module.exports = function(app) {
     app.get('/greyhound', greyhoundController.getMany);
     app.get('/greyhound/:greyhoundId', greyhoundController.getOne);
-    app.get('/greyhound/extra/:greyhoundId', greyhoundController.addSire, greyhoundController.addDam, greyhoundController.getOne);
+    app.get('/greyhound/extra/:greyhoundId', greyhoundController.getOne);
     app.post('/greyhound',
         greyhoundController.createBody,
         greyhoundController.cleanFields,

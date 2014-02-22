@@ -5,8 +5,8 @@
             <h3 class="panel-title">Editing {{greyhound.name | uppercase}}</h3>
         </div>
         <div class="panel-body">
-            <form name="greyhoundForm" novalidate class="form-horizontal" >
-                <div class="form-group col-xs-6"
+            <form name="greyhoundForm" novalidate class="form-horizontal col-xs-6" >
+                <div class="form-group"
                      data-ng-class="{'has-error': isInvalid(greyhoundForm.greyhoundNameField),
                          'has-success': isValid(greyhoundForm.greyhoundNameField)}">
                     <label class="col-sm-2 control-label" for="greyhoundNameField" >Name</label>
@@ -21,7 +21,33 @@
                         <span class="help-block error" data-ng-show="greyhoundForm.greyhoundNameField.$dirty && greyhoundForm.greyhoundNameField.$invalid">Greyhound name is required</span>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" data-ng-show="sireGreyhound">
+                    <label class="col-sm-2 control-label">Sire</label>
+                    <div class="col-sm-10">
+                        {{sireGreyhound.name | uppercase}}
+                        <a data-ng-href="#/greyhound/edit/{{sireGreyhound._id}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                        <button data-ng-click="removeSire()" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Remove as sire</button>
+                    </div>
+                </div>
+                <div class="form-group" data-ng-init="loadGreyhounds()" data-ng-hide="sireGreyhound">
+                    <label class="col-sm-2 control-label" for="sireSelector">Sire</label>
+                    <div class="col-sm-10">
+                        <select style="width:75%;" id="sireSelector" data-ui-select2 ng-model="selectedSireId" data-placeholder="Pick a sire">
+                            <option value=""></option>
+                            <option ng-repeat="sHound in greyhounds" value="{{sHound._id}}">{{sHound.name | uppercase}}</option>
+                        </select>
+                        <button data-ng-click="setSire()" data-ng-show="selectedSireId" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span> Set as sire</button>
+                    </div>
+                </div>
+                <div class="form-group" data-ng-show="damGreyhound">
+                    <label class="col-sm-2 control-label">Dam</label>
+                    <div class="col-sm-10">
+                        {{damGreyhound.name | uppercase}}
+                        <a data-ng-href="#/greyhound/edit/{{damGreyhound._id}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                        <button data-ng-click="removeDam()" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Remove as dam</button>
+                    </div>
+                </div>
+                <div class="form-group" style="padding-top: 30px;">
                     <div class="col-sm-offset-1 col-sm-10">
                         <button data-ng-click="save()" data-ng-disabled="isInvalid(greyhoundForm)" class="btn btn-success"><span data-ng-show="isValid(greyhoundForm)" class="glyphicon glyphicon-ok"></span> Save</button>
                         <button data-ng-click="deleteGreyhound()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>

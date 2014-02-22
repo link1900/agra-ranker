@@ -5,7 +5,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             greyhoundService.get({
                 greyhoundId: $routeParams.id
             }, function(greyhound) {
-                $scope.greyhound = greyhound;
+                $scope.loadGreyhound(greyhound);
             }, function(){
                 $scope.alerts = [
                     { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
@@ -13,10 +13,62 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             });
         };
 
-        $scope.find = function() {
-            greyhoundService.query(function(greyhounds) {
-                $scope.greyhounds = greyhounds;
+        $scope.loadGreyhound = function(greyhound){
+            console.log("hey");
+            $scope.greyhound = greyhound;
+            if (greyhound.sireRef) $scope.findSire(greyhound.sireRef);
+            if (greyhound.damRef) $scope.findDam(greyhound.damRef);
+        };
+
+        $scope.findSire = function(sireId){
+            greyhoundService.get({
+                greyhoundId: sireId
+            }, function(greyhound) {
+                $scope.sireGreyhound = greyhound;
+            }, function(){
+                $scope.alerts = [
+                    { type: 'danger', msg: "Failed to load sire using the id " + sireId }
+                ];
             });
+        };
+
+        $scope.findDam = function(damId){
+            greyhoundService.get({
+                greyhoundId: damId
+            }, function(greyhound) {
+                $scope.damGreyhound = greyhound;
+            }, function(){
+                $scope.alerts = [
+                    { type: 'danger', msg: "Failed to load dam using the id " + damId }
+                ];
+            });
+        };
+
+        $scope.setSire = function(){
+            if ($scope.selectedSireId){
+                $scope.greyhound.sireRef = $scope.selectedSireId;
+                $scope.save();
+            }
+        };
+
+        $scope.removeSire = function(){
+            $scope.greyhound.sireRef = null;
+            delete $scope.sireGreyhound;
+            $scope.save();
+        };
+
+        $scope.removeDam = function(){
+            $scope.greyhound.damRef = null;
+            delete $scope.damGreyhound;
+            $scope.save();
+        };
+
+        $scope.loadGreyhounds = function() {
+            if (!$scope.greyhounds){
+                greyhoundService.query(function(greyhounds) {
+                    $scope.greyhounds = greyhounds;
+                });
+            }
         };
 
         $scope.create = function(){
@@ -42,6 +94,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
                     $scope.alerts = [
                         { type: 'success', msg: "Updated " + data.name.toUpperCase() }
                     ];
+                    $scope.loadGreyhound(data);
                 },
                 function(error){
                     $scope.alerts = [
