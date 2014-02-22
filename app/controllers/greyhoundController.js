@@ -20,53 +20,46 @@ greyhoundController.setGreyhound = function(req, res, next, id) {
     });
 };
 
-/**
- * Create a greyhound
- */
-greyhoundController.create = function(req, res) {
-	var greyhound = new Greyhound(req.body);
-	if (greyhound.name){
-		greyhound.name = greyhound.name.toLowerCase();
-	} else {
-		return res.send(400, 'greyhound requires name');
-	}
-    
-	Greyhound.findOne({"name":greyhound.name}, function(err, existingGreyhound) {
+greyhoundController.checkFields = function(req, res, next) {
+    if (req.greyhound.name){
+        req.greyhound.name = req.greyhound.name.toLowerCase().trim();
+    } else {
+        return res.send(400, 'greyhound requires name');
+    }
+    greyhoundController.checkForExists(req, res, next);
+};
+
+greyhoundController.checkForExists = function(req, res, next) {
+    Greyhound.findOne({"name":req.greyhound.name}, function(err, existingGreyhound) {
         if (err) {
-            return res.send(500, 'error finding greyhound');
+            return res.send(500, 'error checking greyhound name ' + req.greyhound.name);
         }
-		console.log(existingGreyhound);
-		if (existingGreyhound) {
-			return res.send(400, 'greyhound already exist with the name ' + existingGreyhound.name);
+        if (existingGreyhound && !_.isEqual(existingGreyhound._id, req.greyhound._id)) {
+            return res.send(400, 'greyhound already exist with the name ' + existingGreyhound.name);
         }
-		
-		greyhound.save(function(err) {
-			if (err) {
-				return res.send(err.errors);
-			} else {
-				return res.jsonp(greyhound);
-			}
-		});
+        next();
     });
 };
 
-/**
- * Find if a greyhound exists by name
- */
+greyhoundController.mergeBody = function(req, res, next) {
+    req.greyhound = _.extend(req.greyhound, req.body);
+    next();
+};
+
+greyhoundController.createBody = function(req, res, next) {
+    req.greyhound = new Greyhound(req.body);
+    next();
+};
 
 /**
- * Update a greyhound
+ * save a greyhound
  */
-greyhoundController.update = function(req, res) {
-    var greyhound = req.greyhound;
-
-    greyhound = _.extend(greyhound, req.body);
-
-    greyhound.save(function(err) {
+greyhoundController.save = function(req, res) {
+    req.greyhound.save(function(err, savedModel) {
         if (err) {
             res.send(err.errors);
         } else {
-            res.jsonp(greyhound);
+            res.jsonp(savedModel);
         }
     });
 };
