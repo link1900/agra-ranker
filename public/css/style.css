@@ -29,3 +29,7 @@ a {
 	height: 40px;
 	left: 0;
 }
+
+input {
+    text-transform: uppercase;
+}

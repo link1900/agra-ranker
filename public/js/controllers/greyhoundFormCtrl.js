@@ -15,7 +15,7 @@ angular.module('controllers').controller('GreyhoundFormCtrl', ['$scope','$http',
         $http.post('/greyhound', $scope.greyhound)
             .success(function(data, status, headers, config) {
                 $scope.alerts = [
-                    { type: 'success', msg: "Created new greyhound " + data.name }
+                    { type: 'success', msg: "Created new greyhound " + data.name.toUpperCase() }
                 ];
             })
             .error(function(data, status, headers, config) {

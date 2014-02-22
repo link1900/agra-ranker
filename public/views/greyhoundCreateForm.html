@@ -1,0 +1,38 @@
+<div id="greyhoundForm" data-ng-controller="GreyhoundFormCtrl">
+    <button data-ng-click="toggleCreateForm()" data-ng-show="!createFormOpen" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Create New Greyhound</button>
+    <br />
+    <div class="panel panel-info" data-ng-show="createFormOpen">
+        <div class="panel-heading">
+            <h3 class="panel-title">Greyhound Creation</h3>
+        </div>
+        <div class="panel-body">
+            <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+
+            <form name="greyhoundCreateForm" novalidate class="form-horizontal" >
+                <div class="form-group col-xs-6"
+                     data-ng-class="{'has-error': isInvalid(greyhoundCreateForm.greyhoundNameField),
+                         'has-success': isValid(greyhoundCreateForm.greyhoundNameField)}">
+                    <label class="col-sm-2 control-label" for="greyhoundNameField" >Name</label>
+                    <div class="col-sm-10">
+                        <input id="greyhoundNameField"
+                               type="text"
+                               class="form-control"
+                               name="greyhoundNameField"
+                               data-ng-model="greyhound.name"
+                               autocomplete="off"
+                               data-typeahead="grey for grey in searchGreyhound($viewValue) | filter:$viewValue | uppercase"
+                               required />
+                        <span class="help-block error" data-ng-show="greyhoundCreateForm.greyhoundNameField.$dirty && greyhoundCreateForm.greyhoundNameField.$invalid">Greyhound name is required</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-10">
+                        <button data-ng-click="save()" data-ng-disabled="isInvalid(greyhoundCreateForm)" class="btn btn-success"><span data-ng-show="isValid(greyhoundCreateForm)" class="glyphicon glyphicon-ok"></span> Save</button>
+                        <button data-ng-show="greyhound._id" data-ng-click="delete()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+                        <button data-ng-click="clearForm(greyhoundCreateForm)" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

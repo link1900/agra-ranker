@@ -15,9 +15,9 @@ Clone this repository
 -(DONE) interactive validation of name
 -(DONE) have a view form for a greyhound
 -(DONE) clicking table loads greyhound details into view form
-- have an edit mode
-- delete an existing greyhound
-- edit an existing greyhound
+-(DONE) have an edit mode
+-(DONE) delete an existing greyhound
+-(DONE) edit an existing greyhound
 - sire & dam fields (navigiation, edit, smart creation)
 - have the look up of the name to say if it is new or not (off focus for the parent fields)
 - table pagination
@@ -34,5 +34,11 @@ Clone this repository
 
 ### Races
 - list races
+- update when greyhound is deleted
+- update greyhound when race is deleted
 
 ### Rankings
+- design rules and ranking storage
+- list ranking
+- update when greyhound is deleted
+- update when race is deleted

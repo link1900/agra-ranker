@@ -14,7 +14,7 @@
                 </thead>
                 <tbody id="greyhoundTableBody">
                 <tr data-ng-repeat="greyhound in greyhounds">
-                    <td><a href="#/greyhound/view/{{greyhound._id}}">{{greyhound.name | uppercase}}</a></td>
+                    <td><a data-ng-href="#/greyhound/view/{{greyhound._id}}">{{greyhound.name | uppercase}}</a></td>
                     <td>{{greyhound.sire | uppercase}}</td>
                     <td>{{greyhound.dam | uppercase}}</td>
                 </tr>

@@ -1,18 +1,26 @@
 <div id="greyhoundDetail" data-ng-controller="GreyhoundDetailCtrl" data-ng-init="findOne()">
     <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
-    <div data-ng-show="greyhound.name">
-        <dl class="dl-horizontal">
-            <dt>Name</dt>
-            <dd>{{greyhound.name | uppercase}}</dd>
-            <dt>Sire</dt>
-            <dd>{{greyhound.sire | uppercase}}</dd>
-            <dt>Dam</dt>
-            <dd>{{greyhound.dam | uppercase}}</dd>
-            <dt>Created at</dt>
-            <dd>{{greyhound.createdAt | date:'medium'}}</dd>
-            <dt>Last updated</dt>
-            <dd>{{greyhound.updatedAt | date:'medium'}}</dd>
-
-        </dl>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{greyhound.name | uppercase}}</h3>
+        </div>
+        <div class="panel-body">
+            <div data-ng-show="greyhound.name">
+                <dl class="dl-horizontal">
+                    <dt>Name</dt>
+                    <dd>{{greyhound.name | uppercase}}</dd>
+                    <dt>Sire</dt>
+                    <dd>{{greyhound.sire | uppercase}}</dd>
+                    <dt>Dam</dt>
+                    <dd>{{greyhound.dam | uppercase}}</dd>
+                    <dt>Created at</dt>
+                    <dd>{{greyhound.createdAt | date:'medium'}}</dd>
+                    <dt>Last updated</dt>
+                    <dd>{{greyhound.updatedAt | date:'medium'}}</dd>
+                </dl>
+                <a data-ng-href="#/greyhound/edit/{{greyhound._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+            </div>
+        </div>
     </div>
+    <a data-ng-href="#/greyhound">Back to Greyhounds</a>
 </div>

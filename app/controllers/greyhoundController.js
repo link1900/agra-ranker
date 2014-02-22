@@ -68,13 +68,11 @@ greyhoundController.save = function(req, res) {
  * Delete an greyhound
  */
 greyhoundController.destroy = function(req, res) {
-    var greyhound = req.greyhound;
-
-    greyhound.remove(function(err) {
+    req.greyhound.remove(function(err, removedModel) {
         if (err) {
             return res.send(err.errors);
         } else {
-            res.jsonp(greyhound);
+            res.jsonp(removedModel);
         }
     });
 };
