@@ -1,5 +1,5 @@
-angular.module('controllers').controller('GreyhoundDetailCtrl', ['$scope', '$routeParams', 'greyhoundService',
-    function($scope, $routeParams, greyhoundService) {
+angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routeParams', 'greyhoundService', '$location',
+    function($scope, $routeParams, greyhoundService, $location) {
 
         $scope.findOne = function() {
             greyhoundService.get({
@@ -10,6 +10,18 @@ angular.module('controllers').controller('GreyhoundDetailCtrl', ['$scope', '$rou
                 $scope.alerts = [
                     { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
                 ];
+            });
+        };
+
+        $scope.find = function() {
+            greyhoundService.query(function(greyhounds) {
+                $scope.greyhounds = greyhounds;
+            });
+        };
+
+        $scope.create = function(){
+            greyhoundService.save({}, $scope.greyhound, function(response){
+                $location.path('greyhound/view/'+ response._id);
             });
         };
 
@@ -27,18 +39,18 @@ angular.module('controllers').controller('GreyhoundDetailCtrl', ['$scope', '$rou
 
         $scope.save = function(){
             $scope.greyhound.$update(function(data){
-                $scope.alerts = [
-                    { type: 'success', msg: "Updated " + data.name.toUpperCase() }
-                ];
-            },
-            function(error){
-                $scope.alerts = [
-                    { type: 'danger', msg: "Failed to update: " + error.data }
-                ];
-            });
+                    $scope.alerts = [
+                        { type: 'success', msg: "Updated " + data.name.toUpperCase() }
+                    ];
+                },
+                function(error){
+                    $scope.alerts = [
+                        { type: 'danger', msg: "Failed to update: " + error.data }
+                    ];
+                });
         };
 
-        $scope.delete = function(){
+        $scope.deleteGreyhound = function(){
             $scope.greyhound.$delete(function(data){
                     delete $scope.greyhound;
                     $scope.alerts = [

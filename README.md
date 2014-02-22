@@ -42,3 +42,7 @@ Clone this repository
 - list ranking
 - update when greyhound is deleted
 - update when race is deleted
+
+## Round 2
+- Add prompts for delete actions
+- Add a finder for parents
