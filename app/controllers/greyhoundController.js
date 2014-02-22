@@ -49,6 +49,11 @@ greyhoundController.checkForExists = function(req, res, next) {
 
 greyhoundController.checkSireRef = function(req, res, next) {
     if (req.greyhound.sireRef){
+        if (_.isEqual(req.greyhound._id, req.greyhound.sireRef)){
+            res.send(400, "greyhound cannot be own sire");
+            return;
+        }
+
         Greyhound.findById(req.greyhound.sireRef, function(err, existingGreyhound) {
             if (err) {
                 return res.send(500, 'error checking sire ref ' + req.greyhound.sireRef);
@@ -65,6 +70,10 @@ greyhoundController.checkSireRef = function(req, res, next) {
 
 greyhoundController.checkDamRef = function(req, res, next) {
     if (req.greyhound.damRef){
+        if (_.isEqual(req.greyhound._id, req.greyhound.damRef)){
+            res.send(400, "greyhound cannot be own dam");
+            return;
+        }
         Greyhound.findById(req.greyhound.damRef, function(err, existingGreyhound) {
             if (err) {
                 return res.send(500, 'error checking dam ref ' + req.greyhound.damRef);
