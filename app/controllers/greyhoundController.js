@@ -132,66 +132,6 @@ greyhoundController.getOne = function(req, res) {
     res.jsonp(req.greyhound);
 };
 
-greyhoundController.addSire = function(req, res, next){
-    if (req.greyhound.sireRef){
-        Greyhound.findById(req.greyhound.sireRef, function(err, sire) {
-            if (err) return next(err);
-            if (!sire) return next();
-            req.greyhound.sire = sire;
-            return next();
-        });
-    } else {
-        next();
-    }
-};
-
-greyhoundController.addDam = function(req, res, next){
-    if (req.greyhound.damRef){
-        Greyhound.findById(req.greyhound.damRef, function(err, dam) {
-            if (err) return next(err);
-            if (!dam) return next();
-            req.greyhound.dam = dam;
-            return next();
-        });
-    } else {
-        next();
-    }
-};
-
-greyhoundController.processSire = function(req, res, next){
-    if (req.greyhound.sire && req.greyhound.sire.name && !req.greyhound.sireRef){
-        if (!req.greyhound.sire._id){
-            req.greyhound.sire.name = req.greyhound.sire.name.toLowerCase().trim();
-            var search = {'name': req.greyhound.sire.name};
-            Greyhound.findOne(search, function(err, sire) {
-                if (err) {
-                    return res.render(500, 'error checking greyhound name ' + req.greyhound.sire.name);
-                } else if (sire) {
-                    req.greyhound.sire = sire;
-                    req.greyhound.sireRef = req.greyhound.sire._id;
-                    next();
-                } else { //no sire found create one!
-                    var newSire = new Greyhound(req.greyhound.sire);
-                    newSire.save(function(err, savedModel) {
-                        if (err) {
-                            return res.send(err.errors);
-                        } else {
-                            req.greyhound.sire = savedModel;
-                            req.greyhound.sireRef = savedModel._id;
-                            next();
-                        }
-                    });
-                }
-            });
-        } else {
-            req.greyhound.sireRef = req.greyhound.sire._id;
-            next();
-        }
-    } else {
-        next();
-    }
-};
-
 /**
  * List of greyhounds
  */
