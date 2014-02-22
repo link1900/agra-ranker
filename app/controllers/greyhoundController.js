@@ -16,17 +16,23 @@ greyhoundController.setGreyhound = function(req, res, next, id) {
         if (err) return next(err);
         if (!greyhound) return next(new Error('Failed to load greyhound ' + id));
         req.greyhound = greyhound;
-        next();
+        return next();
     });
 };
 
 greyhoundController.checkFields = function(req, res, next) {
     if (req.greyhound.name){
-        req.greyhound.name = req.greyhound.name.toLowerCase().trim();
+        return next();
     } else {
         return res.send(400, 'greyhound requires name');
     }
-    greyhoundController.checkForExists(req, res, next);
+};
+
+greyhoundController.cleanFields = function(req, res, next) {
+    if (req.greyhound.name){
+        req.greyhound.name = req.greyhound.name.toLowerCase().trim();
+    }
+    return next();
 };
 
 greyhoundController.checkForExists = function(req, res, next) {
@@ -37,9 +43,42 @@ greyhoundController.checkForExists = function(req, res, next) {
         if (existingGreyhound && !_.isEqual(existingGreyhound._id, req.greyhound._id)) {
             return res.send(400, 'greyhound already exist with the name ' + existingGreyhound.name);
         }
-        next();
+        return next();
     });
 };
+
+greyhoundController.checkSireRef = function(req, res, next) {
+    if (req.greyhound.sireRef){
+        Greyhound.findById(req.greyhound.sireRef, function(err, existingGreyhound) {
+            if (err) {
+                return res.send(500, 'error checking sire ref ' + req.greyhound.sireRef);
+            }
+            if (!existingGreyhound) {
+                return res.send(400, 'sire does not exists with id ' + req.greyhound.sireRef);
+            }
+            return next();
+        });
+    } else {
+        next();
+    }
+};
+
+greyhoundController.checkDamRef = function(req, res, next) {
+    if (req.greyhound.damRef){
+        Greyhound.findById(req.greyhound.damRef, function(err, existingGreyhound) {
+            if (err) {
+                return res.send(500, 'error checking dam ref ' + req.greyhound.damRef);
+            }
+            if (!existingGreyhound) {
+                return res.send(400, 'dam does not exists with id ' + req.greyhound.damRef);
+            }
+            return next();
+        });
+    } else {
+        next();
+    }
+};
+
 
 greyhoundController.mergeBody = function(req, res, next) {
     req.greyhound = _.extend(req.greyhound, req.body);
@@ -70,7 +109,7 @@ greyhoundController.save = function(req, res) {
 greyhoundController.destroy = function(req, res) {
     req.greyhound.remove(function(err, removedModel) {
         if (err) {
-            return res.send(err.errors);
+            res.send(err.errors);
         } else {
             res.jsonp(removedModel);
         }
@@ -82,6 +121,66 @@ greyhoundController.destroy = function(req, res) {
  */
 greyhoundController.getOne = function(req, res) {
     res.jsonp(req.greyhound);
+};
+
+greyhoundController.addSire = function(req, res, next){
+    if (req.greyhound.sireRef){
+        Greyhound.findById(req.greyhound.sireRef, function(err, sire) {
+            if (err) return next(err);
+            if (!sire) return next();
+            req.greyhound.sire = sire;
+            return next();
+        });
+    } else {
+        next();
+    }
+};
+
+greyhoundController.addDam = function(req, res, next){
+    if (req.greyhound.damRef){
+        Greyhound.findById(req.greyhound.damRef, function(err, dam) {
+            if (err) return next(err);
+            if (!dam) return next();
+            req.greyhound.dam = dam;
+            return next();
+        });
+    } else {
+        next();
+    }
+};
+
+greyhoundController.processSire = function(req, res, next){
+    if (req.greyhound.sire && req.greyhound.sire.name && !req.greyhound.sireRef){
+        if (!req.greyhound.sire._id){
+            req.greyhound.sire.name = req.greyhound.sire.name.toLowerCase().trim();
+            var search = {'name': req.greyhound.sire.name};
+            Greyhound.findOne(search, function(err, sire) {
+                if (err) {
+                    return res.render(500, 'error checking greyhound name ' + req.greyhound.sire.name);
+                } else if (sire) {
+                    req.greyhound.sire = sire;
+                    req.greyhound.sireRef = req.greyhound.sire._id;
+                    next();
+                } else { //no sire found create one!
+                    var newSire = new Greyhound(req.greyhound.sire);
+                    newSire.save(function(err, savedModel) {
+                        if (err) {
+                            return res.send(err.errors);
+                        } else {
+                            req.greyhound.sire = savedModel;
+                            req.greyhound.sireRef = savedModel._id;
+                            next();
+                        }
+                    });
+                }
+            });
+        } else {
+            req.greyhound.sireRef = req.greyhound.sire._id;
+            next();
+        }
+    } else {
+        next();
+    }
 };
 
 /**

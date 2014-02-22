@@ -5,8 +5,8 @@ var Schema = mongoose.Schema;
 
 var GreyhoundSchema = new Schema({
   name: { type: String },
-  sire: { type: Schema.Types.ObjectId},
-  dam: { type: Schema.Types.ObjectId }
+  sireRef: { type: Schema.Types.ObjectId },
+  damRef: { type: Schema.Types.ObjectId }
 });
 
 GreyhoundSchema.plugin(timestamps);
