@@ -1,10 +1,12 @@
-angular.module('controllers').controller('GreyhoundListCtrl', ['$scope', '$http', 'rankerEventBus', function($scope, $http, rankerEventBus) {
+angular.module('controllers').controller('GreyhoundListCtrl', ['$scope', 'greyhoundService', function($scope, greyhoundService) {
 
-    $http.get('/greyhound').success(function(data) {
-        $scope.greyhounds = data;
-    });
-
-    $scope.selectGreyhound = function(greyhound){
-        rankerEventBus.broadcastEvent(rankerEventBus.EVENTS.FOCUS_EVENT, greyhound);
+    $scope.find = function() {
+        greyhoundService.query(function(greyhounds) {
+            $scope.greyhounds = greyhounds;
+        });
     };
+
+    //$http.get('/greyhound').success(function(data) {
+    //    $scope.greyhounds = data;
+    //});
 }]);

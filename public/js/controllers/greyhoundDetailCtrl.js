@@ -1,11 +1,16 @@
-angular.module('controllers').controller('GreyhoundDetailCtrl', ['$scope', 'rankerEventBus', function($scope, rankerEventBus) {
-    $scope.greyhound = null;
+angular.module('controllers').controller('GreyhoundDetailCtrl', ['$scope', '$routeParams', 'greyhoundService',
+function($scope, $routeParams, greyhoundService) {
 
-    $scope.$on(rankerEventBus.EVENTS.FOCUS_EVENT, function(event, eventData) {
-        $scope.greyhound = eventData;
-    });
+    $scope.findOne = function() {
+        greyhoundService.get({
+            greyhoundId: $routeParams.id
+        }, function(greyhound) {
+            $scope.greyhound = greyhound;
+        }, function(){
+            $scope.alerts = [
+                { type: 'danger', msg: "Failed to greyhound with id " + $routeParams.id }
+            ];
+        });
+    };
 
-    $scope.closeDetails = function(){
-        delete $scope.greyhound;
-    }
 }]);

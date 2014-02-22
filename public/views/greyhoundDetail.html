@@ -1,9 +1,18 @@
-<div id="greyhoundDetail" data-ng-controller="GreyhoundDetailCtrl">
-    <div data-ng-show="greyhound">
+<div id="greyhoundDetail" data-ng-controller="GreyhoundDetailCtrl" data-ng-init="findOne()">
+    <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+    <div data-ng-show="greyhound.name">
         <dl class="dl-horizontal">
             <dt>Name</dt>
             <dd>{{greyhound.name | uppercase}}</dd>
+            <dt>Sire</dt>
+            <dd>{{greyhound.sire | uppercase}}</dd>
+            <dt>Dam</dt>
+            <dd>{{greyhound.dam | uppercase}}</dd>
+            <dt>Created at</dt>
+            <dd>{{greyhound.createdAt | date:'medium'}}</dd>
+            <dt>Last updated</dt>
+            <dd>{{greyhound.updatedAt | date:'medium'}}</dd>
+
         </dl>
-        <button data-ng-click="closeDetails()" class="btn btn-default">Close</button>
     </div>
 </div>
