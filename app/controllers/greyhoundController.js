@@ -124,9 +124,18 @@ greyhoundController.destroy = function(req, res) {
     });
 };
 
-/**
- * Show an greyhound
- */
+greyhoundController.getOffspring = function(req, res, next) {
+    req.searchQuery =
+    {'$or':
+        [
+            {'sireRef' : req.greyhound._id},
+            {'damRef' : req.greyhound._id}
+        ]
+    };
+    req.dao = Greyhound;
+    next();
+};
+
 greyhoundController.getOne = function(req, res) {
     res.jsonp(req.greyhound);
 };
@@ -147,3 +156,4 @@ greyhoundController.getMany = function(req, res, next) {
     req.dao = Greyhound;
     next();
 };
+

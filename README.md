@@ -24,9 +24,8 @@ Clone this repository
 -(DONE) backend pass through for limit and size
 -(DONE) table pagination
 -(DONE) search greyhound table
-- correctly display sire and dam on greyhound list
+-(DONE) correctly display sire and dam on greyhound list
 - list offspring on view page
-- have the look up of the name to say if it is new or not (off focus for the parent fields)
 - greyhound data auto importer (progress bars, streaming backend) http://ngmodules.org/modules/angular-file-upload
 - setup prod key
 - setup login http://ngmodules.org/modules/http-auth-interceptor
