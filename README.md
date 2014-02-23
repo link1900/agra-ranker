@@ -25,7 +25,9 @@ Clone this repository
 -(DONE) table pagination
 -(DONE) search greyhound table
 -(DONE) correctly display sire and dam on greyhound list
-- list offspring on view page
+- fix sire selector to always get all results or do inactive paging
+- fix delete so that pointerless records are not left. (server side)
+-(DONE) list offspring on view page
 - greyhound data auto importer (progress bars, streaming backend) http://ngmodules.org/modules/angular-file-upload
 - setup prod key
 - setup login http://ngmodules.org/modules/http-auth-interceptor

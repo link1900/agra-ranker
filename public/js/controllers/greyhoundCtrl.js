@@ -20,10 +20,14 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         $scope.postProcessing = function(greyhound){
             $scope.loadSire(greyhound);
             $scope.loadDam(greyhound);
+            $scope.loadOffspring(greyhound);
         };
 
         $scope.postProcessingCollection = function(greyhounds){
-            _.each(greyhounds, function(grey){$scope.postProcessing(grey);});
+            _.each(greyhounds, function(grey){
+                $scope.loadSire(grey);
+                $scope.loadDam(grey);
+            });
         };
 
         $scope.loadSire = function(greyhound){
@@ -34,6 +38,14 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
                     greyhound.sire = foundGreyhound;
                 });
             }
+        };
+
+        $scope.loadOffspring = function(greyhound){
+            greyhoundService.offspring(greyhound._id,
+                function(data){
+                    greyhound.offspring = data;
+                }
+            );
         };
 
         $scope.loadDam = function(greyhound){
@@ -79,7 +91,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
 
         $scope.searchParams = {
             page : 1,
-            per_page : 30,
+            per_page : 10,
             sort_field: 'name',
             sort_direction: 'asc',
             like : ''
@@ -103,6 +115,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         };
 
         $scope.loadGreyhoundsForSelection = function() {
+            $scope.searchParams.per_page = 1000;
             greyhoundService.query($scope.searchParams, function(greyhounds) {
                 $scope.greyhounds = greyhounds;
             });

@@ -17,6 +17,18 @@
                     <dd>{{greyhound.createdAt | date:'medium'}}</dd>
                     <dt>Last updated</dt>
                     <dd>{{greyhound.updatedAt | date:'medium'}}</dd>
+                    <dt>Offspring</dt>
+                    <dd>
+                        <div data-ng-show="greyhound.offspring.length > 0" class="col-md-4">
+                        <table border="0" class="table table-striped table-bordered">
+                            <thead><tr><th>Name</th></tr></thead>
+                            <tbody><tr data-ng-repeat="child in greyhound.offspring">
+                                <td><a data-ng-href="#/greyhound/view/{{child._id}}">{{child.name | uppercase}}</a></td>
+                            </tr></tbody>
+                        </table>
+                        </div>
+                        <div data-ng-hide="greyhound.offspring.length > 0">No offspring</div>
+                    </dd>
                 </dl>
                 <a data-ng-href="#/greyhound/edit/{{greyhound._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
             </div>
