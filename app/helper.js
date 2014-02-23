@@ -1,6 +1,7 @@
 var helper = module.exports = {};
 
 var url = require('url');
+var _ = require('lodash');
 
 
 helper.changeUrlParam = function(urlString, paramName, paramValue){
@@ -17,6 +18,21 @@ helper.buildPagingLinks = function(urlString, currentPage, lastPage){
         next: nextUrl,
         last: lastUrl
     };
+};
+
+helper.cleanFk = function(dao, field, id, res){
+    var query = {};
+    query[field] = id;
+    dao.find(query).exec(function(err, entities){
+        if (err) {
+            res.send(500, 'error removing fk');
+        } else {
+            _.each(entities, function(entity){
+                entity[field] = null;
+                entity.save();
+            });
+        }
+    });
 };
 
 helper.runQuery = function(req, res) {

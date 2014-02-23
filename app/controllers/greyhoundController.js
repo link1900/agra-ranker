@@ -6,6 +6,7 @@ var greyhoundController = module.exports = {};
 var mongoose = require('mongoose');
 var Greyhound = mongoose.model('Greyhound');
 var _ = require('lodash');
+var helper = require('../helper');
 
 /**
  * Find greyhound by id
@@ -115,6 +116,10 @@ greyhoundController.save = function(req, res) {
  * Delete an greyhound
  */
 greyhoundController.destroy = function(req, res) {
+    //clean up references
+    helper.cleanFk(Greyhound, 'sireRef', req.greyhound._id, res);
+    helper.cleanFk(Greyhound, 'damRef', req.greyhound._id, res);
+
     req.greyhound.remove(function(err, removedModel) {
         if (err) {
             res.send(err.errors);
