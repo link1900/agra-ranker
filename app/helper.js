@@ -47,10 +47,10 @@ helper.runQuery = function(req, res) {
             if (err) {
                 res.send(500, 'error running query');
             } else {
-                req.dao.count().exec(function (err, count) {
+                req.dao.count(req.searchQuery).exec(function (err, count) {
                     //add header link info for paging
                     res.links(helper.buildPagingLinks(req.url, offset+1, count / limit));
-
+                    res.set('total', count);
                     //send result
                     res.jsonp(entities);
                 })
