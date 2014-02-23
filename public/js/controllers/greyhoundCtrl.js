@@ -17,34 +17,38 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             });
         };
 
+        $scope.postProcessing = function(greyhound){
+            $scope.loadSire(greyhound);
+            $scope.loadDam(greyhound);
+        };
+
+        $scope.postProcessingCollection = function(greyhounds){
+            _.each(greyhounds, function(grey){$scope.postProcessing(grey);});
+        };
+
+        $scope.loadSire = function(greyhound){
+            if (greyhound.sireRef){
+                greyhoundService.get({
+                    greyhoundId: greyhound.sireRef
+                }, function(foundGreyhound) {
+                    greyhound.sire = foundGreyhound;
+                });
+            }
+        };
+
+        $scope.loadDam = function(greyhound){
+            if (greyhound.damRef){
+                greyhoundService.get({
+                    greyhoundId: greyhound.damRef
+                }, function(foundGreyhound) {
+                    greyhound.dam = foundGreyhound;
+                });
+            }
+        };
+
         $scope.loadGreyhound = function(greyhound){
             $scope.greyhound = greyhound;
-            if (greyhound.sireRef) $scope.findSire(greyhound.sireRef);
-            if (greyhound.damRef) $scope.findDam(greyhound.damRef);
-        };
-
-        $scope.findSire = function(sireId){
-            greyhoundService.get({
-                greyhoundId: sireId
-            }, function(greyhound) {
-                $scope.sireGreyhound = greyhound;
-            }, function(){
-                $scope.alerts = [
-                    { type: 'danger', msg: "Failed to load sire using the id " + sireId }
-                ];
-            });
-        };
-
-        $scope.findDam = function(damId){
-            greyhoundService.get({
-                greyhoundId: damId
-            }, function(greyhound) {
-                $scope.damGreyhound = greyhound;
-            }, function(){
-                $scope.alerts = [
-                    { type: 'danger', msg: "Failed to load dam using the id " + damId }
-                ];
-            });
+            $scope.postProcessing($scope.greyhound);
         };
 
         $scope.setSire = function(){
@@ -63,13 +67,13 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
 
         $scope.removeSire = function(){
             $scope.greyhound.sireRef = null;
-            delete $scope.sireGreyhound;
+            delete $scope.greyhound.sire;
             $scope.save();
         };
 
         $scope.removeDam = function(){
             $scope.greyhound.damRef = null;
-            delete $scope.damGreyhound;
+            delete $scope.greyhound.dam;
             $scope.save();
         };
 
@@ -93,7 +97,14 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         $scope.loadGreyhounds = function() {
             greyhoundService.query($scope.searchParams, function(greyhounds, headers) {
                 $scope.greyhounds = greyhounds;
+                $scope.postProcessingCollection(greyhounds);
                 $scope.totalItems = headerHelperService.totalItemsFromHeader(headers());
+            });
+        };
+
+        $scope.loadGreyhoundsForSelection = function() {
+            greyhoundService.query($scope.searchParams, function(greyhounds) {
+                $scope.greyhounds = greyhounds;
             });
         };
 

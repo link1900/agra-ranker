@@ -5,12 +5,14 @@ angular.module('core',
          'ui.select2',
          'controllers',
          'services',
-         'directives']);
+         'directives',
+         'filters']);
 
 
 angular.module('controllers', []);
 angular.module('services', []);
 angular.module('directives', []);
+angular.module('filters', []);
 
 
 
