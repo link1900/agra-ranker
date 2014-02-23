@@ -1,12 +1,11 @@
 'use strict';
-
+var greyhoundController = module.exports = {};
 /**
  * Module dependencies.
  */
 var mongoose = require('mongoose');
 var Greyhound = mongoose.model('Greyhound');
 var _ = require('lodash');
-var greyhoundController = module.exports = {};
 
 /**
  * Find greyhound by id
@@ -135,7 +134,7 @@ greyhoundController.getOne = function(req, res) {
 /**
  * List of greyhounds
  */
-greyhoundController.getMany = function(req, res) {
+greyhoundController.getMany = function(req, res, next) {
     var search = {};
     var like = req.param('like');
     var name = req.param('name');
@@ -145,13 +144,7 @@ greyhoundController.getMany = function(req, res) {
     if (name){
         search = {'name': name.toLowerCase()};
     }
-    Greyhound.find(search, function(err, greyhounds) {
-        if (err) {
-            res.render('error', {
-                status: 500
-            });
-        } else {
-            res.jsonp(greyhounds);
-        }
-    });
+    req.dao = Greyhound;
+    req.searchQuery = search;
+    next();
 };

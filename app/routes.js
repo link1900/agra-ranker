@@ -1,9 +1,10 @@
 'use strict';
 
 var greyhoundController = require('./controllers/greyhoundController');
+var helper = require('./helper');
 
 module.exports = function(app) {
-    app.get('/greyhound', greyhoundController.getMany);
+    app.get('/greyhound', greyhoundController.getMany,  helper.runQuery);
     app.get('/greyhound/:greyhoundId', greyhoundController.getOne);
     app.get('/greyhound/extra/:greyhoundId', greyhoundController.getOne);
     app.post('/greyhound',
