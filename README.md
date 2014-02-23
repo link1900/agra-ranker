@@ -9,7 +9,8 @@ Clone this repository
     $ npm install
     $ npm start
 
-## Todo
+# Todo
+## Round 1 - Basics
 
 ### Greyhound
 -(DONE) interactive validation of name
@@ -19,10 +20,10 @@ Clone this repository
 -(DONE) delete an existing greyhound
 -(DONE) edit an existing greyhound
 -(DONE) sire & dam fields (nav, edit, view)
-- limit all server queries to 100 records (try to make it for all mongo queries in mongoose)
-- backend pass through for limit and size
-- table pagination
-- search greyhound table
+-(DONE) limit all server queries to 100 records (try to make it for all mongo queries in mongoose)
+-(DONE) backend pass through for limit and size
+-(DONE) table pagination
+-(DONE) search greyhound table
 - correctly display sire and dam on greyhound list
 - list offspring on view page
 - have the look up of the name to say if it is new or not (off focus for the parent fields)
@@ -48,9 +49,17 @@ Clone this repository
 - update when greyhound is deleted
 - update when race is deleted
 
-## Round 2
+## Round 2 - Ranker 6 Matching
+- table pick the page size
+- table sort
+- table export to csv
+- rankings export to special csv
+- Sire and racer edit should be a select2 / text input directive
 - Add prompts for delete actions
-- Add a find parents button
-- Add a loading bar https://github.com/chieffancypants/angular-loading-bar
 - inline create form on greyhound
 - inline edit form on greyhound
+
+## Round 3 - Beyond the ranker 6
+- global search
+- Add a find parents button
+- Add a loading bar https://github.com/chieffancypants/angular-loading-bar

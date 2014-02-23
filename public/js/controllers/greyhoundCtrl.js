@@ -1,5 +1,5 @@
-angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routeParams', 'greyhoundService', '$location',
-    function($scope, $routeParams, greyhoundService, $location) {
+angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routeParams', 'headerHelperService', 'greyhoundService', '$location',
+    function($scope, $routeParams, headerHelperService, greyhoundService, $location) {
 
         $scope.select2Options = {
             allowClear:true
@@ -18,7 +18,6 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         };
 
         $scope.loadGreyhound = function(greyhound){
-            console.log("hey");
             $scope.greyhound = greyhound;
             if (greyhound.sireRef) $scope.findSire(greyhound.sireRef);
             if (greyhound.damRef) $scope.findDam(greyhound.damRef);
@@ -74,12 +73,28 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             $scope.save();
         };
 
+        $scope.searchParams = {
+            page : 1,
+            per_page : 30,
+            sort_field: 'name',
+            sort_direction: 'asc',
+            like : ''
+        };
+
+        $scope.updateSearch = function(){
+            $scope.loadGreyhounds();
+        };
+
+        $scope.changePage = function(page){
+            $scope.searchParams.page = page;
+            $scope.loadGreyhounds();
+        };
+
         $scope.loadGreyhounds = function() {
-            if (!$scope.greyhounds){
-                greyhoundService.query(function(greyhounds) {
-                    $scope.greyhounds = greyhounds;
-                });
-            }
+            greyhoundService.query($scope.searchParams, function(greyhounds, headers) {
+                $scope.greyhounds = greyhounds;
+                $scope.totalItems = headerHelperService.totalItemsFromHeader(headers());
+            });
         };
 
         $scope.create = function(){
