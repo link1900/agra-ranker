@@ -135,16 +135,15 @@ greyhoundController.getOne = function(req, res) {
  * List of greyhounds
  */
 greyhoundController.getMany = function(req, res, next) {
-    var search = {};
+    req.searchQuery = {};
     var like = req.param('like');
     var name = req.param('name');
     if (like){
-        search = {'name': {'$regex': like.toLowerCase()}};
+        req.searchQuery = {'name': {'$regex': like.toLowerCase()}};
     }
     if (name){
-        search = {'name': name.toLowerCase()};
+        req.searchQuery = {'name': name.toLowerCase()};
     }
     req.dao = Greyhound;
-    req.searchQuery = search;
     next();
 };
