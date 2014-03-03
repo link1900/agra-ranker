@@ -13,6 +13,7 @@
         "angular-ui-utils": "0.1.0",
         "lodash" : "latest",
         "select2" : "latest",
-        "angular-ui-select2" : "latest"
+        "angular-ui-select2" : "latest",
+        "ng-file-upload":"1.2.8"
     }
 }

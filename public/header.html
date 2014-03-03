@@ -7,12 +7,13 @@
 		</div>
 		<div class="navbar-collapse collapse" ng-controller="MenuCtrl">
 			<ul class="nav navbar-nav">
-				<li ng-class="{ active: activePath=='/' }"><a href="#/">Rankings {{testMe}}</a></li>
-				<li ng-class="{ active: activePath=='/greyhound' }"><a href="#/greyhound">Greyhounds</a></li>
-				<li ng-class="{ active: activePath=='/race' }"><a href="#/race">Races</a></li>
-				<li ng-class="{ active: activePath=='/rule' }"><a href="#/rule">Rules</a></li>
-				<li ng-class="{ active: activePath=='/admin' }"><a href="#/admin">Admin</a></li>
-				<li ng-class="{ active: activePath=='/todo' }"><a href="#/todo">To Do's</a></li>
+				<li ng-class="{ active: activePath=='/' }"><a data-ng-href="#/">Rankings {{testMe}}</a></li>
+				<li ng-class="{ active: activePath=='/greyhound' }"><a data-ng-href="#/greyhound">Greyhounds</a></li>
+				<li ng-class="{ active: activePath=='/race' }"><a data-ng-href="#/race">Races</a></li>
+				<li ng-class="{ active: activePath=='/rule' }"><a data-ng-href="#/rule">Rules</a></li>
+                <li ng-class="{ active: activePath=='/import' }"><a data-ng-href="#/import">Imports</a></li>
+				<li ng-class="{ active: activePath=='/admin' }"><a data-ng-href="#/admin">Admin</a></li>
+				<li ng-class="{ active: activePath=='/todo' }"><a data-ng-href="#/todo">To Do's</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="#/login">Login</a></li>

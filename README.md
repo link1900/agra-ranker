@@ -25,24 +25,30 @@ Clone this repository
 -(DONE) table pagination
 -(DONE) search greyhound table
 -(DONE) correctly display sire and dam on greyhound list
-- fix sire selector to always get all results or do inactive paging
-- fix delete so that pointerless records are not left. (server side)
+-(DONE) fix delete so that pointerless records are not left. (server side)
 -(DONE) list offspring on view page
 - greyhound data auto importer (progress bars, streaming backend) http://ngmodules.org/modules/angular-file-upload
-- setup prod key
 - setup login http://ngmodules.org/modules/http-auth-interceptor
 - setup action security around editing greyhounds and creating greyhounds
+- fix sire selector to always get all results or do inactive paging
 
 ### Deployment
 - setup heroku app
+- setup prod key
 - deploy to heroku
-- test that it loads
+- test that it works online
+
+### Refactor Cleanups
+- Move table to a directive
+- Move upload to a directive
+- Clean up the server loader. Remove all front end templating.
 
 ### Races
 - list races
 - list a race calendar
 - update when greyhound is deleted
 - update greyhound when race is deleted
+- race csv import
 
 ### Rankings
 - design rules and ranking storage
@@ -50,7 +56,7 @@ Clone this repository
 - update when greyhound is deleted
 - update when race is deleted
 
-## Round 2 - Ranker 6 Matching
+## Round 2 - Getting to Ranker 6 Level
 - table pick the page size
 - table sort
 - table export to csv

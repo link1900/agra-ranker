@@ -49,7 +49,7 @@ helper.runQuery = function(req, res) {
     }
 
     var sort = {};
-    if (req.param('sort_field') && req.param('sort_direction') && /asc|des/i.test(req.param('sort_direction'))){
+    if (req.param('sort_field') && req.param('sort_direction') && /asc|desc/i.test(req.param('sort_direction'))){
         sort[req.param('sort_field')] = req.param('sort_direction');
     }
 

@@ -1,8 +1,7 @@
 <div id="greyhoundDetail" data-ng-controller="GreyhoundCtrl" data-ng-init="findOne()">
-    <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
     <div class="panel panel-info">
         <div class="panel-heading">
-            <h3 class="panel-title">{{greyhound.name | uppercase}}</h3>
+            <h3 class="panel-title">Greyhound - {{greyhound.name | uppercase}}</h3>
         </div>
         <div class="panel-body">
             <div data-ng-show="greyhound.name">

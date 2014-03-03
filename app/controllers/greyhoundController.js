@@ -95,8 +95,12 @@ greyhoundController.mergeBody = function(req, res, next) {
 };
 
 greyhoundController.createBody = function(req, res, next) {
-    req.greyhound = new Greyhound(req.body);
+    req.greyhound = greyhoundController.newGreyhound(req.body);
     next();
+};
+
+greyhoundController.newGreyhound = function(json){
+    return new Greyhound(json);
 };
 
 /**
@@ -162,3 +166,29 @@ greyhoundController.getMany = function(req, res, next) {
     next();
 };
 
+greyhoundController.prepareImport = function(req, res, next){
+    req.handleRow = greyhoundController.importCsvGreyhound;
+    next();
+};
+
+greyhoundController.importCsvGreyhound = function(row){
+    var greyhoundJson = {
+        name : row[0],
+        sire: row[1],
+        dam: row[2]
+    };
+    var greyhound = greyhoundController.newGreyhound(greyhoundJson);
+
+    //clean fields
+    if (greyhound.name){
+        greyhound.name = greyhound.name.toLowerCase().trim();
+    }
+    if (greyhound.name.length == 0){
+
+    }
+
+    //check fields
+
+
+    //process parents
+};

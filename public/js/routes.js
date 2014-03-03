@@ -1,23 +1,44 @@
 angular.module('core').config(function($routeProvider) {
     $routeProvider.when('/', {
         templateUrl : 'rankings.html'
-        }).when('/greyhound/edit/:id', {
+        })
+        .when('/greyhound/edit/:id', {
             templateUrl : '/views/greyhoundEditForm.html'
-        }).when('/greyhound/view/:id', {
+        })
+        .when('/greyhound/view/:id', {
             templateUrl : '/views/greyhoundDetail.html'
-        }).when('/greyhound/create', {
+        })
+        .when('/greyhound/create', {
             templateUrl : '/views/greyhoundCreateForm.html'
-        }).when('/greyhound', {
+        })
+        .when('/greyhound', {
             templateUrl : 'greyhound.html'
-        }).when('/race', {
+        })
+        .when('/greyhound/import', {
+            templateUrl : '/views/greyhoundUpload.html'
+        })
+        .when('/batch', {
+            templateUrl : '/views/batchList.html'
+        })
+        .when('/batch/view/:id', {
+            templateUrl : '/views/batchView.html'
+        })
+        .when('/race', {
             templateUrl : 'race.html'
-        }).when('/rule', {
+        })
+        .when('/rule', {
             templateUrl : 'rule.html'
-        }).when('/todo', {
+        })
+        .when('/todo', {
             templateUrl : 'todo.html'
-        }).when('/admin', {
+        })
+        .when('/import', {
+            templateUrl : 'import.html'
+        })
+        .when('/admin', {
             templateUrl : 'admin.html'
-        }).otherwise({
+        })
+        .otherwise({
             redirectTo : '/'
         });
 });

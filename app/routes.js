@@ -1,6 +1,7 @@
 'use strict';
 
 var greyhoundController = require('./controllers/greyhoundController');
+var batchController = require('./controllers/batchController');
 var helper = require('./helper');
 
 module.exports = function(app) {
@@ -25,7 +26,19 @@ module.exports = function(app) {
         greyhoundController.save);
     app.del('/greyhound/:greyhoundId', greyhoundController.destroy);
 
-    // Finish with setting up the articleId param
+    // Finish with setting up the greyhoundId param
     app.param('greyhoundId', greyhoundController.setGreyhound);
+
+    //batch routes
+    app.get('/batch/:batchId', batchController.getOne);
+    app.get('/batch', batchController.prepareBatchQuery, helper.runQuery);
+
+    app.post('/upload/batch',batchController.createBatchFromFile);
+
+    app.param('batchId', batchController.setBatch);
+
+    //race routes
+
+
 
 };

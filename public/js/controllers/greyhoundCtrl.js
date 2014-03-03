@@ -168,4 +168,5 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             );
         };
 
-    }]);
+    }
+]);
