@@ -1,5 +1,5 @@
-angular.module('controllers').controller('BatchCtrl', ['$scope', '$routeParams', 'headerHelperService', 'batchService', '$location',
-    function($scope, $routeParams, headerHelperService, batchService, $location) {
+angular.module('controllers').controller('BatchCtrl', ['$scope', '$routeParams', 'headerHelperService', 'batchService',
+    function($scope, $routeParams, headerHelperService, batchService) {
 
         $scope.findOne = function() {
             batchService.get({
@@ -11,10 +11,6 @@ angular.module('controllers').controller('BatchCtrl', ['$scope', '$routeParams',
                     { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
                 ];
             });
-        };
-
-        $scope.loadBatchRecords = function(batch){
-            //todo
         };
 
         $scope.loadBatch = function(batch){

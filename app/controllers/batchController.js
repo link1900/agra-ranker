@@ -35,6 +35,12 @@ batchController.prepareBatchQuery = function(req, res, next) {
     next();
 };
 
+batchController.getRecords = function(req, res, next) {
+    req.searchQuery = {'batchRef': req.batch._id };
+    req.dao = BatchRecord;
+    next();
+};
+
 batchController.createBatchFromFile = function(req, res){
     var busboy = new Busboy({ headers: req.headers });
 
@@ -47,7 +53,7 @@ batchController.createBatchFromFile = function(req, res){
                 csv()
                     .from.stream(file)
                     .on('record', function(row,index){
-                        batchController.createBatchRecord(batch, index, row, function(err){
+                        batchController.createBatchRecord(batch, index+1, row, function(err){
                             if (err){
                                 res.send(400, err);
                             }

@@ -14,19 +14,10 @@
                     <dd>{{batch.createdAt | date:'medium'}}</dd>
                     <dt>Last updated</dt>
                     <dd>{{batch.updatedAt | date:'medium'}}</dd>
-                    <dt>Records</dt>
-                    <dd>
-                        <div data-ng-show="batch.records.length > 0" class="col-md-4">
-                            <table border="0" class="table table-striped table-bordered">
-                                <thead><tr><th>Name</th></tr></thead>
-                                <tbody><tr data-ng-repeat="record in batch.records">
-                                    <td>{{record.name}}</td>
-                                </tr></tbody>
-                            </table>
-                        </div>
-                        <div data-ng-hide="batch.records.length > 0">No batch records</div>
-                    </dd>
+                    <dt>Actions</dt>
+                    <dd><a class="btn-sm btn-danger" ng-show="batch.status == 'Awaiting processing'" data-ng-href="#/batch/view/{{batch._id}}">Cancel Batch</a></dd>
                 </dl>
+                <div data-ng-include="'views/batchRecordList.html'"></div>
             </div>
         </div>
     </div>

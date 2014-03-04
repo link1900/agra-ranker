@@ -1,6 +1,6 @@
-angular.module('services').factory('batchService', ['$resource',
-    function($resource){
-        return $resource(
+angular.module('services').factory('batchService', ['$resource', '$http',
+    function($resource, $http){
+        var batchService = $resource(
             'batch/:batchId',
             {
                 batchId:'@_id'
@@ -10,5 +10,16 @@ angular.module('services').factory('batchService', ['$resource',
                 }
             }
         );
+
+        batchService.records = function(param, id, callback){
+            return $http.get('/batch/'+id+'/record', {params: param}).success(function(data, status, headers) {
+                callback(data, status, headers);
+            }).
+                error(function() {
+                    callback([]);
+                });
+        };
+
+        return batchService;
     }
 ]);
