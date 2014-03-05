@@ -1,5 +1,5 @@
-angular.module('controllers').controller('batchRecordCtrl', ['$scope', '$routeParams', 'headerHelperService', 'batchService',
-    function($scope, $routeParams, headerHelperService, batchService) {
+angular.module('controllers').controller('batchRecordCtrl', ['$scope', '$routeParams', 'headerHelperService', 'batchService', 'rankerEventBus',
+    function($scope, $routeParams, headerHelperService, batchService, rankerEventBus) {
 
         $scope.loadBatchRecords = function(){
             batchService.records($scope.searchParams, $routeParams.id, function(data, status, headers){
@@ -7,6 +7,10 @@ angular.module('controllers').controller('batchRecordCtrl', ['$scope', '$routePa
                 $scope.totalItems = headerHelperService.totalItemsFromHeader(headers());
             });
         };
+
+        $scope.$on(rankerEventBus.EVENTS.ENTITY_BATCH_UPDATED,function() {
+            $scope.loadBatchRecords();
+        });
 
         $scope.searchParams = {
             page : 1,

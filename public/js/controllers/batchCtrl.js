@@ -1,5 +1,5 @@
-angular.module('controllers').controller('BatchCtrl', ['$scope', '$routeParams', 'headerHelperService', 'batchService',
-    function($scope, $routeParams, headerHelperService, batchService) {
+angular.module('controllers').controller('BatchCtrl', ['$scope', '$routeParams', 'headerHelperService', 'batchService', 'rankerEventBus',
+    function($scope, $routeParams, headerHelperService, batchService, rankerEventBus) {
 
         $scope.findOne = function() {
             batchService.get({
@@ -11,6 +11,27 @@ angular.module('controllers').controller('BatchCtrl', ['$scope', '$routeParams',
                     { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
                 ];
             });
+        };
+
+        $scope.$on(rankerEventBus.EVENTS.ENTITY_BATCH_CREATED,function() {
+            $scope.loadBatches();
+        });
+
+        $scope.cancelBatch = function(){
+            $scope.batch.status = 'Cancelled';
+            $scope.batch.$update(function(data){
+                    $scope.alerts = [
+                        { type: 'success', msg: "Canceled batch" }
+                    ];
+                    $scope.loadBatch(data);
+                    rankerEventBus.broadcastEvent(rankerEventBus.EVENTS.ENTITY_BATCH_UPDATED, data);
+                },
+                function(error){
+                    $scope.alerts = [
+                        { type: 'danger', msg: "Failed to update: " + error.data }
+                    ];
+                }
+            );
         };
 
         $scope.loadBatch = function(batch){

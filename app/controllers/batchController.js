@@ -6,17 +6,15 @@ var Batch = mongoose.model('Batch');
 var BatchRecord = mongoose.model('BatchRecord');
 var Busboy = require('busboy');
 var csv = require('csv');
-var Transform = require('stream').Transform;
-
-batchController.getOne = function(req, res) {
-    res.jsonp(req.batch);
-};
+var _ = require('lodash');
+var helper = require('../helper');
 
 batchController.setBatch = function(req, res, next, id) {
     Batch.findById(id, function(err, model) {
         if (err) return next(err);
         if (!model) return next(new Error('Failed to load batch ' + id));
-        req.batch = model;
+        req.model = model;
+        req.previousModel = _.clone(model.toObject());
         return next();
     });
 };
@@ -36,9 +34,18 @@ batchController.prepareBatchQuery = function(req, res, next) {
 };
 
 batchController.getRecords = function(req, res, next) {
-    req.searchQuery = {'batchRef': req.batch._id };
+    req.searchQuery = {'batchRef': req.model._id };
     req.dao = BatchRecord;
     next();
+};
+
+batchController.checkFields = function(req, res, next){
+    if (req.previousModel.status == 'Awaiting processing' && req.model.status == 'Cancelled'){
+        helper.pushChangeToFk(BatchRecord, 'batchRef', req.model._id, req.model.status, 'status');
+        return next();
+    } else {
+        return res.send(400, 'you are only allowed edit a batch by cancelling it');
+    }
 };
 
 batchController.createBatchFromFile = function(req, res){
@@ -69,10 +76,6 @@ batchController.createBatchFromFile = function(req, res){
             }
         });
     });
-
-//    busboy.on('finish', function() {
-//        res.send(200,'finished reading file');
-//    });
 
     req.pipe(busboy);
 };

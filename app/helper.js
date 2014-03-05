@@ -35,6 +35,40 @@ helper.cleanFk = function(dao, field, id, res){
     });
 };
 
+helper.pushChangeToFk = function(dao, fkField, parentId, parentValue, childField, res){
+    var query = {};
+    query[fkField] = parentId;
+    dao.find(query).exec(function(err, entities){
+        if (err) {
+            console.log('error applying parent field to child field');
+        } else {
+            _.each(entities, function(entity){
+                entity[childField] = parentValue;
+                entity.save();
+            });
+        }
+    });
+};
+
+helper.mergeBody = function(req, res, next) {
+    req.model = _.extend(req.model, req.body);
+    next();
+};
+
+helper.save = function(req, res) {
+    req.model.save(function(err, savedModel) {
+        if (err) {
+            res.send(err.errors);
+        } else {
+            res.jsonp(savedModel);
+        }
+    });
+};
+
+helper.getOne = function(req, res) {
+    res.jsonp(req.model);
+};
+
 helper.runQuery = function(req, res) {
     var limit = 30;
     if (req.param('per_page') && req.param('per_page') > 0){

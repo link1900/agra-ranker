@@ -1,4 +1,5 @@
 <div id="batchView" data-ng-controller="BatchCtrl" data-ng-init="findOne()">
+    <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">Batch Job - {{batch.name}}</h3>
@@ -15,7 +16,7 @@
                     <dt>Last updated</dt>
                     <dd>{{batch.updatedAt | date:'medium'}}</dd>
                     <dt>Actions</dt>
-                    <dd><a class="btn-sm btn-danger" ng-show="batch.status == 'Awaiting processing'" data-ng-href="#/batch/view/{{batch._id}}">Cancel Batch</a></dd>
+                    <dd><a class="btn-sm btn-danger" ng-show="batch.status == 'Awaiting processing'" ng-click="cancelBatch()">Cancel Batch</a></dd>
                 </dl>
                 <div data-ng-include="'views/batchRecordList.html'"></div>
             </div>

@@ -1,5 +1,5 @@
-angular.module('controllers').controller('UploadCtrl', ['$scope', '$upload',
-    function($scope, $upload) {
+angular.module('controllers').controller('UploadCtrl', ['$scope', '$upload', 'rankerEventBus',
+    function($scope, $upload,rankerEventBus) {
 
         $scope.onFileSelect = function($files) {
             if ($files.length == 1){
@@ -15,6 +15,7 @@ angular.module('controllers').controller('UploadCtrl', ['$scope', '$upload',
                 .success(function(data, status, headers, config) {
                     // file is uploaded successfully
                     $scope.uploadResult = data;
+                    rankerEventBus.broadcastEvent(rankerEventBus.EVENTS.ENTITY_BATCH_CREATED, data);
                 })
                 .error(function(data, status, headers, config) {
                     // file is uploaded successfully
