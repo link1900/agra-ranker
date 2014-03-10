@@ -243,7 +243,6 @@ batchController.processBatchRecords = function(batch){
 };
 
 batchController.saveBatchResult = function(result){
-    console.log("handle results " + result);
     if (result.failedCount > 0){
         result.batch.status = constants.batchTypes.completedWithFailures;
     } else {

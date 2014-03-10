@@ -27,10 +27,10 @@ Clone this repository
 -(DONE) correctly display sire and dam on greyhound list
 -(DONE) fix delete so that pointerless records are not left. (server side)
 -(DONE) list offspring on view page
-- greyhound data auto importer (progress bars, streaming backend) http://ngmodules.org/modules/angular-file-upload
+-(DONE) Batch System for delayed processing
+-(DONE) greyhound data auto importer (streaming backend) http://ngmodules.org/modules/angular-file-upload
 - setup login http://ngmodules.org/modules/http-auth-interceptor
 - setup action security around editing greyhounds and creating greyhounds
-- fix sire selector to always get all results or do inactive paging
 
 ### Deployment
 - setup heroku app
@@ -40,6 +40,8 @@ Clone this repository
 
 ### Refactor Cleanups
 - Move table to a directive
+- fix sire selector to always get all results or do inactive paging
+- fix offspring table to be actual table
 - Move upload to a directive
 - Clean up the server loader. Remove all front end templating.
 

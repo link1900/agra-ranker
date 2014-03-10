@@ -216,7 +216,7 @@ greyhoundController.processGreyhoundImportObject = function(greyhound){
             greyhound.damRef = parentResults[1]._id;
         }
 
-        return greyhoundController.saveGreyhoundImportObject(greyhound);
+        return greyhoundController.saveOrFindGreyhoundImportObject(greyhound);
     });
 };
 
