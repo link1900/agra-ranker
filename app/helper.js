@@ -2,6 +2,7 @@ var helper = module.exports = {};
 
 var url = require('url');
 var _ = require('lodash');
+var q = require('q');
 
 
 helper.changeUrlParam = function(urlString, paramName, paramValue){
@@ -64,6 +65,31 @@ helper.save = function(req, res) {
         }
     });
 };
+
+helper.savePromise = function(entity){
+    var deferred = q.defer();
+    entity.save(function(err, entity){
+        if (err){
+            deferred.reject(err);
+        } else {
+            deferred.resolve(entity);
+        }
+    });
+    return deferred.promise;
+};
+
+helper.findPromise = function(query){
+    var deferred = q.defer();
+    query.exec(function(err, entities){
+        if (err){
+            deferred.reject(err);
+        } else {
+            deferred.resolve(entities);
+        }
+    });
+    return deferred.promise;
+};
+
 
 helper.getOne = function(req, res) {
     res.jsonp(req.model);

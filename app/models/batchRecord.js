@@ -13,6 +13,12 @@ var BatchRecord = new Schema({
     resultRef: { type: Schema.Types.ObjectId }
 });
 
+//'Awaiting processing' - record has yet to be started
+//Failed - record failed
+//Success - record succeed
+//In progress - is currently in progress
+
+
 BatchRecord.plugin(timestamps);
 
 mongoose.model('BatchRecord', BatchRecord);

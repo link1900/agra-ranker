@@ -11,12 +11,19 @@
                     <dd>{{batch.name}}</dd>
                     <dt>Status</dt>
                     <dd>{{batch.status}}</dd>
+                    <dt data-ng-show="batch.successCount != null">Success Count</dt>
+                    <dd data-ng-show="batch.successCount != null">{{batch.successCount}}</dd>
+                    <dt data-ng-show="batch.failureCount != null">Failure Count</dt>
+                    <dd data-ng-show="batch.failureCount != null">{{batch.failureCount}}</dd>
                     <dt>Created at</dt>
                     <dd>{{batch.createdAt | date:'medium'}}</dd>
                     <dt>Last updated</dt>
                     <dd>{{batch.updatedAt | date:'medium'}}</dd>
                     <dt>Actions</dt>
-                    <dd><a class="btn-sm btn-danger" ng-show="batch.status == 'Awaiting processing'" ng-click="cancelBatch()">Cancel Batch</a></dd>
+                    <dd>
+                        <a class="btn-sm btn-primary" ng-show="batch.status == 'Awaiting processing'" ng-click="runBatch()">Run Batch</a>
+                        <a class="btn-sm btn-danger" ng-show="batch.status == 'Awaiting processing'" ng-click="cancelBatch()">Cancel Batch</a>
+                    </dd>
                 </dl>
                 <div data-ng-include="'views/batchRecordList.html'"></div>
             </div>

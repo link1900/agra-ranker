@@ -34,6 +34,20 @@ angular.module('controllers').controller('BatchCtrl', ['$scope', '$routeParams',
             );
         };
 
+        $scope.runBatch = function(){
+            batchService.run($scope.batch._id).then(function(){
+                    $scope.alerts = [
+                        { type: 'success', msg: "Started batch" }
+                    ];
+                },
+                function(error){
+                    $scope.alerts = [
+                        { type: 'danger', msg: "Failed to start batch: " + error.data }
+                    ];
+                }
+            );
+        };
+
         $scope.loadBatch = function(batch){
             $scope.batch = batch;
         };

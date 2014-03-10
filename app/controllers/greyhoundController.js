@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var Greyhound = mongoose.model('Greyhound');
 var _ = require('lodash');
 var helper = require('../helper');
+var q = require('q');
 
 /**
  * Find greyhound by id
@@ -166,29 +167,95 @@ greyhoundController.getMany = function(req, res, next) {
     next();
 };
 
-greyhoundController.prepareImport = function(req, res, next){
-    req.handleRow = greyhoundController.importCsvGreyhound;
-    next();
-};
-
-greyhoundController.importCsvGreyhound = function(row){
-    var greyhoundJson = {
-        name : row[0],
-        sire: row[1],
-        dam: row[2]
+greyhoundController.rawCsvArrayToGreyhound = function(rawRow){
+    var greyhound = {
+        name : rawRow[0],
+        sire: {name: rawRow[1]},
+        dam: {name:rawRow[2]}
     };
-    var greyhound = greyhoundController.newGreyhound(greyhoundJson);
 
     //clean fields
     if (greyhound.name){
         greyhound.name = greyhound.name.toLowerCase().trim();
     }
-    if (greyhound.name.length == 0){
-
+    if (greyhound.sire.name){
+        greyhound.sire.name = greyhound.sire.name.toLowerCase().trim();
+    }
+    if (greyhound.dam.name){
+        greyhound.dam.name = greyhound.dam.name.toLowerCase().trim();
     }
 
     //check fields
+    if (greyhound.name.length == 0){
+        return null;
+    }
+    if (greyhound.sire.name.length == 0){
+        delete greyhound.sire;
+    }
+    if (greyhound.dam.name.length == 0){
+        delete greyhound.dam;
+    }
+    return greyhound;
+};
 
+greyhoundController.processGreyhoundImportObject = function(greyhound){
+    var parentPromises = [];
+    if (greyhound.sire){
+        parentPromises.push(greyhoundController.saveOrFindGreyhoundImportObject(greyhound.sire));
+    }
+    if (greyhound.dam){
+        parentPromises.push(greyhoundController.saveOrFindGreyhoundImportObject (greyhound.dam));
+    }
 
-    //process parents
+    return q.all(parentPromises).then(function(parentResults){
+        if (parentResults.length > 0){
+            greyhound.sireRef = parentResults[0]._id;
+        }
+
+        if (parentResults.length > 1){
+            greyhound.damRef = parentResults[1]._id;
+        }
+
+        return greyhoundController.saveGreyhoundImportObject(greyhound);
+    });
+};
+
+greyhoundController.saveOrFindGreyhoundImportObject = function(greyhound){
+    greyhound = greyhoundController.newGreyhound(greyhound);
+    return greyhoundController.findExisting(greyhound).then(helper.savePromise);
+};
+
+greyhoundController.findExisting = function(greyhound) {
+    var deferred = q.defer();
+    Greyhound.findOne({"name":greyhound.name}, function(err, existingGreyhound) {
+        if (err) {
+            deferred.reject('error checking greyhound name ' + greyhound.name);
+        }
+        if (existingGreyhound) {
+            deferred.resolve(existingGreyhound);
+        }
+        deferred.resolve(greyhound);
+
+    });
+    return deferred.promise;
+};
+
+greyhoundController.saveGreyhoundImportObject = function(greyhound){
+    greyhound = greyhoundController.newGreyhound(greyhound);
+    return greyhoundController.checkForExistsImport(greyhound).then(helper.savePromise);
+};
+
+greyhoundController.checkForExistsImport = function(greyhound) {
+    var deferred = q.defer();
+    Greyhound.findOne({"name":greyhound.name}, function(err, existingGreyhound) {
+        if (err) {
+            deferred.reject('error checking greyhound name ' + greyhound.name);
+        }
+        if (existingGreyhound) {
+            deferred.reject('greyhound already exist with the name ' + existingGreyhound.name);
+        }
+        deferred.resolve(greyhound);
+
+    });
+    return deferred.promise;
 };

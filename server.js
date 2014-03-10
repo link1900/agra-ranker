@@ -59,3 +59,7 @@ logger.init(app, passport, mongoose);
 
 // Expose app
 exports = module.exports = app;
+
+//start scheduler
+var batchController = require('./app/controllers/batchController');
+setInterval(batchController.processBatches, 5000);

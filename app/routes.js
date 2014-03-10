@@ -30,15 +30,12 @@ module.exports = function(app) {
     app.param('greyhoundId', greyhoundController.setGreyhound);
 
     //batch routes
-    app.get('/batch/:batchId', helper.getOne);
     app.get('/batch', batchController.prepareBatchQuery, helper.runQuery);
-
+    app.get('/batch/:batchId', helper.getOne);
     app.put('/batch/:batchId', helper.mergeBody, batchController.checkFields, helper.save);
-
     app.get('/batch/:batchId/record', batchController.getRecords, helper.runQuery);
-
+    app.put('/batch/:batchId/run', batchController.processSpecificBatch);
     app.post('/upload/batch',batchController.createBatchFromFile);
-
     app.param('batchId', batchController.setBatch);
 
     //race routes

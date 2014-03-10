@@ -12,7 +12,7 @@ var Batch = new Schema({
     failureCount : {type: Number}
 });
 
-//Awaiting processing - job has yet to be started
+//Awaiting processing
 //Failed - job completely failed
 //Cancelled - stopped before started
 //In progress - is currently in progress
