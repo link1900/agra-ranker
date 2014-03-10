@@ -71,5 +71,20 @@ angular.module('controllers').controller('BatchCtrl', ['$scope', '$routeParams',
                 $scope.totalItems = headerHelperService.totalItemsFromHeader(headers());
             });
         };
+
+        $scope.deleteBatch = function(){
+            $scope.batch.$delete(function(data){
+                    delete $scope.batch;
+                    $scope.alerts = [
+                        { type: 'success', msg: "Deleted " + data.name.toUpperCase() }
+                    ];
+                },
+                function(error){
+                    $scope.alerts = [
+                        { type: 'danger', msg: "Failed to delete: " + error.data }
+                    ];
+                }
+            );
+        };
     }
 ]);

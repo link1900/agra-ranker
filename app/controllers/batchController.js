@@ -52,6 +52,19 @@ batchController.checkFields = function(req, res, next){
     }
 };
 
+batchController.destroy = function(req, res) {
+    //clean up references
+    helper.killChildren(BatchRecord, 'batchRef', req.model._id, res);
+
+    req.model.remove(function(err, removedModel) {
+        if (err) {
+            res.send(err.errors);
+        } else {
+            res.jsonp(removedModel);
+        }
+    });
+};
+
 batchController.createBatchFromFile = function(req, res){
     var busboy = new Busboy({ headers: req.headers });
 

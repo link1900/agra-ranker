@@ -36,6 +36,20 @@ helper.cleanFk = function(dao, field, id, res){
     });
 };
 
+helper.killChildren = function(dao, field, id, res){
+    var query = {};
+    query[field] = id;
+    dao.find(query).exec(function(err, entities){
+        if (err) {
+            res.send(500, 'error finding children to kill');
+        } else {
+            _.each(entities, function(entity){
+                entity.remove();
+            });
+        }
+    });
+};
+
 helper.pushChangeToFk = function(dao, fkField, parentId, parentValue, childField, res){
     var query = {};
     query[fkField] = parentId;
