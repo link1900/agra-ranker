@@ -6,14 +6,14 @@ module.exports = function(grunt) {
             js: {
                 files: ['gruntfile.js', 'server.js', 'app/**/*.js', 'public/js/**', 'test/**/*.js'],
                 options: {
-                    livereload: true,
-                },
+                    livereload: true
+                }
             },
             html: {
                 files: ['public/views/**'],
                 options: {
-                    livereload: true,
-                },
+                    livereload: true
+                }
             },
             css: {
                 files: ['public/css/**'],
@@ -52,21 +52,9 @@ module.exports = function(grunt) {
                 logConcurrentOutput: true
             }
         },
-        mochaTest: {
-            options: {
-                reporter: 'spec',
-                require: 'server.js'
-            },
-            src: ['test/mocha/**/*.js']
-        },
         env: {
             test: {
                 NODE_ENV: 'test'
-            }
-        },
-        karma: {
-            unit: {
-                configFile: 'test/karma/karma.conf.js'
             }
         }
     });
@@ -74,8 +62,6 @@ module.exports = function(grunt) {
     //Load NPM tasks
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-env');
@@ -87,5 +73,5 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['concurrent']);
 
     //Test task.
-    grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);
+    grunt.registerTask('test', ['env:test']);
 };

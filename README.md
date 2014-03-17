@@ -2,12 +2,20 @@
 
 Web server used to rank greyhounds.
 
+## Required
+    - node & npm
+    - mongo
+
 ## Usage
 
 Clone this repository
 
     $ npm install
     $ npm start
+
+## Heroku setup
+    - run the initDataSetup.js on the mongo database
+    - set environment SESSION_SECRET to some secret string
 
 # Todo
 ## Round 1 - Basics
@@ -29,8 +37,8 @@ Clone this repository
 -(DONE) list offspring on view page
 -(DONE) Batch System for delayed processing
 -(DONE) greyhound data auto importer (streaming backend) http://ngmodules.org/modules/angular-file-upload
-- setup login http://ngmodules.org/modules/http-auth-interceptor
-- setup action security around editing greyhounds and creating greyhounds
+-(DONE) setup login
+-(DONE) setup action security around editing greyhounds and creating greyhounds
 
 ### Deployment
 - setup heroku app
@@ -39,6 +47,8 @@ Clone this repository
 - test that it works online
 
 ### Refactor Cleanups
+- force https and piggy back on heroku certs
+- make the login screen work with lastpass and normal auto complete
 - Move table to a directive
 - fix sire selector to always get all results or do inactive paging
 - fix offspring table to be actual table

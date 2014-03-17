@@ -46,6 +46,8 @@ module.exports = function(app, passport, db) {
     // Enable jsonp
     app.enable('jsonp callback');
 
+    var sessionSec = process.env.SESSION_SECRET || config.sessionSecret;
+
     app.configure(function() {
         // The cookieParser should be above session
         app.use(express.cookieParser());
@@ -57,7 +59,7 @@ module.exports = function(app, passport, db) {
 
         // Express/Mongo session storage
         app.use(express.session({
-            secret: config.sessionSecret,
+            secret: sessionSec,
             store: new mongoStore({
                 db: db.connection.db,
                 collection: config.sessionCollection
