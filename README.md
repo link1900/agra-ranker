@@ -15,7 +15,8 @@ Clone this repository
 
 ## Heroku setup
     - run the initDataSetup.js on the mongo database
-    - set environment SESSION_SECRET to some secret string
+    - set environment var SESSION_SECRET to some secret string (heroku config:set SESSION_SECRET=whatever)
+    - set environment var NODE_ENV to production (heroku config:set NODE_ENV=production)
 
 # Todo
 ## Round 1 - Basics
@@ -41,12 +42,13 @@ Clone this repository
 -(DONE) setup action security around editing greyhounds and creating greyhounds
 
 ### Deployment
-- setup heroku app
-- setup prod key
-- deploy to heroku
-- test that it works online
+-(DONE) setup heroku app
+-(DONE) setup prod key
+-(DONE) deploy to heroku
+-(DONE) test that it works online
 
 ### Refactor Cleanups
+- fix the top menu so that it looks nice in firefox and has highlighting
 - force https and piggy back on heroku certs
 - make the login screen work with lastpass and normal auto complete
 - Move table to a directive
