@@ -17,6 +17,7 @@ Clone this repository
     - run the initDataSetup.js on the mongo database
     - set environment var SESSION_SECRET to some secret string (heroku config:set SESSION_SECRET=whatever)
     - set environment var NODE_ENV to production (heroku config:set NODE_ENV=production)
+    - deploy by git push heroku master
 
 # Todo
 ## Round 1 - Basics
@@ -49,7 +50,7 @@ Clone this repository
 
 ### Refactor Cleanups
 - fix the top menu so that it looks nice in firefox and has highlighting
-- force https and piggy back on heroku certs
+- (DONE) force https and piggy back on heroku certs
 - make the login screen work with lastpass and normal auto complete
 - Move table to a directive
 - fix sire selector to always get all results or do inactive paging

@@ -34,10 +34,6 @@ a {
     text-transform: uppercase;
 }
 
-.navbar-nav > li > button {
-    margin-top: 10px;
-}
-
 .form-signin {
     max-width: 330px;
     padding: 15px;

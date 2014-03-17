@@ -7,6 +7,11 @@ angular.module('controllers').controller('menuCtrl', ['$scope', 'securityService
                     window.location.reload(true);
                 });
             }
-        }
+        };
+
+        $scope.activePath = '/';
+        $scope.$on('$routeChangeSuccess', function(){
+            $scope.activePath = $location.path();
+        });
     }
 ]);
