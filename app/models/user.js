@@ -13,10 +13,10 @@ var mongoose = require('mongoose'),
 var UserSchema = new Schema({
     email: {
         type: String,
-        unique: true
+        required: true
     },
-    hashed_password: String,
-    provider: String,
+    hashed_password: {type: String, required : true},
+    provider: {type: String, required : true},
     salt: String,
     facebook: {},
     twitter: {},
@@ -52,16 +52,13 @@ var validatePresenceOf = function(value) {
     return value && value.length;
 };
 
-
 UserSchema.path('email').validate(function(email) {
-    // if you are authenticating by any of the oauth strategies, don't validate
-    if (!this.provider) return true;
+    console.log("validating email" + email);
     return (typeof email === 'string' && email.length > 0);
 }, 'Email cannot be blank');
 
 UserSchema.path('hashed_password').validate(function(hashed_password) {
-    // if you are authenticating by any of the oauth strategies, don't validate
-    if (!this.provider) return true;
+    console.log("validating hashed_password" + hashed_password);
     return (typeof hashed_password === 'string' && hashed_password.length > 0);
 }, 'Password cannot be blank');
 
@@ -70,12 +67,11 @@ UserSchema.path('hashed_password').validate(function(hashed_password) {
  * Pre-save hook
  */
 UserSchema.pre('save', function(next) {
-    if (!this.isNew) return next();
-
-    if (!validatePresenceOf(this.password) && !this.provider)
+    if (this.isNew && !validatePresenceOf(this.password)){
         return next(new Error('Invalid password'));
-    else
+    } else {
         return next();
+    }
 });
 
 /**
