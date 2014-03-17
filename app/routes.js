@@ -15,15 +15,12 @@ module.exports = function(app) {
     app.post('/user', userController.create);
     app.get('/user/me', userController.me);
 
-    app.get('/sealed',securityController.checkAuthentication, function(req, res){
-        res.send(200, 'i am sealed');
-    });
-
     //greyhound routes
     app.get('/greyhound', greyhoundController.getMany,  helper.runQuery);
     app.get('/greyhound/:greyhoundId', greyhoundController.getOne);
     app.get('/greyhound/:greyhoundId/offspring', greyhoundController.getOffspring, helper.runQuery);
     app.post('/greyhound',
+        securityController.checkAuthentication,
         greyhoundController.createBody,
         greyhoundController.cleanFields,
         greyhoundController.checkFields,
@@ -32,6 +29,7 @@ module.exports = function(app) {
         greyhoundController.checkDamRef,
         greyhoundController.save);
     app.put('/greyhound/:greyhoundId',
+        securityController.checkAuthentication,
         greyhoundController.mergeBody,
         greyhoundController.cleanFields,
         greyhoundController.checkFields,
@@ -39,18 +37,18 @@ module.exports = function(app) {
         greyhoundController.checkSireRef,
         greyhoundController.checkDamRef,
         greyhoundController.save);
-    app.del('/greyhound/:greyhoundId', greyhoundController.destroy);
+    app.del('/greyhound/:greyhoundId',securityController.checkAuthentication, greyhoundController.destroy);
     app.param('greyhoundId', greyhoundController.setGreyhound);
 
     //batch routes
-    app.get('/batch', batchController.prepareBatchQuery, helper.runQuery);
-    app.get('/batch/:batchId', helper.getOne);
-    app.put('/batch/:batchId', helper.mergeBody, batchController.checkFields, helper.save);
-    app.del('/batch/:batchId', batchController.destroy);
-    app.get('/batch/:batchId/record', batchController.getRecords, helper.runQuery);
-    app.put('/batch/:batchId/run', batchController.processSpecificBatch);
-    app.post('/upload/batch',batchController.createBatchFromFile);
-    app.param('batchId', batchController.setBatch);
+    app.get('/batch',securityController.checkAuthentication, batchController.prepareBatchQuery, helper.runQuery);
+    app.get('/batch/:batchId',securityController.checkAuthentication, helper.getOne);
+    app.put('/batch/:batchId',securityController.checkAuthentication, helper.mergeBody, batchController.checkFields, helper.save);
+    app.del('/batch/:batchId',securityController.checkAuthentication, batchController.destroy);
+    app.get('/batch/:batchId/record',securityController.checkAuthentication, batchController.getRecords, helper.runQuery);
+    app.put('/batch/:batchId/run',securityController.checkAuthentication, batchController.processSpecificBatch);
+    app.post('/upload/batch',securityController.checkAuthentication, batchController.createBatchFromFile);
+    app.param('batchId',securityController.checkAuthentication, batchController.setBatch);
 
     //race routes
 

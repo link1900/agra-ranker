@@ -29,7 +29,7 @@
                         <div data-ng-hide="greyhound.offspring.length > 0">No offspring</div>
                     </dd>
                 </dl>
-                <a data-ng-href="#/greyhound/edit/{{greyhound._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                <a ng-show="user" data-ng-href="#/greyhound/edit/{{greyhound._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
             </div>
         </div>
     </div>

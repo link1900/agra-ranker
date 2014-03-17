@@ -1,6 +1,6 @@
 angular.module('core').config(function($routeProvider) {
     $routeProvider.when('/', {
-        templateUrl : 'rankings.html'
+        templateUrl : '/views/rankings.html'
         })
         .when('/greyhound/edit/:id', {
             templateUrl : '/views/greyhoundEditForm.html'
@@ -12,7 +12,7 @@ angular.module('core').config(function($routeProvider) {
             templateUrl : '/views/greyhoundCreateForm.html'
         })
         .when('/greyhound', {
-            templateUrl : 'greyhound.html'
+            templateUrl : '/views/greyhound.html'
         })
         .when('/greyhound/import', {
             templateUrl : '/views/greyhoundUpload.html'
@@ -30,13 +30,13 @@ angular.module('core').config(function($routeProvider) {
             templateUrl : '/views/signup.html'
         })
         .when('/race', {
-            templateUrl : 'race.html'
+            templateUrl : '/views/race.html'
         })
         .when('/rule', {
-            templateUrl : 'rule.html'
+            templateUrl : '/views/rule.html'
         })
         .when('/import', {
-            templateUrl : 'import.html'
+            templateUrl : '/views/import.html'
         })
         .otherwise({
             redirectTo : '/'
