@@ -2,9 +2,24 @@
 
 var greyhoundController = require('./controllers/greyhoundController');
 var batchController = require('./controllers/batchController');
+var userController = require('./controllers/userController');
+var securityController = require('./controllers/securityController');
 var helper = require('./helper');
 
 module.exports = function(app) {
+    //security routes
+    app.post('/login', securityController.login);
+    app.post('/logout', securityController.logout);
+
+    //user routes
+    app.post('/user', userController.create);
+    app.get('/user/me', userController.me);
+
+    app.get('/sealed',securityController.checkAuthentication, function(req, res){
+        res.send(200, 'i am sealed');
+    });
+
+    //greyhound routes
     app.get('/greyhound', greyhoundController.getMany,  helper.runQuery);
     app.get('/greyhound/:greyhoundId', greyhoundController.getOne);
     app.get('/greyhound/:greyhoundId/offspring', greyhoundController.getOffspring, helper.runQuery);
@@ -25,8 +40,6 @@ module.exports = function(app) {
         greyhoundController.checkDamRef,
         greyhoundController.save);
     app.del('/greyhound/:greyhoundId', greyhoundController.destroy);
-
-    // Finish with setting up the greyhoundId param
     app.param('greyhoundId', greyhoundController.setGreyhound);
 
     //batch routes
