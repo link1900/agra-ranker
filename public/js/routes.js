@@ -23,20 +23,20 @@ angular.module('core').config(function($routeProvider) {
         .when('/batch/view/:id', {
             templateUrl : '/views/batchView.html'
         })
+        .when('/login', {
+            templateUrl : '/views/login.html'
+        })
+        .when('/signup', {
+            templateUrl : '/views/signup.html'
+        })
         .when('/race', {
             templateUrl : 'race.html'
         })
         .when('/rule', {
             templateUrl : 'rule.html'
         })
-        .when('/todo', {
-            templateUrl : 'todo.html'
-        })
         .when('/import', {
             templateUrl : 'import.html'
-        })
-        .when('/admin', {
-            templateUrl : 'admin.html'
         })
         .otherwise({
             redirectTo : '/'

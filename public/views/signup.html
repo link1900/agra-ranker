@@ -1,0 +1,18 @@
+<div ng-controller="userCtrl" class="container">
+    <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+    <form ng-hide="userCreated" class="col-md-4">
+        <h2>Sign up to the Ranker</h2>
+        <div class="form-group">
+            <label for="emailInput">Email Address</label>
+            <input id="emailInput" ng-model="user.email" type="email" class="form-control" placeholder="Email address" required autofocus>
+        </div>
+        <div class="form-group">
+            <label for="passwordInput">Password</label>
+            <input id="passwordInput" ng-model="user.password" type="password" class="form-control" placeholder="Password" required>
+        </div>
+        <button class="btn btn-primary" ng-click="signUp()">Sign Up</button>
+    </form>
+    <div ng-show="userCreated">
+        Your user have been created successfully and you can now login in <a href="#/login">here.</a>
+    </div>
+</div>

@@ -11,7 +11,7 @@ securityController.login = function(req, res, next){
                 return res.send(401, err);
             }
             if (!user) {
-                return res.send(401, 'user does not exist');
+                return res.send(401, 'incorrect login details');
             }
             return req.logIn(user, function(err) {
                 if (err) {

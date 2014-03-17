@@ -1,23 +1,25 @@
-<div class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+<div  data-ng-controller="menuCtrl" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
 			<a class="navbar-brand" href="#">
 				<img style="height:25px;padding-right: 5px;" src="img/logo_small.png" /> AGRA Ranker
 			</a>
 		</div>
-		<div class="navbar-collapse collapse" ng-controller="MenuCtrl">
+		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li ng-class="{ active: activePath=='/' }"><a data-ng-href="#/">Rankings {{testMe}}</a></li>
+				<li ng-class="{ active: activePath=='/' }"><a data-ng-href="#/">Rankings</a></li>
 				<li ng-class="{ active: activePath=='/greyhound' }"><a data-ng-href="#/greyhound">Greyhounds</a></li>
 				<li ng-class="{ active: activePath=='/race' }"><a data-ng-href="#/race">Races</a></li>
 				<li ng-class="{ active: activePath=='/rule' }"><a data-ng-href="#/rule">Rules</a></li>
-                <li ng-class="{ active: activePath=='/import' }"><a data-ng-href="#/import">Imports</a></li>
-				<li ng-class="{ active: activePath=='/admin' }"><a data-ng-href="#/admin">Admin</a></li>
-				<li ng-class="{ active: activePath=='/todo' }"><a data-ng-href="#/todo">To Do's</a></li>
+                <li ng-show="user" ng-class="{ active: activePath=='/import' }"><a data-ng-href="#/import">Imports</a></li>
 			</ul>
+
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#/login">Login</a></li>
+                <li ng-show="user"><a>{{user.email}}</a></li>
+                <li ng-show="user"><button class="btn btn-sm btn-primary" data-ng-click="logout()">Logout</button></li>
+				<li ng-hide="user"><a data-ng-href="#/login">Login</a></li>
+                <li ng-hide="user"><a data-ng-href="#/signup">Sign Up</a></li>
 			</ul>
-		</div><!--/.nav-collapse -->
+		</div>
 	</div>
 </div>

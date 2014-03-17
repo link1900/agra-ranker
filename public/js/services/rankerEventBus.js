@@ -6,7 +6,9 @@ angular.module('services').factory('rankerEventBus', ['$rootScope', function($ro
         ON_CHANGE: "ON_CHANGE",
         DO_RELOAD: "DO_RELOAD",
         ENTITY_BATCH_CREATED: "ENTITY_BATCH_CREATED",
-        ENTITY_BATCH_UPDATED: "ENTITY_BATCH_UPDATED"
+        ENTITY_BATCH_UPDATED: "ENTITY_BATCH_UPDATED",
+        USER_LOGIN: "USER_LOGIN",
+        USER_LOGOUT: "USER_LOGOUT"
     };
 
     eventBus.broadcastEvent = function(event, data) {
