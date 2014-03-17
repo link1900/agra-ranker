@@ -22,30 +22,30 @@ Clone this repository
 ## Round 1 - Basics
 
 ### Greyhound
--(DONE) interactive validation of name
--(DONE) have a view form for a greyhound
--(DONE) clicking table loads greyhound details into view form
--(DONE) have an edit mode
--(DONE) delete an existing greyhound
--(DONE) edit an existing greyhound
--(DONE) sire & dam fields (nav, edit, view)
--(DONE) limit all server queries to 100 records (try to make it for all mongo queries in mongoose)
--(DONE) backend pass through for limit and size
--(DONE) table pagination
--(DONE) search greyhound table
--(DONE) correctly display sire and dam on greyhound list
--(DONE) fix delete so that pointerless records are not left. (server side)
--(DONE) list offspring on view page
--(DONE) Batch System for delayed processing
--(DONE) greyhound data auto importer (streaming backend) http://ngmodules.org/modules/angular-file-upload
--(DONE) setup login
--(DONE) setup action security around editing greyhounds and creating greyhounds
+- (DONE) interactive validation of name
+- (DONE) have a view form for a greyhound
+- (DONE) clicking table loads greyhound details into view form
+- (DONE) have an edit mode
+- (DONE) delete an existing greyhound
+- (DONE) edit an existing greyhound
+- (DONE) sire & dam fields (nav, edit, view)
+- (DONE) limit all server queries to 100 records (try to make it for all mongo queries in mongoose)
+- (DONE) backend pass through for limit and size
+- (DONE) table pagination
+- (DONE) search greyhound table
+- (DONE) correctly display sire and dam on greyhound list
+- (DONE) fix delete so that pointerless records are not left. (server side)
+- (DONE) list offspring on view page
+- (DONE) Batch System for delayed processing
+- (DONE) greyhound data auto importer (streaming backend) http://ngmodules.org/modules/angular-file-upload
+- (DONE) setup login
+- (DONE) setup action security around editing greyhounds and creating greyhounds
 
 ### Deployment
--(DONE) setup heroku app
--(DONE) setup prod key
--(DONE) deploy to heroku
--(DONE) test that it works online
+- (DONE) setup heroku app
+- (DONE) setup prod key
+- (DONE) deploy to heroku
+- (DONE) test that it works online
 
 ### Refactor Cleanups
 - fix the top menu so that it looks nice in firefox and has highlighting

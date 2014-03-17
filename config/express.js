@@ -57,6 +57,17 @@ module.exports = function(app, passport, db) {
         app.use(express.json());
         app.use(express.methodOverride());
 
+        app.configure('production', function () {
+            app.use (function (req, res, next) {
+                var schema = (req.headers['x-forwarded-proto'] || '').toLowerCase();
+                if (schema === 'https') {
+                    next();
+                } else {
+                    res.redirect('https://' + req.headers.host + req.url);
+                }
+            });
+        });
+
         // Express/Mongo session storage
         app.use(express.session({
             secret: sessionSec,
