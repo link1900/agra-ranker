@@ -16,8 +16,9 @@ securityController.login = function(req, res, next){
             return req.logIn(user, function(err) {
                 if (err) {
                     return res.send(401, err);
+                } else {
+                    return res.send(200, user);
                 }
-                return res.send(200, user);
             });
         })(req, res, next);
 };

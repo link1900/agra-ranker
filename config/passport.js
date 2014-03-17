@@ -36,10 +36,10 @@ module.exports = function(passport) {
                     return done(err);
                 }
                 if (!user) {
-                    return done('Unknown user', false);
+                    return done(null, false, 'user does not exist');
                 }
                 if (!user.authenticate(password)) {
-                    return done('Invalid password', false);
+                    return done(null, false, 'invalid password');
                 }
                 return done(null, user);
             });
