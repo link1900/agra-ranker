@@ -13,10 +13,6 @@ angular.module('controllers').controller('BatchCtrl', ['$scope', '$routeParams',
             });
         };
 
-        $scope.$on(rankerEventBus.EVENTS.ENTITY_BATCH_CREATED,function() {
-            $scope.loadBatches();
-        });
-
         $scope.cancelBatch = function(){
             $scope.batch.status = 'Cancelled';
             $scope.batch.$update(function(data){
@@ -52,25 +48,13 @@ angular.module('controllers').controller('BatchCtrl', ['$scope', '$routeParams',
             $scope.batch = batch;
         };
 
-        $scope.searchParams = {
-            page : 1,
-            per_page : 15,
-            sort_field: 'createdAt',
-            sort_direction: 'desc',
-            like : ''
-        };
+        $scope.batchService = batchService;
 
-        $scope.changePage = function(page){
-            $scope.searchParams.page = page;
-            $scope.loadBatches();
-        };
-
-        $scope.loadBatches = function() {
-            batchService.query($scope.searchParams, function(batches, headers) {
-                $scope.batches = batches;
-                $scope.totalItems = headerHelperService.totalItemsFromHeader(headers());
-            });
-        };
+        $scope.columnInfo = [
+            {title: "Status", field:"status", baseLink:"#/batch/view/", linkField: "_id", link:true},
+            {title: "Name", field:"name"},
+            {title: "Created Date", field:"createdAt", filter: "date", filterFormat: 'medium'}
+        ];
 
         $scope.deleteBatch = function(){
             $scope.batch.$delete(function(data){

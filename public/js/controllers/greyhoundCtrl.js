@@ -89,31 +89,16 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             $scope.save();
         };
 
-        $scope.searchParams = {
-            page : 1,
-            per_page : 10,
-            sort_field: 'name',
-            sort_direction: 'asc',
-            like : ''
-        };
+        //for the greyhound table
+        $scope.greyhoundService = greyhoundService;
 
-        $scope.updateSearch = function(){
-            $scope.loadGreyhounds();
-        };
+        $scope.columnInfo = [
+            {title: "Name", field:"name", baseLink:"#/greyhound/view/", linkField: "_id", link:true, filter: "uppercase"},
+            {title: "Sire", field:"sire.name", baseLink:"#/greyhound/view/", linkField: "sireRef", link:true, filter: "uppercase"},
+            {title: "Dam", field:"dam.name", baseLink:"#/greyhound/view/", linkField: "damRef", link:true, filter: "uppercase"}
+        ];
 
-        $scope.changePage = function(page){
-            $scope.searchParams.page = page;
-            $scope.loadGreyhounds();
-        };
-
-        $scope.loadGreyhounds = function() {
-            greyhoundService.query($scope.searchParams, function(greyhounds, headers) {
-                $scope.greyhounds = greyhounds;
-                $scope.postProcessingCollection(greyhounds);
-                $scope.totalItems = headerHelperService.totalItemsFromHeader(headers());
-            });
-        };
-
+        //for the auto select
         $scope.loadGreyhoundsForSelection = function() {
             $scope.searchParams.per_page = 1000;
             greyhoundService.query($scope.searchParams, function(greyhounds) {

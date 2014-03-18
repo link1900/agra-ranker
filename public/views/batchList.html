@@ -1,36 +1,7 @@
-<div id="batchList" data-ng-controller="BatchCtrl" data-ng-init="loadBatches()">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Import History</h3>
-        </div>
-        <div class="panel-body">
-            <table data-ng-show="batches.length > 0" id="batchTable" border="0" class="table table-striped table-bordered">
-                <thead>
-                <tr>
-                    <th>Status</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Created Date</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr data-ng-repeat="batch in batches">
-                    <td><a data-ng-href="#/batch/view/{{batch._id}}">{{batch.status}}</a></td>
-                    <td>{{batch.name}}</td>
-                    <td>{{batch.type}}</td>
-                    <td>{{batch.createdAt | date:'medium'}}</td>
-                </tr>
-                </tbody>
-            </table>
-            <div data-pagination
-                 data-on-select-page="changePage(page)"
-                 data-direction-links="true"
-                 data-boundary-links="true"
-                 data-total-items="totalItems"
-                 data-items-per-page="searchParams.per_page"
-                 data-page="searchParams.page"
-                 data-max-size="5">
-            </div>
-        </div>
+<div id="batchList" data-ng-controller="BatchCtrl">
+    <div data-sb-table
+         data-table-title="Import History Test"
+         data-model-service="batchService"
+         data-column-info="columnInfo">
     </div>
 </div>

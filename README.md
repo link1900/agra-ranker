@@ -49,9 +49,9 @@ Clone this repository
 - (DONE) test that it works online
 
 ### Refactor Cleanups
-- fix the top menu so that it looks nice in firefox and has highlighting
+- (DONE) fix the top menu so that it looks nice in firefox and has highlighting
 - (DONE) force https and piggy back on heroku certs
-- make the login screen work with lastpass and normal auto complete
+- (DONE) make the login screen work with lastpass and normal auto complete
 - Move table to a directive
 - fix sire selector to always get all results or do inactive paging
 - fix offspring table to be actual table
