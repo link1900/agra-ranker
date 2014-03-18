@@ -10,6 +10,22 @@ angular.module('directives')
                 like : ''
             };
 
+            if (scope.sortField){
+                scope.searchParams.sort_field = scope.sortField;
+            }
+
+            if (scope.sortDirection){
+                scope.searchParams.sort_direction = scope.sortDirection;
+            }
+
+            if (scope.perPage){
+                scope.searchParams.per_page = scope.perPage;
+            }
+
+            if (scope.searchFields){
+                _.extend(scope.searchParams, scope.searchFields);
+            }
+
             scope.updateSearch = function(){
                 scope.loadModels();
             };
@@ -68,9 +84,13 @@ angular.module('directives')
             restrict: 'A',
             scope: {
                 tableTitle: '@',
+                perPage : '@',
+                sortField: '@',
+                sortDirection: '@',
                 modelService: '=',
                 columnInfo: '=',
-                postProcess: '='
+                postProcess: '=',
+                searchFields: '='
             },
             link: linkBody,
             templateUrl: '/views/sbTableTemplate.html'

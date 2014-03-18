@@ -1,7 +1,10 @@
 <div id="batchList" data-ng-controller="BatchCtrl">
     <div data-sb-table
-         data-table-title="Import History Test"
+         data-table-title="Import History"
          data-model-service="batchService"
-         data-column-info="columnInfo">
+         data-column-info="columnInfo"
+         data-per-page="15"
+         data-sort-field="createdAt"
+         data-sort-direction="desc">
     </div>
 </div>

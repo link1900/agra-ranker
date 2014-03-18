@@ -2,6 +2,7 @@
 
 var greyhoundController = require('./controllers/greyhoundController');
 var batchController = require('./controllers/batchController');
+var batchRecordController = require('./controllers/batchRecordController');
 var userController = require('./controllers/userController');
 var securityController = require('./controllers/securityController');
 var helper = require('./helper');
@@ -49,6 +50,9 @@ module.exports = function(app) {
     app.put('/batch/:batchId/run',securityController.checkAuthentication, batchController.processSpecificBatch);
     app.post('/upload/batch',securityController.checkAuthentication, batchController.createBatchFromFile);
     app.param('batchId',securityController.checkAuthentication, batchController.setBatch);
+
+    //batch record routes
+    app.get('/batchRecord', securityController.checkAuthentication, batchRecordController.prepareQuery, helper.runQuery);
 
     //race routes
 
