@@ -52,21 +52,33 @@ Clone this repository
 - (DONE) fix the top menu so that it looks nice in firefox and has highlighting
 - (DONE) force https and piggy back on heroku certs
 - (DONE) make the login screen work with lastpass and normal auto complete
-- Move table to a directive
+- (DONE) Move table to a directive
 - fix sire selector to always get all results or do inactive paging
-- fix offspring table to be actual table
-- Move upload to a directive
+- (DONE) fix offspring table to be actual table
 - Clean up the server loader. Remove all front end templating.
 
 ### Races
 - list races
-- list a race calendar
-- update when greyhound is deleted
-- update greyhound when race is deleted
-- race csv import
+- create race (no placings)
+- view race
+- edit race
+- race csv import (simple)
 
-### Rankings
+### Placings
+- interactive drag and drop of text fields for placing creation on race screen (with rug pictures)
+- races / placings listed on the greyhound view
+- edit placing from greyhound view
+- edit placing from race view
+- delete placing when greyhound is deleted
+- delete placing when race is deleted
+
+
+### Refactor Cleanups 2
+- Move upload to a directive
+
+### Rules & Rankings
 - design rules and ranking storage
+- add the rules page (lists the ranking rules)
 - list ranking
 - update when greyhound is deleted
 - update when race is deleted
@@ -80,8 +92,14 @@ Clone this repository
 - Add prompts for delete actions
 - inline create form on greyhound
 - inline edit form on greyhound
+- search on keydown for tables search box
 
 ## Round 3 - Beyond the ranker 6
-- global search
+- global search (on a search page)
 - Add a find parents button
-- Add a loading bar https://github.com/chieffancypants/angular-loading-bar
+- list a race calendar when creating a race and have auto fill
+- on race list page list the calendar for the current month (one colour for entered, another for pending, another for guessed)
+- warn for missing race at the end of the month
+- have the ability to send notifications if races are missed
+- graph of how a greyhound has preformed over the year
+- graph to compare to greyhounds

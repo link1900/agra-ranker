@@ -134,18 +134,6 @@ greyhoundController.destroy = function(req, res) {
     });
 };
 
-greyhoundController.getOffspring = function(req, res, next) {
-    req.searchQuery =
-    {'$or':
-        [
-            {'sireRef' : req.greyhound._id},
-            {'damRef' : req.greyhound._id}
-        ]
-    };
-    req.dao = Greyhound;
-    next();
-};
-
 greyhoundController.getOne = function(req, res) {
     res.jsonp(req.greyhound);
 };
@@ -157,11 +145,21 @@ greyhoundController.getMany = function(req, res, next) {
     req.searchQuery = {};
     var like = req.param('like');
     var name = req.param('name');
+    var parentRef = req.param('parentRef');
     if (like){
         req.searchQuery = {'name': {'$regex': like.toLowerCase()}};
     }
     if (name){
         req.searchQuery = {'name': name.toLowerCase()};
+    }
+    if (parentRef){
+        req.searchQuery =
+        {'$or':
+            [
+                {'sireRef' : parentRef},
+                {'damRef' : parentRef}
+            ]
+        };
     }
     req.dao = Greyhound;
     next();

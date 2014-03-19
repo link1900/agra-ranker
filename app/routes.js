@@ -19,7 +19,6 @@ module.exports = function(app) {
     //greyhound routes
     app.get('/greyhound', greyhoundController.getMany,  helper.runQuery);
     app.get('/greyhound/:greyhoundId', greyhoundController.getOne);
-    app.get('/greyhound/:greyhoundId/offspring', greyhoundController.getOffspring, helper.runQuery);
     app.post('/greyhound',
         securityController.checkAuthentication,
         greyhoundController.createBody,

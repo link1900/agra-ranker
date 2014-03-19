@@ -2,7 +2,8 @@
     <div class="panel-heading">
         <h3 class="panel-title">{{tableTitle}}</h3>
     </div>
-    <div class="panel-body">
+    <div ng-show="messageEmpty && models.length == 0">{{messageEmpty}}</div>
+    <div ng-hide="messageEmpty && models.length == 0" class="panel-body">
         <div>
             <form>
                 <div class="form-group col-sm-3">
@@ -45,6 +46,6 @@
              data-max-size="5">
         </div>
     </div>
-    <div data-ng-hide="models.length > 0">No records</div>
+    <div data-ng-show="!messageEmpty && models.length == 0">No records</div>
 </div>
 

@@ -20,7 +20,6 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         $scope.postProcessing = function(greyhound){
             $scope.loadSire(greyhound);
             $scope.loadDam(greyhound);
-            $scope.loadOffspring(greyhound);
         };
 
         $scope.postProcessingCollection = function(greyhounds){
@@ -38,14 +37,6 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
                     greyhound.sire = foundGreyhound;
                 });
             }
-        };
-
-        $scope.loadOffspring = function(greyhound){
-            greyhoundService.offspring(greyhound._id,
-                function(data){
-                    greyhound.offspring = data;
-                }
-            );
         };
 
         $scope.loadDam = function(greyhound){
@@ -151,6 +142,14 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
                     ];
                 }
             );
+        };
+
+        $scope.offspringColumnInfo = [
+            {title: "Name", field:"name", baseLink:"#/greyhound/view/", linkField: "_id", link:true, filter: "uppercase"}
+        ];
+
+        $scope.offspringSearchFields = {
+            'parentRef': $routeParams.id
         };
 
     }

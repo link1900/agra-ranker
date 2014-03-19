@@ -6,7 +6,7 @@ angular.module('core').config(function($routeProvider) {
             templateUrl : '/views/greyhoundEditForm.html'
         })
         .when('/greyhound/view/:id', {
-            templateUrl : '/views/greyhoundDetail.html'
+            templateUrl : '/views/greyhoundView.html'
         })
         .when('/greyhound/create', {
             templateUrl : '/views/greyhoundCreateForm.html'

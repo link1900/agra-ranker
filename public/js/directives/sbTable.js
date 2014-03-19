@@ -87,6 +87,7 @@ angular.module('directives')
                 perPage : '@',
                 sortField: '@',
                 sortDirection: '@',
+                messageEmpty: '@',
                 modelService: '=',
                 columnInfo: '=',
                 postProcess: '=',
