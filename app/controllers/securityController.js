@@ -17,7 +17,7 @@ securityController.login = function(req, res, next){
                 if (err) {
                     return res.send(401, err);
                 } else {
-                    return res.send(200, user);
+                    return res.jsonp(200, user);
                 }
             });
         })(req, res, next);
@@ -25,7 +25,7 @@ securityController.login = function(req, res, next){
 
 securityController.logout = function(req, res){
     req.logout();
-    res.send(200, 'logout successful');
+    res.jsonp(200, {"message": "logout successful"});
 };
 
 securityController.checkAuthentication = function(req, res, next){

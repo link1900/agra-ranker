@@ -92,6 +92,38 @@ helper.savePromise = function(entity){
     return deferred.promise;
 };
 
+helper.saveEntityRequest = function(entityRequest){
+    var deferred = q.defer();
+    entityRequest.newEntity.save(function(err, entity){
+        if (err){
+            entityRequest.error = err;
+            deferred.reject(entityRequest);
+        } else {
+            entityRequest.updatedEntity = entity;
+            deferred.resolve(entityRequest);
+        }
+    });
+    return deferred.promise;
+};
+
+helper.promiseToResponse = function(promise, res){
+    promise.then(function(entityRequestResult){
+        res.send(200, entityRequestResult.updatedEntity);
+    })
+    .fail(function(entityRequestResult){
+        res.send(400, "update failed: " + entityRequestResult.error);
+    });
+};
+
+
+helper.promiseResult = function(req, res, promise){
+    promise.then(function(result){
+        res.send(result.code, result.message);
+    }).fail(function(result){
+        res.send(result.code, result.message);
+    });
+};
+
 helper.findPromise = function(query){
     var deferred = q.defer();
     query.exec(function(err, entities){

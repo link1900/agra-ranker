@@ -19,24 +19,10 @@ module.exports = function(app) {
     //greyhound routes
     app.get('/greyhound', greyhoundController.getMany,  helper.runQuery);
     app.get('/greyhound/:greyhoundId', greyhoundController.getOne);
-    app.post('/greyhound',
-        securityController.checkAuthentication,
-        greyhoundController.createBody,
-        greyhoundController.cleanFields,
-        greyhoundController.checkFields,
-        greyhoundController.checkForExists,
-        greyhoundController.checkSireRef,
-        greyhoundController.checkDamRef,
-        greyhoundController.save);
-    app.put('/greyhound/:greyhoundId',
-        securityController.checkAuthentication,
-        greyhoundController.mergeBody,
-        greyhoundController.cleanFields,
-        greyhoundController.checkFields,
-        greyhoundController.checkForExists,
-        greyhoundController.checkSireRef,
-        greyhoundController.checkDamRef,
-        greyhoundController.save);
+    app.post('/greyhound', securityController.checkAuthentication,greyhoundController.create);
+
+    app.put('/greyhound/:greyhoundId', securityController.checkAuthentication, greyhoundController.update);
+
     app.del('/greyhound/:greyhoundId',securityController.checkAuthentication, greyhoundController.destroy);
     app.param('greyhoundId', greyhoundController.setGreyhound);
 
