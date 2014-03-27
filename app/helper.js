@@ -110,8 +110,8 @@ helper.promiseToResponse = function(promise, res){
     promise.then(function(entityRequestResult){
         res.send(200, entityRequestResult.updatedEntity);
     })
-    .fail(function(entityRequestResult){
-        res.send(400, "update failed: " + entityRequestResult.error);
+    .fail(function(error){
+        res.send(400, "update failed: " + error);
     });
 };
 

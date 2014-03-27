@@ -80,6 +80,29 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             $scope.save();
         };
 
+
+        $scope.searchParamsA = {
+            page : 1,
+            per_page : 15,
+            like : ''
+        };
+
+        $scope.simpleSearch = function(val) {
+            $scope.searchParamsA.like = val;
+            return greyhoundService.query($scope.searchParamsA).$promise.then(function(result){
+                var betterResults = _.map(result, function(r){
+                    return r.name.toUpperCase();
+                });
+                console.log(betterResults);
+                return betterResults;
+            });
+        };
+
+        greyhoundService.query($scope.searchParamsA, function(greyhounds){
+            $scope.simple = greyhounds;
+        });
+
+
         //for the greyhound table
         $scope.greyhoundService = greyhoundService;
 
@@ -88,14 +111,6 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             {title: "Sire", field:"sire.name", baseLink:"#/greyhound/view/", linkField: "sireRef", link:true, filter: "uppercase"},
             {title: "Dam", field:"dam.name", baseLink:"#/greyhound/view/", linkField: "damRef", link:true, filter: "uppercase"}
         ];
-
-        //for the auto select
-        $scope.loadGreyhoundsForSelection = function() {
-            $scope.searchParams.per_page = 1000;
-            greyhoundService.query($scope.searchParams, function(greyhounds) {
-                $scope.greyhounds = greyhounds;
-            });
-        };
 
         $scope.create = function(){
             greyhoundService.save({}, $scope.greyhound, function(response){

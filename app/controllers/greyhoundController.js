@@ -89,7 +89,6 @@ greyhoundController.checkDamRef = function(req, res, next) {
     }
 };
 
-
 greyhoundController.mergeBody = function(req, res, next) {
     req.greyhound = _.extend(req.greyhound, req.body);
     next();
@@ -110,7 +109,7 @@ greyhoundController.preProcessRaw = function(entityRequest){
     //no raw field
     if (!greyhound){
         entityRequest.error = "must have a body";
-        return q.reject(entityRequest);
+        return q.reject("update must have a body");
     }
 
     //clean fields
@@ -118,37 +117,41 @@ greyhoundController.preProcessRaw = function(entityRequest){
         greyhound.name = greyhound.name.toLowerCase().trim();
     }else {
         entityRequest.error = "name field is required";
-        return q.reject(entityRequest);
+        return q.reject("name field is required");
     }
 
-    if (greyhound.sire && greyhound.sire.name){
-        greyhound.sire.name = greyhound.sire.name.toLowerCase().trim();
-    }
-    if (greyhound.dam && greyhound.dam.name){
-        greyhound.dam.name = greyhound.dam.name.toLowerCase().trim();
-    }
-
-    //check fields
     if (greyhound.name.length == 0){
         entityRequest.error = "name cannot be blank";
-        return q.reject(entityRequest);
-    }
-    if (greyhound.sire && greyhound.sire.name.length == 0){
-        delete greyhound.sire;
-    }
-    if (greyhound.dam && greyhound.dam.name.length == 0){
-        delete greyhound.dam;
+        return q.reject("name cannot be blank");
     }
 
-    delete greyhound.sireRef;
-    delete greyhound.damRef;
+//    if (greyhound.sire && greyhound.sire.name){
+//        greyhound.sire = {"name":greyhound.sire.name.toLowerCase().trim()};
+//    }
+//    if (greyhound.dam && greyhound.dam.name){
+//        greyhound.dam =  {"name":greyhound.dam.name.toLowerCase().trim()};
+//    }
+
+    //check fields
+
+//    if (greyhound.sire && greyhound.sire.name.length == 0){
+//        delete greyhound.sire;
+//    }
+//    if (greyhound.dam && greyhound.dam.name.length == 0){
+//        delete greyhound.dam;
+//    }
+//
+//    delete greyhound.sireRef;
+//    delete greyhound.damRef;
 
     entityRequest.newEntity = greyhound;
     return q(entityRequest);
 };
 
 greyhoundController.mergeGreyhound = function(updateRequest) {
+    var existing = _.clone(updateRequest.existingEntity.toObject());
     updateRequest.newEntity = _.extend(updateRequest.existingEntity, updateRequest.newEntity);
+    updateRequest.existingEntity = existing;
     return q(updateRequest);
 };
 
@@ -162,12 +165,10 @@ greyhoundController.checkForExistsPromise = function(updateRequest) {
     var deferred = q.defer();
     Greyhound.findOne({"name":updateRequest.newEntity.name}, function(err, existingGreyhound) {
         if (err) {
-            updateRequest.error = 'error checking greyhound name ' + updateRequest.newEntity.name;
-            deferred.reject(updateRequest);
+            deferred.reject('error checking greyhound name ' + updateRequest.newEntity.name);
         }
-        if (existingGreyhound && !_.isEqual(existingGreyhound._id, updateRequest.newEntity._id)) {
-            updateRequest.error = 'greyhound already exist with the name ' + existingGreyhound.name;
-            deferred.reject(updateRequest);
+        if (existingGreyhound && !_.isEqual(existingGreyhound._id.toString(), updateRequest.newEntity._id.toString())) {
+            deferred.reject('greyhound already exist with the name ' + existingGreyhound.name);
         } else {
             deferred.resolve(updateRequest);
         }
@@ -177,16 +178,29 @@ greyhoundController.checkForExistsPromise = function(updateRequest) {
 
 greyhoundController.processSireField = function(updateRequest) {
     var deferred = q.defer();
+
+    //ignore incoming changes to sireRef if it already has one
+    if (updateRequest.existingEntity.sireRef){
+        updateRequest.newEntity.sireRef = updateRequest.existingEntity.sireRef;
+    }
+    //if sire field is present
     if (updateRequest.newEntity.sire){
-        greyhoundController.saveOrFindGreyhoundImportObject(updateRequest.newEntity.sire)
+        updateRequest.sire.name = updateRequest.newEntity.sire.name.toLowerCase().trim();
+
+        if (updateRequest.newEntity.sire.name.length == 0){
+            updateRequest.newEntity.sireRef = undefined;
+            delete updateRequest.newEntity.sire;
+            deferred.resolve(updateRequest);
+        } else {
+            greyhoundController.saveOrFindGreyhoundImportObject(updateRequest.newEntity.sire)
             .then(function(createResult){
                 updateRequest.newEntity.sireRef = createResult._id;
                 deferred.resolve(updateRequest);
             })
             .fail(function(failure){
-                updateRequest.error = failure;
-                deferred.reject(updateRequest);
+                deferred.reject('failed to save sire: ' + failure);
             });
+        }
     } else {
         deferred.resolve(updateRequest);
     }
@@ -195,16 +209,29 @@ greyhoundController.processSireField = function(updateRequest) {
 
 greyhoundController.processDamField = function(updateRequest) {
     var deferred = q.defer();
-    if (updateRequest.newEntity.dam){
-        greyhoundController.saveOrFindGreyhoundImportObject(updateRequest.newEntity.dam)
+
+    if (updateRequest.existingEntity.damRef){
+        updateRequest.newEntity.damRef = updateRequest.existingEntity.damRef;
+    }
+
+    if (updateRequest.newEntity.dam && updateRequest.newEntity.dam.name){
+        updateRequest.newEntity.dam.name = updateRequest.newEntity.dam.name.toLowerCase().trim();
+
+        if (updateRequest.newEntity.dam.name.length == 0){
+            updateRequest.newEntity.damRef = undefined;
+            delete updateRequest.newEntity.dam;
+            deferred.resolve(updateRequest);
+        } else {
+            greyhoundController.saveOrFindGreyhoundImportObject(updateRequest.newEntity.dam)
             .then(function(createResult){
                 updateRequest.newEntity.damRef = createResult._id;
                 deferred.resolve(updateRequest);
             })
             .fail(function(failure){
                 updateRequest.error = failure;
-                deferred.reject(updateRequest);
+                deferred.reject('failed to save dam: ' + failure);
             });
+        }
     } else {
         deferred.resolve(updateRequest);
     }
@@ -234,7 +261,7 @@ greyhoundController.update = function(req, res) {
     .then(greyhoundController.checkForExistsPromise)
     .then(greyhoundController.processSireField)
     .then(greyhoundController.processDamField)
-    .then(helper.saveUpdateResult);
+    .then(helper.saveEntityRequest);
 
     helper.promiseToResponse(processChain, res);
 
