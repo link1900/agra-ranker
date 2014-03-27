@@ -54,7 +54,16 @@ module.exports = function(grunt) {
         },
         env: {
             test: {
-                NODE_ENV: 'test'
+                NODE_ENV: 'test',
+                testUrl: 'http://localhost:3001'
+            }
+        },
+        mochaTest: {
+            test: {
+                options: {
+                    reporter: 'spec'
+                },
+                src: ['specs/**/*.spec.js']
             }
         }
     });
@@ -65,6 +74,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-env');
+    grunt.loadNpmTasks('grunt-mocha-test');
 
     //Making grunt default to force in order not to break the project.
     grunt.option('force', true);
@@ -73,5 +83,5 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['concurrent']);
 
     //Test task.
-    grunt.registerTask('test', ['env:test']);
+    grunt.registerTask('test', ['env:test', 'mochaTest']);
 };
