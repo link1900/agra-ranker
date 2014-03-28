@@ -53,12 +53,10 @@ var validatePresenceOf = function(value) {
 };
 
 UserSchema.path('email').validate(function(email) {
-    console.log("validating email" + email);
     return (typeof email === 'string' && email.length > 0);
 }, 'Email cannot be blank');
 
 UserSchema.path('hashed_password').validate(function(hashed_password) {
-    console.log("validating hashed_password" + hashed_password);
     return (typeof hashed_password === 'string' && hashed_password.length > 0);
 }, 'Password cannot be blank');
 

@@ -103,12 +103,40 @@ greyhoundController.newGreyhound = function(json){
     return new Greyhound(json);
 };
 
+greyhoundController.create = function(req, res) {
+    var entityRequest = {};
+    entityRequest.rawEntity = req.body;
+    var processChain = greyhoundController.preProcessRaw(entityRequest)
+        .then(greyhoundController.checkForExistsPromise)
+        .then(greyhoundController.processSireField)
+        .then(greyhoundController.processDamField)
+        .then(greyhoundController.makeGreyhound)
+        .then(helper.saveEntityRequest);
+
+    helper.promiseToResponse(processChain, res);
+
+};
+
+greyhoundController.update = function(req, res) {
+    var updateRequest = {};
+    updateRequest.rawEntity = req.body;
+    updateRequest.existingEntity = req.greyhound;
+    var processChain = greyhoundController.preProcessRaw(updateRequest)
+        .then(greyhoundController.checkForExistsPromise)
+        .then(greyhoundController.processSireField)
+        .then(greyhoundController.processDamField)
+        .then(greyhoundController.mergeGreyhound)
+        .then(helper.saveEntityRequest);
+
+    helper.promiseToResponse(processChain, res);
+
+};
+
 greyhoundController.preProcessRaw = function(entityRequest){
     var greyhound = entityRequest.rawEntity;
 
     //no raw field
     if (!greyhound){
-        entityRequest.error = "must have a body";
         return q.reject("update must have a body");
     }
 
@@ -121,28 +149,38 @@ greyhoundController.preProcessRaw = function(entityRequest){
     }
 
     if (greyhound.name.length == 0){
-        entityRequest.error = "name cannot be blank";
         return q.reject("name cannot be blank");
     }
 
-//    if (greyhound.sire && greyhound.sire.name){
-//        greyhound.sire = {"name":greyhound.sire.name.toLowerCase().trim()};
-//    }
-//    if (greyhound.dam && greyhound.dam.name){
-//        greyhound.dam =  {"name":greyhound.dam.name.toLowerCase().trim()};
-//    }
+    if(greyhound.sireRef){
+        return q.reject("cannot set or change sireRef, set sire by providing a sire field");
+    }
+    delete greyhound.sireRef;
 
-    //check fields
+    if(greyhound.damRef){
+        return q.reject("cannot set or change damRef, set sire by providing a dam field");
+    }
+    delete greyhound.damRef;
 
-//    if (greyhound.sire && greyhound.sire.name.length == 0){
-//        delete greyhound.sire;
-//    }
-//    if (greyhound.dam && greyhound.dam.name.length == 0){
-//        delete greyhound.dam;
-//    }
-//
-//    delete greyhound.sireRef;
-//    delete greyhound.damRef;
+    if (greyhound.sire && greyhound.sire.name) {
+        greyhound.sire.name = greyhound.sire.name.toLowerCase().trim();
+        if (_.isEqual(greyhound.sire.name, greyhound.name)){
+            return q.reject("cannot set sire name to greyhound name");
+        }
+    }
+
+    if (greyhound.dam && greyhound.dam.name) {
+        greyhound.dam.name = greyhound.dam.name.toLowerCase().trim();
+        if (_.isEqual(greyhound.dam.name, greyhound.name)){
+            return q.reject("cannot set dam name to greyhound name");
+        }
+    }
+
+    if (greyhound.dam && greyhound.dam.name && greyhound.sire && greyhound.sire.name) {
+        if (_.isEqual(greyhound.dam.name, greyhound.sire.name)){
+            return q.reject("cannot have the same sire and dam name");
+        }
+    }
 
     entityRequest.newEntity = greyhound;
     return q(entityRequest);
@@ -167,7 +205,7 @@ greyhoundController.checkForExistsPromise = function(updateRequest) {
         if (err) {
             deferred.reject('error checking greyhound name ' + updateRequest.newEntity.name);
         }
-        if (existingGreyhound && !_.isEqual(existingGreyhound._id.toString(), updateRequest.newEntity._id.toString())) {
+        if (existingGreyhound && !(updateRequest.newEntity._id && _.isEqual(existingGreyhound._id.toString(), updateRequest.newEntity._id.toString()))) {
             deferred.reject('greyhound already exist with the name ' + existingGreyhound.name);
         } else {
             deferred.resolve(updateRequest);
@@ -180,12 +218,16 @@ greyhoundController.processSireField = function(updateRequest) {
     var deferred = q.defer();
 
     //ignore incoming changes to sireRef if it already has one
-    if (updateRequest.existingEntity.sireRef){
+    if (updateRequest.existingEntity && updateRequest.existingEntity.sireRef){
         updateRequest.newEntity.sireRef = updateRequest.existingEntity.sireRef;
     }
     //if sire field is present
-    if (updateRequest.newEntity.sire){
-        updateRequest.sire.name = updateRequest.newEntity.sire.name.toLowerCase().trim();
+    if (updateRequest.newEntity && updateRequest.newEntity.sire && updateRequest.newEntity.sire.name){
+        updateRequest.newEntity.sire.name = updateRequest.newEntity.sire.name.toLowerCase().trim();
+
+        if (updateRequest.existingEntity && _.isEqual(updateRequest.newEntity.sire.name, updateRequest.existingEntity.name)){
+            deferred.reject("cannot be own sire");
+        }
 
         if (updateRequest.newEntity.sire.name.length == 0){
             updateRequest.newEntity.sireRef = undefined;
@@ -210,12 +252,16 @@ greyhoundController.processSireField = function(updateRequest) {
 greyhoundController.processDamField = function(updateRequest) {
     var deferred = q.defer();
 
-    if (updateRequest.existingEntity.damRef){
+    if (updateRequest.existingEntity && updateRequest.existingEntity.damRef){
         updateRequest.newEntity.damRef = updateRequest.existingEntity.damRef;
     }
 
     if (updateRequest.newEntity.dam && updateRequest.newEntity.dam.name){
         updateRequest.newEntity.dam.name = updateRequest.newEntity.dam.name.toLowerCase().trim();
+
+        if (updateRequest.existingEntity && _.isEqual(updateRequest.newEntity.dam.name,  updateRequest.existingEntity.name)){
+            deferred.reject("cannot be own dam");
+        }
 
         if (updateRequest.newEntity.dam.name.length == 0){
             updateRequest.newEntity.damRef = undefined;
@@ -236,35 +282,6 @@ greyhoundController.processDamField = function(updateRequest) {
         deferred.resolve(updateRequest);
     }
     return deferred.promise;
-};
-
-greyhoundController.create = function(req, res) {
-    var entityRequest = {};
-    entityRequest.rawEntity = req.body;
-    var processChain = greyhoundController.preProcessRaw(entityRequest)
-        .then(greyhoundController.makeGreyhound)
-        .then(greyhoundController.checkForExistsPromise)
-        .then(greyhoundController.processSireField)
-        .then(greyhoundController.processDamField)
-        .then(helper.saveEntityRequest);
-
-    helper.promiseToResponse(processChain, res);
-
-};
-
-greyhoundController.update = function(req, res) {
-    var updateRequest = {};
-    updateRequest.rawEntity = req.body;
-    updateRequest.existingEntity = req.greyhound;
-    var processChain = greyhoundController.preProcessRaw(updateRequest)
-    .then(greyhoundController.mergeGreyhound)
-    .then(greyhoundController.checkForExistsPromise)
-    .then(greyhoundController.processSireField)
-    .then(greyhoundController.processDamField)
-    .then(helper.saveEntityRequest);
-
-    helper.promiseToResponse(processChain, res);
-
 };
 
 /**

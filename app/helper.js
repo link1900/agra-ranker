@@ -50,7 +50,7 @@ helper.killChildren = function(dao, field, id, res){
     });
 };
 
-helper.pushChangeToFk = function(dao, fkField, parentId, parentValue, childField, res){
+helper.pushChangeToFk = function(dao, fkField, parentId, parentValue, childField){
     var query = {};
     query[fkField] = parentId;
     dao.find(query).exec(function(err, entities){
@@ -99,7 +99,7 @@ helper.saveEntityRequest = function(entityRequest){
             entityRequest.error = err;
             deferred.reject(entityRequest);
         } else {
-            entityRequest.updatedEntity = entity;
+            entityRequest.savedEntity = entity;
             deferred.resolve(entityRequest);
         }
     });
@@ -108,10 +108,10 @@ helper.saveEntityRequest = function(entityRequest){
 
 helper.promiseToResponse = function(promise, res){
     promise.then(function(entityRequestResult){
-        res.send(200, entityRequestResult.updatedEntity);
+        res.jsonp(200, entityRequestResult.savedEntity);
     })
     .fail(function(error){
-        res.send(400, "update failed: " + error);
+        res.jsonp(400, {"error":"update failed: " + error});
     });
 };
 

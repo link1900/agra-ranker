@@ -8,14 +8,14 @@ var User = mongoose.model('User');
 securityController.login = function(req, res, next){
     passport.authenticate('local', function(err, user) {
             if (err) {
-                return res.send(401, err);
+                return res.jsonp(401, {"error": err});
             }
             if (!user) {
-                return res.send(401, 'incorrect login details');
+                return res.jsonp(401, {"error": 'incorrect login details'});
             }
             return req.logIn(user, function(err) {
                 if (err) {
-                    return res.send(401, err);
+                    return res.jsonp(401, {"error": err});
                 } else {
                     return res.jsonp(200, user);
                 }
@@ -30,7 +30,7 @@ securityController.logout = function(req, res){
 
 securityController.checkAuthentication = function(req, res, next){
     if (!req.isAuthenticated()) {
-        return res.send(401, 'authentication required');
+        return res.jsonp(401, {error: 'authentication required'});
     }
     return next();
 };
