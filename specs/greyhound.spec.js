@@ -2,6 +2,7 @@ var request = require('supertest');
 var mongoose = require('mongoose');
 var chai = require('chai');
 chai.should();
+var expect = chai.expect;
 require("../server.js");
 var Greyhound = mongoose.model('Greyhound');
 var testHelper = require('./testHelper');
@@ -15,6 +16,7 @@ describe("Greyhound", function(){
         Greyhound.remove({}, function(){
             new Greyhound({"_id" : "53340c2d8e791cd5d7c731d7", "name" : "grey1"}).save();
             new Greyhound({"_id":'531d1f74e407586c2147737b', name:"grey2"}).save();
+            new Greyhound({"_id":'531d1f72e407586c21476e49', name:"grey4", sireRef:"53340c2d8e791cd5d7c731d7", damRef:"531d1f74e407586c2147737b"}).save();
             new Greyhound({"_id":'531d1f74e407586c214773df', name:"grey3"}).save(done);
         });
     });
@@ -28,7 +30,7 @@ describe("Greyhound", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.length(3);
+                    res.body.should.have.length(4);
                     done();
                 });
         });
@@ -567,6 +569,72 @@ describe("Greyhound", function(){
                 });
         });
 
+    });
+
+    describe("Delete", function() {
+        it("is secure", function (done) {
+            testHelper.publicSession
+                .del('/greyhound/53340c2d8e791cd5d7c731d7')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(401, done);
+        });
+
+        it("delete existing grey1", function (done) {
+            testHelper.authSession
+                .del('/greyhound/53340c2d8e791cd5d7c731d7')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+
+        it("delete grey1 and grey4 sire is removed", function (done) {
+            testHelper.authSession
+                .del('/greyhound/53340c2d8e791cd5d7c731d7')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function (err) {
+                    if (err) {
+                        throw err;
+                    }
+                    testHelper.authSession
+                        .get('/greyhound/531d1f72e407586c21476e49')
+                        .end(function (err, res) {
+                            if (err) {
+                                throw err;
+                            }
+                            res.body.should.have.property("name");
+                            res.body.name.should.equal("grey4");
+                            expect(res.body.sireRef).to.equal(null);
+                            done();
+                        });
+                });
+        });
+
+        it("delete grey2 and grey4 dam is removed", function (done) {
+            testHelper.authSession
+                .del('/greyhound/531d1f74e407586c2147737b')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function (err) {
+                    if (err) {
+                        throw err;
+                    }
+                    testHelper.authSession
+                        .get('/greyhound/531d1f72e407586c21476e49')
+                        .end(function (err, res) {
+                            if (err) {
+                                throw err;
+                            }
+                            res.body.should.have.property("name");
+                            res.body.name.should.equal("grey4");
+                            expect(res.body.damRef).to.equal(null);
+                            done();
+                        });
+                });
+        });
     });
 
     afterEach(function(done){

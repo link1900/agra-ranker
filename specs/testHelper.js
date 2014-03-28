@@ -3,6 +3,7 @@ var request = require('supertest');
 var siteUrl = process.env.testUrl;
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var AllowedUser = mongoose.model('AllowedUser');
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
 
@@ -39,6 +40,8 @@ testHelper.tearDown = function(done){
 };
 
 testHelper.loadUsers = function(done){
+    new AllowedUser({"email":"nbrown99@gmail.com"}).save();
+    new AllowedUser({"email":"link1900@gmail.com"}).save();
     new User({
         "provider" : "local",
         "email" : "link1900@gmail.com",

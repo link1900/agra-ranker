@@ -11,25 +11,25 @@ userController.create = function(req, res) {
     user.provider = 'local';
     AllowedUser.findOne({"email": user.email}, function(err, result){
         if (err){
-            res.send(400, err);
+            res.jsonp(400, {error:err});
         } else if (result) {
             User.findOne({"email": user.email}, function(err, userResult){
                 if (err){
-                    res.send(400, err);
+                    res.jsonp(400, {error:err});
                 } else if (userResult) {
-                    res.send(400, 'user with the email ' + user.email + " already exists");
+                    res.jsonp(400, {error:'user with the email ' + user.email + " already exists"});
                 } else {
                     user.save(function(err, result){
                         if (err){
-                            res.send(400, err.message);
+                            res.jsonp(400, {error:err});
                         } else {
-                            res.send(200, result);
+                            res.jsonp(200, result);
                         }
                     });
                 }
             });
         } else {
-            res.send(400, 'email is not on the allowed white list');
+            res.jsonp(400, {error:'email is not on the allowed white list'});
         }
     });
 };
@@ -38,7 +38,7 @@ userController.me = function(req, res) {
     if (req.user){
         res.jsonp(req.user);
     } else {
-        res.send(400, 'no user session found');
+        res.jsonp(400, {"error":'no user session found'});
     }
 
 };
