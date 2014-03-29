@@ -7,7 +7,6 @@ var express = require('express'),
     consolidate = require('consolidate'),
     mongoStore = require('connect-mongo')(express),
     flash = require('connect-flash'),
-    helpers = require('view-helpers'),
     config = require('./config');
 
 module.exports = function(app, passport, db) {
@@ -15,8 +14,8 @@ module.exports = function(app, passport, db) {
 
     // Prettify HTML
     app.locals.pretty = true;
-		// cache=memory or swig dies in NODE_ENV=production
-		app.locals.cache = 'memory';
+
+    app.locals.cache = 'memory';
 		
     // Should be placed before express.static
     // To ensure that all assets and data are compressed (utilize bandwidth)
@@ -33,15 +32,6 @@ module.exports = function(app, passport, db) {
     if (process.env.NODE_ENV === 'development') {
         app.use(express.logger('dev'));
     }
-
-    // assign the template engine to .html files
-    app.engine('html', consolidate[config.templateEngine]);
-
-    // set .html as the default extension
-    app.set('view engine', 'html');
-
-    // Set views path, template engine and default layout
-    app.set('views', config.root + '/app/views');
 
     // Enable jsonp
     app.enable('jsonp callback');
@@ -77,9 +67,6 @@ module.exports = function(app, passport, db) {
             })
         }));
 
-        // Dynamic helpers
-        app.use(helpers(config.app.name));
-
         // Use passport session
         app.use(passport.initialize());
         app.use(passport.session());
@@ -90,33 +77,8 @@ module.exports = function(app, passport, db) {
         // Routes should be at the last
         app.use(app.router);
 
-        // Setting the fav icon and static folder
-        app.use(express.favicon());
+        // Setting static folder
         app.use(express.static(config.root + '/public'));
-
-        // Assume "not found" in the error msgs is a 404. this is somewhat
-        // silly, but valid, you can do whatever you like, set properties,
-        // use instanceof etc.
-        //app.use(function(err, req, res, next) {
-            // Treat as 404
-        //    if (~err.message.indexOf('not found')) return next();
-
-            // Log it
-        //    console.error(err.stack);
-
-            // Error page
-        //    res.status(500).render('500', {
-        //        error: err.stack
-        //    });
-        //});
-
-        // Assume 404 since no middleware responded
-        //app.use(function(req, res) {
-        //    res.status(404).render('404', {
-        //        url: req.originalUrl,
-        //        error: 'Not found'
-        //    });
-        //});
 
     });
 };

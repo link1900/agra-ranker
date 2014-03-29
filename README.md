@@ -53,9 +53,9 @@ Clone this repository
 - (DONE) force https and piggy back on heroku certs
 - (DONE) make the login screen work with lastpass and normal auto complete
 - (DONE) Move table to a directive
-- fix sire selector to always get all results or do inactive paging
+- (DONE) fix sire selector to always get all results or do inactive paging
 - (DONE) fix offspring table to be actual table
-- Clean up the server loader. Remove all front end templating.
+- (DONE) Clean up the server loader. Remove all front end templating.
 
 ### Races
 - list races
