@@ -37,12 +37,6 @@ batchController.prepareBatchQuery = function(req, res, next) {
     next();
 };
 
-batchController.getRecords = function(req, res, next) {
-    req.searchQuery = {'batchRef': req.model._id };
-    req.dao = BatchRecord;
-    next();
-};
-
 batchController.checkFields = function(req, res, next){
     if (req.previousModel.status == constants.batchTypes.awaitingProcessing && req.model.status == constants.batchTypes.cancelled){
         helper.pushChangeToFk(BatchRecord, 'batchRef', req.model._id, req.model.status, 'status');

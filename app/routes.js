@@ -31,7 +31,6 @@ module.exports = function(app) {
     app.get('/batch/:batchId',securityController.checkAuthentication, helper.getOne);
     app.put('/batch/:batchId',securityController.checkAuthentication, helper.mergeBody, batchController.checkFields, helper.save);
     app.del('/batch/:batchId',securityController.checkAuthentication, batchController.destroy);
-    app.get('/batch/:batchId/record',securityController.checkAuthentication, batchController.getRecords, helper.runQuery);
     app.put('/batch/:batchId/run',securityController.checkAuthentication, batchController.processSpecificBatch);
     app.post('/upload/batch',securityController.checkAuthentication, batchController.createBatchFromFile);
     app.param('batchId',securityController.checkAuthentication, batchController.setBatch);

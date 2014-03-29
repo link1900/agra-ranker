@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 var chai = require('chai');
 chai.should();
 var expect = chai.expect;
-require("../server.js");
 var Greyhound = mongoose.model('Greyhound');
 var testHelper = require('./testHelper');
 
