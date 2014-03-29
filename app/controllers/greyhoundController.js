@@ -21,88 +21,6 @@ greyhoundController.setGreyhound = function(req, res, next, id) {
     });
 };
 
-greyhoundController.checkFields = function(req, res, next) {
-    if (req.greyhound.name){
-        return next();
-    } else {
-        return res.send(400, 'greyhound requires name');
-    }
-};
-
-greyhoundController.cleanFields = function(req, res, next) {
-    if (req.greyhound.name){
-        req.greyhound.name = req.greyhound.name.toLowerCase().trim();
-    }
-    return next();
-};
-
-greyhoundController.checkForExists = function(req, res, next) {
-    Greyhound.findOne({"name":req.greyhound.name}, function(err, existingGreyhound) {
-        if (err) {
-            return res.send(500, 'error checking greyhound name ' + req.greyhound.name);
-        }
-        if (existingGreyhound && !_.isEqual(existingGreyhound._id, req.greyhound._id)) {
-            return res.send(400, 'greyhound already exist with the name ' + existingGreyhound.name);
-        }
-        return next();
-    });
-};
-
-greyhoundController.checkSireRef = function(req, res, next) {
-    if (req.greyhound.sireRef){
-        if (_.isEqual(req.greyhound._id, req.greyhound.sireRef)){
-            res.send(400, "greyhound cannot be own sire");
-            return;
-        }
-
-        Greyhound.findById(req.greyhound.sireRef, function(err, existingGreyhound) {
-            if (err) {
-                return res.send(500, 'error checking sire ref ' + req.greyhound.sireRef);
-            }
-            if (!existingGreyhound) {
-                return res.send(400, 'sire does not exists with id ' + req.greyhound.sireRef);
-            }
-            return next();
-        });
-    } else {
-        next();
-    }
-};
-
-greyhoundController.checkDamRef = function(req, res, next) {
-    if (req.greyhound.damRef){
-        if (_.isEqual(req.greyhound._id, req.greyhound.damRef)){
-            res.send(400, "greyhound cannot be own dam");
-            return;
-        }
-        Greyhound.findById(req.greyhound.damRef, function(err, existingGreyhound) {
-            if (err) {
-                return res.send(500, 'error checking dam ref ' + req.greyhound.damRef);
-            }
-            if (!existingGreyhound) {
-                return res.send(400, 'dam does not exists with id ' + req.greyhound.damRef);
-            }
-            return next();
-        });
-    } else {
-        next();
-    }
-};
-
-greyhoundController.mergeBody = function(req, res, next) {
-    req.greyhound = _.extend(req.greyhound, req.body);
-    next();
-};
-
-greyhoundController.createBody = function(req, res, next) {
-    req.greyhound = greyhoundController.newGreyhound(req.body);
-    next();
-};
-
-greyhoundController.newGreyhound = function(json){
-    return new Greyhound(json);
-};
-
 greyhoundController.create = function(req, res) {
     var entityRequest = {};
     entityRequest.rawEntity = req.body;
@@ -389,6 +307,10 @@ greyhoundController.processGreyhoundImportObject = function(greyhound){
 
         return greyhoundController.saveOrFindGreyhoundImportObject(greyhound);
     });
+};
+
+greyhoundController.newGreyhound = function(json){
+    return new Greyhound(json);
 };
 
 greyhoundController.saveOrFindGreyhoundImportObject = function(greyhound){
