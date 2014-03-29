@@ -119,7 +119,7 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(400, done);
+                .expect(200, done);
         });
 
         it("with name createdgrey and empty sire object", function(done){
@@ -139,7 +139,7 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(400, done);
+                .expect(200, done);
         });
 
         it("with name createdgrey and sireRef of nonsense", function(done){
@@ -149,7 +149,7 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(400, done);
+                .expect(200, done);
         });
 
         it("with name createdgrey and sireRef of grey1 and sire name of creategreysire", function(done){
@@ -159,7 +159,7 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(400, done);
+                .expect(200, done);
         });
 
         it("with name createdgrey and sire with name of blank", function(done){
@@ -173,7 +173,8 @@ describe("Greyhound", function(){
                 .end(function(err, res){
                     if (err){ throw err; }
                     res.body.should.have.property("name");
-                    res.body.should.not.have.property("sireRef");
+                    res.body.should.have.property("sireRef");
+                    expect(res.body.sireRef).to.equal(null);
                     res.body.name.should.equal("createdgrey");
                     done();
                 });
@@ -231,7 +232,7 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(400, done);
+                .expect(200, done);
         });
 
         it("with name createdgrey and empty dam object", function(done){
@@ -251,7 +252,7 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(400, done);
+                .expect(200, done);
         });
 
         it("with name createdgrey and damRef of nonsense", function(done){
@@ -261,7 +262,7 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(400, done);
+                .expect(200, done);
         });
 
         it("with name createdgrey and damRef of grey1 and dam name of creategreydam", function(done){
@@ -271,7 +272,7 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(400, done);
+                .expect(200, done);
         });
 
         it("with name createdgrey and dam with name of blank", function(done){
@@ -285,7 +286,8 @@ describe("Greyhound", function(){
                 .end(function(err, res){
                     if (err){ throw err; }
                     res.body.should.have.property("name");
-                    res.body.should.not.have.property("damRef");
+                    res.body.should.have.property("damRef");
+                    expect(res.body.damRef).to.equal(null);
                     res.body.name.should.equal("createdgrey");
                     done();
                 });
@@ -446,7 +448,7 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(400, done);
+                .expect(200, done);
         });
 
         it("with name updategrey and sireRef of own id", function(done){
@@ -456,7 +458,7 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(400, done);
+                .expect(200, done);
         });
 
         it("with name updategrey and sire of own name", function(done){
@@ -562,6 +564,66 @@ describe("Greyhound", function(){
                     res.body.should.have.property("name");
                     res.body.name.should.equal("updategrey");
                     res.body.should.have.property("sireRef");
+                    res.body.should.have.property("damRef");
+                    res.body.damRef.should.equal("531d1f74e407586c2147737b");
+                    done();
+                });
+        });
+
+        it("with name updatedgreyblank and dam, sire with name of blank", function(done){
+            var body = {name:"updatedgreyblank", dam: {name : ''}, sire: {name : ''}};
+            testHelper.authSession
+                .put('/greyhound/531d1f72e407586c21476e49')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    res.body.should.have.property("name");
+                    res.body.name.should.equal("updatedgreyblank");
+                    res.body.should.have.property("damRef");
+                    res.body.should.have.property("sireRef");
+                    expect(res.body.sireRef).to.equal(null);
+                    expect(res.body.damRef).to.equal(null);
+                    done();
+                });
+        });
+
+        it("with name updatedgrey and dam of grey3", function(done){
+            var body = {name:"updatedgrey", dam: {name : 'grey3'}};
+            testHelper.authSession
+                .put('/greyhound/531d1f72e407586c21476e49')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    res.body.should.have.property("name");
+                    res.body.name.should.equal("updatedgrey");
+                    res.body.should.have.property("damRef");
+                    res.body.damRef.should.equal("531d1f74e407586c214773df");
+                    res.body.should.have.property("sireRef");
+                    res.body.sireRef.should.equal("53340c2d8e791cd5d7c731d7");
+                    done();
+                });
+        });
+
+        it("with name updatedgrey and sire of grey3", function(done){
+            var body = {name:"updatedgrey", sire: {name : 'grey3'}};
+            testHelper.authSession
+                .put('/greyhound/531d1f72e407586c21476e49')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    res.body.should.have.property("name");
+                    res.body.name.should.equal("updatedgrey");
+                    res.body.should.have.property("sireRef");
+                    res.body.sireRef.should.equal("531d1f74e407586c214773df");
                     res.body.should.have.property("damRef");
                     res.body.damRef.should.equal("531d1f74e407586c2147737b");
                     done();

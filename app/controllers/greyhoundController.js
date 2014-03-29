@@ -153,14 +153,12 @@ greyhoundController.preProcessRaw = function(entityRequest){
     }
 
     if(greyhound.sireRef){
-        return q.reject("cannot set or change sireRef, set sire by providing a sire field");
+        delete greyhound.sireRef;
     }
-    delete greyhound.sireRef;
 
     if(greyhound.damRef){
-        return q.reject("cannot set or change damRef, set sire by providing a dam field");
+        delete greyhound.damRef;
     }
-    delete greyhound.damRef;
 
     if (greyhound.sire && greyhound.sire.name) {
         greyhound.sire.name = greyhound.sire.name.toLowerCase().trim();
@@ -221,16 +219,21 @@ greyhoundController.processSireField = function(updateRequest) {
     if (updateRequest.existingEntity && updateRequest.existingEntity.sireRef){
         updateRequest.newEntity.sireRef = updateRequest.existingEntity.sireRef;
     }
-    //if sire field is present
-    if (updateRequest.newEntity && updateRequest.newEntity.sire && updateRequest.newEntity.sire.name){
-        updateRequest.newEntity.sire.name = updateRequest.newEntity.sire.name.toLowerCase().trim();
+
+    if (updateRequest.newEntity && updateRequest.newEntity.sire){
+        if (updateRequest.newEntity.sire.name != undefined){
+            updateRequest.newEntity.sire.name = updateRequest.newEntity.sire.name.toLowerCase().trim();
+        } else {
+            updateRequest.newEntity.sire.name = "";
+        }
+
 
         if (updateRequest.existingEntity && _.isEqual(updateRequest.newEntity.sire.name, updateRequest.existingEntity.name)){
             deferred.reject("cannot be own sire");
         }
 
         if (updateRequest.newEntity.sire.name.length == 0){
-            updateRequest.newEntity.sireRef = undefined;
+            updateRequest.newEntity.sireRef = null;
             delete updateRequest.newEntity.sire;
             deferred.resolve(updateRequest);
         } else {
@@ -256,15 +259,19 @@ greyhoundController.processDamField = function(updateRequest) {
         updateRequest.newEntity.damRef = updateRequest.existingEntity.damRef;
     }
 
-    if (updateRequest.newEntity.dam && updateRequest.newEntity.dam.name){
-        updateRequest.newEntity.dam.name = updateRequest.newEntity.dam.name.toLowerCase().trim();
+    if (updateRequest.newEntity && updateRequest.newEntity.dam){
+        if (updateRequest.newEntity.dam.name != undefined){
+            updateRequest.newEntity.dam.name = updateRequest.newEntity.dam.name.toLowerCase().trim();
+        } else {
+            updateRequest.newEntity.dam.name = "";
+        }
 
         if (updateRequest.existingEntity && _.isEqual(updateRequest.newEntity.dam.name,  updateRequest.existingEntity.name)){
             deferred.reject("cannot be own dam");
         }
 
         if (updateRequest.newEntity.dam.name.length == 0){
-            updateRequest.newEntity.damRef = undefined;
+            updateRequest.newEntity.damRef = null;
             delete updateRequest.newEntity.dam;
             deferred.resolve(updateRequest);
         } else {

@@ -139,7 +139,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
                 },
                 function(error){
                     $scope.alerts = [
-                        { type: 'danger', msg: "Failed to update: " + error.data }
+                        { type: 'danger', msg: "Failed to update: " + error.data.error }
                     ];
                 });
         };
@@ -153,7 +153,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
                 },
                 function(error){
                     $scope.alerts = [
-                        { type: 'danger', msg: "Failed to delete: " + error.data }
+                        { type: 'danger', msg: "Failed to delete: " + error.data.error }
                     ];
                 }
             );

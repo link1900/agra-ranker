@@ -10,7 +10,7 @@ angular.module('controllers').controller('securityCtrl', ['$scope', '$routeParam
                 $location.path('/');
             }, function(error){
                 $scope.alerts = [
-                    { type: 'danger', msg: "Failed to login: " + error.data }
+                    { type: 'danger', msg: "Failed to login: " + error.data.error }
                 ];
             });
         };

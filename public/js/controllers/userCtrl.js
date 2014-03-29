@@ -9,7 +9,7 @@ angular.module('controllers').controller('userCtrl', ['$scope', '$routeParams', 
                 ];
             }, function(error){
                 $scope.alerts = [
-                    { type: 'danger', msg: "Failed to create user: " + error.data }
+                    { type: 'danger', msg: "Failed to create user: " + error.data.error }
                 ];
             });
         };
