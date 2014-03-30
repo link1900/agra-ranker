@@ -111,10 +111,16 @@ helper.promiseToResponse = function(promise, res){
         res.jsonp(200, entityRequestResult.savedEntity);
     })
     .fail(function(error){
-        res.jsonp(400, {"error":"update failed: " + error});
+        res.jsonp(400, {"error":"failed: " + error});
     });
 };
 
+helper.mergeEntityRequest = function(entityRequest) {
+    var existing = _.clone(entityRequest.existingEntity.toObject());
+    entityRequest.newEntity = _.extend(entityRequest.existingEntity, entityRequest.newEntity);
+    entityRequest.existingEntity = existing;
+    return q(entityRequest);
+};
 
 helper.promiseResult = function(req, res, promise){
     promise.then(function(result){

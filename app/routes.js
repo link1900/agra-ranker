@@ -5,6 +5,8 @@ var batchController = require('./controllers/batchController');
 var batchRecordController = require('./controllers/batchRecordController');
 var userController = require('./controllers/userController');
 var securityController = require('./controllers/securityController');
+var raceController = require('./controllers/raceController');
+var groupLevelController = require('./controllers/groupLevelController');
 var helper = require('./helper');
 
 module.exports = function(app) {
@@ -20,9 +22,7 @@ module.exports = function(app) {
     app.get('/greyhound', greyhoundController.getMany,  helper.runQuery);
     app.get('/greyhound/:greyhoundId', greyhoundController.getOne);
     app.post('/greyhound', securityController.checkAuthentication,greyhoundController.create);
-
     app.put('/greyhound/:greyhoundId', securityController.checkAuthentication, greyhoundController.update);
-
     app.del('/greyhound/:greyhoundId',securityController.checkAuthentication, greyhoundController.destroy);
     app.param('greyhoundId', greyhoundController.setGreyhound);
 
@@ -39,7 +39,18 @@ module.exports = function(app) {
     app.get('/batchRecord', securityController.checkAuthentication, batchRecordController.prepareQuery, helper.runQuery);
 
     //race routes
+    app.get('/race', raceController.prepareQuery, helper.runQuery);
+    app.get('/race/:raceId', helper.getOne);
+    app.post('/race', securityController.checkAuthentication, raceController.create);
+    app.put('/race/:raceId', securityController.checkAuthentication, raceController.update);
+    app.del('/race/:raceId',securityController.checkAuthentication, raceController.destroy);
+    app.param('raceId', raceController.setRace);
 
-
-
+    // group level routes
+    app.get('/groupLevel', groupLevelController.prepareQuery, helper.runQuery);
+    app.get('/groupLevel/:groupLevelId', helper.getOne);
+    app.post('/groupLevel', securityController.checkAuthentication, groupLevelController.create);
+    app.put('/groupLevel/:groupLevelId', securityController.checkAuthentication, groupLevelController.update);
+    app.del('/groupLevel/:groupLevelId',securityController.checkAuthentication, groupLevelController.destroy);
+    app.param('groupLevelId', groupLevelController.setModel);
 };

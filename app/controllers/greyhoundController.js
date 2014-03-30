@@ -43,7 +43,7 @@ greyhoundController.update = function(req, res) {
         .then(greyhoundController.checkForExistsPromise)
         .then(greyhoundController.processSireField)
         .then(greyhoundController.processDamField)
-        .then(greyhoundController.mergeGreyhound)
+        .then(helper.mergeEntityRequest)
         .then(helper.saveEntityRequest);
 
     helper.promiseToResponse(processChain, res);
@@ -55,14 +55,13 @@ greyhoundController.preProcessRaw = function(entityRequest){
 
     //no raw field
     if (!greyhound){
-        return q.reject("update must have a body");
+        return q.reject("must have a body");
     }
 
     //clean fields
     if (greyhound.name){
         greyhound.name = greyhound.name.toLowerCase().trim();
     }else {
-        entityRequest.error = "name field is required";
         return q.reject("name field is required");
     }
 
@@ -101,14 +100,6 @@ greyhoundController.preProcessRaw = function(entityRequest){
     entityRequest.newEntity = greyhound;
     return q(entityRequest);
 };
-
-greyhoundController.mergeGreyhound = function(updateRequest) {
-    var existing = _.clone(updateRequest.existingEntity.toObject());
-    updateRequest.newEntity = _.extend(updateRequest.existingEntity, updateRequest.newEntity);
-    updateRequest.existingEntity = existing;
-    return q(updateRequest);
-};
-
 
 greyhoundController.makeGreyhound = function(entityRequest) {
     entityRequest.newEntity = new Greyhound(entityRequest.newEntity);
