@@ -57,31 +57,61 @@ Clone this repository
 - (DONE) fix offspring table to be actual table
 - (DONE) Clean up the server loader. Remove all front end templating.
 
-### Races
-- list races
-- create race (no placings)
-- view race
-- edit race
+### Group Rank API
+- (DONE) add group rank api
+- (DONE) create group rank api
+- (DONE) update group rank api
+- (DONE) delete group rank api
+- (DONE) delete cleaned up race references
+
+### Races API
+- (DONE) list races api
+- (DONE) create race api (no placings)
+- (DONE) view race api
+- (DONE) edit race api
 - race csv import (simple)
 
-### Placings
+### Placings API
+- create a placing api
+- edit a placing api
+- list placing api (query for by race or greyhound)
+- delete a placing api
+- delete placing when greyhound is deleted
+- delete placing when race is deleted
+
+### Rules API
+- design rules and ranking storage.
+
+### Ranking API
+- List rankings api
+- update when greyhound is deleted
+- update when race is deleted
+
+### Group Rank UI
+- list group ranks in group rank section on the rules screen
+- group rank edit screen
+- group rank create screen
+- group rank delete button
+
+### Race UI
+- List out all races on the race screen
+- race edit screen
+- race create screen
+- race delete button
+- Move upload to a directive
+- race upload section
+
+### Placing UI
 - interactive drag and drop of text fields for placing creation on race screen (with rug pictures)
 - races / placings listed on the greyhound view
 - edit placing from greyhound view
 - edit placing from race view
-- delete placing when greyhound is deleted
-- delete placing when race is deleted
 
-
-### Refactor Cleanups 2
-- Move upload to a directive
-
-### Rules & Rankings
-- design rules and ranking storage
+### Rules UI
 - add the rules page (lists the ranking rules)
-- list ranking
-- update when greyhound is deleted
-- update when race is deleted
+
+### Ranking UI
+- list all rankings on the home screen
 
 ## Round 2 - Getting to Ranker 6 Level
 - table pick the page size

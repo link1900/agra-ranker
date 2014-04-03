@@ -54,6 +54,12 @@ describe("Race", function(){
                     if (err){ throw err; }
                     res.body.should.have.property("name");
                     res.body.name.should.equal("race1");
+                    res.body.should.have.property("groupLevelRef");
+                    res.body.groupLevelRef.should.equal("531d1f72e407586c21476ef7");
+                    res.body.should.have.property("distanceMeters");
+                    res.body.distanceMeters.should.equal(515);
+                    res.body.should.have.property("disqualified");
+                    res.body.disqualified.should.equal(false);
                     done();
                 });
         });
@@ -245,6 +251,30 @@ describe("Race", function(){
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200, done);
+        });
+
+        it("delete group1 should remove its ref", function (done) {
+            testHelper.authSession
+                .del('/groupLevel/531d1f72e407586c21476ef7')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    testHelper.publicSession
+                        .get('/race/531d1f72e407586c21476ea8')
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .end(function(err, res){
+                            if (err){ throw err; }
+                            res.body.should.have.property("name");
+                            res.body.name.should.equal("race1");
+                            res.body.should.have.property("groupLevelRef");
+                            expect(res.body.groupLevelRef).equal(null);
+                            done();
+                        });
+                });
         });
     });
 

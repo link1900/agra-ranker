@@ -4,6 +4,7 @@ var groupLevelController = module.exports = {};
 
 var mongoose = require('mongoose');
 var GroupLevel = mongoose.model('GroupLevel');
+var Race = mongoose.model('Race');
 var _ = require('lodash');
 var helper = require('../helper');
 var q = require('q');
@@ -56,15 +57,10 @@ groupLevelController.update = function(req, res) {
 };
 
 groupLevelController.destroy = function(req, res) {
-    //clean up references
-
-    req.model.remove(function(err, removedModel) {
-        if (err) {
-            res.send(err.errors);
-        } else {
-            res.jsonp(removedModel);
-        }
-    });
+    helper.responseFromPromise(res,
+        helper.cleanFk(Race, 'groupLevelRef', req.model)
+        .then(helper.remove)
+    );
 };
 
 groupLevelController.make = function(entityRequest) {

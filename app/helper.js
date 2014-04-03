@@ -21,19 +21,30 @@ helper.buildPagingLinks = function(urlString, currentPage, lastPage){
     };
 };
 
-helper.cleanFk = function(dao, field, id, res){
+helper.cleanFk = function(dao, field, model){
+    var deferred = q.defer();
     var query = {};
-    query[field] = id;
+    query[field] = model._id;
     dao.find(query).exec(function(err, entities){
         if (err) {
-            res.send(500, 'error removing fk');
+            deferred.reject("cannot query this dao");
         } else {
-            _.each(entities, function(entity){
-                entity[field] = null;
-                entity.save();
-            });
+            if (entities.length > 0){
+                var promises = _.map(entities, function(entity){
+                    entity[field] = null;
+                    return helper.savePromise(entity);
+                });
+                deferred.resolve(
+                    q.all(promises).then(function(){
+                        return model;
+                    })
+                );
+            } else {
+                deferred.resolve(q(model));
+            }
         }
     });
+    return deferred.promise;
 };
 
 helper.killChildren = function(dao, field, id, res){
@@ -92,6 +103,18 @@ helper.savePromise = function(entity){
     return deferred.promise;
 };
 
+helper.remove = function(entity){
+    var deferred = q.defer();
+    entity.remove(function(err, removedModel){
+        if (err){
+            deferred.reject(err);
+        } else {
+            deferred.resolve(removedModel);
+        }
+    });
+    return deferred.promise;
+};
+
 helper.saveEntityRequest = function(entityRequest){
     var deferred = q.defer();
     entityRequest.newEntity.save(function(err, entity){
@@ -109,6 +132,15 @@ helper.saveEntityRequest = function(entityRequest){
 helper.promiseToResponse = function(promise, res){
     promise.then(function(entityRequestResult){
         res.jsonp(200, entityRequestResult.savedEntity);
+    })
+    .fail(function(error){
+        res.jsonp(400, {"error":"failed: " + error});
+    });
+};
+
+helper.responseFromPromise = function(res, promise){
+    promise.then(function(result){
+        res.jsonp(200, result);
     })
     .fail(function(error){
         res.jsonp(400, {"error":"failed: " + error});

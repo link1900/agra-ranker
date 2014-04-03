@@ -205,8 +205,8 @@ greyhoundController.processDamField = function(updateRequest) {
  */
 greyhoundController.destroy = function(req, res) {
     //clean up references
-    helper.cleanFk(Greyhound, 'sireRef', req.greyhound._id, res);
-    helper.cleanFk(Greyhound, 'damRef', req.greyhound._id, res);
+    helper.cleanFk(Greyhound, 'sireRef', req.greyhound);
+    helper.cleanFk(Greyhound, 'damRef', req.greyhound);
 
     req.greyhound.remove(function(err, removedModel) {
         if (err) {
