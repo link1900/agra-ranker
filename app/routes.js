@@ -20,8 +20,8 @@ module.exports = function(app) {
     app.get('/user/me', userController.me);
 
     //greyhound routes
-    app.get('/greyhound', greyhoundController.getMany,  helper.runQuery);
-    app.get('/greyhound/:greyhoundId', greyhoundController.getOne);
+    app.get('/greyhound', greyhoundController.prepareQuery,  helper.runQuery);
+    app.get('/greyhound/:greyhoundId', helper.getOne);
     app.post('/greyhound', securityController.checkAuthentication,greyhoundController.create);
     app.put('/greyhound/:greyhoundId', securityController.checkAuthentication, greyhoundController.update);
     app.del('/greyhound/:greyhoundId',securityController.checkAuthentication, greyhoundController.destroy);

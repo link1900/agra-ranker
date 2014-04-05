@@ -17,9 +17,33 @@ greyhoundController.setGreyhound = function(req, res, next, id) {
     Greyhound.findById(id, function(err, greyhound) {
         if (err) return next(err);
         if (!greyhound) return next(new Error('Failed to load greyhound ' + id));
-        req.greyhound = greyhound;
+        req.model = greyhound;
         return next();
     });
+};
+
+greyhoundController.prepareQuery = function(req, res, next) {
+    req.searchQuery = {};
+    var like = req.param('like');
+    var name = req.param('name');
+    var parentRef = req.param('parentRef');
+    if (like){
+        req.searchQuery = {'name': {'$regex': like.toLowerCase()}};
+    }
+    if (name){
+        req.searchQuery = {'name': name.toLowerCase()};
+    }
+    if (parentRef){
+        req.searchQuery =
+        {'$or':
+            [
+                {'sireRef' : parentRef},
+                {'damRef' : parentRef}
+            ]
+        };
+    }
+    req.dao = Greyhound;
+    next();
 };
 
 greyhoundController.create = function(req, res) {
@@ -39,7 +63,7 @@ greyhoundController.create = function(req, res) {
 greyhoundController.update = function(req, res) {
     var updateRequest = {};
     updateRequest.rawEntity = req.body;
-    updateRequest.existingEntity = req.greyhound;
+    updateRequest.existingEntity = req.model;
     var processChain = greyhoundController.preProcessRaw(updateRequest)
         .then(greyhoundController.checkForExistsPromise)
         .then(greyhoundController.processSireField)
@@ -206,46 +230,15 @@ greyhoundController.processDamField = function(updateRequest) {
  */
 greyhoundController.destroy = function(req, res) {
     helper.responseFromPromise(res,
-        helper.cleanFk(Greyhound, 'sireRef', req.greyhound)
+        helper.cleanFk(Greyhound, 'sireRef', req.model)
         .then(function(){
-            return helper.cleanFk(Greyhound, 'damRef', req.greyhound);
+            return helper.cleanFk(Greyhound, 'damRef', req.model);
         })
         .then(function(){
-            return helper.cleanFk(Placing, 'greyhoundRef', req.greyhound);
+            return helper.cleanFk(Placing, 'greyhoundRef', req.model);
         })
         .then(helper.remove)
     );
-};
-
-greyhoundController.getOne = function(req, res) {
-    res.jsonp(req.greyhound);
-};
-
-/**
- * List of greyhounds
- */
-greyhoundController.getMany = function(req, res, next) {
-    req.searchQuery = {};
-    var like = req.param('like');
-    var name = req.param('name');
-    var parentRef = req.param('parentRef');
-    if (like){
-        req.searchQuery = {'name': {'$regex': like.toLowerCase()}};
-    }
-    if (name){
-        req.searchQuery = {'name': name.toLowerCase()};
-    }
-    if (parentRef){
-        req.searchQuery =
-        {'$or':
-            [
-                {'sireRef' : parentRef},
-                {'damRef' : parentRef}
-            ]
-        };
-    }
-    req.dao = Greyhound;
-    next();
 };
 
 greyhoundController.rawCsvArrayToGreyhound = function(rawRow){
