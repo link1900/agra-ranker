@@ -12,21 +12,8 @@ describe("Race", function(){
     });
 
     beforeEach(function(done){
-        testHelper.loadGroupLevels(function(){
-            Race.remove({}, function(){
-                new Race({"_id" : "531d1f72e407586c21476ea8",
-                    "name" : "race1",
-                    "date": new Date(),
-                    "groupLevelRef":"531d1f72e407586c21476ef7",
-                    "distanceMeters": 515,
-                    "disqualified":false}).save();
-                new Race({"_id" : "531d1f72e407586c21476ec4",
-                    "name" : "race2",
-                    "date": new Date(),
-                    "groupLevelRef":"531d1f72e407586c21476f0c",
-                    "distanceMeters": 715,
-                    "disqualified":false}).save(done);
-            });
+        testHelper.loadRaces(function(){
+            testHelper.loadGreyhounds(done);
         });
     });
 
@@ -39,7 +26,7 @@ describe("Race", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.length(2);
+                    res.body.length.should.be.above(1);
                     done();
                 });
         });
@@ -279,9 +266,7 @@ describe("Race", function(){
     });
 
     afterEach(function(done){
-        testHelper.clearGroupLevels(function(){
-            Race.remove({}, done);
-        });
+        testHelper.clearRaces(done);
     });
 
     after(function (done) {

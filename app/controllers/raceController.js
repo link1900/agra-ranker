@@ -5,6 +5,7 @@ var raceController = module.exports = {};
 var mongoose = require('mongoose');
 var Race = mongoose.model('Race');
 var GroupLevel = mongoose.model('GroupLevel');
+var Placing = mongoose.model('Placing');
 var _ = require('lodash');
 var helper = require('../helper');
 var q = require('q');
@@ -57,15 +58,9 @@ raceController.update = function(req, res) {
 };
 
 raceController.destroy = function(req, res) {
-    //clean up references
-
-    req.model.remove(function(err, removedModel) {
-        if (err) {
-            res.send(err.errors);
-        } else {
-            res.jsonp(removedModel);
-        }
-    });
+    helper.responseFromPromise(res,
+    helper.clearAwayChildren(Placing, 'raceRef', req.model)
+    .then(helper.remove));
 };
 
 raceController.makeRace = function(entityRequest) {

@@ -7,6 +7,7 @@ var userController = require('./controllers/userController');
 var securityController = require('./controllers/securityController');
 var raceController = require('./controllers/raceController');
 var groupLevelController = require('./controllers/groupLevelController');
+var placingController = require('./controllers/placingController');
 var helper = require('./helper');
 
 module.exports = function(app) {
@@ -53,4 +54,12 @@ module.exports = function(app) {
     app.put('/groupLevel/:groupLevelId', securityController.checkAuthentication, groupLevelController.update);
     app.del('/groupLevel/:groupLevelId',securityController.checkAuthentication, groupLevelController.destroy);
     app.param('groupLevelId', groupLevelController.setModel);
+
+    //placing routes
+    app.get('/placing', placingController.prepareQuery, helper.runQuery);
+    app.get('/placing/:placingId', helper.getOne);
+    app.post('/placing', securityController.checkAuthentication, placingController.create);
+    app.put('/placing/:placingId', securityController.checkAuthentication, placingController.update);
+    app.del('/placing/:placingId',securityController.checkAuthentication, placingController.destroy);
+    app.param('placingId', placingController.setModel);
 };

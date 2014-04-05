@@ -69,23 +69,30 @@ Clone this repository
 - (DONE) create race api (no placings)
 - (DONE) view race api
 - (DONE) edit race api
-- race csv import (simple)
 
 ### Placings API
-- create a placing api
-- edit a placing api
-- list placing api (query for by race or greyhound)
-- delete a placing api
-- delete placing when greyhound is deleted
-- delete placing when race is deleted
+- (DONE) create a placing api
+- (DONE) edit a placing api
+- (DONE) list placing api (query for by race or greyhound)
+- (DONE) delete a placing api
+- (DONE) delete placing when greyhound is deleted
+- (DONE) delete placing when race is deleted
 
 ### Rules API
-- design rules and ranking storage.
+- design rules standard rule parameters: time period, point tables, point decay
+- sire and dam rules
+- dead heat rule - points from matching positions are summed and divided
+- list rule set api
+- create a rule set api
+- edit a rule set api
+- delete rule set api
+- update when a sub entity is deleted
 
 ### Ranking API
 - List rankings api
 - update when greyhound is deleted
 - update when race is deleted
+- update when rule set is deleted
 
 ### Group Rank UI
 - list group ranks in group rank section on the rules screen
@@ -104,6 +111,7 @@ Clone this repository
 ### Placing UI
 - interactive drag and drop of text fields for placing creation on race screen (with rug pictures)
 - races / placings listed on the greyhound view
+- disqualification is ui only. It will auto shift the numbers.
 - edit placing from greyhound view
 - edit placing from race view
 
@@ -123,13 +131,36 @@ Clone this repository
 - inline create form on greyhound
 - inline edit form on greyhound
 - search on keydown for tables search box
+- race & placing csv import api
 
 ## Round 3 - Beyond the ranker 6
 - global search (on a search page)
 - Add a find parents button
-- list a race calendar when creating a race and have auto fill
+- have the ability to auto fill a race. When creating a race it should detect what the race is and offer to auto fill.
+- list who is in contention for the wild card
+- list who is going to win dam of the year
+- list who is going to win sire of the year
+- list a race calendar when creating a race
 - on race list page list the calendar for the current month (one colour for entered, another for pending, another for guessed)
-- warn for missing race at the end of the month
-- have the ability to send notifications if races are missed
 - graph of how a greyhound has preformed over the year
 - graph to compare to greyhounds
+- graph of point distrobution over the year, showing percentage left, spent
+- warn for missing race at the end of the month
+- have the ability to send notifications if races are missed
+
+## Data Feeds
+### Calendar
+agra.com.au
+
+### Results
+grv.com.au
+greyhoundnsw.com.au
+racingtas
+racingqld
+agra.com.au
+
+### Breeding
+grv.com.au
+greyhound-data.com
+hotgod.com.au
+

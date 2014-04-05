@@ -12,12 +12,7 @@ describe("Greyhound", function(){
     });
 
     beforeEach(function(done){
-        Greyhound.remove({}, function(){
-            new Greyhound({"_id" : "53340c2d8e791cd5d7c731d7", "name" : "grey1"}).save();
-            new Greyhound({"_id":'531d1f74e407586c2147737b', name:"grey2"}).save();
-            new Greyhound({"_id":'531d1f72e407586c21476e49', name:"grey4", sireRef:"53340c2d8e791cd5d7c731d7", damRef:"531d1f74e407586c2147737b"}).save();
-            new Greyhound({"_id":'531d1f74e407586c214773df', name:"grey3"}).save(done);
-        });
+        testHelper.loadGreyhounds(done);
     });
 
     describe("Get", function(){
@@ -29,7 +24,7 @@ describe("Greyhound", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.length(4);
+                    res.body.length.should.be.above(2);
                     done();
                 });
         });
@@ -699,7 +694,7 @@ describe("Greyhound", function(){
     });
 
     afterEach(function(done){
-        Greyhound.remove({}, done);
+        testHelper.clearGreyhounds(done);
     });
 
     after(function (done) {

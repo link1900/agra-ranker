@@ -5,6 +5,7 @@ var greyhoundController = module.exports = {};
  */
 var mongoose = require('mongoose');
 var Greyhound = mongoose.model('Greyhound');
+var Placing = mongoose.model('Placing');
 var _ = require('lodash');
 var helper = require('../helper');
 var q = require('q');
@@ -204,17 +205,16 @@ greyhoundController.processDamField = function(updateRequest) {
  * Delete an greyhound
  */
 greyhoundController.destroy = function(req, res) {
-    //clean up references
-    helper.cleanFk(Greyhound, 'sireRef', req.greyhound);
-    helper.cleanFk(Greyhound, 'damRef', req.greyhound);
-
-    req.greyhound.remove(function(err, removedModel) {
-        if (err) {
-            res.send(err.errors);
-        } else {
-            res.jsonp(removedModel);
-        }
-    });
+    helper.responseFromPromise(res,
+        helper.cleanFk(Greyhound, 'sireRef', req.greyhound)
+        .then(function(){
+            return helper.cleanFk(Greyhound, 'damRef', req.greyhound);
+        })
+        .then(function(){
+            return helper.cleanFk(Placing, 'greyhoundRef', req.greyhound);
+        })
+        .then(helper.remove)
+    );
 };
 
 greyhoundController.getOne = function(req, res) {

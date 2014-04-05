@@ -4,6 +4,9 @@ var siteUrl = process.env.testUrl;
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var GroupLevel = mongoose.model('GroupLevel');
+var Race = mongoose.model('Race');
+var Greyhound = mongoose.model('Greyhound');
+var Placing = mongoose.model('Placing');
 var AllowedUser = mongoose.model('AllowedUser');
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
@@ -73,4 +76,76 @@ testHelper.loadGroupLevels = function(done){
 
 testHelper.clearGroupLevels = function(done){
     GroupLevel.remove({}, done);
+};
+
+testHelper.loadRaces = function(done){
+    testHelper.loadGroupLevels(function(){
+        Race.remove({}, function(){
+            new Race({"_id" : "531d1f72e407586c21476ea8",
+                "name" : "race1",
+                "date": new Date(),
+                "groupLevelRef":"531d1f72e407586c21476ef7",
+                "distanceMeters": 515,
+                "disqualified":false}).save(function(){
+                    new Race({"_id" : "531d1f72e407586c21476ec4",
+                        "name" : "race2",
+                        "date": new Date(),
+                        "groupLevelRef":"531d1f72e407586c21476f0c",
+                        "distanceMeters": 715,
+                        "disqualified":false}).save(done);
+                });
+        });
+    });
+};
+
+testHelper.clearRaces = function(done){
+    testHelper.clearGroupLevels(function(){
+        Race.remove({}, done);
+    });
+};
+
+testHelper.loadGreyhounds = function(done){
+    Greyhound.remove({}, function(){
+        new Greyhound({"_id" : "53340c2d8e791cd5d7c731d7", "name" : "grey1"}).save();
+        new Greyhound({"_id":'531d1f74e407586c2147737b', name:"grey2"}).save();
+        new Greyhound({"_id":'53407b9d5c4ac1fdcd47816a', name:"grey5"}).save();
+        new Greyhound({"_id":'531d1f72e407586c21476e49', name:"grey4", sireRef:"53340c2d8e791cd5d7c731d7", damRef:"531d1f74e407586c2147737b"}).save();
+        new Greyhound({"_id":'531d1f74e407586c214773df', name:"grey3"}).save(done);
+    });
+};
+
+testHelper.clearGreyhounds = function(done){
+    Greyhound.remove({}, done);
+};
+
+testHelper.loadPlacings = function(done){
+    testHelper.loadRaces(function(){
+        testHelper.loadGreyhounds(function(){
+            Placing.remove({}, function(){
+                new Placing({"_id" : "531d1f82e407586c21476eb9",
+                    "placing" : 2,
+                    "raceRef": "531d1f72e407586c21476ea8",
+                    "greyhoundRef":"531d1f74e407586c2147737b",
+                    "disqualified":false}).save();
+                new Placing({"_id" : "531d1f82e407586c21476dc9",
+                    "placing" : 3,
+                    "raceRef": "531d1f72e407586c21476ea8",
+                    "greyhoundRef":"53407b9d5c4ac1fdcd47816a",
+                    "disqualified":false}).save();
+                new Placing({"_id" : "531d1f82e407586c21476ea9",
+                    "placing" : 1,
+                    "raceRef": "531d1f72e407586c21476ea8",
+                    "greyhoundRef":"53340c2d8e791cd5d7c731d7",
+                    "disqualified":false}).save(done);
+            });
+        });
+    });
+};
+
+testHelper.clearPlacings = function(done){
+    Placing.remove({}, function(){
+        testHelper.clearRaces(function(){
+            testHelper.clearGreyhounds(done);
+        });
+    });
 };

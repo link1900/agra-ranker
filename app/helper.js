@@ -47,6 +47,31 @@ helper.cleanFk = function(dao, field, model){
     return deferred.promise;
 };
 
+helper.clearAwayChildren = function(dao, field, model){
+    var deferred = q.defer();
+    var query = {};
+    query[field] = model._id;
+    dao.find(query).exec(function(err, entities){
+        if (err) {
+            deferred.reject("cannot query this dao");
+        } else {
+            if (entities.length > 0){
+                var promises = _.map(entities, function(entity){
+                    return helper.remove(entity);
+                });
+                deferred.resolve(
+                    q.all(promises).then(function(){
+                        return model;
+                    })
+                );
+            } else {
+                deferred.resolve(q(model));
+            }
+        }
+    });
+    return deferred.promise;
+};
+
 helper.killChildren = function(dao, field, id, res){
     var query = {};
     query[field] = id;
