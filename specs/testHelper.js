@@ -4,6 +4,7 @@ var siteUrl = process.env.testUrl;
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var GroupLevel = mongoose.model('GroupLevel');
+var RankingSystem = mongoose.model('RankingSystem');
 var Race = mongoose.model('Race');
 var Greyhound = mongoose.model('Greyhound');
 var Placing = mongoose.model('Placing');
@@ -72,6 +73,18 @@ testHelper.loadGroupLevels = function(done){
                     });
             });
     });
+};
+
+testHelper.loadRankingSystem = function(done){
+    RankingSystem.remove({}, function(){
+        new RankingSystem({"_id" : "5340bfc15c4ac1fdcd47816d",
+            "name" : "Test Ranking System",
+            "description":"test Rankings"}).save(done);
+    });
+};
+
+testHelper.clearRankingSystems = function(done){
+    RankingSystem.remove({}, done);
 };
 
 testHelper.clearGroupLevels = function(done){

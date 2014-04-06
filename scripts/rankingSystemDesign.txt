@@ -1,0 +1,98 @@
+name: normal
+desc: standard ranking
+queries:
+
+ranking query
+rankingSystemRef:
+pointScaleRef:
+..queryParameters...
+
+query parameters
+queryRef:
+field:
+comparator:
+value:
+
+criteria:
+race.groupLevel
+race.distanceMeters
+placing.placing
+decay method: none
+
+name: sire
+desc: sire ranking
+entity : greyhound
+field: name
+criteria:
+race.groupLevel
+placing.placing
+
+-- model
+name: String
+description: String
+periodStart: date
+periodEnd: date
+
+g1 - sprint
+
+g2 - sprint
+
+g3 - sprint
+
+g1 - stay
+
+g2 - stay
+
+g3 - stay
+
+g1 - dam
+
+g2 - dam
+
+g3 - dam
+
+g1 - sire
+
+g2 - sire
+
+g3 - sire
+
+What is a ranking? what is the basis for ranking?
+A ranking is a based on a number of races and the placing of those places. Placings are
+given a point value and then grouped by the greyhoundRef or greyhound parent ref.
+Given a set of races. To determine a placings point value you need the placing and the
+point table. but to get the point table to need to filter it based on criteria of the race.
+So for example point value
+
+Point scale
+name: Group 1 Sprint
+[
+{placing:1,points:70},
+{placing:2,points:60}
+]
+race criterias[{
+from
+to
+groupLevel: g1
+distanceMeters: less then 715
+pointScaleRef: g1sprint
+},
+{
+from
+to
+groupLevel: g2
+distanceMeters: less then 715
+pointScale: g2sprint
+}]
+
+groupLevel: 1
+distanceMeters: less then 715
+placing: 1
+points: 70
+
+
+ranking
+rank
+name
+points
+rankingSystemRef

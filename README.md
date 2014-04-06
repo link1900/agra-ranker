@@ -78,15 +78,40 @@ Clone this repository
 - (DONE) delete placing when greyhound is deleted
 - (DONE) delete placing when race is deleted
 
-### Rules API
-- design rules standard rule parameters: time period, point tables, point decay
-- sire and dam rules
+### Point Scale API
+- create point scale parameter api
+- update point scale parameter api
+- get point scale api
+- delete point scale api
+- point scale api tests
+- clean up ranking query references when deleted
+
+### Query Parameters API
+- create query parameter api
+- update query parameter api
+- delete query parameter api
+- get query parameters api
+- query parameter api tests
+
+### Ranking Query API
+- create ranking query api
+- update ranking query api
+- delete ranking query api
+- get ranking query api
+- ranking query api tests
+- delete query parameters when this is deleted
+
+### Ranking System API
+- (DONE) design rules standard rule parameters: time period, point tables, point decay
+- (DONE) list ranking systems api
+- (DONE) create a ranking system api
+- (DONE) edit a ranking system api
+- (DONE) delete ranking system api
+- delete ranking queries when system is deleted
+- mongo migrations
+- create default system data
+- sire and dam inital data
 - dead heat rule - points from matching positions are summed and divided
-- list rule set api
-- create a rule set api
-- edit a rule set api
-- delete rule set api
-- update when a sub entity is deleted
 
 ### Ranking API
 - List rankings api
@@ -115,8 +140,8 @@ Clone this repository
 - edit placing from greyhound view
 - edit placing from race view
 
-### Rules UI
-- add the rules page (lists the ranking rules)
+### Ranking System UI
+- add the ranking system page (lists the ranking rules)
 
 ### Ranking UI
 - list all rankings on the home screen

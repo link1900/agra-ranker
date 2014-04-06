@@ -8,6 +8,7 @@ var securityController = require('./controllers/securityController');
 var raceController = require('./controllers/raceController');
 var groupLevelController = require('./controllers/groupLevelController');
 var placingController = require('./controllers/placingController');
+var rankingSystemController = require('./controllers/rankingSystemController');
 var helper = require('./helper');
 
 module.exports = function(app) {
@@ -62,4 +63,20 @@ module.exports = function(app) {
     app.put('/placing/:placingId', securityController.checkAuthentication, placingController.update);
     app.del('/placing/:placingId',securityController.checkAuthentication, placingController.destroy);
     app.param('placingId', placingController.setModel);
+
+    //ranking system
+    app.get('/rankingSystem', rankingSystemController.prepareQuery, helper.runQuery);
+    app.get('/rankingSystem/:rankingSystemId', helper.getOne);
+    app.post('/rankingSystem', securityController.checkAuthentication, rankingSystemController.create);
+    app.put('/rankingSystem/:rankingSystemId', securityController.checkAuthentication, rankingSystemController.update);
+    app.del('/rankingSystem/:rankingSystemId',securityController.checkAuthentication, rankingSystemController.destroy);
+    app.param('rankingSystemId', rankingSystemController.setModel);
+
+    //point scale
+
+    //ranking query
+
+    //ranking parameters
+
+    //rankings
 };
