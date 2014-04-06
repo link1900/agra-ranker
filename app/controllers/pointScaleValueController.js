@@ -12,8 +12,8 @@ var q = require('q');
 
 controller.setModel = function(req, res, next, id) {
     PointScaleValue.findById(id, function(err, model) {
-        if (err) return next(err);
-        if (!model) return next(new Error('Failed to load ' + id));
+        if (err) return res.jsonp(400, {error: 'Failed to load ' + id});
+        if (!model) return res.jsonp(400, {error: 'Failed to load ' + id});
         req.model = model;
         return next();
     });

@@ -56,8 +56,7 @@ rankingSystemController.update = function(req, res) {
 };
 
 rankingSystemController.destroy = function(req, res) {
-    helper.responseFromPromise(res,helper.remove(req.model)
-    );
+    helper.responseFromPromise(res,helper.remove(req.model));
 };
 
 rankingSystemController.make = function(entityRequest) {

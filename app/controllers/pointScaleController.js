@@ -57,8 +57,9 @@ controller.update = function(req, res) {
 };
 
 controller.destroy = function(req, res) {
-    helper.responseFromPromise(res,helper.remove(req.model)
-    );
+    helper.responseFromPromise(res,
+        helper.clearAwayChildren(PointScaleValue, 'pointScaleRef', req.model)
+            .then(helper.remove));
 };
 
 controller.make = function(entityRequest) {

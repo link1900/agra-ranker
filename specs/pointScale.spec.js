@@ -11,7 +11,9 @@ describe("Point Scale", function(){
     });
 
     beforeEach(function(done){
-        testHelper.loadPointScale(done);
+        testHelper.loadPointScale(function(){
+            testHelper.loadPointScaleValue(done);
+        });
     });
 
     describe("Get", function(){
@@ -116,13 +118,43 @@ describe("Point Scale", function(){
                 .expect(200, done);
         });
 
-        it("point scale value references are removed");
+        it("point scale value references are removed", function (done) {
+            testHelper.publicSession
+                .get('/pointScaleValue/5340cc015c4ac1fdcd478175')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    res.body.should.have.property("pointScaleRef");
+                    res.body.should.have.property("placing");
+                    res.body.should.have.property("points");
+                    res.body.pointScaleRef.should.equal("5340caa05c4ac1fdcd478171");
+                    res.body.placing.should.equal(1);
+                    res.body.points.should.equal(70);
+                    testHelper.authSession
+                        .del('/pointScale/5340caa05c4ac1fdcd478171')
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .end(function(err2, res2){
+                            if (err2){ throw err2; }
+                            testHelper.publicSession
+                                .get('/pointScaleValue/5340cc015c4ac1fdcd478175')
+                                .set('Accept', 'application/json')
+                                .expect('Content-Type', /json/)
+                                .expect(400, done);
+                        });
+                });
+        });
 
         it("ranking query references are removed");
     });
 
     afterEach(function(done){
-        testHelper.clearPointScale(done);
+        testHelper.clearPointScale(function(){
+            testHelper.clearPointScaleValue(done);
+        });
     });
 
     after(function (done) {

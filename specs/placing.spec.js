@@ -247,6 +247,12 @@ describe("Placing", function(){
 
         it("greyhound", function(done) {
             testHelper.authSession
+                .get('/placing/531d1f82e407586c21476eb9')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200);
+
+            testHelper.authSession
                 .del('/greyhound/531d1f74e407586c2147737b')
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -260,6 +266,12 @@ describe("Placing", function(){
         });
 
         it("race", function(done){
+            testHelper.authSession
+                .get('/placing/531d1f82e407586c21476eb9')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200);
+
             testHelper.authSession
                 .del('/race/531d1f72e407586c21476ea8')
                 .set('Accept', 'application/json')
