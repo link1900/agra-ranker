@@ -11,6 +11,8 @@ var placingController = require('./controllers/placingController');
 var rankingSystemController = require('./controllers/rankingSystemController');
 var pointScaleController = require('./controllers/pointScaleController');
 var pointScaleValueController = require('./controllers/pointScaleValueController');
+var queryController = require('./controllers/queryController');
+var queryParameterController = require('./controllers/queryParameterController');
 var helper = require('./helper');
 
 module.exports = function(app) {
@@ -90,9 +92,21 @@ module.exports = function(app) {
     app.del('/pointScaleValue/:pointScaleValueId',securityController.checkAuthentication, pointScaleValueController.destroy);
     app.param('pointScaleValueId', pointScaleValueController.setModel);
 
-    //ranking query
+    //query
+    app.get('/query', queryController.prepareQuery, helper.runQuery);
+    app.get('/query/:queryId', helper.getOne);
+    app.post('/query', securityController.checkAuthentication, queryController.create);
+    app.put('/query/:queryId', securityController.checkAuthentication, queryController.update);
+    app.del('/query/:queryId',securityController.checkAuthentication, queryController.destroy);
+    app.param('queryId', queryController.setModel);
 
-    //ranking parameters
+    //query parameters
+    app.get('/queryParameter', queryParameterController.prepareQuery, helper.runQuery);
+    app.get('/queryParameter/:queryParameterId', helper.getOne);
+    app.post('/queryParameter', securityController.checkAuthentication, queryParameterController.create);
+    app.put('/queryParameter/:queryParameterId', securityController.checkAuthentication, queryParameterController.update);
+    app.del('/queryParameter/:queryParameterId',securityController.checkAuthentication, queryParameterController.destroy);
+    app.param('queryParameterId', queryParameterController.setModel);
 
     //rankings
 };

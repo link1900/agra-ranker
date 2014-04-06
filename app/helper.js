@@ -211,7 +211,6 @@ helper.findPromise = function(query){
     return deferred.promise;
 };
 
-
 helper.getOne = function(req, res) {
     res.jsonp(req.model);
 };

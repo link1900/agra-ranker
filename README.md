@@ -88,23 +88,23 @@ Clone this repository
 - (DONE) get point scale api
 - (DONE) delete point scale api
 - (DONE) point scale api tests
-- clean up point scale value references when deleted
-- clean up ranking query references when deleted
+- (DONE) clean up point scale value references when deleted
 
 ### Query Parameters API
-- create query parameter api
-- update query parameter api
-- delete query parameter api
-- get query parameters api
-- query parameter api tests
+- (DONE) create query parameter api
+- (DONE) update query parameter api
+- (DONE) delete query parameter api
+- (DONE) get query parameters api
+- (DONE) query parameter api tests
 
-### Ranking Query API
-- create ranking query api
-- update ranking query api
-- delete ranking query api
-- get ranking query api
-- ranking query api tests
+### Query API
+- (DONE) create query api
+- (DONE) update query api
+- (DONE) delete query api
+- (DONE) get query api
+- (DONE) query api tests
 - delete query parameters when this is deleted
+- when point scales are deleted clean up ranking query references to that point scale
 
 ### Ranking System API
 - (DONE) design rules standard rule parameters: time period, point tables, point decay
@@ -120,6 +120,9 @@ Clone this repository
 
 ### Ranking API
 - List rankings api
+- calculate rankings based on a ranking system
+- update rankings when race is changed
+- update rankings when ranking system (or its sub entities is changed) is changed
 - update when greyhound is deleted
 - update when race is deleted
 - update when rule set is deleted

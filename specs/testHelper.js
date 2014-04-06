@@ -10,6 +10,8 @@ var Greyhound = mongoose.model('Greyhound');
 var Placing = mongoose.model('Placing');
 var PointScale = mongoose.model('PointScale');
 var PointScaleValue = mongoose.model('PointScaleValue');
+var Query = mongoose.model('Query');
+var QueryParameter = mongoose.model('QueryParameter');
 var AllowedUser = mongoose.model('AllowedUser');
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
@@ -81,7 +83,11 @@ testHelper.loadRankingSystem = function(done){
     RankingSystem.remove({}, function(){
         new RankingSystem({"_id" : "5340bfc15c4ac1fdcd47816d",
             "name" : "Test Ranking System",
-            "description":"test Rankings"}).save(done);
+            "description":"test Rankings"}).save(function(){
+                new RankingSystem({"_id" : "53411feb5c4ac1fdcd47817d",
+                    "name" : "Mega Ranking System",
+                    "description":"test rankings"}).save(done);
+            });
     });
 };
 
@@ -92,7 +98,10 @@ testHelper.clearRankingSystems = function(done){
 testHelper.loadPointScale = function(done){
     PointScale.remove({}, function(){
         new PointScale({"_id" : "5340caa05c4ac1fdcd478171",
-            "name" : "Group 1 Sprint"}).save(done);
+            "name" : "Group 1 Sprint"}).save(function(){
+                new PointScale({"_id" : "53411de55c4ac1fdcd47817a",
+                    "name" : "Group 2 Sprint"}).save(done);
+            });
     });
 };
 
@@ -109,6 +118,32 @@ testHelper.loadPointScaleValue = function(done){
 
 testHelper.clearPointScaleValue = function(done){
     PointScaleValue.remove({}, done);
+};
+
+testHelper.loadQuery = function(done){
+    Query.remove({}, function(){
+        new Query({"_id" : "53411dc15c4ac1fdcd478178",
+            "rankingSystemRef" : "5340bfc15c4ac1fdcd47816d",
+            "pointScaleRef":"5340caa05c4ac1fdcd478171"}).save(done);
+    });
+};
+
+testHelper.clearQuery = function(done){
+    Query.remove({}, done);
+};
+
+testHelper.loadQueryParameter = function(done){
+    QueryParameter.remove({}, function(){
+        new QueryParameter({"_id" : "53411e135c4ac1fdcd47817b",
+            "queryRef" : "53411dc15c4ac1fdcd478178",
+            "field":"groupLevel.level",
+            "comparator":"=",
+            "value":"1"}).save(done);
+    });
+};
+
+testHelper.clearQueryParameter = function(done){
+    QueryParameter.remove({}, done);
 };
 
 testHelper.clearGroupLevels = function(done){
