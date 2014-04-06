@@ -79,11 +79,16 @@ Clone this repository
 - (DONE) delete placing when race is deleted
 
 ### Point Scale API
-- create point scale parameter api
-- update point scale parameter api
-- get point scale api
-- delete point scale api
-- point scale api tests
+- (DONE) create point scale value api
+- (DONE) update point scale value api
+- (DONE) get point scale value api
+- (DONE) delete point scale value api
+- (DONE) create point scale api
+- (DONE) update point scale api
+- (DONE) get point scale api
+- (DONE) delete point scale api
+- (DONE) point scale api tests
+- clean up point scale value references when deleted
 - clean up ranking query references when deleted
 
 ### Query Parameters API

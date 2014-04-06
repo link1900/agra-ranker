@@ -101,6 +101,18 @@ helper.pushChangeToFk = function(dao, fkField, parentId, parentValue, childField
     });
 };
 
+helper.checkIfRefExists = function(dao, field, model){
+    var deferred = q.defer();
+
+    dao.findById(model[field], function(err, model) {
+        if (err) return deferred.reject("cannot find entity for reference " + field);
+        if (!model) return deferred.reject("cannot find entity for reference " + field);
+        return deferred.resolve(model);
+    });
+
+    return deferred.promise;
+};
+
 helper.mergeBody = function(req, res, next) {
     req.model = _.extend(req.model, req.body);
     next();

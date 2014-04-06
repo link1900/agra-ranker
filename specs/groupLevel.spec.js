@@ -24,7 +24,7 @@ describe("Group Level", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.length(3);
+                    res.body.length.should.be.above(2);
                     done();
                 });
         });

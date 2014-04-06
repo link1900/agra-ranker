@@ -8,6 +8,8 @@ var RankingSystem = mongoose.model('RankingSystem');
 var Race = mongoose.model('Race');
 var Greyhound = mongoose.model('Greyhound');
 var Placing = mongoose.model('Placing');
+var PointScale = mongoose.model('PointScale');
+var PointScaleValue = mongoose.model('PointScaleValue');
 var AllowedUser = mongoose.model('AllowedUser');
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
@@ -85,6 +87,28 @@ testHelper.loadRankingSystem = function(done){
 
 testHelper.clearRankingSystems = function(done){
     RankingSystem.remove({}, done);
+};
+
+testHelper.loadPointScale = function(done){
+    PointScale.remove({}, function(){
+        new PointScale({"_id" : "5340caa05c4ac1fdcd478171",
+            "name" : "Group 1 Sprint"}).save(done);
+    });
+};
+
+testHelper.clearPointScale = function(done){
+    PointScale.remove({}, done);
+};
+
+testHelper.loadPointScaleValue = function(done){
+    PointScaleValue.remove({}, function(){
+        new PointScaleValue({"_id" : "5340cc015c4ac1fdcd478175",
+            "pointScaleRef":"5340caa05c4ac1fdcd478171", "placing" : 1,points:70}).save(done);
+    });
+};
+
+testHelper.clearPointScaleValue = function(done){
+    PointScaleValue.remove({}, done);
 };
 
 testHelper.clearGroupLevels = function(done){
