@@ -42,31 +42,36 @@ walk(models_path);
 var migrationControllerPath = path.join(__dirname, '/app/controllers/migrationController');
 var migrationDir = path.join(__dirname, '/app/migrations');
 var migrationController = require(migrationControllerPath);
-migrationController.applyMigrations(migrationDir);
+migrationController.applyMigrations(migrationDir).then(function(){
+    // Bootstrap passport config
+    require('./config/passport')(passport);
 
-// Bootstrap passport config
-require('./config/passport')(passport);
+    var app = express();
 
-var app = express();
+    // Express settings
+    require('./config/express')(app, passport, db);
 
-// Express settings
-require('./config/express')(app, passport, db);
-
-// Rest routes
-require('./app/routes.js')(app);
+    // Rest routes
+    require('./app/routes.js')(app);
 
 
-// Start the app by listening on <port>
-var port = process.env.PORT || config.port;
-app.listen(port);
-console.log('Express app started on port ' + port);
+    // Start the app by listening on <port>
+    var port = process.env.PORT || config.port;
+    app.listen(port);
+    console.log('Express app started on port ' + port);
 
-// Initializing logger
-logger.init(app, passport, mongoose);
+    // Initializing logger
+    logger.init(app, passport, mongoose);
 
-// Expose app
-exports = module.exports = app;
+    // Expose app
+    exports = module.exports = app;
 
-//start scheduler
-var batchController = require('./app/controllers/batchController');
-setInterval(batchController.processBatches, 5000);
+    //start scheduler
+    var batchController = require('./app/controllers/batchController');
+    setInterval(batchController.processBatches, 5000);
+}).fail(function(){
+    console.error("critical failure apply migration exiting without server start");
+    process.exit(1);
+});
+
+
