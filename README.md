@@ -78,10 +78,10 @@ Clone this repository
 - (DONE) delete placing when race is deleted
 
 ### Group Rank UI
-- list group ranks in group rank section on the rules screen
-- group rank edit screen
-- group rank create screen
-- group rank delete button
+- (DONE) list group levels
+- (DONE) group rank edit screen
+- (DONE) group rank create screen
+- (DONE) group rank delete button
 
 ### Race UI
 - List out all races on the race screen

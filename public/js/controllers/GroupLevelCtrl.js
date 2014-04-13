@@ -26,6 +26,11 @@ angular.module('controllers').controller('GroupLevelCtrl', ['$scope', '$routePar
         $scope.create = function(){
             groupLevelService.save({}, $scope.groupLevel, function(response){
                 $location.path('groupLevel/view/'+ response._id);
+            },
+            function(error){
+                $scope.alerts = [
+                    { type: 'danger', msg: "create " + error.data.error }
+                ];
             });
         };
 
@@ -44,13 +49,13 @@ angular.module('controllers').controller('GroupLevelCtrl', ['$scope', '$routePar
         $scope.save = function(){
             $scope.groupLevel.$update(function(data){
                     $scope.alerts = [
-                        { type: 'success', msg: "Updated " + data.name.toUpperCase() }
+                        { type: 'success', msg: "Updated " + data.name }
                     ];
                     $scope.loadGreyhound(data);
                 },
                 function(error){
                     $scope.alerts = [
-                        { type: 'danger', msg: "Failed to update: " + error.data.error }
+                        { type: 'danger', msg: "update " + error.data.error }
                     ];
                 });
         };
@@ -65,7 +70,7 @@ angular.module('controllers').controller('GroupLevelCtrl', ['$scope', '$routePar
                 },
                 function(error){
                     $scope.alerts = [
-                        { type: 'danger', msg: "Failed to delete: " + error.data }
+                        { type: 'danger', msg: "delete " + error.data }
                     ];
                 }
             );

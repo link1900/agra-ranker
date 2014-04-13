@@ -3,19 +3,19 @@ angular.module('core').config(function($routeProvider) {
         templateUrl : '/views/rankings.html'
         })
         .when('/greyhound/edit/:id', {
-            templateUrl : '/views/greyhoundEditForm.html'
+            templateUrl : '/views/greyhound/greyhoundEditForm.html'
         })
         .when('/greyhound/view/:id', {
-            templateUrl : '/views/greyhoundView.html'
+            templateUrl : '/views/greyhound/greyhoundView.html'
         })
         .when('/greyhound/create', {
-            templateUrl : '/views/greyhoundCreateForm.html'
+            templateUrl : '/views/greyhound/greyhoundCreateForm.html'
         })
         .when('/greyhound', {
-            templateUrl : '/views/greyhound.html'
+            templateUrl : '/views/greyhound/greyhound.html'
         })
         .when('/greyhound/import', {
-            templateUrl : '/views/greyhoundUpload.html'
+            templateUrl : '/views/greyhound/greyhoundUpload.html'
         })
         .when('/batch', {
             templateUrl : '/views/batchList.html'
@@ -36,16 +36,16 @@ angular.module('core').config(function($routeProvider) {
             templateUrl : '/views/rankingSystem.html'
         })
         .when('/groupLevel/create', {
-            templateUrl : '/views/groupLevelCreate.html'
+            templateUrl : '/views/groupLevel/groupLevelCreate.html'
         })
         .when('/groupLevel/edit/:id', {
-            templateUrl : '/views/groupLevelEdit.html'
+            templateUrl : '/views/groupLevel/groupLevelEdit.html'
         })
         .when('/groupLevel/view/:id', {
-            templateUrl : '/views/groupLevelView.html'
+            templateUrl : '/views/groupLevel/groupLevelView.html'
         })
         .when('/groupLevel', {
-            templateUrl : '/views/groupLevel.html'
+            templateUrl : '/views/groupLevel/groupLevel.html'
         })
         .when('/import', {
             templateUrl : '/views/import.html'
