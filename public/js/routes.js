@@ -32,8 +32,20 @@ angular.module('core').config(function($routeProvider) {
         .when('/race', {
             templateUrl : '/views/race.html'
         })
-        .when('/rule', {
-            templateUrl : '/views/rule.html'
+        .when('/rankingSystem', {
+            templateUrl : '/views/rankingSystem.html'
+        })
+        .when('/groupLevel/create', {
+            templateUrl : '/views/groupLevelCreate.html'
+        })
+        .when('/groupLevel/edit/:id', {
+            templateUrl : '/views/groupLevelEdit.html'
+        })
+        .when('/groupLevel/view/:id', {
+            templateUrl : '/views/groupLevelView.html'
+        })
+        .when('/groupLevel', {
+            templateUrl : '/views/groupLevel.html'
         })
         .when('/import', {
             templateUrl : '/views/import.html'

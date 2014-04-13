@@ -1,0 +1,23 @@
+<div id="groupLevelView" data-ng-controller="GroupLevelCtrl" data-ng-init="findOne()">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{groupLevel.name}}</h3>
+        </div>
+        <div class="panel-body">
+            <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+            <div data-ng-show="groupLevel.name">
+                <dl class="dl-horizontal">
+                    <dt>Name</dt>
+                    <dd>{{groupLevel.name}}</dd>
+                    <dt>Created at</dt>
+                    <dd>{{groupLevel.createdAt | date:'medium'}}</dd>
+                    <dt>Last updated</dt>
+                    <dd>{{groupLevel.updatedAt | date:'medium'}}</dd>
+                </dl>
+                <a ng-show="user" data-ng-href="#/groupLevel/edit/{{groupLevel._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                <button ng-show="user" data-ng-click="deleteGroupLevel()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+            </div>
+        </div>
+    </div>
+    <a data-ng-href="#/groupLevel">Back to Group Levels</a>
+</div>
