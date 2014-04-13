@@ -205,6 +205,23 @@ helper.mergeEntityRequest = function(entityRequest) {
     return q(entityRequest);
 };
 
+helper.checkExisting = function(dao, field, entityRequest) {
+    var deferred = q.defer();
+    var query = {};
+    query[field] = entityRequest.newEntity[field];
+    dao.findOne(query, function(err, existingEntity) {
+        if (err) {
+            deferred.reject('error validate existing check: ' + err);
+        }
+        if (existingEntity && !(entityRequest.newEntity._id && _.isEqual(existingEntity._id.toString(), entityRequest.newEntity._id.toString()))) {
+            deferred.reject('entity already exists with same ' + field);
+        } else {
+            deferred.resolve(entityRequest);
+        }
+    });
+    return deferred.promise;
+};
+
 helper.promiseResult = function(req, res, promise){
     promise.then(function(result){
         res.send(result.code, result.message);

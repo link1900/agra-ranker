@@ -56,7 +56,7 @@ describe("Group Level", function(){
         });
 
         it("with name Group Created", function(done){
-            var body = {name:"Group Created", "level": 4};
+            var body = {name:"Group Created"};
             testHelper.authSession
                 .post('/groupLevel')
                 .send(body)
@@ -67,24 +67,12 @@ describe("Group Level", function(){
                     if (err){ throw err; }
                     res.body.should.have.property("name");
                     res.body.name.should.equal("Group Created");
-                    res.body.should.have.property("level");
-                    res.body.level.should.equal(4);
                     done();
                 });
         });
 
-        it("with name Group Created but no level", function(done){
-            var body = {name:"Group Created"};
-            testHelper.authSession
-                .post('/groupLevel')
-                .send(body)
-                .set('Accept', 'application/json')
-                .expect('Content-Type', /json/)
-                .expect(400, done);
-        });
-
-        it("with level 5 but no name", function(done){
-            var body = {"level": 4};
+        it("with existing name", function(done){
+            var body = {name:"Group 1"};
             testHelper.authSession
                 .post('/groupLevel')
                 .send(body)
@@ -117,46 +105,18 @@ describe("Group Level", function(){
                     if (err){ throw err; }
                     res.body.should.have.property("name");
                     res.body.name.should.equal("Group Updated");
-                    res.body.should.have.property("level");
-                    res.body.level.should.equal(1);
                     done();
                 });
         });
 
-        it("with level 5", function(done){
-            var body = {level:5};
+        it("with existing name", function(done){
+            var body = {name:"Group 2"};
             testHelper.authSession
                 .put('/groupLevel/531d1f72e407586c21476ef7')
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(200)
-                .end(function(err, res){
-                    if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("Group 1");
-                    res.body.should.have.property("level");
-                    res.body.level.should.equal(5);
-                    done();
-                });
-        });
-
-        it("with name Group Updated and level 5", function(done){
-            var body = {name:"Group Updated", level:5};
-            testHelper.authSession
-                .put('/groupLevel/531d1f72e407586c21476ef7')
-                .send(body)
-                .set('Accept', 'application/json')
-                .expect('Content-Type', /json/)
-                .expect(200)
-                .end(function(err, res){
-                    if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("Group Updated");
-                    res.body.should.have.property("level");
-                    res.body.level.should.equal(5);
-                    done();
-                });
+                .expect(400, done);
         });
     });
 

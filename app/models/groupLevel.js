@@ -3,8 +3,7 @@ var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 
 var GroupLevelSchema = new Schema({
-    name: {type: String},
-    level: {type: Number}
+    name: {type: String}
 });
 
 GroupLevelSchema.plugin(timestamps);

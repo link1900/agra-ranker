@@ -78,10 +78,7 @@ groupLevelController.validate = function(entityRequest){
         return q.reject("name cannot be blank");
     }
 
-    if (!model.level){
-        return q.reject("level field is required");
-    }
-    return q(entityRequest);
+    return helper.checkExisting(GroupLevel, "name", entityRequest);
 };
 
 groupLevelController.preProcessRaw = function(entityRequest){
