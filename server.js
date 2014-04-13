@@ -1,6 +1,7 @@
 
 var express = require('express');
 var fs = require('fs');
+var path = require('path');
 var passport = require('passport');
 var logger = require('mean-logger');
 
@@ -36,6 +37,12 @@ var walk = function(path) {
     });
 };
 walk(models_path);
+
+//apply migrations
+var migrationControllerPath = path.join(__dirname, '/app/controllers/migrationController');
+var migrationDir = path.join(__dirname, '/app/migrations');
+var migrationController = require(migrationControllerPath);
+migrationController.applyMigrations(migrationDir);
 
 // Bootstrap passport config
 require('./config/passport')(passport);

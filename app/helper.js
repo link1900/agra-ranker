@@ -140,6 +140,20 @@ helper.savePromise = function(entity){
     return deferred.promise;
 };
 
+helper.mongooseSave = function(dao, rawObject){
+    return helper.savePromise(new dao(rawObject));
+};
+
+helper.saveAll = function(entities){
+    return _.reduce(entities, function(previousResult, currentValue) {
+            return previousResult.then(function(){
+                return helper.savePromise(currentValue);
+            });
+        },
+        q()
+    );
+};
+
 helper.remove = function(entity){
     var deferred = q.defer();
     entity.remove(function(err, removedModel){
