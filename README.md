@@ -14,7 +14,6 @@ Clone this repository
     $ npm start
 
 ## Heroku setup
-    - run the initDataSetup.js on the mongo database
     - set environment var SESSION_SECRET to some secret string (heroku config:set SESSION_SECRET=whatever)
     - set environment var NODE_ENV to production (heroku config:set NODE_ENV=production)
     - deploy by git push heroku master
@@ -78,6 +77,20 @@ Clone this repository
 - (DONE) delete placing when greyhound is deleted
 - (DONE) delete placing when race is deleted
 
+### Group Rank UI
+- list group ranks in group rank section on the rules screen
+- group rank edit screen
+- group rank create screen
+- group rank delete button
+
+### Race UI
+- List out all races on the race screen
+- race edit screen
+- race create screen
+- race delete button
+- Move upload to a directive
+- race upload section
+
 ### Point Scale API
 - (DONE) create point scale value api
 - (DONE) update point scale value api
@@ -126,20 +139,6 @@ Clone this repository
 - update when greyhound is deleted
 - update when race is deleted
 - update when rule set is deleted
-
-### Group Rank UI
-- list group ranks in group rank section on the rules screen
-- group rank edit screen
-- group rank create screen
-- group rank delete button
-
-### Race UI
-- List out all races on the race screen
-- race edit screen
-- race create screen
-- race delete button
-- Move upload to a directive
-- race upload section
 
 ### Placing UI
 - interactive drag and drop of text fields for placing creation on race screen (with rug pictures)
