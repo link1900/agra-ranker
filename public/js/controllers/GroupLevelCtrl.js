@@ -5,7 +5,7 @@ angular.module('controllers').controller('GroupLevelCtrl', ['$scope', '$routePar
             groupLevelService.get({
                 groupLevelId: $routeParams.id
             }, function(model) {
-                $scope.loadGroupLevel(model);
+                $scope.load(model);
             }, function(){
                 $scope.alerts = [
                     { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
@@ -13,7 +13,7 @@ angular.module('controllers').controller('GroupLevelCtrl', ['$scope', '$routePar
             });
         };
 
-        $scope.loadGroupLevel = function(gl){
+        $scope.load = function(gl){
             $scope.groupLevel = gl;
         };
 
@@ -51,7 +51,7 @@ angular.module('controllers').controller('GroupLevelCtrl', ['$scope', '$routePar
                     $scope.alerts = [
                         { type: 'success', msg: "Updated " + data.name }
                     ];
-                    $scope.loadGreyhound(data);
+                    $scope.load(data);
                 },
                 function(error){
                     $scope.alerts = [

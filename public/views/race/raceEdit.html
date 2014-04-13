@@ -1,0 +1,67 @@
+<div data-ng-controller="RaceCtrl" data-ng-init="findOne()">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Race Edit</h3>
+        </div>
+        <div class="panel-body">
+            <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+
+            <form name="createForm" novalidate>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label class="control-label" for="raceNameField" >Name</label>
+                        <input id="raceNameField"
+                               type="text"
+                               class="form-control"
+                               name="raceNameField"
+                               data-ng-model="race.name"
+                               autocomplete="off"
+                               required />
+                        <span class="help-block error" data-ng-show="createForm.raceNameField.$dirty && createForm.raceNameField.$invalid">race name is required</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label class="control-label" for="raceDateField">Date</label>
+                        <div class="input-group">
+                            <input id="raceDateField" class="form-control" type="text" ng-model="race.date" datepicker-popup="dd MMMM yyyy" datepicker-options="dateOptions" is-open="opened"  ng-required="true" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label class="control-label" for="raceGroupLevelField">Group Level</label>
+                        <select id="raceGroupLevelField" class="form-control" ng-model="race.groupLevelRef" ng-options="groupLevel._id as groupLevel.name for groupLevel in groupLevels"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label class="control-label" for="raceDistanceField">Distance</label>
+                        <div class="input-group">
+                            <input id="raceDistanceField"
+                                   type="number"
+                                   class="form-control"
+                                   name="raceDistanceField"
+                                   data-ng-model="race.distanceMeters"
+                                   autocomplete="off"
+                                   required />
+                            <span class="input-group-addon">meters</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group checkbox">
+                    <label>
+                        <input type="checkbox" data-ng-model="race.disqualified"> No race
+                    </label>
+                </div>
+                <div class="form-group">
+                    <button data-ng-click="save()" data-ng-disabled="isInvalid(createForm)" class="btn btn-success"><span data-ng-show="isValid(createForm)" class="glyphicon glyphicon-ok"></span> Save</button>
+                    <a ng-href="#/race" class="btn btn-default">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

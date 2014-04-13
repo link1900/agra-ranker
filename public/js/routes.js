@@ -29,8 +29,17 @@ angular.module('core').config(function($routeProvider) {
         .when('/signup', {
             templateUrl : '/views/signup.html'
         })
+        .when('/race/create', {
+            templateUrl : '/views/race/raceCreate.html'
+        })
+        .when('/race/edit/:id', {
+            templateUrl : '/views/race/raceEdit.html'
+        })
+        .when('/race/view/:id', {
+            templateUrl : '/views/race/raceView.html'
+        })
         .when('/race', {
-            templateUrl : '/views/race.html'
+            templateUrl : '/views/race/race.html'
         })
         .when('/rankingSystem', {
             templateUrl : '/views/rankingSystem.html'

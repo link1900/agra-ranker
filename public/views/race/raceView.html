@@ -1,0 +1,37 @@
+<div id="raceView" data-ng-controller="RaceCtrl" data-ng-init="findOne()">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Race - {{race.name}}</h3>
+        </div>
+        <div class="panel-body">
+            <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+            <div data-ng-show="race.name">
+                <dl class="dl-horizontal">
+                    <dt>Name</dt>
+                    <dd>{{race.name}}</dd>
+                    <dt>Date</dt>
+                    <dd>{{race.date | date:'dd MMMM yyyy'}}</dd>
+                    <dt>Group Level</dt>
+                    <dd>{{race.groupLevel}}</dd>
+                    <dt>Distance Meters</dt>
+                    <dd>{{race.distanceMeters}} meters</dd>
+                    <dt>Created at</dt>
+                    <dd>{{race.createdAt | date:'medium'}}</dd>
+                    <dt>Last updated</dt>
+                    <dd>{{race.updatedAt | date:'medium'}}</dd>
+                </dl>
+                <div ng-show="race.disqualified" class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Note</h3>
+                    </div>
+                    <div class="panel-body">
+                        This has been marked as a no race. The results do not count towards rankings of any kind.
+                    </div>
+                </div>
+                <a ng-show="user" data-ng-href="#/race/edit/{{race._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                <button ng-show="user" data-ng-click="deleteEntity()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+            </div>
+        </div>
+    </div>
+    <a data-ng-href="#/race">Back to Races</a>
+</div>

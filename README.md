@@ -84,10 +84,10 @@ Clone this repository
 - (DONE) group rank delete button
 
 ### Race UI
-- List out all races on the race screen
-- race edit screen
-- race create screen
-- race delete button
+- (DONE) List out all races on the race screen
+- (DONE) race edit screen
+- (DONE) race create screen
+- (DONE) race delete button
 - Move upload to a directive
 - race upload section
 
@@ -153,7 +153,7 @@ Clone this repository
 ### Ranking UI
 - list all rankings on the home screen
 
-## Round 2 - Getting to Ranker 6 Level
+## 0.2 - Getting to Ranker 6 Level
 - table pick the page size
 - table sort
 - table export to csv
@@ -165,13 +165,15 @@ Clone this repository
 - search on keydown for tables search box
 - race & placing csv import api
 
-## Round 3 - Beyond the ranker 6
+## 0.3 - Beyond the ranker 6
 - global search (on a search page)
 - Add a find parents button
 - have the ability to auto fill a race. When creating a race it should detect what the race is and offer to auto fill.
 - list who is in contention for the wild card
 - list who is going to win dam of the year
 - list who is going to win sire of the year
+- had race distance meters be auto completed, driven from track or all races
+- add description and icon to group level. It should describe what is that group level and have approiate icon (like a cup or money amount)
 - list a race calendar when creating a race
 - on race list page list the calendar for the current month (one colour for entered, another for pending, another for guessed)
 - graph of how a greyhound has preformed over the year

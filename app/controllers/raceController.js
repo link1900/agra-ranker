@@ -83,7 +83,7 @@ raceController.validate = function(entityRequest){
     }
 
     if (!model.groupLevelRef){
-        return q.reject("must have a groupLevelRef");
+        return q.reject("must have a group level");
     }
 
     if (!model.distanceMeters){
