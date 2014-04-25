@@ -96,7 +96,13 @@ Clone this repository
 - (DONE) put in place did not finish and disqualification as valid strings
 - (DONE) validate the placing position as a certain types of string
 - (DONE) races / placings listed on the greyhound view
-- interactive drag and drop of text fields for placing creation on race screen
+- (DONE) interactive drag and drop of text fields for placing creation on race screen
+- can add a new placing on an existing race with existing placings
+- can edit placings - maybe this should be done through add only
+- can remove placings
+- can add all new placings
+- add a new or existing greyhound on the placing edit
+- can editing placing on race creation
 - edit placing from greyhound view
 - edit placing from race view
 

@@ -1,33 +1,26 @@
 angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams', 'headerHelperService', '$location', 'placingService', 'greyhoundService', 'raceService',
     function($scope, $routeParams, headerHelperService, $location, placingService, greyhoundService, raceService) {
 
-        $scope.findOne = function() {
-            placingService.get({
-                placingId: $routeParams.id
-            }, function(model) {
-                $scope.load(model);
-            }, function(){
-                $scope.alerts = [
-                    { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
-                ];
-            });
-        };
-
-        $scope.load = function(model){
-            $scope.placing = model;
-        };
-
         $scope.placingService = placingService;
 
-        $scope.placings = [
-           [{"name":"ABSOLUTE CHAOS"}, {"name":"ABSOLUTE STYLE"}],
-           [{"name":"BOMBASTIC SHIRAZ"}],
-           [{"name":"ABBY SHIRAZ"}],
-           [{"name":"MAGNAMIZE"}],
-           [{"name":"ZULU SONJA"}],
-           [{"name":"DYNA BEAUTY"}],
-           [{"name":"ABOVE THE SKY"}],
-           []
+        $scope.placings = [];
+
+        $scope.raceRef = $routeParams.id;
+        $scope.greyhoundRef = $routeParams.id;
+
+        $scope.formMode = 'view';
+
+        $scope.placingDefinitions = [
+            {"displayIndex":0, "placingValue": "1", "placingLabel": "1st", "style": "placing-number"},
+            {"displayIndex":1, "placingValue": "2", "placingLabel": "2nd", "style": "placing-number"},
+            {"displayIndex":2, "placingValue": "3", "placingLabel": "3rd", "style": "placing-number"},
+            {"displayIndex":3, "placingValue": "4", "placingLabel": "4th", "style": "placing-number"},
+            {"displayIndex":4, "placingValue": "5", "placingLabel": "5th", "style": "placing-number"},
+            {"displayIndex":5, "placingValue": "6", "placingLabel": "6th", "style": "placing-number"},
+            {"displayIndex":6, "placingValue": "7", "placingLabel": "7th", "style": "placing-number"},
+            {"displayIndex":7, "placingValue": "8", "placingLabel": "8th", "style": "placing-number"},
+            {"displayIndex":8, "placingValue": "DNF", "placingLabel": "Did Not Finish", "style": "placing-text"},
+            {"displayIndex":9, "placingValue": "disqualified", "placingLabel": "Disqualified", "style": "placing-text"}
         ];
 
         $scope.greyhoundField = "";
@@ -35,6 +28,68 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         $scope.sortableOptions = {
             placeholder: "placing-greyhound-placeholder",
             connectWith: ".placing-container"
+        };
+
+        $scope.convertDisplayArrayToPlacingModel = function(displayArray){
+            var newPlacings = [];
+            _.forEach(displayArray, function(placingDisplaySet, index){
+                var placing = $scope.placingValueLookUp(index);
+                _.forEach(placingDisplaySet, function(placingDisplay){
+                    var newPlacing = {};
+                    newPlacing._id = placingDisplay.id;
+                    newPlacing.placing = placing;
+                    newPlacing.greyhoundRef = placingDisplay.greyhoundRef;
+                    newPlacing.raceRef = $scope.raceRef;
+                    newPlacings.push(newPlacing);
+                });
+            });
+            return newPlacings;
+        };
+
+        $scope.placingValueLookUp = function(displayIndex){
+          return _.find($scope.placingDefinitions, function(pd){return pd.displayIndex == displayIndex;}).placingValue;
+        };
+
+        $scope.convertPlacingModelsToDisplayArray = function(placingModels){
+            var displayArray = [];
+            var groupedPlacings = _.groupBy(placingModels, 'placing');
+            _.forEach($scope.placingDefinitions, function(placingDefinition){
+                var placingArray = groupedPlacings[placingDefinition.displayIndex];
+                placingArray = _.map(placingArray, function(placing){
+                    return {"id": placing._id, "greyhoundRef":placing.greyhoundRef};
+                });
+                displayArray[placingDefinition.displayIndex] = placingArray;
+            });
+            return displayArray;
+        };
+
+        $scope.displayModelPostProcessing = function(){
+            _.forEach($scope.placings, function(placingSet){
+                _.forEach(placingSet, function(placingDisplay){
+                    if(!placingDisplay.name){
+                        greyhoundService.get({
+                            greyhoundId: placingDisplay.greyhoundRef
+                        }, function(model) {
+                            placingDisplay.name = model.name.toUpperCase();
+                        }, function(){
+                            $scope.alerts = [
+                                { type: 'danger', msg: "Failed load using the id " + placingDisplay.greyhoundRef }
+                            ];
+                        });
+                    }
+                });
+            });
+        };
+
+        $scope.savePlacingModels = function(placingModels){
+            console.log(placingModels);
+        };
+
+        $scope.loadPlacingsForRace = function(){
+            placingService.query({raceRef: $routeParams.id}, function(resultModels) {
+                $scope.placings = $scope.convertPlacingModelsToDisplayArray(resultModels);
+                $scope.displayModelPostProcessing();
+            });
         };
 
         $scope.postProcessingCollectionRace = function(placings){
@@ -102,18 +157,6 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             $scope.savePlacingModels(placingModels);
         };
 
-        $scope.convertDisplayArrayToPlacingModel = function(displayArray){
-
-        };
-
-        $scope.convertPlacingModelsToDisplayArray = function(placingModels){
-
-        };
-
-        $scope.savePlacingModels = function(placingModels){
-
-        };
-
         $scope.showAdd = function(){
             $scope.formMode = 'add';
         };
@@ -125,8 +168,6 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         $scope.showEdit = function(){
             $scope.formMode = 'edit';
         };
-
-        $scope.formMode = 'view';
 
         $scope.addGreyhound = function(){
             var greyhoundName = $scope.greyhoundField;
@@ -171,63 +212,73 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             return result != null;
         };
 
-        $scope.loadPlacingsFromRace = function(raceId){
-            placingService.query({raceId: raceId}, function(resultModels) {
-                $scope.placings = resultModels;
-            });
-        };
-
-        $scope.create = function(){
-            placingService.save({}, $scope.placing, function(response){
-                    $location.path('placing/view/'+ response._id);
-                },
-                function(error){
-                    $scope.alerts = [
-                        { type: 'danger', msg: "create " + error.data.error }
-                    ];
-                });
-        };
-
-        $scope.isInvalid = function(formField){
-            return formField.$dirty && formField.$invalid;
-        };
-
-        $scope.isValid =  function(formField){
-            return formField.$dirty && !formField.$invalid && !$scope.hasServerErrors();
-        };
-
-        $scope.hasServerErrors = function(){
-            return _.where($scope.alerts, { 'type': 'danger' }).length > 0;
-        };
-
-        $scope.save = function(){
-            $scope.placing.$update(function(data){
-                    $scope.alerts = [
-                        { type: 'success', msg: "Updated " + data.name }
-                    ];
-                    $scope.load(data);
-                },
-                function(error){
-                    $scope.alerts = [
-                        { type: 'danger', msg: "update " + error.data.error }
-                    ];
-                });
-        };
-
-        $scope.deleteEntity = function(){
-            $scope.placing.$delete(function(data){
-                    delete $scope.batch;
-                    $scope.alerts = [
-                        { type: 'success', msg: "Deleted " + data.name.toUpperCase() }
-                    ];
-                    $location.path('/placing');
-                },
-                function(error){
-                    $scope.alerts = [
-                        { type: 'danger', msg: "delete " + error.data }
-                    ];
-                }
-            );
-        };
+//        $scope.create = function(){
+//            placingService.save({}, $scope.placing, function(response){
+//                    $location.path('placing/view/'+ response._id);
+//                },
+//                function(error){
+//                    $scope.alerts = [
+//                        { type: 'danger', msg: "create " + error.data.error }
+//                    ];
+//                });
+//        };
+//
+//        $scope.isInvalid = function(formField){
+//            return formField.$dirty && formField.$invalid;
+//        };
+//
+//        $scope.isValid =  function(formField){
+//            return formField.$dirty && !formField.$invalid && !$scope.hasServerErrors();
+//        };
+//
+//        $scope.hasServerErrors = function(){
+//            return _.where($scope.alerts, { 'type': 'danger' }).length > 0;
+//        };
+//
+//        $scope.save = function(){
+//            $scope.placing.$update(function(data){
+//                    $scope.alerts = [
+//                        { type: 'success', msg: "Updated " + data.name }
+//                    ];
+//                    $scope.load(data);
+//                },
+//                function(error){
+//                    $scope.alerts = [
+//                        { type: 'danger', msg: "update " + error.data.error }
+//                    ];
+//                });
+//        };
+//
+//        $scope.deleteEntity = function(){
+//            $scope.placing.$delete(function(data){
+//                    delete $scope.batch;
+//                    $scope.alerts = [
+//                        { type: 'success', msg: "Deleted " + data.name.toUpperCase() }
+//                    ];
+//                    $location.path('/placing');
+//                },
+//                function(error){
+//                    $scope.alerts = [
+//                        { type: 'danger', msg: "delete " + error.data }
+//                    ];
+//                }
+//            );
+//        };
+//
+//        $scope.findOne = function() {
+//            placingService.get({
+//                placingId: $routeParams.id
+//            }, function(model) {
+//                $scope.load(model);
+//            }, function(){
+//                $scope.alerts = [
+//                    { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
+//                ];
+//            });
+//        };
+//
+//        $scope.load = function(model){
+//            $scope.placing = model;
+//        };
     }
 ]);

@@ -1,4 +1,4 @@
-<div data-ng-controller="PlacingCtrl">
+<div data-ng-controller="PlacingCtrl" data-ng-init="loadPlacingsForRace()">
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">Placings</h3>
@@ -27,7 +27,7 @@
                 </form>
             </div>
             <div class="row placing-row" ng-repeat="placing in placings">
-                <div class="col-md-1 placing-number">{{$index+1}}</div>
+                <div class="col-md-1" ng-class="placingDefinitions[$index].style">{{placingDefinitions[$index].placingLabel}}</div>
                 <div ng-hide="formMode == 'edit'" ui-sortable="sortableOptions" class="placing-container col-md-2" data-ng-model="placing">
                     <div class="placing-greyhound" ng-repeat="greyhound in placing">{{greyhound.name}}</div>
                 </div>

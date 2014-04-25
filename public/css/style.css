@@ -77,7 +77,11 @@ a {
 }
 
 .placing-number {
-    font-size: 40px;
+    font-size: 30px;
+}
+
+.placing-text {
+    font-size: 14px;
 }
 
 .placing-greyhound {
