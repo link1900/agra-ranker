@@ -174,6 +174,26 @@ describe("Placing", function(){
                     done();
                 });
         });
+
+        it("with complete placing at the same position", function(done){
+            var body = {"placing" : 2, "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c214773df"};
+            testHelper.authSession
+                .post('/placing')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    res.body.should.have.property("placing");
+                    res.body.placing.should.equal(2);
+                    res.body.should.have.property("greyhoundRef");
+                    res.body.greyhoundRef.should.equal("531d1f74e407586c214773df");
+                    res.body.should.have.property("raceRef");
+                    res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
+                    done();
+                });
+        });
     });
 
     describe("Update", function(){
