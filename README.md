@@ -95,7 +95,7 @@ Clone this repository
 - (DONE) change placing position as a string
 - (DONE) put in place did not finish and disqualification as valid strings
 - (DONE) validate the placing position as a certain types of string
-- races / placings listed on the greyhound view
+- (DONE) races / placings listed on the greyhound view
 - interactive drag and drop of text fields for placing creation on race screen
 - edit placing from greyhound view
 - edit placing from race view
@@ -171,6 +171,7 @@ Clone this repository
 - race & placing csv import api
 
 ## 0.3 - Beyond the ranker 6
+- on the placing screen have the numbers come from a set list of placings (1st -> 1, 2nd -> 2, DNF -> DNF, Dis -> dis, etc.) 
 - global search (on a search page)
 - Add a find parents button
 - on the placing screen have a badge displaying points earned this round and the total points

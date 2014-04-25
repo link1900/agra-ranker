@@ -1,5 +1,5 @@
-angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams', 'headerHelperService', '$location', 'placingService',
-    function($scope, $routeParams, headerHelperService, $location, placingService) {
+angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams', 'headerHelperService', '$location', 'placingService', 'greyhoundService', 'raceService',
+    function($scope, $routeParams, headerHelperService, $location, placingService, greyhoundService, raceService) {
 
         $scope.findOne = function() {
             placingService.get({
@@ -37,18 +37,80 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             connectWith: ".placing-container"
         };
 
+        $scope.postProcessingCollectionRace = function(placings){
+            _.each(placings, function(placing){
+                $scope.loadRace(placing);
+            });
+        };
+
+        $scope.postProcessingCollectionForGreyhound = function(placings){
+            _.each(placings, function(placing){
+                $scope.loadGreyhound(placing);
+            });
+        };
+
+        $scope.loadRace = function(placing){
+            raceService.get({
+                raceId: placing.raceRef
+            }, function(model) {
+                placing.race = model;
+            }, function(){
+                $scope.alerts = [
+                    { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
+                ];
+            });
+        };
+
+        $scope.loadGreyhound = function(placing){
+            greyhoundService.get({
+                greyhoundId: placing.greyhoundRef
+            }, function(model) {
+                placing.greyhound = model;
+            }, function(){
+                $scope.alerts = [
+                    { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
+                ];
+            });
+        };
+
+        $scope.greyhoundPlacingColumns =[
+            {title: "Placing", field:"placing"},
+            {title: "Race", field:"race.name", baseLink:"#/race/view/", linkField: "raceRef", link:true},
+            {title: "Race Date", field:"race.date", filter: "date", filterFormat: 'dd MMMM yyyy'}
+        ];
+
+        $scope.greyhoundSearchFields = {
+            'greyhoundRef': $routeParams.id
+        };
+
+        $scope.racePlacingColumns =[
+            {title: "Placing", field:"placing"},
+            {title: "Greyhound Name", field:"greyhound.name", baseLink:"#/greyhound/view/", linkField: "greyhoundRef", link:true, filter: "uppercase"}
+        ];
+
+        $scope.raceSearchFields = {
+            'raceRef': $routeParams.id
+        };
+
         $scope.removePlacing = function(placingIndex, greyhoundIndex){
             $scope.placings[placingIndex].splice(greyhoundIndex, 1);
         };
 
         $scope.savePlacings = function(){
-            //get the race id
             var raceId = $routeParams.id;
-
-            //now construct...why contract?
+            var placingModels = $scope.convertDisplayArrayToPlacingModel($scope.placings);
+            $scope.savePlacingModels(placingModels);
         };
 
-        $scope.convertToDisplayArrays = function(placings){
+        $scope.convertDisplayArrayToPlacingModel = function(displayArray){
+
+        };
+
+        $scope.convertPlacingModelsToDisplayArray = function(placingModels){
+
+        };
+
+        $scope.savePlacingModels = function(placingModels){
 
         };
 
