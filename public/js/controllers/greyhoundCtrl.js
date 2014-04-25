@@ -84,7 +84,9 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         $scope.searchParamsA = {
             page : 1,
             per_page : 15,
-            like : ''
+            like : '',
+            sort_field: 'name',
+            sort_direction: 'asc'
         };
 
         $scope.simpleSearch = function(val) {

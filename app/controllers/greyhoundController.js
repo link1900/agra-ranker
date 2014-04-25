@@ -28,7 +28,7 @@ greyhoundController.prepareQuery = function(req, res, next) {
     var name = req.param('name');
     var parentRef = req.param('parentRef');
     if (like){
-        req.searchQuery = {'name': {'$regex': like.toLowerCase()}};
+        req.searchQuery = {'name': {'$regex': "^"+like.toLowerCase()}};
     }
     if (name){
         req.searchQuery = {'name': name.toLowerCase()};
