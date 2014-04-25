@@ -78,8 +78,8 @@ placingController.validate = function(entityRequest){
     if (!model.placing){
         return q.reject("placing field is required");
     }
-
-    if (model.placing < 1 || model.placing > 30){
+    var validPlacings = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","DNF","disqualified"];
+    if (!_.contains(validPlacings,model.placing)){
         return q.reject("placing must be between 1 and 30");
     }
 

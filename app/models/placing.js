@@ -3,7 +3,7 @@ var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 
 var PlacingSchema = new Schema({
-    placing: { type: Number },
+    placing: { type: String },
     raceRef: {type: Schema.Types.ObjectId},
     greyhoundRef: {type: Schema.Types.ObjectId}
 });

@@ -92,9 +92,9 @@ Clone this repository
 ### Placing UI
 - (DONE) placing shouldn't allow you to place multiple times in a race
 - (DONE) placing shouldn't allow you to have the same placing twice
-- change placing position as a string
-- put in place did not finish and disqualification as valid strings
-- validate the placing position as a certain types of string
+- (DONE) change placing position as a string
+- (DONE) put in place did not finish and disqualification as valid strings
+- (DONE) validate the placing position as a certain types of string
 - races / placings listed on the greyhound view
 - interactive drag and drop of text fields for placing creation on race screen
 - edit placing from greyhound view

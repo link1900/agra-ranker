@@ -38,7 +38,7 @@ describe("Placing", function(){
                 .end(function(err, res){
                     if (err){ throw err; }
                     res.body.should.have.property("placing");
-                    res.body.placing.should.equal(2);
+                    res.body.placing.should.equal("2");
                     done();
                 });
         });
@@ -46,7 +46,7 @@ describe("Placing", function(){
 
     describe("Create", function(){
         it("is secured", function(done){
-            var body = {"placing" : 2, "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c2147737b"};
+            var body = {"placing" : "2", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c2147737b"};
             testHelper.publicSession
                 .post('/placing')
                 .send(body)
@@ -56,7 +56,7 @@ describe("Placing", function(){
         });
 
         it("with just placing", function(done){
-            var body = {"placing" : 3};
+            var body = {"placing" : "3"};
             testHelper.authSession
                 .post('/placing')
                 .send(body)
@@ -66,7 +66,7 @@ describe("Placing", function(){
         });
 
         it("with greyhound ref", function(done){
-            var body = {"placing" : 3, "raceRef": "531d1f72e407586c21476ea8"};
+            var body = {"placing" : "3", "raceRef": "531d1f72e407586c21476ea8"};
             testHelper.authSession
                 .post('/placing')
                 .send(body)
@@ -86,7 +86,7 @@ describe("Placing", function(){
         });
 
         it("with really high placing", function(done){
-            var body = {"placing" : 50, "raceRef": "531d1f72e407586c21476ea8",  "greyhoundRef":"531d1f74e407586c214773df"};
+            var body = {"placing" : "50", "raceRef": "531d1f72e407586c21476ea8",  "greyhoundRef":"531d1f74e407586c214773df"};
             testHelper.authSession
                 .post('/placing')
                 .send(body)
@@ -96,7 +96,7 @@ describe("Placing", function(){
         });
 
         it("with really low placing", function(done){
-            var body = {"placing" : 0, "raceRef": "531d1f72e407586c21476ea8",  "greyhoundRef":"531d1f74e407586c214773df"};
+            var body = {"placing" : "0", "raceRef": "531d1f72e407586c21476ea8",  "greyhoundRef":"531d1f74e407586c214773df"};
             testHelper.authSession
                 .post('/placing')
                 .send(body)
@@ -106,7 +106,7 @@ describe("Placing", function(){
         });
 
         it("with negative placing", function(done){
-            var body = {"placing" : -1, "raceRef": "531d1f72e407586c21476ea8",  "greyhoundRef":"531d1f74e407586c214773df"};
+            var body = {"placing" : "-1", "raceRef": "531d1f72e407586c21476ea8",  "greyhoundRef":"531d1f74e407586c214773df"};
             testHelper.authSession
                 .post('/placing')
                 .send(body)
@@ -116,7 +116,7 @@ describe("Placing", function(){
         });
 
         it("with invalid race ref", function(done){
-            var body = {"placing" : 3, "raceRef": "invalid",  "greyhoundRef":"531d1f74e407586c214773df"};
+            var body = {"placing" : "3", "raceRef": "invalid",  "greyhoundRef":"531d1f74e407586c214773df"};
             testHelper.authSession
                 .post('/placing')
                 .send(body)
@@ -126,7 +126,7 @@ describe("Placing", function(){
         });
 
         it("with unlinked greyhound ref", function(done){
-            var body = {"placing" : 3, "raceRef": "531d1f72e407586c21476ea8",  "greyhoundRef":"531d1f74f507586c214773df"};
+            var body = {"placing" : "3", "raceRef": "531d1f72e407586c21476ea8",  "greyhoundRef":"531d1f74f507586c214773df"};
             testHelper.authSession
                 .post('/placing')
                 .send(body)
@@ -136,7 +136,7 @@ describe("Placing", function(){
         });
 
         it("with existing placing", function(done){
-            var body = {"placing" : 2, "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c2147737b"};
+            var body = {"placing" : "2", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c2147737b"};
             testHelper.authSession
                 .post('/placing')
                 .send(body)
@@ -146,7 +146,7 @@ describe("Placing", function(){
         });
 
         it("with same greyhound different position", function(done){
-            var body = {"placing" : 3, "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c2147737b"};
+            var body = {"placing" : "3", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c2147737b"};
             testHelper.authSession
                 .post('/placing')
                 .send(body)
@@ -156,7 +156,7 @@ describe("Placing", function(){
         });
 
         it("with complete placing", function(done){
-            var body = {"placing" : 5, "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c214773df"};
+            var body = {"placing" : "5", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c214773df"};
             testHelper.authSession
                 .post('/placing')
                 .send(body)
@@ -166,7 +166,7 @@ describe("Placing", function(){
                 .end(function(err, res){
                     if (err){ throw err; }
                     res.body.should.have.property("placing");
-                    res.body.placing.should.equal(5);
+                    res.body.placing.should.equal("5");
                     res.body.should.have.property("greyhoundRef");
                     res.body.greyhoundRef.should.equal("531d1f74e407586c214773df");
                     res.body.should.have.property("raceRef");
@@ -176,7 +176,7 @@ describe("Placing", function(){
         });
 
         it("with complete placing at the same position", function(done){
-            var body = {"placing" : 2, "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c214773df"};
+            var body = {"placing" : "2", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c214773df"};
             testHelper.authSession
                 .post('/placing')
                 .send(body)
@@ -186,7 +186,47 @@ describe("Placing", function(){
                 .end(function(err, res){
                     if (err){ throw err; }
                     res.body.should.have.property("placing");
-                    res.body.placing.should.equal(2);
+                    res.body.placing.should.equal("2");
+                    res.body.should.have.property("greyhoundRef");
+                    res.body.greyhoundRef.should.equal("531d1f74e407586c214773df");
+                    res.body.should.have.property("raceRef");
+                    res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
+                    done();
+                });
+        });
+
+        it("with placing of DNF", function(done){
+            var body = {"placing" : "DNF", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c214773df"};
+            testHelper.authSession
+                .post('/placing')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    res.body.should.have.property("placing");
+                    res.body.placing.should.equal("DNF");
+                    res.body.should.have.property("greyhoundRef");
+                    res.body.greyhoundRef.should.equal("531d1f74e407586c214773df");
+                    res.body.should.have.property("raceRef");
+                    res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
+                    done();
+                });
+        });
+
+        it("with complete placing of disqualified", function(done){
+            var body = {"placing" : "disqualified", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c214773df"};
+            testHelper.authSession
+                .post('/placing')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    res.body.should.have.property("placing");
+                    res.body.placing.should.equal("disqualified");
                     res.body.should.have.property("greyhoundRef");
                     res.body.greyhoundRef.should.equal("531d1f74e407586c214773df");
                     res.body.should.have.property("raceRef");
@@ -198,7 +238,7 @@ describe("Placing", function(){
 
     describe("Update", function(){
         it("is secured", function(done){
-            var body = {"placing" : 2, "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c2147737b"};
+            var body = {"placing" : "2", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c2147737b"};
             testHelper.publicSession
                 .put('/placing/531d1f82e407586c21476eb9')
                 .send(body)
@@ -208,7 +248,7 @@ describe("Placing", function(){
         });
 
         it("existing placing", function(done){
-            var body = {"placing" : 4};
+            var body = {"placing" : "4"};
             testHelper.authSession
                 .put('/placing/531d1f82e407586c21476eb9')
                 .send(body)
@@ -218,7 +258,7 @@ describe("Placing", function(){
                 .end(function(err, res){
                     if (err){ throw err; }
                     res.body.should.have.property("placing");
-                    res.body.placing.should.equal(4);
+                    res.body.placing.should.equal("4");
                     res.body.should.have.property("greyhoundRef");
                     res.body.greyhoundRef.should.equal("531d1f74e407586c2147737b");
                     res.body.should.have.property("raceRef");
@@ -238,7 +278,7 @@ describe("Placing", function(){
                 .end(function(err, res){
                     if (err){ throw err; }
                     res.body.should.have.property("placing");
-                    res.body.placing.should.equal(2);
+                    res.body.placing.should.equal("2");
                     res.body.should.have.property("greyhoundRef");
                     res.body.greyhoundRef.should.equal("531d1f72e407586c21476e49");
                     res.body.should.have.property("raceRef");
@@ -258,7 +298,7 @@ describe("Placing", function(){
                 .end(function(err, res){
                     if (err){ throw err; }
                     res.body.should.have.property("placing");
-                    res.body.placing.should.equal(2);
+                    res.body.placing.should.equal("2");
                     res.body.should.have.property("greyhoundRef");
                     res.body.greyhoundRef.should.equal("531d1f74e407586c2147737b");
                     res.body.should.have.property("raceRef");
