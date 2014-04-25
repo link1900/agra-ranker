@@ -23,11 +23,19 @@ placingController.prepareQuery = function(req, res, next) {
     req.searchQuery = {};
     var like = req.param('like');
     var name = req.param('name');
+    var raceId = req.param('raceId');
+    var greyhoundId = req.param('greyhoundId');
     if (like){
         req.searchQuery = {'name': {'$regex': like.toLowerCase()}};
     }
     if (name){
         req.searchQuery = {'name': name.toLowerCase()};
+    }
+    if (raceId){
+        req.searchQuery = {'raceRef': raceId};
+    }
+    if (greyhoundId){
+        req.searchQuery = {'greyhoundRef': greyhoundId};
     }
     req.dao = Placing;
     next();

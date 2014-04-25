@@ -1,0 +1,45 @@
+<div data-ng-controller="PlacingCtrl">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Placings</h3>
+        </div>
+        <div class="panel-body">
+            <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+            <div id="placingControls" class="row">
+                <div ng-hide="formMode == 'edit'" class="col-md-4">
+                    <button data-ng-click="showAdd()" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Add</button>
+                    <button data-ng-click="showEdit()" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+                    <button data-ng-click="savePlacings()" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Save</button>
+                </div>
+                <div ng-show="formMode == 'edit'" class="col-md-1">
+                    <button data-ng-click="showView()" class="btn btn-primary">Done</button>
+                </div>
+            </div>
+            <div id="addPlacing" data-ng-show="formMode == 'add'" class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-md-3"><input id="greyhoundField" type="text" placeholder="Add Greyhound" data-ng-model="greyhoundField" class="form-control" /></div>
+                    </div>
+                    <div class="col-md-2">
+                        <button data-ng-click="addGreyhound()" class="btn btn-success">Add</button>
+                        <button data-ng-click="showView()" class="btn btn-default">Cancel</button>
+                    </div>
+                </form>
+            </div>
+            <div class="row placing-row" ng-repeat="placing in placings">
+                <div class="col-md-1 placing-number">{{$index+1}}</div>
+                <div ng-hide="formMode == 'edit'" ui-sortable="sortableOptions" class="placing-container col-md-2" data-ng-model="placing">
+                    <div class="placing-greyhound" ng-repeat="greyhound in placing">{{greyhound.name}}</div>
+                </div>
+                <div ng-show="formMode == 'edit'" class="col-md-9" data-ng-model="placing">
+                    <div ng-repeat="greyhound in placing">
+                        <div class="row">
+                            <div class="col-md-5"><input type="text" data-ng-model="greyhound.name" class="form-control" /></div>
+                            <div class="col-md-1"><button data-ng-click="removePlacing($parent.$index, $index)" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-minus-sign"></span> Remove</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

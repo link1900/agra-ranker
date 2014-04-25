@@ -88,8 +88,15 @@ Clone this repository
 - (DONE) race edit screen
 - (DONE) race create screen
 - (DONE) race delete button
-- Move upload to a directive
-- race upload section
+
+### Placing UI
+- change placing position as a string
+- put in place did not finish and disqualification as valid strings
+- validate the placing position as a certain types of string
+- races / placings listed on the greyhound view
+- interactive drag and drop of text fields for placing creation on race screen
+- edit placing from greyhound view
+- edit placing from race view
 
 ### Point Scale API
 - (DONE) create point scale value api
@@ -140,13 +147,6 @@ Clone this repository
 - update when race is deleted
 - update when rule set is deleted
 
-### Placing UI
-- interactive drag and drop of text fields for placing creation on race screen (with rug pictures)
-- races / placings listed on the greyhound view
-- disqualification is ui only. It will auto shift the numbers.
-- edit placing from greyhound view
-- edit placing from race view
-
 ### Ranking System UI
 - add the ranking system page (lists the ranking rules)
 
@@ -154,6 +154,9 @@ Clone this repository
 - list all rankings on the home screen
 
 ## 0.2 - Getting to Ranker 6 Level
+- Move upload to a directive
+- race upload section
+- placing upload section
 - table pick the page size
 - table sort
 - table export to csv
@@ -168,6 +171,7 @@ Clone this repository
 ## 0.3 - Beyond the ranker 6
 - global search (on a search page)
 - Add a find parents button
+- on the placing screen have a badge displaying points earned this round and the total points
 - have the ability to auto fill a race. When creating a race it should detect what the race is and offer to auto fill.
 - list who is in contention for the wild card
 - list who is going to win dam of the year
