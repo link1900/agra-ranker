@@ -17,8 +17,18 @@
             </div>
             <div id="addPlacing" data-ng-show="formMode == 'add'" class="row">
                 <form>
-                    <div class="form-group">
-                        <div class="col-md-3"><input id="greyhoundField" type="text" placeholder="Add Greyhound" data-ng-model="greyhoundField" class="form-control" /></div>
+                    <div class="form-group" ng-controller="GreyhoundFieldCtrl">
+                        <div class="col-md-3">
+                            <input id="greyhoundField"
+                                 type="text"
+                                 data-sb-greyhound-field
+                                 placeholder="Add Greyhound"
+                                 data-ng-model="greyhoundField"
+                                 data-typeahead="item for item in greyhoundSearch($viewValue)"
+                                 data-typeahead-loading="true"
+                                 autocomplete="off"
+                                 class="form-control" />
+                        </div>
                     </div>
                     <div class="col-md-2">
                         <button data-ng-click="addGreyhound()" class="btn btn-success">Add</button>
