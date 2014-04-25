@@ -95,7 +95,7 @@ angular.module('directives')
                 hideSearch: '='
             },
             link: linkBody,
-            templateUrl: '/views/sbTableTemplate.html'
+            templateUrl: '/views/directives/sbTableTemplate.html'
         };
     });
 
