@@ -3,7 +3,7 @@
         <h3 class="panel-title">{{tableTitle}}</h3>
     </div>
     <div ng-show="messageEmpty && models.length == 0">{{messageEmpty}}</div>
-    <div ng-hide="messageEmpty && models.length == 0" class="panel-body">
+    <div ng-hide="(messageEmpty && models.length == 0) || hideSearch" class="panel-body">
         <div>
             <form>
                 <div class="form-group col-sm-3">

@@ -91,7 +91,8 @@ angular.module('directives')
                 modelService: '=',
                 columnInfo: '=',
                 postProcess: '=',
-                searchFields: '='
+                searchFields: '=',
+                hideSearch: '='
             },
             link: linkBody,
             templateUrl: '/views/sbTableTemplate.html'
