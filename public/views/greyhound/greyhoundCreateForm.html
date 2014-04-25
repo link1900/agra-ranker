@@ -11,14 +11,15 @@
                      data-ng-class="{'has-error': isInvalid(greyhoundCreateForm.greyhoundNameField),
                          'has-success': isValid(greyhoundCreateForm.greyhoundNameField)}">
                     <label class="col-sm-2 control-label" for="greyhoundNameField" >Name</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10" ng-controller="GreyhoundFieldCtrl">
                         <input id="greyhoundNameField"
                                type="text"
                                class="form-control bigText"
                                name="greyhoundNameField"
                                data-ng-model="greyhound.name"
+                               data-typeahead="item for item in greyhoundSearch($viewValue)"
+                               data-typeahead-loading="true"
                                autocomplete="off"
-                               data-typeahead="grey for grey in searchGreyhound($viewValue) | filter:$viewValue | uppercase"
                                required />
                         <span class="help-block error" data-ng-show="greyhoundCreateForm.greyhoundNameField.$dirty && greyhoundCreateForm.greyhoundNameField.$invalid">Greyhound name is required</span>
                     </div>

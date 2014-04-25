@@ -10,39 +10,41 @@
                      data-ng-class="{'has-error': isInvalid(greyhoundForm.greyhoundNameField),
                          'has-success': isValid(greyhoundForm.greyhoundNameField)}">
                     <label class="col-md-1 control-label" for="greyhoundNameField" >Name</label>
-                    <div class="col-md-4">
+                    <div class="col-md-4"  data-ng-controller="GreyhoundFieldCtrl">
                         <input id="greyhoundNameField"
                                type="text"
                                class="form-control bigText"
                                name="greyhoundNameField"
                                data-ng-model="greyhound.name"
+                               data-typeahead="item for item in greyhoundSearch($viewValue)"
+                               data-typeahead-loading="true"
                                autocomplete="off"
                                required />
                         <span class="help-block error" data-ng-show="greyhoundForm.greyhoundNameField.$dirty && greyhoundForm.greyhoundNameField.$invalid">Greyhound name is required</span>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" >
                     <label class="col-md-1 control-label" for="greyhoundSireNameField">Sire</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4" data-ng-controller="GreyhoundFieldCtrl">
                         <input id="greyhoundSireNameField"
                                type="text"
                                class="form-control bigText"
                                name="greyhoundSireNameField"
                                data-ng-model="greyhound.sire.name"
-                               data-typeahead="grey for grey in simpleSearch($viewValue)"
+                               data-typeahead="item for item in greyhoundSearch($viewValue)"
                                data-typeahead-loading="true"
                                autocomplete="off" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-1 control-label" for="greyhoundDamNameField">Dam</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4"  data-ng-controller="GreyhoundFieldCtrl">
                         <input id="greyhoundDamNameField"
                                type="text"
                                class="form-control bigText"
                                name="greyhoundDamNameField"
                                data-ng-model="greyhound.dam.name"
-                               data-typeahead="grey for grey in simpleSearch($viewValue)"
+                               data-typeahead="item for item in greyhoundSearch($viewValue)"
                                data-typeahead-loading="true"
                                autocomplete="off" />
                     </div>

@@ -5,6 +5,22 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             allowClear:true
         };
 
+        $scope.greyhoundService = greyhoundService;
+
+        $scope.offspringColumnInfo = [
+            {title: "Name", field:"name", baseLink:"#/greyhound/view/", linkField: "_id", link:true, filter: "uppercase"}
+        ];
+
+        $scope.offspringSearchFields = {
+            'parentRef': $routeParams.id
+        };
+
+        $scope.columnInfo = [
+            {title: "Name", field:"name", baseLink:"#/greyhound/view/", linkField: "_id", link:true, filter: "uppercase"},
+            {title: "Sire", field:"sire.name", baseLink:"#/greyhound/view/", linkField: "sireRef", link:true, filter: "uppercase"},
+            {title: "Dam", field:"dam.name", baseLink:"#/greyhound/view/", linkField: "damRef", link:true, filter: "uppercase"}
+        ];
+
         $scope.findOne = function() {
             greyhoundService.get({
                 greyhoundId: $routeParams.id
@@ -54,66 +70,6 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             $scope.postProcessing($scope.greyhound);
         };
 
-        $scope.setSire = function(){
-            if ($scope.selectedSireId){
-                $scope.greyhound.sireRef = $scope.selectedSireId;
-                $scope.save();
-            }
-        };
-
-        $scope.setDam = function(){
-            if ($scope.selectedDamId){
-                $scope.greyhound.damRef = $scope.selectedDamId;
-                $scope.save();
-            }
-        };
-
-        $scope.removeSire = function(){
-            $scope.greyhound.sireRef = null;
-            delete $scope.greyhound.sire;
-            $scope.save();
-        };
-
-        $scope.removeDam = function(){
-            $scope.greyhound.damRef = null;
-            delete $scope.greyhound.dam;
-            $scope.save();
-        };
-
-
-        $scope.searchParamsA = {
-            page : 1,
-            per_page : 15,
-            like : '',
-            sort_field: 'name',
-            sort_direction: 'asc'
-        };
-
-        $scope.simpleSearch = function(val) {
-            $scope.searchParamsA.like = val;
-            return greyhoundService.query($scope.searchParamsA).$promise.then(function(result){
-                var betterResults = _.map(result, function(r){
-                    return r.name.toUpperCase();
-                });
-                console.log(betterResults);
-                return betterResults;
-            });
-        };
-
-        greyhoundService.query($scope.searchParamsA, function(greyhounds){
-            $scope.simple = greyhounds;
-        });
-
-
-        //for the greyhound table
-        $scope.greyhoundService = greyhoundService;
-
-        $scope.columnInfo = [
-            {title: "Name", field:"name", baseLink:"#/greyhound/view/", linkField: "_id", link:true, filter: "uppercase"},
-            {title: "Sire", field:"sire.name", baseLink:"#/greyhound/view/", linkField: "sireRef", link:true, filter: "uppercase"},
-            {title: "Dam", field:"dam.name", baseLink:"#/greyhound/view/", linkField: "damRef", link:true, filter: "uppercase"}
-        ];
-
         $scope.create = function(){
             greyhoundService.save({}, $scope.greyhound, function(response){
                 $location.path('greyhound/view/'+ response._id);
@@ -160,14 +116,5 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
                 }
             );
         };
-
-        $scope.offspringColumnInfo = [
-            {title: "Name", field:"name", baseLink:"#/greyhound/view/", linkField: "_id", link:true, filter: "uppercase"}
-        ];
-
-        $scope.offspringSearchFields = {
-            'parentRef': $routeParams.id
-        };
-
     }
 ]);
