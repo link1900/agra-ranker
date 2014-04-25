@@ -21,21 +21,18 @@ placingController.setModel = function(req, res, next, id) {
 
 placingController.prepareQuery = function(req, res, next) {
     req.searchQuery = {};
-    var like = req.param('like');
-    var name = req.param('name');
-    var raceId = req.param('raceId');
-    var greyhoundId = req.param('greyhoundId');
-    if (like){
-        req.searchQuery = {'name': {'$regex': like.toLowerCase()}};
+    var raceRef = req.param('raceRef');
+    var greyhoundRef = req.param('greyhoundRef');
+
+    if (raceRef){
+        req.searchQuery = {'raceRef': raceRef};
     }
-    if (name){
-        req.searchQuery = {'name': name.toLowerCase()};
+    if (greyhoundRef){
+        req.searchQuery = {'greyhoundRef': greyhoundRef};
     }
-    if (raceId){
-        req.searchQuery = {'raceRef': raceId};
-    }
-    if (greyhoundId){
-        req.searchQuery = {'greyhoundRef': greyhoundId};
+
+    if (greyhoundRef && raceRef){
+        req.searchQuery = {'greyhoundRef': greyhoundRef, 'raceRef': raceRef};
     }
     req.dao = Placing;
     next();

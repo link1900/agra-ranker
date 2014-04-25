@@ -29,6 +29,45 @@ describe("Placing", function(){
                 });
         });
 
+        it("search by greyhound ref", function(done){
+            testHelper.publicSession
+                .get('/placing?greyhoundRef=531d1f74e407586c2147737b')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    res.body.length.should.equal(1);
+                    done();
+                });
+        });
+
+        it("search by race ref", function(done){
+            testHelper.publicSession
+                .get('/placing?raceRef=531d1f72e407586c21476ea8')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    res.body.length.should.be.above(2);
+                    done();
+                });
+        });
+
+        it("search by race ref and greyhound ref", function(done){
+            testHelper.publicSession
+                .get('/placing?greyhoundRef=531d1f74e407586c2147737b&raceRef=531d1f72e407586c21476ea8')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    res.body.length.should.equal(1);
+                    done();
+                });
+        });
+
         it("one by id", function(done){
             testHelper.publicSession
                 .get('/placing/531d1f82e407586c21476eb9')
