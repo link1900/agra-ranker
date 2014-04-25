@@ -91,9 +91,9 @@ placingController.validate = function(entityRequest){
         return q.reject("greyhoundRef field is required");
     }
 
-    return placingController.checkRaceRefExists(entityRequest).then(
-        placingController.checkGreyhoundRefExists
-    );
+    return placingController.checkRaceRefExists(entityRequest)
+        .then(placingController.checkGreyhoundRefExists)
+        .then(placingController.checkGreyhoundRefNotAlreadyUsed);
 };
 
 placingController.preProcessRaw = function(entityRequest){
@@ -119,6 +119,18 @@ placingController.checkGreyhoundRefExists = function(entityRequest){
     Greyhound.findById(entityRequest.newEntity.greyhoundRef, function(err, model) {
         if (err) return deferred.reject("cannot check greyhound ref");
         if (!model) return deferred.reject("cannot find greyhound ref");
+        return deferred.resolve(entityRequest);
+    });
+
+    return deferred.promise;
+};
+
+placingController.checkGreyhoundRefNotAlreadyUsed = function(entityRequest){
+    var deferred = q.defer();
+    var query = {"_id": {"$ne" : entityRequest.newEntity._id}, "raceRef":entityRequest.newEntity.raceRef, "greyhoundRef": entityRequest.newEntity.greyhoundRef};
+    Placing.find(query, function(err, models) {
+        if (err) return deferred.reject("cannot check placing");
+        if (models.length > 0) return deferred.reject("cannot have same greyhound more then once in a single race");
         return deferred.resolve(entityRequest);
     });
 

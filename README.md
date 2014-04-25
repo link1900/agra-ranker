@@ -90,6 +90,8 @@ Clone this repository
 - (DONE) race delete button
 
 ### Placing UI
+- (DONE) placing shouldn't allow you to place multiple times in a race
+- (DONE) placing shouldn't allow you to have the same placing twice
 - change placing position as a string
 - put in place did not finish and disqualification as valid strings
 - validate the placing position as a certain types of string

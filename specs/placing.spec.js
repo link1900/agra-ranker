@@ -135,6 +135,26 @@ describe("Placing", function(){
                 .expect(400, done);
         });
 
+        it("with existing placing", function(done){
+            var body = {"placing" : 2, "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c2147737b"};
+            testHelper.authSession
+                .post('/placing')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("with same greyhound different position", function(done){
+            var body = {"placing" : 3, "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c2147737b"};
+            testHelper.authSession
+                .post('/placing')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
         it("with complete placing", function(done){
             var body = {"placing" : 5, "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c214773df"};
             testHelper.authSession

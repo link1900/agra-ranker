@@ -197,18 +197,15 @@ testHelper.loadPlacings = function(done){
                 new Placing({"_id" : "531d1f82e407586c21476eb9",
                     "placing" : 2,
                     "raceRef": "531d1f72e407586c21476ea8",
-                    "greyhoundRef":"531d1f74e407586c2147737b",
-                    "disqualified":false}).save();
+                    "greyhoundRef":"531d1f74e407586c2147737b"}).save();
                 new Placing({"_id" : "531d1f82e407586c21476dc9",
                     "placing" : 3,
                     "raceRef": "531d1f72e407586c21476ea8",
-                    "greyhoundRef":"53407b9d5c4ac1fdcd47816a",
-                    "disqualified":false}).save();
+                    "greyhoundRef":"53407b9d5c4ac1fdcd47816a"}).save();
                 new Placing({"_id" : "531d1f82e407586c21476ea9",
                     "placing" : 1,
                     "raceRef": "531d1f72e407586c21476ea8",
-                    "greyhoundRef":"53340c2d8e791cd5d7c731d7",
-                    "disqualified":false}).save(done);
+                    "greyhoundRef":"53340c2d8e791cd5d7c731d7"}).save(done);
             });
         });
     });
