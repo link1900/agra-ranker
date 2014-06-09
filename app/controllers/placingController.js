@@ -25,14 +25,10 @@ placingController.prepareQuery = function(req, res, next) {
     var greyhoundRef = req.param('greyhoundRef');
 
     if (raceRef){
-        req.searchQuery = {'raceRef': raceRef};
+        req.searchQuery.raceRef = raceRef;
     }
     if (greyhoundRef){
-        req.searchQuery = {'greyhoundRef': greyhoundRef};
-    }
-
-    if (greyhoundRef && raceRef){
-        req.searchQuery = {'greyhoundRef': greyhoundRef, 'raceRef': raceRef};
+        req.searchQuery.greyhoundRef = greyhoundRef;
     }
     req.dao = Placing;
     next();
