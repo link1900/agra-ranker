@@ -69,6 +69,15 @@
 - (DONE) race create screen
 - (DONE) race delete button
 
+### General UI
+- (DONE) Headers need to be standardized
+- (DONE) Menu needs to be darker
+- Section borders need to be a darker color
+- Section color need to be standardized
+- fixture data is required
+- paging selection color needs to be darker
+- placing directive needs custom text for no items
+
 ### Placing UI
 - (DONE) placing shouldn't allow you to place multiple times in a race
 - (DONE) placing shouldn't allow you to have the same placing twice
