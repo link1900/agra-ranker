@@ -72,9 +72,9 @@
 ### General UI
 - (DONE) Headers need to be standardized
 - (DONE) Menu needs to be darker
+- Fix auto login
 - Section borders need to be a darker color
 - Section color need to be standardized
-- fixture data is required
 - paging selection color needs to be darker
 - placing directive needs custom text for no items
 
@@ -169,6 +169,7 @@
 - on the placing screen have the numbers come from a set list of placings (1st -> 1, 2nd -> 2, DNF -> DNF, Dis -> dis, etc.)
 - global search (on a search page)
 - Add a find parents button
+- fixture data is required
 - on the placing screen have a badge displaying points earned this round and the total points
 - have the ability to auto fill a race. When creating a race it should detect what the race is and offer to auto fill.
 - list who is in contention for the wild card
