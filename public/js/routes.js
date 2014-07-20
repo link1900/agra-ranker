@@ -18,13 +18,10 @@ angular.module('core').config(function($routeProvider) {
             templateUrl : '/views/greyhound/greyhoundUpload.html'
         })
         .when('/batch', {
-            templateUrl : '/views/batchList.html'
+            templateUrl : '/views/batch/batchList.html'
         })
         .when('/batch/view/:id', {
-            templateUrl : '/views/batchView.html'
-        })
-        .when('/login', {
-            templateUrl : '/views/login.html'
+            templateUrl : '/views/batch/batchView.html'
         })
         .when('/signup', {
             templateUrl : '/views/signup.html'
@@ -57,7 +54,7 @@ angular.module('core').config(function($routeProvider) {
             templateUrl : '/views/groupLevel/groupLevel.html'
         })
         .when('/import', {
-            templateUrl : '/views/import.html'
+            templateUrl : '/views/batch/batch.html'
         })
         .otherwise({
             redirectTo : '/'
