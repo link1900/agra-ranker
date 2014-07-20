@@ -2,8 +2,8 @@
     <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
     <form class="form-signin">
         <h2 class="form-signin-heading">Please sign in</h2>
-        <input id="email" name="email" ng-model="login.email" type="email" class="form-control" placeholder="Email address" required autofocus>
-        <input ng-model="login.password" id="password" name="password" type="password" class="form-control" placeholder="Password" required>
+        <input id="email" name="email" ng-model="login.email" type="email" class="form-control" placeholder="Email address" required autofocus="true" login-auto-fill>
+        <input ng-model="login.password" id="password" name="password" type="password" class="form-control" placeholder="Password" required login-auto-fill>
         <button class="btn btn-lg btn-primary btn-block" ng-click="signIn()">Sign in</button>
     </form>
 </div>
