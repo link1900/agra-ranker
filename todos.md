@@ -72,10 +72,9 @@
 ### General UI
 - (DONE) Headers need to be standardized
 - (DONE) Menu needs to be darker
-- Fix auto login
-- Section borders need to be a darker color
-- Section color need to be standardized
-- paging selection color needs to be darker
+- (DONE) Fix auto login
+- (DONE) Section borders need to be a darker color
+- (DONE) Section color need to be standardized
 - placing directive needs custom text for no items
 
 ### Placing UI
