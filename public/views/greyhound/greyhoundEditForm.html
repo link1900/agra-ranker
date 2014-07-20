@@ -1,6 +1,6 @@
 <div id="greyhoundForm" data-ng-controller="GreyhoundCtrl" data-ng-init="findOne()">
     <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
-    <div data-ng-show="greyhound" class="panel panel-info">
+    <div data-ng-show="greyhound" class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Editing {{greyhound.name | uppercase}}</h3>
         </div>
