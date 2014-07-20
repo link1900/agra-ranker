@@ -16,6 +16,7 @@
                            name="raceNameField"
                            data-ng-model="race.name"
                            autocomplete="off"
+                           autofocus="true"
                            required />
                     <span class="help-block error" data-ng-show="createForm.raceNameField.$dirty && createForm.raceNameField.$invalid">race name is required</span>
                     </div>
@@ -42,7 +43,7 @@
                         <label class="control-label" for="raceDistanceField">Distance</label>
                         <div class="input-group">
                             <input id="raceDistanceField"
-                                   type="number"
+                                   type="text"
                                    class="form-control"
                                    name="raceDistanceField"
                                    data-ng-model="race.distanceMeters"

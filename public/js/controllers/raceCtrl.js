@@ -5,7 +5,7 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
             raceService.get({
                 raceId: $routeParams.id
             }, function(model) {
-                $scope.load(model);
+                $scope.loadRace(model);
             }, function(){
                 $scope.alerts = [
                     { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
@@ -13,24 +13,32 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
             });
         };
 
-        $scope.load = function(model){
+        $scope.loadRace = function(model){
             $scope.race = model;
             $scope.postProcess($scope.race);
+        };
+
+        /**
+         * Loads default form fields
+         */
+        $scope.loadForm = function(){
+            $scope.loadGroupLevels();
+        };
+
+        $scope.loadGroupLevels = function(){
+            groupLevelService.query({
+                page : 1,
+                per_page : 50,
+                sort_field: 'name',
+                sort_direction: 'asc'
+            }, function(groupLevels){
+                $scope.groupLevels = groupLevels;
+            });
         };
 
         $scope.postProcess = function(model) {
             if ($scope.groupLevels) {
                 model.groupLevel = $scope.groupLevelNameLookup(model.groupLevelRef, $scope.groupLevel);
-            } else {
-                groupLevelService.query({
-                    page : 1,
-                    per_page : 50,
-                    sort_field: 'name',
-                    sort_direction: 'asc'
-                }, function(groupLevels){
-                    $scope.groupLevels = groupLevels;
-                    model.groupLevel = $scope.groupLevelNameLookup(model.groupLevelRef, groupLevels);
-                });
             }
         };
 
@@ -101,7 +109,7 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
                     $scope.alerts = [
                         { type: 'success', msg: "Updated " + data.name }
                     ];
-                    $scope.load(data);
+                    $scope.loadRace(data);
                 },
                 function(error){
                     $scope.alerts = [
@@ -125,5 +133,7 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
                 }
             );
         };
+
+        $scope.loadForm();
     }
 ]);
