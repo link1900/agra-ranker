@@ -60,6 +60,10 @@ a {
     color: #ffffff;
 }
 
+.navbar-default .navbar-text {
+    color: #ffffff;
+}
+
 .bigText {
     text-transform: uppercase;
 }
