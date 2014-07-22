@@ -47,6 +47,8 @@
                                    class="form-control"
                                    name="raceDistanceField"
                                    data-ng-model="race.distanceMeters"
+                                   data-typeahead="item for item in distanceSearch($viewValue)"
+                                   data-typeahead-loading="true"
                                    autocomplete="off"
                                    required />
                             <span class="input-group-addon">meters</span>

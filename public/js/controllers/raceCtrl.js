@@ -1,5 +1,5 @@
-angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 'headerHelperService', 'raceService', '$location', 'groupLevelService',
-    function($scope, $routeParams, headerHelperService, raceService, $location, groupLevelService) {
+angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 'headerHelperService', 'raceService', '$location', 'groupLevelService', 'generalService',
+    function($scope, $routeParams, headerHelperService, raceService, $location, groupLevelService, generalService) {
 
         $scope.findOne = function() {
             raceService.get({
@@ -34,6 +34,20 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
             }, function(groupLevels){
                 $scope.groupLevels = groupLevels;
             });
+        };
+
+        $scope.distanceSearch = function(val) {
+            return generalService.getDistances().then(function(result){
+                result = result.map(function(item){
+                    return item.toString();
+                });
+
+                result = _.filter(result, function(item){
+                    return item.indexOf(val) != -1;
+                });
+
+                return result;
+            })
         };
 
         $scope.postProcess = function(model) {
