@@ -1,6 +1,8 @@
 angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 'headerHelperService', 'raceService', '$location', 'groupLevelService', 'generalService',
     function($scope, $routeParams, headerHelperService, raceService, $location, groupLevelService, generalService) {
 
+        $scope.showNoRaceInfo = false;
+
         $scope.findOne = function() {
             raceService.get({
                 raceId: $routeParams.id

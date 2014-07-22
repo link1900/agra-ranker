@@ -76,9 +76,9 @@
 - (DONE) Section borders need to be a darker color
 - (DONE) Section color need to be standardized
 - (DONE) race create needs to have group levels listed
-- race form for distance needs to be the various standard meter lengths and free text
-- race form distance field need to highlight sprint and stay clearly (blue for sprint, red for stay with a help slide out)
-- race form no race needs to have a help slide out and needs more padding
+- (DONE) race form for distance needs to be the various standard meter lengths and free text
+- (DONE) race form no race needs to have a help slide out and needs more padding
+- move race display placings out of the race container
 - placing directive needs custom text for no items
 
 ### Placing UI

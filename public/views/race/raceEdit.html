@@ -54,10 +54,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group checkbox">
-                    <label>
-                        <input type="checkbox" data-ng-model="race.disqualified"> No race
-                    </label>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default" data-ng-model="race.disqualified" btn-checkbox>
+                                Mark as no race
+                            </button>
+                        </div>
+                        <button class="btn btn-default" ng-click="showNoRaceInfo = !showNoRaceInfo"><span class="glyphicon glyphicon-info-sign"></span></button>
+                        <div ng-show="showNoRaceInfo" class="alert alert-info" role="alert">
+                            A no race is race that has been judged as not counting towards to the rankings.
+                            This maybe because of an external influence completely disrupting the race.
+                            I.e a lure break down, not enough runners, etc.
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <button data-ng-click="save()" data-ng-disabled="isInvalid(createForm)" class="btn btn-success"><span data-ng-show="isValid(createForm)" class="glyphicon glyphicon-ok"></span> Save</button>
