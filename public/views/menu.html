@@ -1,28 +1,34 @@
-<div  data-ng-controller="menuCtrl" class="navbar navbar-default navbar-fixed-top header">
-	<div class="container">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="#">
-				<img style="max-width:100px; margin-top: -7px; height:20px;" src="../img/logo_small.png" /> AGRA Ranker
-			</a>
-		</div>
-		<div class="navbar-collapse collapse">
-			<ul class="nav navbar-nav">
-				<li ng-class="{ active: activePath=='/' }"><a data-ng-href="#/">Rankings</a></li>
-				<li ng-class="{ active: activePath=='/greyhound' }"><a data-ng-href="#/greyhound">Greyhounds</a></li>
-				<li ng-class="{ active: activePath=='/race' }"><a data-ng-href="#/race">Races</a></li>
+<div data-ng-controller="menuCtrl" class="navbar navbar-default navbar-fixed-top header">
+    <div class="container">
+        <div class="navbar-header">
+            <button ng-click="isCollapsed = !isCollapsed" type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img style="max-width:100px; margin-top: -7px; height:20px;" src="../img/logo_small.png" /> AGRA Ranker
+            </a>
+        </div>
+        <div id="sb-navbar-links" ng-class="{in: !isCollapsed }" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li ng-class="{ active: activePath=='/' }"><a data-ng-href="#/">Rankings</a></li>
+                <li ng-class="{ active: activePath=='/greyhound' }"><a data-ng-href="#/greyhound">Greyhounds</a></li>
+                <li ng-class="{ active: activePath=='/race' }"><a data-ng-href="#/race">Races</a></li>
                 <li ng-class="{ active: activePath=='/groupLevel' }"><a data-ng-href="#/groupLevel">Group Level</a></li>
-				<li ng-class="{ active: activePath=='/rankingSystem' }"><a data-ng-href="#/rankingSystem">Ranking Systems</a></li>
+                <li ng-class="{ active: activePath=='/rankingSystem' }"><a data-ng-href="#/rankingSystem">Ranking Systems</a></li>
                 <li ng-show="user" ng-class="{ active: activePath=='/import' }"><a data-ng-href="#/import">Imports</a></li>
-			</ul>
+            </ul>
 
-			<ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right">
                 <li ng-show="user">
                     <p class="navbar-text">{{user.email}}</p>
                 </li>
                 <li ng-show="user"><button class="btn navbar-btn" data-ng-click="logout()">Logout</button></li>
-				<li ng-hide="user" ng-class="{ active: activePath=='/login' }"><a href="/login.html">Login</a></li>
+                <li ng-hide="user" ng-class="{ active: activePath=='/login' }"><a href="/login.html">Login</a></li>
                 <li ng-hide="user" ng-class="{ active: activePath=='/signup' }"><a data-ng-href="#/signup">Sign Up</a></li>
-			</ul>
-		</div>
-	</div>
+            </ul>
+        </div>
+    </div>
 </div>
