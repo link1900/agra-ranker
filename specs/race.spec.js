@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var chai = require('chai');
 chai.should();
 var expect = chai.expect;
+var assert = chai.assert;
 var Race = mongoose.model('Race');
 var testHelper = require('./testHelper');
 
@@ -18,6 +19,21 @@ describe("Race", function(){
     });
 
     describe("Get", function(){
+        it("common distances", function(done){
+            testHelper.publicSession
+                .get('/distance')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    assert.isArray(res.body);
+                    assert.include(res.body, 515);
+                    assert.include(res.body, 715);
+                    done();
+                });
+        });
+
         it("many", function(done){
             testHelper.publicSession
                 .get('/race')

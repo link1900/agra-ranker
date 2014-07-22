@@ -52,6 +52,9 @@ module.exports = function(app) {
     app.del('/race/:raceId',securityController.checkAuthentication, raceController.destroy);
     app.param('raceId', raceController.setRace);
 
+    //distance routes
+    app.get('/distance', raceController.prepareDistanceQuery, helper.runDistinctQuery);
+
     // group level routes
     app.get('/groupLevel', groupLevelController.prepareQuery, helper.runQuery);
     app.get('/groupLevel/:groupLevelId', helper.getOne);

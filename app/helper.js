@@ -246,6 +246,16 @@ helper.getOne = function(req, res) {
     res.jsonp(req.model);
 };
 
+helper.runDistinctQuery = function(req, res){
+    req.dao.distinct(req.distinctField, function(err, results){
+        if (err) {
+            res.send(500, 'error running query');
+        } else {
+            res.jsonp(results);
+        }
+    });
+};
+
 helper.runQuery = function(req, res) {
     var limit = 30;
     if (req.param('per_page') && req.param('per_page') > 0){

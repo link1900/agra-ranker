@@ -34,6 +34,12 @@ raceController.prepareQuery = function(req, res, next) {
     next();
 };
 
+raceController.prepareDistanceQuery = function(req,res,next){
+    req.distinctField = 'distanceMeters';
+    req.dao = Race;
+    next();
+};
+
 raceController.create = function(req, res) {
     var entityRequest = {};
     entityRequest.rawEntity = req.body;
