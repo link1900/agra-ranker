@@ -82,7 +82,17 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         };
 
         $scope.savePlacingModels = function(placingModels){
-            console.log(placingModels);
+            _.each(placingModels, function(placingModel){
+                placingService.savePlacing(placingModel).then(function(savedPlacing){
+                    console.log(savedPlacing);
+                }, function(error){
+                    console.log("error saving placing" + error);
+                });
+            });
+
+//            $scope.alerts = [
+//                { type: 'danger', msg: "Failed to save placing " + $routeParams.id }
+//            ];
         };
 
         $scope.loadPlacingsForRace = function(){
@@ -152,7 +162,6 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         };
 
         $scope.savePlacings = function(){
-            var raceId = $routeParams.id;
             var placingModels = $scope.convertDisplayArrayToPlacingModel($scope.placings);
             $scope.savePlacingModels(placingModels);
         };
@@ -173,12 +182,14 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             var greyhoundName = $scope.newGreyhoundName;
             $scope.alerts = [];
             var done = false;
+            //validate the name
             if (greyhoundName == null || greyhoundName == undefined || greyhoundName.length == 0){
                 $scope.alerts = [
                     { type: 'danger', msg: "Cannot add empty greyhound" }
                 ];
                 return false;
             }
+            //transform the name to uppercase standard
             greyhoundName = greyhoundName.toUpperCase();
             if($scope.inPlacings(greyhoundName)){
                 $scope.alerts = [
@@ -187,20 +198,33 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
                 return false;
             }
 
-            for(var i = 0; i < $scope.placings.length; i++){
-                if ($scope.placings[i].length == 0 && done == false){
-                    $scope.placings[i].push({"name":greyhoundName});
-                    done = true;
+            var greyhoundObject = {"name":greyhoundName};
+            greyhoundService.findOrCreateGreyhound(greyhoundObject).then(function(newGreyhound){
+                //now that we have the greyhound convert to a placing
+                var newPlacing = {
+                    name: newGreyhound.name.toUpperCase(),
+                    greyhoundRef : newGreyhound._id
+                };
+
+                //insert the new name into the correct position on the placing sets
+                for(var i = 0; i < $scope.placings.length; i++){
+                    if ($scope.placings[i].length == 0 && done == false){
+                        $scope.placings[i].push(newPlacing);
+                        done = true;
+                    }
                 }
-            }
 
-            if (done == false){
-                $scope.placings[0].push({"name":greyhoundName});
-            }
+                if (done == false){
+                    $scope.placings[0].push(newPlacing);
+                }
 
-            $scope.newGreyhoundName = "";
-            $scope.showView();
-            return true;
+                //clean up the form
+                $scope.newGreyhoundName = "";
+                $scope.showView();
+            }, function(error){
+                $scope.newGreyhoundName = "";
+                $scope.showView();
+            });
         };
 
         $scope.inPlacings = function(greyhoundName){

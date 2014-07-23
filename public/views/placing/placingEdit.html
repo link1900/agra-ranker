@@ -4,6 +4,7 @@
             <h3 class="panel-title">Placings</h3>
         </div>
         <div class="panel-body">
+            {{placings}}
             <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
             <div id="placingControls" class="row">
                 <div ng-hide="formMode == 'edit'" class="col-md-4">

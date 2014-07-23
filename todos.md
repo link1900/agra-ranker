@@ -78,8 +78,8 @@
 - (DONE) race create needs to have group levels listed
 - (DONE) race form for distance needs to be the various standard meter lengths and free text
 - (DONE) race form no race needs to have a help slide out and needs more padding
-- move race display placings out of the race container
-- placing directive needs custom text for no items
+- (DONE) move race display placings out of the race container
+- (DONE) placing directive needs custom text for no items
 
 ### Placing UI
 - (DONE) placing shouldn't allow you to place multiple times in a race
@@ -89,6 +89,15 @@
 - (DONE) validate the placing position as a certain types of string
 - (DONE) races / placings listed on the greyhound view
 - (DONE) interactive drag and drop of text fields for placing creation on race screen
+- (DONE) make greyhound field a directive
+
+- errors are printed out as a list
+- when adding a greyhound on the placing screen make it auto save the placing
+- when moving a greyhound on the placing screen make it auto save the placing
+- when editing a greyhound on the placing screen make it auto save the placing
+- fix an issue when saving the positions are being saved in one position down
+- fix an issue where a new added greyhound cannot be saved more then once (because its placing id is not being updated so update all placings on save)
+- when hitting save on the placing screen come up a with a message when it is saved
 - can add a new placing on an existing race with existing placings
 - can edit placings - maybe this should be done through add only
 - can remove placings
@@ -97,6 +106,12 @@
 - can editing placing on race creation
 - edit placing from greyhound view
 - edit placing from race view
+
+### General Fixes
+- Replace all greyhound fields with the directive
+- Fix the menu selectors
+- Switch test data loading to fixtures
+- Change how scripts are defined in the index by getting grunt to do it.
 
 ### Point Scale API
 - create point scale value api
