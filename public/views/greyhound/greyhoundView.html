@@ -20,17 +20,17 @@
                 <a ng-show="user" data-ng-href="#/greyhound/edit/{{greyhound._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
             </div>
         </div>
-        <div data-sb-table
-             data-table-title="Offspring"
-             data-message-empty="This greyhound does not have any recorded offspring"
-             data-model-service="greyhoundService"
-             data-column-info="offspringColumnInfo"
-             data-search-fields="offspringSearchFields"
-             data-per-page="10"
-             data-sort-field="name"
-             data-sort-direction="asc">
-        </div>
-        <div data-ng-include="'views/placing/placingGreyhoundList.html'"></div>
     </div>
+    <div data-sb-table
+         data-table-title="Offspring"
+         data-message-empty="This greyhound does not have any recorded offspring"
+         data-model-service="greyhoundService"
+         data-column-info="offspringColumnInfo"
+         data-search-fields="offspringSearchFields"
+         data-per-page="10"
+         data-sort-field="name"
+         data-sort-direction="asc">
+    </div>
+    <div data-ng-include="'views/placing/placingGreyhoundList.html'"></div>
     <a data-ng-href="#/greyhound">Back to Greyhounds</a>
 </div>
