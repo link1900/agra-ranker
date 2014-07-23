@@ -10,6 +10,8 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
 
         $scope.formMode = 'view';
 
+        $scope.newGreyhoundName = "";
+
         $scope.placingDefinitions = [
             {"displayIndex":0, "placingValue": "1", "placingLabel": "1st", "style": "placing-number"},
             {"displayIndex":1, "placingValue": "2", "placingLabel": "2nd", "style": "placing-number"},
@@ -22,8 +24,6 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             {"displayIndex":8, "placingValue": "DNF", "placingLabel": "Did Not Finish", "style": "placing-text"},
             {"displayIndex":9, "placingValue": "disqualified", "placingLabel": "Disqualified", "style": "placing-text"}
         ];
-
-        $scope.greyhoundField = "";
 
         $scope.sortableOptions = {
             placeholder: "placing-greyhound-placeholder",
@@ -170,7 +170,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         };
 
         $scope.addGreyhound = function(){
-            var greyhoundName = $scope.greyhoundField;
+            var greyhoundName = $scope.newGreyhoundName;
             $scope.alerts = [];
             var done = false;
             if (greyhoundName == null || greyhoundName == undefined || greyhoundName.length == 0){
@@ -198,7 +198,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
                 $scope.placings[0].push({"name":greyhoundName});
             }
 
-            $scope.greyhoundField = "";
+            $scope.newGreyhoundName = "";
             $scope.showView();
             return true;
         };
