@@ -91,23 +91,18 @@
 - (DONE) interactive drag and drop of text fields for placing creation on race screen
 - (DONE) make greyhound field a directive
 - (DONE) errors are printed out as a list
-- when adding a greyhound on the placing screen make it auto save the placing
-- when moving a greyhound on the placing screen make it auto save the placing
-- when editing a greyhound on the placing screen make it auto save the placing
-- fix an issue when saving the positions are being saved in one position down
-- fix an issue where a new added greyhound cannot be saved more then once (because its placing id is not being updated so update all placings on save)
-- when hitting save on the placing screen come up a with a message when it is saved
-- can add a new placing on an existing race with existing placings
-- can edit placings - maybe this should be done through add only
-- can remove placings
-- can add all new placings
-- add a new or existing greyhound on the placing edit
-- can editing placing on race creation
-- edit placing from greyhound view
-- edit placing from race view
+- (DONE) when adding a greyhound on the placing screen make it auto save the placing
+- (DONE) when moving a greyhound on the placing screen make it auto save the placing
+- (DONE) fix an issue when saving the positions are being saved in one position down
+- (DONE) can add a new placing on an existing race with existing placings
+- (DONE) can edit placings - maybe this should be done through add only
+- (DONE) can remove placings
+- (DONE) a new or existing greyhound on the placing edit
+- when saving a race on the race edit screen the alerts are also shown for placing edit
+- can editing placing on race creation (or forward onto the race edit screen)
 
 ### General Fixes
-- Replace all greyhound fields with the directive
+- Replace all greyhound name fields with the directive
 - Fix the menu selectors
 - Switch test data loading to fixtures
 - Change how scripts are defined in the index by getting grunt to do it.
