@@ -12,14 +12,14 @@
                     <button data-ng-click="savePlacings()" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Save</button>
                 </div>
                 <div ng-show="formMode == 'edit'" class="col-md-1">
-                    <button data-ng-click="showView()" class="btn btn-primary">Done</button>
+                    <button data-ng-click="finishEditing()" class="btn btn-primary">Done</button>
                 </div>
             </div>
             <div id="addPlacing" data-ng-show="formMode == 'add'" class="row">
                 <form>
-                    <div sb-greyhound-name-field data-sb-model="newGreyhoundName"></div>
+                    <div class="col-md-3"><div sb-greyhound-name-field data-sb-model="newGreyhoundName"></div></div>
                     <div class="col-md-2">
-                        <button data-ng-click="addGreyhound()" class="btn btn-success">Add</button>
+                        <button data-ng-click="addGreyhound(newGreyhoundName)" class="btn btn-success">Add</button>
                         <button data-ng-click="showView()" class="btn btn-default">Cancel</button>
                     </div>
                 </form>
@@ -32,7 +32,8 @@
                 <div ng-show="formMode == 'edit'" class="col-md-9" data-ng-model="placing">
                     <div ng-repeat="greyhound in placing">
                         <div class="row">
-                            <div class="col-md-5"><input type="text" data-ng-model="greyhound.name" class="form-control" /></div>
+                            <div class="col-md-5"><div sb-greyhound-name-field data-sb-model="greyhound.name"></div></div>
+                            <div class="col-md-1"><button data-ng-click="editPlacing($parent.$index, $index)" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-pencil"></span> Update</button></div>
                             <div class="col-md-1"><button data-ng-click="removePlacing($parent.$index, $index)" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-minus-sign"></span> Remove</button></div>
                         </div>
                     </div>

@@ -90,8 +90,7 @@
 - (DONE) races / placings listed on the greyhound view
 - (DONE) interactive drag and drop of text fields for placing creation on race screen
 - (DONE) make greyhound field a directive
-
-- errors are printed out as a list
+- (DONE) errors are printed out as a list
 - when adding a greyhound on the placing screen make it auto save the placing
 - when moving a greyhound on the placing screen make it auto save the placing
 - when editing a greyhound on the placing screen make it auto save the placing

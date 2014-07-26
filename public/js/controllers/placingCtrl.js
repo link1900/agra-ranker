@@ -91,12 +91,6 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
                     $scope.alerts.push( { type: 'danger', msg: "Failed to save placing: " + error });
                 });
             });
-
-            if ($scope.alerts.length == 0){
-                $scope.alerts = [
-                    { type: 'success', msg: "Successfully saved placings"}
-                ];
-            }
         };
 
         $scope.loadPlacingsForRace = function(){
@@ -161,8 +155,20 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             'raceRef': $routeParams.id
         };
 
-        $scope.removePlacing = function(placingIndex, greyhoundIndex){
-            $scope.placings[placingIndex].splice(greyhoundIndex, 1);
+        $scope.editPlacing = function(placingSetIndex, greyhoundIndex){
+            var placingToChange = $scope.placings[placingSetIndex][greyhoundIndex];
+        };
+
+        $scope.removePlacing = function(placingSetIndex, greyhoundIndex){
+            var placingToRemove = $scope.placings[placingSetIndex][greyhoundIndex];
+
+            placingService.deletePlacing(placingToRemove).then(function(result){
+                $scope.placings[placingSetIndex].splice(greyhoundIndex, 1);
+            },function(error){
+                $scope.alerts = [
+                    { type: 'danger', msg: "Failed to delete placing" }
+                ];
+            });
         };
 
         $scope.savePlacings = function(){
@@ -182,8 +188,11 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             $scope.formMode = 'edit';
         };
 
-        $scope.addGreyhound = function(){
-            var greyhoundName = $scope.newGreyhoundName;
+        $scope.finishEditing = function(){
+            $scope.showView();
+        };
+
+        $scope.addGreyhound = function(greyhoundName){
             $scope.alerts = [];
             var done = false;
             //validate the name
@@ -222,10 +231,15 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
                     $scope.placings[0].push(newPlacing);
                 }
 
+                $scope.savePlacings();
+
                 //clean up the form
                 $scope.newGreyhoundName = "";
                 $scope.showView();
             }, function(error){
+                $scope.alerts = [
+                    { type: 'danger', msg: "Cannot find or create the greyhound" + error }
+                ];
                 $scope.newGreyhoundName = "";
                 $scope.showView();
             });

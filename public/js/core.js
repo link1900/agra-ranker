@@ -5,12 +5,11 @@ angular.module('core',
          'ui.select2',
          'angularFileUpload',
          'ui.sortable',
+         'angular-loading-bar',
          'controllers',
          'services',
          'directives',
          'filters']);
-
-
 angular.module('controllers', []);
 angular.module('services', []);
 angular.module('directives', []);
