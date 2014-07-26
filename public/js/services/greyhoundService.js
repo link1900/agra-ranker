@@ -19,7 +19,7 @@ angular.module('services').factory('greyhoundService', ['$resource', '$http',
                     } else  {
                         //cannot find anything create a new one
                         return $http.post("/greyhound", newGreyhound).then(function(creationResult){
-                            return creationResult;
+                            return creationResult.data;
                         });
                     }
                 }

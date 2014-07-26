@@ -35,15 +35,19 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             _.forEach(displayArray, function(placingDisplaySet, index){
                 var placingPosition = $scope.placingValueLookUp(index);
                 _.forEach(placingDisplaySet, function(placingDisplay){
-                    var newPlacing = {};
-                    newPlacing._id = placingDisplay.id;
-                    newPlacing.placing = placingPosition;
-                    newPlacing.greyhoundRef = placingDisplay.greyhoundRef;
-                    newPlacing.raceRef = $scope.raceRef;
-                    newPlacings.push(newPlacing);
+                    newPlacings.push($scope.convertDisplayModelToPlacingModel(placingPosition, placingDisplay));
                 });
             });
             return newPlacings;
+        };
+
+        $scope.convertDisplayModelToPlacingModel = function(placingPosition, displayModel){
+            var newPlacing = {};
+            newPlacing._id = displayModel.id;
+            newPlacing.placing = placingPosition;
+            newPlacing.greyhoundRef = displayModel.greyhoundRef;
+            newPlacing.raceRef = $scope.raceRef;
+            return newPlacing;
         };
 
         $scope.placingValueLookUp = function(displayIndex){
@@ -85,11 +89,14 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
 
         $scope.savePlacingModels = function(placingModels){
             $scope.alerts = [];
-            _.each(placingModels, function(placingModel){
-                placingService.savePlacing(placingModel).then(function(savedPlacing){
-                }, function(error){
-                    $scope.alerts.push( { type: 'danger', msg: "Failed to save placing: " + error });
-                });
+            _.each(placingModels, $scope.savePlacingModel);
+        };
+
+        $scope.savePlacingModel = function(placingModel){
+            placingService.savePlacing(placingModel).then(function(savedPlacing){
+                //no nothing
+            }, function(error){
+                $scope.alerts.push( { type: 'danger', msg: "Failed to save placing: " + error });
             });
         };
 
@@ -213,6 +220,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
 
             var greyhoundObject = {"name":greyhoundName};
             greyhoundService.findOrCreateGreyhound(greyhoundObject).then(function(newGreyhound){
+                console.log(newGreyhound);
                 //now that we have the greyhound convert to a placing
                 var newPlacing = {
                     name: newGreyhound.name.toUpperCase(),
@@ -220,18 +228,23 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
                 };
 
                 //insert the new name into the correct position on the placing sets
+                var displayIndex = 0;
                 for(var i = 0; i < $scope.placings.length; i++){
                     if ($scope.placings[i].length == 0 && done == false){
                         $scope.placings[i].push(newPlacing);
+                        displayIndex = i;
                         done = true;
                     }
                 }
 
                 if (done == false){
-                    $scope.placings[0].push(newPlacing);
+                    $scope.placings[displayIndex].push(newPlacing);
                 }
 
-                $scope.savePlacings();
+                //save the new placing
+                var placingPosition = $scope.placingValueLookUp(displayIndex);
+                var newPlacingModel = $scope.convertDisplayModelToPlacingModel(placingPosition, newPlacing);
+                $scope.savePlacingModel(newPlacingModel);
 
                 //clean up the form
                 $scope.newGreyhoundName = "";
