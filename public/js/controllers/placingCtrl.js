@@ -162,10 +162,6 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             'raceRef': $routeParams.id
         };
 
-        $scope.editPlacing = function(placingSetIndex, greyhoundIndex){
-            var placingToChange = $scope.placings[placingSetIndex][greyhoundIndex];
-        };
-
         $scope.removePlacing = function(placingSetIndex, greyhoundIndex){
             var placingToRemove = $scope.placings[placingSetIndex][greyhoundIndex];
 
@@ -199,9 +195,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             $scope.showView();
         };
 
-        $scope.addGreyhound = function(greyhoundName){
-            $scope.alerts = [];
-            var done = false;
+        $scope.validateGreyhoundName = function(greyhoundName){
             //validate the name
             if (greyhoundName == null || greyhoundName == undefined || greyhoundName.length == 0){
                 $scope.alerts = [
@@ -209,12 +203,18 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
                 ];
                 return false;
             }
+            return true;
+        };
+
+        $scope.addGreyhound = function(greyhoundName){
+            $scope.alerts = [];
+            var done = false;
+
             //transform the name to uppercase standard
             greyhoundName = greyhoundName.toUpperCase();
-            if($scope.inPlacings(greyhoundName)){
-                $scope.alerts = [
-                    { type: 'danger', msg: "Cannot add the same greyhound" }
-                ];
+
+            //validate the name
+            if (!$scope.validateGreyhoundName(greyhoundName)){
                 return false;
             }
 
@@ -267,73 +267,5 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             return result != null;
         };
 
-//        $scope.create = function(){
-//            placingService.save({}, $scope.placing, function(response){
-//                    $location.path('placing/view/'+ response._id);
-//                },
-//                function(error){
-//                    $scope.alerts = [
-//                        { type: 'danger', msg: "create " + error.data.error }
-//                    ];
-//                });
-//        };
-//
-//        $scope.isInvalid = function(formField){
-//            return formField.$dirty && formField.$invalid;
-//        };
-//
-//        $scope.isValid =  function(formField){
-//            return formField.$dirty && !formField.$invalid && !$scope.hasServerErrors();
-//        };
-//
-//        $scope.hasServerErrors = function(){
-//            return _.where($scope.alerts, { 'type': 'danger' }).length > 0;
-//        };
-//
-//        $scope.save = function(){
-//            $scope.placing.$update(function(data){
-//                    $scope.alerts = [
-//                        { type: 'success', msg: "Updated " + data.name }
-//                    ];
-//                    $scope.load(data);
-//                },
-//                function(error){
-//                    $scope.alerts = [
-//                        { type: 'danger', msg: "update " + error.data.error }
-//                    ];
-//                });
-//        };
-//
-//        $scope.deleteEntity = function(){
-//            $scope.placing.$delete(function(data){
-//                    delete $scope.batch;
-//                    $scope.alerts = [
-//                        { type: 'success', msg: "Deleted " + data.name.toUpperCase() }
-//                    ];
-//                    $location.path('/placing');
-//                },
-//                function(error){
-//                    $scope.alerts = [
-//                        { type: 'danger', msg: "delete " + error.data }
-//                    ];
-//                }
-//            );
-//        };
-//
-//        $scope.findOne = function() {
-//            placingService.get({
-//                placingId: $routeParams.id
-//            }, function(model) {
-//                $scope.load(model);
-//            }, function(){
-//                $scope.alerts = [
-//                    { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
-//                ];
-//            });
-//        };
-//
-//        $scope.load = function(model){
-//            $scope.placing = model;
-//        };
     }
 ]);
