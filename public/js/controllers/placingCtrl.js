@@ -27,7 +27,10 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
 
         $scope.sortableOptions = {
             placeholder: "placing-greyhound-placeholder",
-            connectWith: ".placing-container"
+            connectWith: ".placing-container",
+            update: function(){
+                $scope.savePlacings();
+            }
         };
 
         $scope.convertDisplayArrayToPlacingModel = function(displayArray){
