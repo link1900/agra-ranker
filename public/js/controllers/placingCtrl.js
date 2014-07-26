@@ -33,11 +33,11 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         $scope.convertDisplayArrayToPlacingModel = function(displayArray){
             var newPlacings = [];
             _.forEach(displayArray, function(placingDisplaySet, index){
-                var placing = $scope.placingValueLookUp(index);
+                var placingPosition = $scope.placingValueLookUp(index);
                 _.forEach(placingDisplaySet, function(placingDisplay){
                     var newPlacing = {};
                     newPlacing._id = placingDisplay.id;
-                    newPlacing.placing = placing;
+                    newPlacing.placing = placingPosition;
                     newPlacing.greyhoundRef = placingDisplay.greyhoundRef;
                     newPlacing.raceRef = $scope.raceRef;
                     newPlacings.push(newPlacing);
@@ -47,14 +47,16 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         };
 
         $scope.placingValueLookUp = function(displayIndex){
-          return _.find($scope.placingDefinitions, function(pd){return pd.displayIndex == displayIndex;}).placingValue;
+            return _.find($scope.placingDefinitions, function(pd){
+              return pd.displayIndex == displayIndex;
+          }).placingValue;
         };
 
         $scope.convertPlacingModelsToDisplayArray = function(placingModels){
             var displayArray = [];
             var groupedPlacings = _.groupBy(placingModels, 'placing');
             _.forEach($scope.placingDefinitions, function(placingDefinition){
-                var placingArray = groupedPlacings[placingDefinition.displayIndex];
+                var placingArray = groupedPlacings[placingDefinition.displayIndex+1];
                 placingArray = _.map(placingArray, function(placing){
                     return {"id": placing._id, "greyhoundRef":placing.greyhoundRef};
                 });
@@ -82,17 +84,19 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         };
 
         $scope.savePlacingModels = function(placingModels){
+            $scope.alerts = [];
             _.each(placingModels, function(placingModel){
                 placingService.savePlacing(placingModel).then(function(savedPlacing){
-                    console.log(savedPlacing);
                 }, function(error){
-                    console.log("error saving placing" + error);
+                    $scope.alerts.push( { type: 'danger', msg: "Failed to save placing: " + error });
                 });
             });
 
-//            $scope.alerts = [
-//                { type: 'danger', msg: "Failed to save placing " + $routeParams.id }
-//            ];
+            if ($scope.alerts.length == 0){
+                $scope.alerts = [
+                    { type: 'success', msg: "Successfully saved placings"}
+                ];
+            }
         };
 
         $scope.loadPlacingsForRace = function(){
