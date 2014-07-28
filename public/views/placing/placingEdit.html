@@ -6,22 +6,18 @@
         <div class="panel-body">
             <div data-alert data-ng-repeat="alert in placingAlerts" data-type="alert.type">{{alert.msg}}</div>
             <div id="placingControls" class="row">
-                <div ng-hide="formMode == 'edit'" class="col-md-4">
+                <div ng-hide="formMode != 'view'" class="col-md-4">
                     <button data-ng-click="showAdd()" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Add</button>
                     <button data-ng-click="showEdit()" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
                 </div>
                 <div ng-show="formMode == 'edit'" class="col-md-1">
                     <button data-ng-click="finishEditing()" class="btn btn-primary">Done Editing</button>
                 </div>
-            </div>
-            <div id="addPlacing" data-ng-show="formMode == 'add'" class="row">
-                <form>
-                    <div class="col-md-3"><div sb-greyhound-name-field data-sb-model="newGreyhoundName"></div></div>
-                    <div class="col-md-2">
-                        <button data-ng-click="addGreyhound(newGreyhoundName)" class="btn btn-success">Add</button>
-                        <button data-ng-click="showView()" class="btn btn-default">Cancel</button>
-                    </div>
-                </form>
+                <div ng-show="formMode == 'add'" class="col-md-3"><div sb-greyhound-name-field data-sb-model="newGreyhoundName"></div></div>
+                <div ng-show="formMode == 'add'" class="col-md-2">
+                    <button data-ng-click="addGreyhound(newGreyhoundName)" class="btn btn-success">Add</button>
+                    <button data-ng-click="showView()" class="btn btn-default">Cancel</button>
+                </div>
             </div>
             <div class="row placing-row" ng-repeat="placing in placings">
                 <div class="col-md-1" ng-class="placingDefinitions[$index].style">{{placingDefinitions[$index].placingLabel}}</div>
