@@ -81,7 +81,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
                         }, function(model) {
                             placingDisplay.name = model.name.toUpperCase();
                         }, function(){
-                            $scope.alerts = [
+                            $scope.placingAlerts = [
                                 { type: 'danger', msg: "Failed load using the id " + placingDisplay.greyhoundRef }
                             ];
                         });
@@ -91,7 +91,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         };
 
         $scope.savePlacingModels = function(placingModels){
-            $scope.alerts = [];
+            $scope.placingAlerts = [];
             _.each(placingModels, $scope.savePlacingModel);
         };
 
@@ -99,7 +99,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             placingService.savePlacing(placingModel).then(function(savedPlacing){
                 //no nothing
             }, function(error){
-                $scope.alerts.push( { type: 'danger', msg: "Failed to save placing: " + error });
+                $scope.placingAlerts.push( { type: 'danger', msg: "Failed to save placing: " + error });
             });
         };
 
@@ -128,7 +128,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             }, function(model) {
                 placing.race = model;
             }, function(){
-                $scope.alerts = [
+                $scope.placingAlerts = [
                     { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
                 ];
             });
@@ -140,7 +140,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             }, function(model) {
                 placing.greyhound = model;
             }, function(){
-                $scope.alerts = [
+                $scope.placingAlerts = [
                     { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
                 ];
             });
@@ -171,7 +171,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             placingService.deletePlacing(placingToRemove).then(function(result){
                 $scope.placings[placingSetIndex].splice(greyhoundIndex, 1);
             },function(error){
-                $scope.alerts = [
+                $scope.placingAlerts = [
                     { type: 'danger', msg: "Failed to delete placing" }
                 ];
             });
@@ -188,6 +188,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
 
         $scope.showView = function(){
             $scope.formMode = 'view';
+            $scope.placingAlerts = [];
         };
 
         $scope.showEdit = function(){
@@ -201,7 +202,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         $scope.validateGreyhoundName = function(greyhoundName){
             //validate the name
             if (greyhoundName == null || greyhoundName == undefined || greyhoundName.length == 0){
-                $scope.alerts = [
+                $scope.placingAlerts = [
                     { type: 'danger', msg: "Cannot add empty greyhound" }
                 ];
                 return false;
@@ -210,7 +211,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         };
 
         $scope.addGreyhound = function(greyhoundName){
-            $scope.alerts = [];
+            $scope.placingAlerts = [];
             var done = false;
 
             //transform the name to uppercase standard
@@ -253,7 +254,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
                 $scope.newGreyhoundName = "";
                 $scope.showView();
             }, function(error){
-                $scope.alerts = [
+                $scope.placingAlerts = [
                     { type: 'danger', msg: "Cannot find or create the greyhound" + error }
                 ];
                 $scope.newGreyhoundName = "";

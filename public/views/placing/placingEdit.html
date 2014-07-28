@@ -4,7 +4,7 @@
             <h3 class="panel-title">Placings</h3>
         </div>
         <div class="panel-body">
-            <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+            <div data-alert data-ng-repeat="alert in placingAlerts" data-type="alert.type">{{alert.msg}}</div>
             <div id="placingControls" class="row">
                 <div ng-hide="formMode == 'edit'" class="col-md-4">
                     <button data-ng-click="showAdd()" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Add</button>
