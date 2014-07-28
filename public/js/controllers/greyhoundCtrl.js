@@ -108,6 +108,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
                     $scope.alerts = [
                         { type: 'success', msg: "Deleted " + data.name.toUpperCase() }
                     ];
+                    $location.path('/greyhound');
                 },
                 function(error){
                     $scope.alerts = [

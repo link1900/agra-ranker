@@ -18,6 +18,7 @@
                     <dd>{{greyhound.updatedAt | date:'medium'}}</dd>
                 </dl>
                 <a ng-show="user" data-ng-href="#/greyhound/edit/{{greyhound._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                <button ng-show="user" data-ng-click="deleteGreyhound()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
             </div>
         </div>
     </div>

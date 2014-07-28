@@ -139,7 +139,7 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
 
         $scope.deleteEntity = function(){
             $scope.race.$delete(function(data){
-                    delete $scope.batch;
+                    delete $scope.race;
                     $scope.alerts = [
                         { type: 'success', msg: "Deleted " + data.name.toUpperCase() }
                     ];
