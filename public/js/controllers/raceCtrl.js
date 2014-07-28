@@ -99,7 +99,7 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
                 $scope.race.disqualified = false;
             }
             raceService.save({}, $scope.race, function(response){
-                    $location.path('race/view/'+ response._id);
+                    $location.path('race/edit/'+ response._id);
                 },
                 function(error){
                     $scope.alerts = [
@@ -121,6 +121,9 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
         };
 
         $scope.save = function(){
+            if ($scope.race.name){
+                $scope.race.name = $scope.race.name.toUpperCase();
+            }
             $scope.race.$update(function(data){
                     $scope.alerts = [
                         { type: 'success', msg: "Updated " + data.name }
