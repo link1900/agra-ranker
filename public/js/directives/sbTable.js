@@ -30,6 +30,11 @@ angular.module('directives')
                 scope.loadModels();
             };
 
+            scope.clearSearch = function(){
+                scope.searchParams.like = '';
+                scope.loadModels();
+            };
+
             scope.changePage = function(page){
                 scope.searchParams.page = page;
                 scope.loadModels();
