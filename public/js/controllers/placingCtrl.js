@@ -96,10 +96,11 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         };
 
         $scope.savePlacingModel = function(placingModel){
-            placingService.savePlacing(placingModel).then(function(savedPlacing){
-                //no nothing
-            }, function(error){
-                $scope.placingAlerts.push( { type: 'danger', msg: "Failed to save placing: " + error });
+            return placingService.savePlacing(placingModel).then(function(savedPlacing){
+                return savedPlacing._id;
+            }, function(err){
+                $scope.placingAlerts.push( { type: 'danger', msg: "Failed to save placing. " + err.error});
+                return null;
             });
         };
 
@@ -224,35 +225,36 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
 
             var greyhoundObject = {"name":greyhoundName};
             greyhoundService.findOrCreateGreyhound(greyhoundObject).then(function(newGreyhound){
-                console.log(newGreyhound);
                 //now that we have the greyhound convert to a placing
                 var newPlacing = {
                     name: newGreyhound.name.toUpperCase(),
                     greyhoundRef : newGreyhound._id
                 };
 
-                //insert the new name into the correct position on the placing sets
+                //calculate display position
                 var displayIndex = 0;
                 for(var i = 0; i < $scope.placings.length; i++){
                     if ($scope.placings[i].length == 0 && done == false){
-                        $scope.placings[i].push(newPlacing);
                         displayIndex = i;
                         done = true;
                     }
                 }
 
-                if (done == false){
-                    $scope.placings[displayIndex].push(newPlacing);
-                }
-
                 //save the new placing
                 var placingPosition = $scope.placingValueLookUp(displayIndex);
                 var newPlacingModel = $scope.convertDisplayModelToPlacingModel(placingPosition, newPlacing);
-                $scope.savePlacingModel(newPlacingModel);
+                $scope.savePlacingModel(newPlacingModel).then(function(placingId){
+                    if (placingId != null){
+                        newPlacing.id = placingId;
 
-                //clean up the form
-                $scope.newGreyhoundName = "";
-                $scope.showView();
+                        //insert the new name into the correct position on the placing sets
+                        $scope.placings[displayIndex].push(newPlacing);
+                    }
+
+                    //clean up the form
+                    $scope.newGreyhoundName = "";
+                    $scope.showView();
+                });
             }, function(error){
                 $scope.placingAlerts = [
                     { type: 'danger', msg: "Cannot find or create the greyhound" + error }

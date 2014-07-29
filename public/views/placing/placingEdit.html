@@ -21,8 +21,8 @@
             </div>
             <div class="row placing-row" ng-repeat="placing in placings">
                 <div class="col-md-1" ng-class="placingDefinitions[$index].style">{{placingDefinitions[$index].placingLabel}}</div>
-                <div ui-sortable="sortableOptions" class="placing-container col-md-2" data-ng-model="placing">
-                    <div class="placing-greyhound" ng-repeat="greyhound in placing">{{greyhound.name}}  <button data-ng-click="removePlacing($parent.$index, $index)" ng-show="formMode == 'edit'" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-minus-sign"></span> Remove</button></div>
+                <div id="placingSet-{{$index}}" ui-sortable="sortableOptions" class="placing-container col-md-2" data-ng-model="placing">
+                    <div id="placing-{{$parent.$index}}-{{$index}}" class="placing-greyhound" ng-repeat="greyhound in placing">{{greyhound.name}}  <button data-ng-click="removePlacing($parent.$index, $index)" ng-show="formMode == 'edit'" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-minus-sign"></span> Remove</button></div>
                 </div>
             </div>
         </div>
