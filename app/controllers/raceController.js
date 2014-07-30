@@ -8,6 +8,7 @@ var GroupLevel = mongoose.model('GroupLevel');
 var Placing = mongoose.model('Placing');
 var _ = require('lodash');
 var helper = require('../helper');
+var mongoHelper = require('../mongoHelper');
 var q = require('q');
 
 
@@ -25,7 +26,7 @@ raceController.prepareQuery = function(req, res, next) {
     var like = req.param('like');
     var name = req.param('name');
     if (like){
-        req.searchQuery = {'name': {'$regex': like.toLowerCase()}};
+        req.searchQuery = {'name': {'$regex': like, '$options' : 'i'}};
     }
     if (name){
         req.searchQuery = {'name': name.toLowerCase()};
@@ -101,7 +102,21 @@ raceController.validate = function(entityRequest){
     }
 
     return raceController.checkGroupRefExists(model.groupLevelRef).then(function(){
-        return q(entityRequest);
+        return raceController.checkNameAndDateDoNotExist(model).then(function(){
+            return q(entityRequest);
+        });
+    });
+};
+
+raceController.checkNameAndDateDoNotExist = function(model){
+    return mongoHelper.findAny(Race, {name: model.name, date: model.date}).then(function(results){
+        if (results.length == 0){
+            return q(true);
+        } else if (results.length == 1 && _.isEqual(results[0]._id,model._id)) {
+            return q(true);
+        } else {
+            return q.reject("cannot have the same name and date as an existing race");
+        }
     });
 };
 

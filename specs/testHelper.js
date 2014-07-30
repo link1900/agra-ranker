@@ -155,12 +155,12 @@ testHelper.loadRaces = function(done){
         Race.remove({}, function(){
             new Race({"_id" : "531d1f72e407586c21476ea8",
                 "name" : "race1",
-                "date": new Date(),
+                "date": new Date(5,5,2014),
                 "groupLevelRef":"531d1f72e407586c21476ef7",
                 "distanceMeters": 515,
                 "disqualified":false}).save(function(){
                     new Race({"_id" : "531d1f72e407586c21476ec4",
-                        "name" : "race2",
+                        "name" : "Race2",
                         "date": new Date(),
                         "groupLevelRef":"531d1f72e407586c21476f0c",
                         "distanceMeters": 715,

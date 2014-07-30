@@ -98,14 +98,30 @@
 - (DONE) can edit placings - maybe this should be done through add only
 - (DONE) can remove placings
 - (DONE) a new or existing greyhound on the placing edit
-- when saving a race on the race edit screen the alerts are also shown for placing edit
-- can editing placing on race creation (or forward onto the race edit screen)
+- (DONE) when saving a race on the race edit screen the alerts are also shown for placing edit
+- (DONE) fix spacing on the placing add field
+- (DONE) can editing placing on race creation (or forward onto the race edit screen)
 
 ### General Fixes
+- (DONE) put delete on the greyhound view
+- (DONE) Add a clear button on greyhound search
+- (DONE) Error on placing move
+- (DONE) type ahead for race search
+- (DONE) Greyhound search should be big text and upper cased
+- Race with the same name and date can be created
+- Race search is lower casing the name
 - Replace all greyhound name fields with the directive
 - Fix the menu selectors
 - Switch test data loading to fixtures
 - Change how scripts are defined in the index by getting grunt to do it.
+
+### Admin controls
+- List users
+- Remove users
+- Add users
+- Add emails to the white list
+- Edit emails on the white list
+- Remove emails from white list
 
 ### Point Scale API
 - create point scale value api
@@ -205,12 +221,18 @@
 - textured background
 
 ## Data Feeds
+
+### lib
+node.io
+
 ### Calendar
 agra.com.au
 
 ### Results
 grv.com.au
+thedogs.com.au
 greyhoundnsw.com.au
+grv.com.au
 racingtas
 racingqld
 agra.com.au

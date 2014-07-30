@@ -47,6 +47,45 @@ describe("Race", function(){
                 });
         });
 
+        it("by name", function(done){
+            testHelper.publicSession
+                .get('/race?name=race1')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    expect(res.body.length).equal(1);
+                    done();
+                });
+        });
+
+        it("by like", function(done){
+            testHelper.publicSession
+                .get('/race?like=race1')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    expect(res.body.length).equal(1);
+                    done();
+                });
+        });
+
+        it("by like ignoring case", function(done){
+            testHelper.publicSession
+                .get('/race?like=race2')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    expect(res.body.length).equal(1);
+                    done();
+                });
+        });
+
         it("one by id", function(done){
             testHelper.publicSession
                 .get('/race/531d1f72e407586c21476ea8')
@@ -105,6 +144,20 @@ describe("Race", function(){
                 });
         });
 
+        it("with existing name and date", function(done){
+            var body ={ "name" : "race1",
+                "date": new Date(5,5,2014),
+                "groupLevelRef":"531d1f72e407586c21476ef7",
+                "distanceMeters": 515,
+                "disqualified":false};
+            testHelper.authSession
+                .post('/race')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
         it("with name empty body", function(done){
             var body = {};
             testHelper.authSession
@@ -112,7 +165,7 @@ describe("Race", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(400, done)
+                .expect(400, done);
         });
 
         it("with just name", function(done){
