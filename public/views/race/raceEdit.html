@@ -12,7 +12,7 @@
                         <label class="control-label" for="raceNameField" >Name</label>
                         <input id="raceNameField"
                                type="text"
-                               class="form-control bigText"
+                               class="form-control"
                                name="raceNameField"
                                data-ng-model="race.name"
                                autocomplete="off"
@@ -24,7 +24,7 @@
                     <div class="col-md-3">
                         <label class="control-label" for="raceDateField">Date</label>
                         <div class="input-group">
-                            <input id="raceDateField" class="form-control" type="text" ng-model="race.date" datepicker-popup="dd MMMM yyyy" datepicker-options="dateOptions" is-open="opened"  ng-required="true" />
+                            <input id="raceDateField" class="form-control" type="text" ng-model="race.date" datepicker-popup="dd MMMM yyyy" data-datepicker-options="dateOptions" data-is-open="opened"  ng-required="true" />
                             <span class="input-group-btn">
                                 <button class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
@@ -34,7 +34,7 @@
                 <div class="form-group row">
                     <div class="col-md-2">
                         <label class="control-label" for="raceGroupLevelField">Group Level</label>
-                        <select id="raceGroupLevelField" class="form-control" ng-model="race.groupLevelRef" ng-options="groupLevel._id as groupLevel.name for groupLevel in groupLevels"></select>
+                        <select id="raceGroupLevelField" class="form-control" data-ng-model="race.groupLevelRef" ng-options="groupLevel._id as groupLevel.name for groupLevel in groupLevels"></select>
                     </div>
                 </div>
                 <div class="form-group row">

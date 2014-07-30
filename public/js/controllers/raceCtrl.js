@@ -121,9 +121,6 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
         };
 
         $scope.save = function(){
-            if ($scope.race.name){
-                $scope.race.name = $scope.race.name.toUpperCase();
-            }
             $scope.race.$update(function(data){
                     $scope.alerts = [
                         { type: 'success', msg: "Updated " + data.name }
@@ -141,7 +138,7 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
             $scope.race.$delete(function(data){
                     delete $scope.race;
                     $scope.alerts = [
-                        { type: 'success', msg: "Deleted " + data.name.toUpperCase() }
+                        { type: 'success', msg: "Deleted " + data.name }
                     ];
                     $location.path('/race');
                 },

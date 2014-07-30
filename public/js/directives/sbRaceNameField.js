@@ -18,7 +18,7 @@ angular.module('directives')
                 scope.searchParamsRaceField.like = val;
                 return raceService.query(scope.searchParamsRaceField).$promise.then(function(result){
                     return _.map(result, function(r){
-                        return r.name.toUpperCase();
+                        return r.name;
                     });
                 });
             };
