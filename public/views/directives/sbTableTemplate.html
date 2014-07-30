@@ -8,7 +8,15 @@
             <form>
                 <div class="form-group col-sm-3">
                     <label class="sr-only">Search:</label>
-                    <input type="text" data-ng-model="searchParams.like" placeholder="Search Text" class="form-control" />
+                    <div ng-if="searchFieldType == 'text'">
+                        <input type="text" data-ng-model="searchParams.like" placeholder="Search Text" class="form-control" />
+                    </div>
+                    <div ng-if="searchFieldType == 'greyhound'">
+                        <div sb-greyhound-name-field data-sb-model="searchParams.like"></div>
+                    </div>
+                    <div ng-if="searchFieldType == 'race'">
+                        <div sb-race-name-field data-sb-model="searchParams.like"></div>
+                    </div>
                 </div>
                 <div class="col-md-2">
                     <button data-ng-click="updateSearch()" class="btn btn-primary btn-sm">Search</button>

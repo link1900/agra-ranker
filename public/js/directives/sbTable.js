@@ -26,6 +26,12 @@ angular.module('directives')
                 _.extend(scope.searchParams, scope.searchFields);
             }
 
+            scope.searchFieldType = 'text';
+
+            if (scope.searchType){
+                scope.searchFieldType = scope.searchType;
+            }
+
             scope.updateSearch = function(){
                 scope.loadModels();
             };
@@ -93,6 +99,7 @@ angular.module('directives')
                 sortField: '@',
                 sortDirection: '@',
                 messageEmpty: '@',
+                searchType: '@',
                 modelService: '=',
                 columnInfo: '=',
                 postProcess: '=',
