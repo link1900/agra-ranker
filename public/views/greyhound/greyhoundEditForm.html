@@ -2,55 +2,30 @@
     <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
     <div data-ng-show="greyhound" class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Editing {{greyhound.name | uppercase}}</h3>
+            <h3 class="panel-title">Editing Greyhound</h3>
         </div>
         <div class="panel-body">
-            <form name="greyhoundForm" novalidate class="form-horizontal" >
-                <div class="form-group"
-                     data-ng-class="{'has-error': isInvalid(greyhoundForm.greyhoundNameField),
-                         'has-success': isValid(greyhoundForm.greyhoundNameField)}">
-                    <label class="col-md-1 control-label" for="greyhoundNameField" >Name</label>
-                    <div class="col-md-4"  data-ng-controller="GreyhoundFieldCtrl">
-                        <input id="greyhoundNameField"
-                               type="text"
-                               class="form-control bigText"
-                               name="greyhoundNameField"
-                               data-ng-model="greyhound.name"
-                               data-typeahead="item for item in greyhoundSearch($viewValue)"
-                               data-typeahead-loading="true"
-                               autocomplete="off"
-                               required />
-                        <span class="help-block error" data-ng-show="greyhoundForm.greyhoundNameField.$dirty && greyhoundForm.greyhoundNameField.$invalid">Greyhound name is required</span>
+            <form name="greyhoundForm" novalidate>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label class="control-label">Name</label>
+                        <div sb-greyhound-name-field data-sb-model="greyhound.name"></div>
                     </div>
                 </div>
-                <div class="form-group" >
-                    <label class="col-md-1 control-label" for="greyhoundSireNameField">Sire</label>
-                    <div class="col-sm-4" data-ng-controller="GreyhoundFieldCtrl">
-                        <input id="greyhoundSireNameField"
-                               type="text"
-                               class="form-control bigText"
-                               name="greyhoundSireNameField"
-                               data-ng-model="greyhound.sire.name"
-                               data-typeahead="item for item in greyhoundSearch($viewValue)"
-                               data-typeahead-loading="true"
-                               autocomplete="off" />
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label class="control-label">Sire</label>
+                        <div sb-greyhound-name-field data-sb-model="greyhound.sire.name"></div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-md-1 control-label" for="greyhoundDamNameField">Dam</label>
-                    <div class="col-sm-4"  data-ng-controller="GreyhoundFieldCtrl">
-                        <input id="greyhoundDamNameField"
-                               type="text"
-                               class="form-control bigText"
-                               name="greyhoundDamNameField"
-                               data-ng-model="greyhound.dam.name"
-                               data-typeahead="item for item in greyhoundSearch($viewValue)"
-                               data-typeahead-loading="true"
-                               autocomplete="off" />
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label class="control-label">Dam</label>
+                        <div sb-greyhound-name-field data-sb-model="greyhound.dam.name"></div>
                     </div>
                 </div>
-                <div class="form-group" style="padding-top: 30px;">
-                    <div class="col-sm-offset-1 col-sm-10">
+                <div class="form-group row">
+                    <div class="col-md-3">
                         <button data-ng-click="save()" data-ng-disabled="isInvalid(greyhoundForm)" class="btn btn-success"><span data-ng-show="isValid(greyhoundForm)" class="glyphicon glyphicon-ok"></span> Save</button>
                         <button data-ng-click="deleteGreyhound()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
                         <a data-ng-href="#/greyhound/view/{{greyhound._id}}" class="btn btn-default">Done</a>

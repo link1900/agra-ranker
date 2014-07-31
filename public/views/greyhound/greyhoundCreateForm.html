@@ -6,27 +6,16 @@
         <div class="panel-body">
             <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
 
-            <form name="greyhoundCreateForm" novalidate class="form-horizontal" >
-                <div class="form-group col-xs-6"
-                     data-ng-class="{'has-error': isInvalid(greyhoundCreateForm.greyhoundNameField),
-                         'has-success': isValid(greyhoundCreateForm.greyhoundNameField)}">
-                    <label class="col-sm-2 control-label" for="greyhoundNameField" >Name</label>
-                    <div class="col-sm-10" ng-controller="GreyhoundFieldCtrl">
-                        <input id="greyhoundNameField"
-                               type="text"
-                               class="form-control bigText"
-                               name="greyhoundNameField"
-                               data-ng-model="greyhound.name"
-                               data-typeahead="item for item in greyhoundSearch($viewValue)"
-                               data-typeahead-loading="true"
-                               autocomplete="off"
-                               required />
-                        <span class="help-block error" data-ng-show="greyhoundCreateForm.greyhoundNameField.$dirty && greyhoundCreateForm.greyhoundNameField.$invalid">Greyhound name is required</span>
+            <form name="greyhoundCreateForm" novalidate>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label class="control-label">Name</label>
+                        <div sb-greyhound-name-field data-sb-model="greyhound.name"></div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-10">
-                        <button data-ng-click="create()" data-ng-disabled="isInvalid(greyhoundCreateForm)" class="btn btn-success"><span data-ng-show="isValid(greyhoundCreateForm)" class="glyphicon glyphicon-ok"></span> Save</button>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <button data-ng-click="create()" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Save</button>
                         <a ng-href="#/greyhound" class="btn btn-default">Cancel</a>
                     </div>
                 </div>

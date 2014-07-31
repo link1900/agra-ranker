@@ -71,8 +71,12 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         };
 
         $scope.create = function(){
-            greyhoundService.save({}, $scope.greyhound, function(response){
-                $location.path('greyhound/view/'+ response._id);
+            greyhoundService.save({}, $scope.greyhound).$promise.then(function(result){
+                $location.path('greyhound/edit/'+ result._id);
+            }, function(error){
+                $scope.alerts = [
+                    { type: 'danger', msg: error.data.error }
+                ];
             });
         };
 
@@ -97,7 +101,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
                 },
                 function(error){
                     $scope.alerts = [
-                        { type: 'danger', msg: "Failed to update: " + error.data.error }
+                        { type: 'danger', msg: error.data.error }
                     ];
                 });
         };
