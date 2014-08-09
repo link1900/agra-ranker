@@ -10,10 +10,5 @@ angular.module('controllers').controller('menuCtrl', ['$scope', 'securityService
                 });
             }
         };
-
-        $scope.activePath = '/';
-        $scope.$on('$routeChangeSuccess', function(){
-            $scope.activePath = $location.path();
-        });
     }
 ]);
