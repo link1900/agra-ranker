@@ -108,60 +108,37 @@
 - (DONE) Error on placing move
 - (DONE) type ahead for race search
 - (DONE) Greyhound search should be big text and upper cased
-- Race with the same name and date can be created
-- Race search is lower casing the name
-- Replace all greyhound name fields with the directive
-- Fix the menu selectors
-- Switch test data loading to fixtures
-- Change how scripts are defined in the index by getting grunt to do it.
+- (DONE) Race with the same name and date can be created
+- (DONE) Race search is lower casing the name
+- (DONE) Replace all greyhound name fields with the directive
+- (DONE) Fix the menu selectors
 
-### Admin controls
-- List users
-- Remove users
-- Add users
-- Add emails to the white list
-- Edit emails on the white list
-- Remove emails from white list
-
-### Point Scale API
-- create point scale value api
-- update point scale value api
-- get point scale value api
-- delete point scale value api
-- create point scale api
-- update point scale api
-- get point scale api
-- delete point scale api
-- point scale api tests
-- clean up point scale value references when deleted
-
-### Query Parameters API
-- create query parameter api
-- update query parameter api
-- delete query parameter api
-- get query parameters api
-- query parameter api tests
-
-### Query API
-- create query api
-- update query api
-- delete query api
-- get query api
-- query api tests
-- delete query parameters when this is deleted
-- when point scales are deleted clean up ranking query references to that point scale
-
-### Ranking System API
-- design rules standard rule parameters: time period, point tables, point decay
-- list ranking systems api
-- create a ranking system api
-- edit a ranking system api
-- delete ranking system api
-- delete ranking queries when system is deleted
-- mongo migrations
+### Ranking System
+- (DONE) build basic ranking system model (name and desc fields)
+- (DONE) build basic ranking system crud controllers and ui
+- (DONE) list ranking systems api
+- (DONE) create a ranking system api
+- (DONE) edit a ranking system api
+- (DONE) delete ranking system api
+- clone ranking system
+- build advanced ranking system crud for query and point sets
+- (DONE) mongo migrations system
 - create default system data
 - sire and dam inital data
 - dead heat rule - points from matching positions are summed and divided
+- point decay system in a ranker system
+
+### Ranking System UI
+- add the ranking system page (lists the ranking rules)
+
+### Point Scale API
+- remove point scale
+
+### Query Parameters API
+- remove query params
+
+### Query API
+- remove query api
 
 ### Ranking API
 - List rankings api
@@ -171,9 +148,7 @@
 - update when greyhound is deleted
 - update when race is deleted
 - update when rule set is deleted
-
-### Ranking System UI
-- add the ranking system page (lists the ranking rules)
+- delete ranking when system is deleted
 
 ### Ranking UI
 - list all rankings on the home screen
@@ -192,6 +167,15 @@
 - inline edit form on greyhound
 - search on keydown for tables search box
 - race & placing csv import api
+- Switch test data loading to fixtures
+
+### Admin controls
+- List users
+- Remove users
+- Add users
+- Add emails to the white list
+- Edit emails on the white list
+- Remove emails from white list
 
 ## 0.3 - Beyond the ranker 6
 - on the placing screen have the numbers come from a set list of placings (1st -> 1, 2nd -> 2, DNF -> DNF, Dis -> dis, etc.)

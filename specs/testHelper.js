@@ -86,9 +86,32 @@ testHelper.loadRankingSystem = function(done){
             "description":"test Rankings"}).save(function(){
                 new RankingSystem({"_id" : "53411feb5c4ac1fdcd47817d",
                     "name" : "Mega Ranking System",
-                    "description":"test rankings"}).save(done);
+                    "description":"test rankings"}).save(function(){
+                        new RankingSystem(    {
+                            "_id" : "53412feb5c4ac1fdcd4781ff",
+                            "name": "Agra Rankings",
+                            "description": "The main ranking system for agra",
+                            "matchingStrategy": "split",
+                            "pointDefinitions":[
+                                {
+                                    filters: [
+                                        {field: "placing", "comparator": "=", "value": "1"},
+                                        {field: "race.date", "comparator": ">=", "value": "##currentFinancialYear.start"},
+                                        {field: "race.date", "comparator": "<=", "value": "##currentFinancialYear.end"},
+                                        {field: "race.groupLevel.name", "comparator": "=", "value": "Group 1"},
+                                        {field: "distanceMeters", "comparator": "<", "value": "715"},
+                                        {field: "disqualified", "comparator": "=", "value": false}
+                                    ],
+                                    points: 70
+                                }
+                            ]
+                        }).save(done);
+                    });
             });
     });
+
+
+
 };
 
 testHelper.clearRankingSystems = function(done){

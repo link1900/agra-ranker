@@ -157,9 +157,7 @@ describe("Ranking System", function(){
                 .expect(200, done);
         });
 
-        it("removed the ranking query");
-
-        it("removed the query parameter");
+        it("removed the rankings");
     });
 
     afterEach(function(done){

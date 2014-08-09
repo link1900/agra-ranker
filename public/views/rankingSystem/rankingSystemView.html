@@ -1,0 +1,23 @@
+<div id="raceView" data-ng-controller="RankingSystemCtrl" data-ng-init="findOne()">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Ranking System</h3>
+        </div>
+        <div class="panel-body">
+            <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+            <div data-ng-show="rankingSystem.name">
+                <dl class="dl-horizontal">
+                    <dt>Name</dt>
+                    <dd>{{rankingSystem.name}}</dd>
+                    <dt>Created at</dt>
+                    <dd>{{rankingSystem.createdAt | date:'medium'}}</dd>
+                    <dt>Last updated</dt>
+                    <dd>{{rankingSystem.updatedAt | date:'medium'}}</dd>
+                </dl>
+                <a ng-show="user" data-ng-href="#/rankingSystem/edit/{{rankingSystem._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                <button ng-show="user" data-ng-click="deleteEntity()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+            </div>
+        </div>
+    </div>
+    <a data-ng-href="#/rankingSystem">Back to Races</a>
+</div>

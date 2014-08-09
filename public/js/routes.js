@@ -38,8 +38,17 @@ angular.module('core').config(function($routeProvider) {
         .when('/race', {
             templateUrl : '/views/race/race.html'
         })
+        .when('/rankingSystem/create', {
+            templateUrl : '/views/rankingSystem/rankingSystemCreate.html'
+        })
+        .when('/rankingSystem/edit/:id', {
+            templateUrl : '/views/rankingSystem/rankingSystemEdit.html'
+        })
+        .when('/rankingSystem/view/:id', {
+            templateUrl : '/views/rankingSystem/rankingSystemView.html'
+        })
         .when('/rankingSystem', {
-            templateUrl : '/views/rankingSystem.html'
+            templateUrl : '/views/rankingSystem/rankingSystem.html'
         })
         .when('/groupLevel/create', {
             templateUrl : '/views/groupLevel/groupLevelCreate.html'

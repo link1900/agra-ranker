@@ -77,6 +77,7 @@ rankingSystemController.validate = function(entityRequest){
     if (!model.description){
         return q.reject("description field is required");
     }
+
     return q(entityRequest);
 };
 
