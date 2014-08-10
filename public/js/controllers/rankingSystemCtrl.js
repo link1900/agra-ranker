@@ -40,14 +40,28 @@ angular.module('controllers').controller('RankingSystemCtrl', ['$scope', '$route
         ];
 
         $scope.create = function(){
-            rankingSystemService.save({}, $scope.rankingSystem, function(response){
+            $scope.createRankingSystem($scope.rankingSystem);
+        };
+
+        $scope.createRankingSystem = function(rankingSystem){
+            rankingSystemService.save({}, rankingSystem, function(response){
                     $location.path('rankingSystem/view/'+ response._id);
                 },
                 function(error){
                     $scope.alerts = [
                         { type: 'danger', msg: "create " + error.data.error }
                     ];
-                });
+            });
+        };
+
+        $scope.copy = function(){
+            var copiedSystem = _.cloneDeep($scope.rankingSystem);
+            delete copiedSystem._id;
+            delete copiedSystem.$resolved;
+            delete copiedSystem.$promise;
+            delete copiedSystem.__v;
+            copiedSystem.name += " Copy";
+            $scope.createRankingSystem(copiedSystem);
         };
 
         $scope.save = function(){
