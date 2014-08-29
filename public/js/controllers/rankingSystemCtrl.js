@@ -13,6 +13,11 @@ angular.module('controllers').controller('RankingSystemCtrl', ['$scope', '$route
             });
         };
 
+        $scope.positionResolutions = [
+            {name: "Split Points", value:"splitPoints"},
+            {name: "Same Points", value:"samePoints"}
+        ];
+
         $scope.loadRankingSystem = function(model){
             $scope.rankingSystem = model;
             $scope.postProcess($scope.rankingSystem);

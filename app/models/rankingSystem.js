@@ -16,7 +16,7 @@ var pointDefinitionSchema = new Schema({
 var RankingSystemSchema = new Schema({
     name: { type: String },
     description: {type: String},
-    matchingStrategy: {type: String},
+    equalPositionResolution: {type: String},
     pointDefinitions: {type: [pointDefinitionSchema]}
 });
 
@@ -27,7 +27,7 @@ mongoose.model('RankingSystem', RankingSystemSchema);
 //var a = {
 //    "name": "Agra Rankings",
 //    "description": "The main ranking system for agra",
-//      matchingStrategy: "split,
+//      equalPositionResolution: "splitPoints",
 //    pointDefinitions:[
 //        {
 //            filters: [

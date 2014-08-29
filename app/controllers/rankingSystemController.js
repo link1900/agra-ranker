@@ -91,6 +91,13 @@ rankingSystemController.validate = function(entityRequest){
         return q.reject("description field is required");
     }
 
+    if (model.equalPositionResolution != null){
+        var validResolutions = ["splitPoints","samePoints"];
+        if (!_.contains(validResolutions,model.equalPositionResolution)){
+            return q.reject("equalPositionResolution must be one of the following: ", validResolutions.join(","));
+        }
+    }
+
     return rankingSystemController.checkNameDoesNotExist(model).then(function(){
         return q(entityRequest);
     });

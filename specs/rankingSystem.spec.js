@@ -57,7 +57,11 @@ describe("Ranking System", function(){
         });
 
         it("with valid json", function(done){
-            var body = {name:"Another Test Ranking System", description: "just another ranking system"};
+            var body = {
+                name:"Another Test Ranking System",
+                description: "just another ranking system",
+                equalPositionResolution: "splitPoints"
+            };
             testHelper.authSession
                 .post('/rankingSystem')
                 .send(body)
@@ -76,6 +80,20 @@ describe("Ranking System", function(){
 
         it("with same name", function(done){
             var body = {name:"Agra Rankings", description: "just another ranking system"};
+            testHelper.authSession
+                .post('/rankingSystem')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("with invalid resolution", function(done){
+            var body = {
+                name:"Another Test Ranking System",
+                description: "just another ranking system",
+                equalPositionResolution: "nope"
+            };
             testHelper.authSession
                 .post('/rankingSystem')
                 .send(body)
