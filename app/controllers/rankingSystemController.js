@@ -7,6 +7,7 @@ var RankingSystem = mongoose.model('RankingSystem');
 var _ = require('lodash');
 var helper = require('../helper');
 var q = require('q');
+var mongoHelper = require('../mongoHelper');
 
 
 rankingSystemController.setModel = function(req, res, next, id) {
@@ -59,6 +60,18 @@ rankingSystemController.destroy = function(req, res) {
     helper.responseFromPromise(res,helper.remove(req.model));
 };
 
+rankingSystemController.checkNameDoesNotExist = function(model){
+    return mongoHelper.findAny(RankingSystem, {name: model.name}).then(function(results){
+        if (results.length == 0){
+            return q(true);
+        } else if (results.length == 1 && _.isEqual(results[0]._id,model._id)) {
+            return q(true);
+        } else {
+            return q.reject("cannot have the same name as an existing ranking system");
+        }
+    });
+};
+
 rankingSystemController.make = function(entityRequest) {
     entityRequest.newEntity = new RankingSystem(entityRequest.newEntity);
     return q(entityRequest);
@@ -78,7 +91,9 @@ rankingSystemController.validate = function(entityRequest){
         return q.reject("description field is required");
     }
 
-    return q(entityRequest);
+    return rankingSystemController.checkNameDoesNotExist(model).then(function(){
+        return q(entityRequest);
+    });
 };
 
 rankingSystemController.preProcessRaw = function(entityRequest){

@@ -74,6 +74,16 @@ describe("Ranking System", function(){
                 });
         });
 
+        it("with same name", function(done){
+            var body = {name:"Agra Rankings", description: "just another ranking system"};
+            testHelper.authSession
+                .post('/rankingSystem')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
         it("without name", function(done){
             var body = { description: "just another ranking system"};
             testHelper.authSession
