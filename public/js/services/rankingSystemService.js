@@ -3,7 +3,7 @@ angular.module('services').factory('rankingSystemService', ['$resource', '$http'
         var service = $resource(
             'rankingSystem/:rankingSystemId',
             {
-                raceId:'@_id'
+                rankingSystemId:'@_id'
             },{
                 update: {
                     method: 'PUT'
