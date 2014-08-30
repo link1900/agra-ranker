@@ -21,6 +21,18 @@ helper.buildPagingLinks = function(urlString, currentPage, lastPage){
     };
 };
 
+helper.removeAll = function(dao, query){
+    var deferred = q.defer();
+    dao.remove(query, function (err) {
+        if (err) {
+            deferred.reject(err);
+        } else {
+            deferred.resolve(true);
+        }
+    });
+    return deferred.promise;
+};
+
 helper.cleanFk = function(dao, field, model){
     var deferred = q.defer();
     var query = {};

@@ -8,10 +8,7 @@ var RankingSystem = mongoose.model('RankingSystem');
 var Race = mongoose.model('Race');
 var Greyhound = mongoose.model('Greyhound');
 var Placing = mongoose.model('Placing');
-var PointScale = mongoose.model('PointScale');
-var PointScaleValue = mongoose.model('PointScaleValue');
-var Query = mongoose.model('Query');
-var QueryParameter = mongoose.model('QueryParameter');
+var PointAllotment = mongoose.model('PointAllotment');
 var AllowedUser = mongoose.model('AllowedUser');
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
@@ -91,6 +88,28 @@ testHelper.loadGroupLevels = function(done){
     });
 };
 
+testHelper.loadPointAllotments = function(done){
+    testHelper.loadPlacings(function(){
+        testHelper.loadRankingSystem(function(){
+            PointAllotment.remove({}, function () {
+                new PointAllotment({
+                    "_id": "540198de8bbd09f6ab7f49da",
+                    "rank": 1,
+                    "points": 70,
+                    "greyhoundRef": "531d1f74e407586c2147737b",
+                    "placingRef": "531d1f82e407586c21476eb9",
+                    "rankingSystemRef" : "53412feb5c4ac1fdcd4781ff"
+                }).save(done);
+            });
+        });
+    });
+};
+
+testHelper.clearPointAllotments = function(done){
+    PointAllotment.remove({}, done);
+};
+
+
 testHelper.loadRankingSystem = function(done){
     RankingSystem.remove({}, function(){
         new RankingSystem({"_id" : "5340bfc15c4ac1fdcd47816d",
@@ -121,64 +140,10 @@ testHelper.loadRankingSystem = function(done){
                     });
             });
     });
-
-
-
 };
 
 testHelper.clearRankingSystems = function(done){
     RankingSystem.remove({}, done);
-};
-
-testHelper.loadPointScale = function(done){
-    PointScale.remove({}, function(){
-        new PointScale({"_id" : "5340caa05c4ac1fdcd478171",
-            "name" : "Group 1 Sprint"}).save(function(){
-                new PointScale({"_id" : "53411de55c4ac1fdcd47817a",
-                    "name" : "Group 2 Sprint"}).save(done);
-            });
-    });
-};
-
-testHelper.clearPointScale = function(done){
-    PointScale.remove({}, done);
-};
-
-testHelper.loadPointScaleValue = function(done){
-    PointScaleValue.remove({}, function(){
-        new PointScaleValue({"_id" : "5340cc015c4ac1fdcd478175",
-            "pointScaleRef":"5340caa05c4ac1fdcd478171", "placing" : 1,points:70}).save(done);
-    });
-};
-
-testHelper.clearPointScaleValue = function(done){
-    PointScaleValue.remove({}, done);
-};
-
-testHelper.loadQuery = function(done){
-    Query.remove({}, function(){
-        new Query({"_id" : "53411dc15c4ac1fdcd478178",
-            "rankingSystemRef" : "5340bfc15c4ac1fdcd47816d",
-            "pointScaleRef":"5340caa05c4ac1fdcd478171"}).save(done);
-    });
-};
-
-testHelper.clearQuery = function(done){
-    Query.remove({}, done);
-};
-
-testHelper.loadQueryParameter = function(done){
-    QueryParameter.remove({}, function(){
-        new QueryParameter({"_id" : "53411e135c4ac1fdcd47817b",
-            "queryRef" : "53411dc15c4ac1fdcd478178",
-            "field":"groupLevel.level",
-            "comparator":"=",
-            "value":"1"}).save(done);
-    });
-};
-
-testHelper.clearQueryParameter = function(done){
-    QueryParameter.remove({}, done);
 };
 
 testHelper.clearGroupLevels = function(done){
