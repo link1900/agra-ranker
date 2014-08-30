@@ -23,6 +23,15 @@ angular.module('controllers').controller('RankingSystemCtrl', ['$scope', '$route
             $scope.postProcess($scope.rankingSystem);
         };
 
+        $scope.addPointDefinition = function(){
+            if ($scope.rankingSystem){
+                $scope.rankingSystem.pointAllotments.push({});
+            } else {
+                $scope.rankingSystem = {pointAllotments:[]};
+                $scope.rankingSystem.pointAllotments.push({});
+            }
+        };
+
         /**
          * Loads default form fields
          */

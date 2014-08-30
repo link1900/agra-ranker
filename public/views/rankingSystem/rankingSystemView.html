@@ -13,6 +13,12 @@
                     <dd>{{rankingSystem.description}}</dd>
                     <dt>Equal Position Resolution</dt>
                     <dd>{{rankingSystem.equalPositionResolution}}</dd>
+                    <dt>Point Allotments</dt>
+                    <dd>
+                        <div data-ng-repeat="allotment in rankingSystem.pointAllotments">
+                            Points: {{allotment.points}}
+                        </div>
+                    </dd>
                     <dt>Created at</dt>
                     <dd>{{rankingSystem.createdAt | date:'medium'}}</dd>
                     <dt>Last updated</dt>
@@ -24,5 +30,5 @@
             </div>
         </div>
     </div>
-    <a data-ng-href="#/rankingSystem">Back to Races</a>
+    <a data-ng-href="#/rankingSystem">Back to Ranking Systems</a>
 </div>

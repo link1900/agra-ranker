@@ -87,8 +87,8 @@ rankingSystemController.validate = function(entityRequest){
         return q.reject("name cannot be blank");
     }
 
-    if (!model.description){
-        return q.reject("description field is required");
+    if (model.description != null && model.description.length > 1000){
+        return q.reject("description field is too long");
     }
 
     if (model.equalPositionResolution != null){
@@ -98,9 +98,42 @@ rankingSystemController.validate = function(entityRequest){
         }
     }
 
-    return rankingSystemController.checkNameDoesNotExist(model).then(function(){
-        return q(entityRequest);
+    return rankingSystemController.checkAllotmentIsValid(model).then(function(){
+        return rankingSystemController.checkNameDoesNotExist(model).then(function(){
+            return q(entityRequest);
+        });
     });
+};
+
+rankingSystemController.checkAllotmentIsValid = function(model){
+    if (model.pointAllotments != null){
+        if (!_.isArray(model.pointAllotments)){
+            return q.reject("pointAllotments must be an array");
+        } else {
+            if (model.pointAllotments.length > 0){
+                var validations = _.map(model.pointAllotments, function(allotment){
+                    return rankingSystemController.validateAllotment(allotment);
+                });
+                return q.all(validations);
+            } else {
+                return q(model);
+            }
+        }
+    } else {
+        return q(model);
+    }
+};
+
+rankingSystemController.validateAllotment = function(allotment){
+    if (allotment.points == null){
+        return q.reject("a point allotment must have points");
+    }
+
+    if (!_.isNumber(allotment.points)){
+        return q.reject("point allotment points must be a number");
+    }
+
+    return q(true);
 };
 
 rankingSystemController.preProcessRaw = function(entityRequest){

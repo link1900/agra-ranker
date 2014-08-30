@@ -2,14 +2,14 @@ var mongoose = require('mongoose');
 var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 
-var placingFilterSchema = new Schema({
+var allotmentCriteriaSchema = new Schema({
     field: {type: String},
     comparator:{type: String},
     value:{type: Schema.Types.Mixed}
 });
 
-var pointDefinitionSchema = new Schema({
-    filters: {type: [placingFilterSchema]},
+var pointAllotmentSchema = new Schema({
+    criteria: {type: [allotmentCriteriaSchema]},
     points: {type: Number}
 });
 
@@ -17,7 +17,7 @@ var RankingSystemSchema = new Schema({
     name: { type: String },
     description: {type: String},
     equalPositionResolution: {type: String},
-    pointDefinitions: {type: [pointDefinitionSchema]}
+    pointAllotments: {type: [pointAllotmentSchema]}
 });
 
 RankingSystemSchema.plugin(timestamps);
@@ -28,7 +28,7 @@ mongoose.model('RankingSystem', RankingSystemSchema);
 //    "name": "Agra Rankings",
 //    "description": "The main ranking system for agra",
 //      equalPositionResolution: "splitPoints",
-//    pointDefinitions:[
+//    pointAllotments:[
 //        {
 //            filters: [
 //                {field: "placing", "comparator": "=", "value": "1"},

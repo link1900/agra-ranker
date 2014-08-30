@@ -60,7 +60,12 @@ describe("Ranking System", function(){
             var body = {
                 name:"Another Test Ranking System",
                 description: "just another ranking system",
-                equalPositionResolution: "splitPoints"
+                equalPositionResolution: "splitPoints",
+                pointAllotments:[
+                    {
+                        points: 70
+                    }
+                ]
             };
             testHelper.authSession
                 .post('/rankingSystem')
@@ -76,6 +81,21 @@ describe("Ranking System", function(){
                     res.body.description.should.equal("just another ranking system");
                     done();
                 });
+        });
+
+        it("with empty allotment definitions", function(done){
+            var body = {
+                name:"Another Test Ranking System",
+                description: "just another ranking system",
+                equalPositionResolution: "splitPoints",
+                pointAllotments:[]
+            };
+            testHelper.authSession
+                .post('/rankingSystem')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, done);
         });
 
         it("with same name", function(done){
@@ -102,6 +122,59 @@ describe("Ranking System", function(){
                 .expect(400, done);
         });
 
+        it("with invalid allotment", function(done){
+            var body = {
+                name:"Another Test Ranking System",
+                description: "just another ranking system",
+                equalPositionResolution: "splitPoints",
+                pointAllotments: "oops"
+            };
+            testHelper.authSession
+                .post('/rankingSystem')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("with missing allotment points", function(done){
+            var body = {
+                name:"Another Test Ranking System",
+                description: "just another ranking system",
+                equalPositionResolution: "splitPoints",
+                pointAllotments: [
+                    {
+                        ignored: ""
+                    }
+                ]
+            };
+            testHelper.authSession
+                .post('/rankingSystem')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("with invalid allotment points", function(done){
+            var body = {
+                name:"Another Test Ranking System",
+                description: "just another ranking system",
+                equalPositionResolution: "splitPoints",
+                pointAllotments: [
+                    {
+                        points: "haha"
+                    }
+                ]
+            };
+            testHelper.authSession
+                .post('/rankingSystem')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
         it("without name", function(done){
             var body = { description: "just another ranking system"};
             testHelper.authSession
@@ -114,6 +187,16 @@ describe("Ranking System", function(){
 
         it("without description", function(done){
             var body = {name:"Another Test Ranking System"};
+            testHelper.authSession
+                .post('/rankingSystem')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+
+        it("with long description", function(done){
+            var body = {description:testHelper.letter1000};
             testHelper.authSession
                 .post('/rankingSystem')
                 .send(body)
