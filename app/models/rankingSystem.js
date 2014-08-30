@@ -30,7 +30,7 @@ mongoose.model('RankingSystem', RankingSystemSchema);
 //      equalPositionResolution: "splitPoints",
 //    pointAllotments:[
 //        {
-//            filters: [
+//            criteria: [
 //                {field: "placing", "comparator": "=", "value": "1"},
 //                {field: "race.date", "comparator": ">=", "value": "##currentFinancialYear.start"},
 //                {field: "race.date", "comparator": "<=", "value": "##currentFinancialYear.end"},

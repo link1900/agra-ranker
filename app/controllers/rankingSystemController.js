@@ -94,7 +94,7 @@ rankingSystemController.validate = function(entityRequest){
     if (model.equalPositionResolution != null){
         var validResolutions = ["splitPoints","samePoints"];
         if (!_.contains(validResolutions,model.equalPositionResolution)){
-            return q.reject("equalPositionResolution must be one of the following: ", validResolutions.join(","));
+            return q.reject("equalPositionResolution must be one of the following: " + validResolutions.join(","));
         }
     }
 
@@ -124,6 +124,29 @@ rankingSystemController.checkAllotmentIsValid = function(model){
     }
 };
 
+rankingSystemController.validateAllotmentCriteria = function(criteria){
+    if (criteria.field == null || criteria.field.length < 1 || !_.isString(criteria.field)){
+        return q.reject("criteria must have a valid field");
+    }
+
+    if (criteria.comparator == null){
+        return q.reject("criteria must have a comparator");
+    }
+
+    if (criteria.comparator != null){
+        var validSet = ["=",">","<",">=","<="];
+        if (!_.contains(validSet,criteria.comparator)){
+            return q.reject("comparator must be one of the following: " + validSet.join(","));
+        }
+    }
+
+    if (criteria.value == null || criteria.value.length < 1){
+        return q.reject("criteria must have a valid value");
+    }
+
+    return q(true);
+};
+
 rankingSystemController.validateAllotment = function(allotment){
     if (allotment.points == null){
         return q.reject("a point allotment must have points");
@@ -132,8 +155,14 @@ rankingSystemController.validateAllotment = function(allotment){
     if (!_.isNumber(allotment.points)){
         return q.reject("point allotment points must be a number");
     }
-
-    return q(true);
+    if (allotment.criteria.length > 0){
+        var validations = _.map(allotment.criteria, function(criteria){
+            return rankingSystemController.validateAllotmentCriteria(criteria);
+        });
+        return q.all(validations);
+    } else {
+        return q(model);
+    }
 };
 
 rankingSystemController.preProcessRaw = function(entityRequest){

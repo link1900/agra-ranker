@@ -63,7 +63,15 @@ describe("Ranking System", function(){
                 equalPositionResolution: "splitPoints",
                 pointAllotments:[
                     {
-                        points: 70
+                        points: 70,
+                        criteria: [
+                            {field: "placing", "comparator": "=", "value": "1"},
+                            {field: "race.date", "comparator": ">=", "value": "##currentFinancialYear.start"},
+                            {field: "race.date", "comparator": "<=", "value": "##currentFinancialYear.end"},
+                            {field: "race.groupLevel.name", "comparator": "=", "value": "Group 1"},
+                            {field: "distanceMeters", "comparator": "<", "value": "715"},
+                            {field: "disqualified", "comparator": "=", "value": false}
+                        ]
                     }
                 ]
             };
@@ -74,7 +82,7 @@ describe("Ranking System", function(){
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end(function(err, res){
-                    if (err){ throw err; }
+                    if (err){ console.log(res.body); throw err; }
                     res.body.should.have.property("name");
                     res.body.name.should.equal("Another Test Ranking System");
                     res.body.should.have.property("description");
@@ -164,6 +172,138 @@ describe("Ranking System", function(){
                 pointAllotments: [
                     {
                         points: "haha"
+                    }
+                ]
+            };
+            testHelper.authSession
+                .post('/rankingSystem')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("with invalid allotment criteria missing field", function(done){
+            var body = {
+                name:"Another Test Ranking System",
+                description: "just another ranking system",
+                equalPositionResolution: "splitPoints",
+                pointAllotments: [
+                    {
+                        points: 70,
+                        criteria: [
+                            {}
+                        ]
+                    }
+                ]
+            };
+            testHelper.authSession
+                .post('/rankingSystem')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("with invalid allotment criteria empty field", function(done){
+            var body = {
+                name:"Another Test Ranking System",
+                description: "just another ranking system",
+                equalPositionResolution: "splitPoints",
+                pointAllotments: [
+                    {
+                        points: 70,
+                        criteria: [
+                            { field : "", "comparator": "=", "value": "1"}
+                        ]
+                    }
+                ]
+            };
+            testHelper.authSession
+                .post('/rankingSystem')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("with invalid allotment criteria missing comparator", function(done){
+            var body = {
+                name:"Another Test Ranking System",
+                description: "just another ranking system",
+                equalPositionResolution: "splitPoints",
+                pointAllotments: [
+                    {
+                        points: 70,
+                        criteria: [
+                            { field : "5", "value": "1"}
+                        ]
+                    }
+                ]
+            };
+            testHelper.authSession
+                .post('/rankingSystem')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("with invalid allotment criteria invalid comparator", function(done){
+            var body = {
+                name:"Another Test Ranking System",
+                description: "just another ranking system",
+                equalPositionResolution: "splitPoints",
+                pointAllotments: [
+                    {
+                        points: 70,
+                        criteria: [
+                            { field : "5",  "comparator": "nope", "value": "1"}
+                        ]
+                    }
+                ]
+            };
+            testHelper.authSession
+                .post('/rankingSystem')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("with invalid allotment criteria missing value", function(done){
+            var body = {
+                name:"Another Test Ranking System",
+                description: "just another ranking system",
+                equalPositionResolution: "splitPoints",
+                pointAllotments: [
+                    {
+                        points: 70,
+                        criteria: [
+                            { field : "5",  "comparator": "="}
+                        ]
+                    }
+                ]
+            };
+            testHelper.authSession
+                .post('/rankingSystem')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("with invalid allotment criteria invalid value", function(done){
+            var body = {
+                name:"Another Test Ranking System",
+                description: "just another ranking system",
+                equalPositionResolution: "splitPoints",
+                pointAllotments: [
+                    {
+                        points: 70,
+                        criteria: [
+                            { field : "5",  "comparator": "=", value: ""}
+                        ]
                     }
                 ]
             };
