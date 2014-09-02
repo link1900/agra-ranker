@@ -69,9 +69,13 @@ migrationController.applyMigrations(migrationDir).then(function(){
     //start scheduler
     var batchController = require('./app/controllers/batchController');
     setInterval(batchController.processBatches, 5000);
-}).fail(function(){
+},function(error){
+    console.log(error);
     console.error("critical failure apply migration exiting without server start");
     process.exit(1);
+}).fail(function(err){
+    console.log("failed to start server");
+    console.log(err);
 });
 
 
