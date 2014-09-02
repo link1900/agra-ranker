@@ -89,7 +89,7 @@ helper.killChildren = function(dao, field, id, res){
     query[field] = id;
     dao.find(query).exec(function(err, entities){
         if (err) {
-            res.send(500, 'error finding children to kill');
+            res.jsonp(500,  {'error':' finding children to kill'});
         } else {
             _.each(entities, function(entity){
                 entity.remove();
@@ -133,7 +133,7 @@ helper.mergeBody = function(req, res, next) {
 helper.save = function(req, res) {
     req.model.save(function(err, savedModel) {
         if (err) {
-            res.send(err.errors);
+            res.jsonp({"error":err.errors});
         } else {
             res.jsonp(savedModel);
         }
@@ -236,9 +236,9 @@ helper.checkExisting = function(dao, field, entityRequest) {
 
 helper.promiseResult = function(req, res, promise){
     promise.then(function(result){
-        res.send(result.code, result.message);
+        res.jsonp(result.code, result.message);
     }).fail(function(result){
-        res.send(result.code, result.message);
+        res.jsonp(result.code, result.message);
     });
 };
 
@@ -261,7 +261,7 @@ helper.getOne = function(req, res) {
 helper.runDistinctQuery = function(req, res){
     req.dao.distinct(req.distinctField, function(err, results){
         if (err) {
-            res.send(500, 'error running query');
+            res.jsonp(500, {'error':'failed to run query'});
         } else {
             res.jsonp(results);
         }
@@ -294,7 +294,7 @@ helper.runQuery = function(req, res) {
         .exec(
         function(err, entities) {
             if (err) {
-                res.send(500, 'error running query');
+                res.jsonp(500, {'error':'failed to run query'});
             } else {
                 req.dao.count(req.searchQuery).exec(function (err, count) {
                     //add header link info for paging

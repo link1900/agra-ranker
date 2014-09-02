@@ -42,7 +42,7 @@ batchController.checkFields = function(req, res, next){
         helper.pushChangeToFk(BatchRecord, 'batchRef', req.model._id, req.model.status, 'status');
         return next();
     } else {
-        return res.send(400, 'you are only allowed edit a batch by cancelling it');
+        return res.jsonp(400, {'error':'you are only allowed edit a batch by cancelling it'});
     }
 };
 
@@ -52,7 +52,7 @@ batchController.destroy = function(req, res) {
 
     req.model.remove(function(err, removedModel) {
         if (err) {
-            res.send(err.errors);
+            res.jsonp({'error':err.errors});
         } else {
             res.jsonp(removedModel);
         }
@@ -66,23 +66,23 @@ batchController.createBatchFromFile = function(req, res){
         batchController.createBatch(filename, fieldname, file, function(err, batch){
             if (err){
                 file.resume();
-                res.send(400, err.errors);
+                res.jsonp(400, {'error':err.errors});
             } else {
                 csv()
                     .from.stream(file)
                     .on('record', function(row,index){
                         batchController.createBatchRecord(batch, index+1, row, function(err){
                             if (err){
-                                res.send(400, err);
+                                res.jsonp(400, {'error':err});
                             }
                         });
                     })
                     .on('end', function(count){
-                        res.send(200, batch);
+                        res.jsonp(200, {'result':batch});
                         console.log('Finishing parsing file ' + filename + ' with lines ' + count);
                     })
                     .on('error', function(error){
-                        res.send(400,error);
+                        res.jsonp(400, {'error':error});
                     });
             }
         });
@@ -187,7 +187,7 @@ batchController.processBatches = function(){
 
 batchController.processSpecificBatch = function(req, res){
     batchController.processBatch(req.model);
-    res.send(200, 'Started batch');
+    res.json(200, {'result':'Started batch'});
 };
 
 batchController.processBatch = function(batch){
