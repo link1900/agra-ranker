@@ -94,12 +94,19 @@ testHelper.loadPointAllotments = function(done){
             PointAllotment.remove({}, function () {
                 new PointAllotment({
                     "_id": "540198de8bbd09f6ab7f49da",
-                    "rank": 1,
                     "points": 70,
                     "greyhoundRef": "531d1f74e407586c2147737b",
                     "placingRef": "531d1f82e407586c21476eb9",
                     "rankingSystemRef" : "53412feb5c4ac1fdcd4781ff"
-                }).save(done);
+                }).save(function(){
+                        new PointAllotment({
+                            "_id": "540198de8bbd09f6ab7f49db",
+                            "points": 50,
+                            "greyhoundRef": "53407b9d5c4ac1fdcd47816a",
+                            "placingRef": "531d1f82e407586c21476dc9",
+                            "rankingSystemRef" : "53412feb5c4ac1fdcd4781ff"
+                        }).save(done);
+                    });
             });
         });
     });
