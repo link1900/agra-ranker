@@ -161,7 +161,7 @@ rankingSystemController.validateAllotment = function(allotment){
         });
         return q.all(validations);
     } else {
-        return q(model);
+        return q(allotment);
     }
 };
 
