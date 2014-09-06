@@ -9,6 +9,7 @@ var raceController = require('./controllers/raceController');
 var groupLevelController = require('./controllers/groupLevelController');
 var placingController = require('./controllers/placingController');
 var rankingSystemController = require('./controllers/rankingSystemController');
+var pointAllotmentController = require('./controllers/pointAllotmentController');
 var rankingController = require('./controllers/rankingController');
 var helper = require('./helper');
 
@@ -74,9 +75,17 @@ module.exports = function(app) {
     app.post('/rankingSystem', securityController.checkAuthentication, rankingSystemController.create);
     app.put('/rankingSystem/:rankingSystemId', securityController.checkAuthentication, rankingSystemController.update);
     app.del('/rankingSystem/:rankingSystemId',securityController.checkAuthentication, rankingSystemController.destroy);
+    app.param('rankingSystemId', rankingSystemController.setModel);
+
+    //point allotment
+    app.get('/pointAllotment', pointAllotmentController.prepareQuery, helper.runQuery);
+    app.get('/pointAllotment/:pointAllotmentId', helper.getOne);
+    app.post('/pointAllotment', securityController.checkAuthentication, pointAllotmentController.createMany);
+    app.param('pointAllotmentId', pointAllotmentController.setModel);
 
     //rankings
-    app.get('/rankings/:rankingSystemId', rankingController.getRankings);
-    app.post('/calculateRankings/:rankingSystemId', rankingController.calculateRankings);
-    app.param('rankingSystemId', rankingSystemController.setModel);
+    //app.get('/ranking', rankingController.getRankings);
+    //app.get('/ranking/:rankingId', helper.getOne);
+    //app.post('/calculateRankings/:rankingSystemId', rankingController.calculateRankings);
+    //app.param('rankingSystemId', rankingSystemController.setModel);
 };
