@@ -21,6 +21,18 @@ helper.buildPagingLinks = function(urlString, currentPage, lastPage){
     };
 };
 
+helper.findOneById = function(dao, id){
+    var deferred = q.defer();
+    dao.findById(id, function (err, model) {
+        if (err) {
+            deferred.reject(err);
+        } else {
+            deferred.resolve(model);
+        }
+    });
+    return deferred.promise;
+};
+
 helper.removeAll = function(dao, query){
     var deferred = q.defer();
     dao.remove(query, function (err) {
