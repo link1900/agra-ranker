@@ -129,10 +129,10 @@ testHelper.loadRankingSystem = function(done){
                             "_id" : "53412feb5c4ac1fdcd4781ff",
                             "name": "Agra Rankings",
                             "description": "The main ranking system for agra",
-                            "matchingStrategy": "split",
-                            "pointDefinitions":[
+                            "equalPositionResolution": "splitPoints",
+                            "pointAllotments":[
                                 {
-                                    filters: [
+                                    criteria: [
                                         {field: "placing", "comparator": "=", "value": "1"},
                                         {field: "race.date", "comparator": ">=", "value": "##currentFinancialYear.start"},
                                         {field: "race.date", "comparator": "<=", "value": "##currentFinancialYear.end"},
@@ -162,7 +162,7 @@ testHelper.loadRaces = function(done){
         Race.remove({}, function(){
             new Race({"_id" : "531d1f72e407586c21476ea8",
                 "name" : "race1",
-                "date": new Date(5,5,2014),
+                "date": new Date(),
                 "groupLevelRef":"531d1f72e407586c21476ef7",
                 "distanceMeters": 515,
                 "disqualified":false}).save(function(){
@@ -171,7 +171,14 @@ testHelper.loadRaces = function(done){
                         "date": new Date(),
                         "groupLevelRef":"531d1f72e407586c21476f0c",
                         "distanceMeters": 715,
-                        "disqualified":false}).save(done);
+                        "disqualified":false}).save(function(){
+                            new Race({"_id" : "531d1f72e407586c21476e52",
+                                "name" : "Race3",
+                                "date": new Date(2014,5,5),
+                                "groupLevelRef":"531d1f72e407586c21476f0c",
+                                "distanceMeters": 715,
+                                "disqualified":false}).save(done);
+                        });
                 });
         });
     });

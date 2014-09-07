@@ -145,8 +145,8 @@ describe("Race", function(){
         });
 
         it("with existing name and date", function(done){
-            var body ={ "name" : "race1",
-                "date": new Date(5,5,2014),
+            var body ={ "name" : "Race3",
+                "date": new Date(2014,5,5),
                 "groupLevelRef":"531d1f72e407586c21476ef7",
                 "distanceMeters": 515,
                 "disqualified":false};
