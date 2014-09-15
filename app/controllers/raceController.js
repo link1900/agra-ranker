@@ -47,9 +47,21 @@ raceController.create = function(req, res) {
     var processChain = raceController.preProcessRaw(entityRequest)
         .then(raceController.makeRace)
         .then(raceController.validate)
+        .then(raceController.updateGroupLevelFlyweight)
         .then(helper.saveEntityRequest);
 
     helper.promiseToResponse(processChain, res);
+};
+
+raceController.updateGroupLevelFlyweight = function(entityRequest){
+    var deferred = q.defer();
+    GroupLevel.findById(entityRequest.newEntity.groupLevelRef, function(err, model) {
+        if (err) return deferred.reject("cannot check group level ref");
+        if (!model) return deferred.reject("cannot find group level ref");
+        entityRequest.newEntity.groupLevel = model;
+        deferred.resolve(entityRequest);
+    });
+    return deferred.promise;
 };
 
 raceController.update = function(req, res) {
@@ -59,6 +71,7 @@ raceController.update = function(req, res) {
     var processChain = raceController.preProcessRaw(entityRequest)
         .then(helper.mergeEntityRequest)
         .then(raceController.validate)
+        .then(raceController.updateGroupLevelFlyweight)
         .then(helper.saveEntityRequest);
 
     helper.promiseToResponse(processChain, res);

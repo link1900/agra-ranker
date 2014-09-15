@@ -140,6 +140,7 @@ describe("Race", function(){
                     res.body.distanceMeters.should.equal(515);
                     res.body.should.have.property("disqualified");
                     res.body.disqualified.should.equal(false);
+                    assert.equal(res.body.groupLevel.name, "Group 1");
                     done();
                 });
         });
