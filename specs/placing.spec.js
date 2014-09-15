@@ -211,7 +211,6 @@ describe("Placing", function(){
                     res.body.greyhoundRef.should.equal("531d1f74e407586c214773df");
                     res.body.should.have.property("raceRef");
                     res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
-                    console.log(res.body);
                     assert.property(res.body, 'race');
                     assert.notEqual(res.body.race, null);
                     assert.equal(res.body.race._id, "531d1f72e407586c21476ea8");
