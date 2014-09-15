@@ -40,6 +40,8 @@ placingController.create = function(req, res) {
     var processChain = placingController.preProcessRaw(entityRequest)
         .then(placingController.make)
         .then(placingController.validate)
+        .then(placingController.updateRaceFlyweight)
+        .then(placingController.updateGreyhoundFlyweight)
         .then(helper.saveEntityRequest);
 
     helper.promiseToResponse(processChain, res);
@@ -52,6 +54,8 @@ placingController.update = function(req, res) {
     var processChain = placingController.preProcessRaw(entityRequest)
         .then(helper.mergeEntityRequest)
         .then(placingController.validate)
+        .then(placingController.updateRaceFlyweight)
+        .then(placingController.updateGreyhoundFlyweight)
         .then(helper.saveEntityRequest);
 
     helper.promiseToResponse(processChain, res);
@@ -87,6 +91,30 @@ placingController.validate = function(entityRequest){
     return placingController.checkRaceRefExists(entityRequest)
         .then(placingController.checkGreyhoundRefExists)
         .then(placingController.checkGreyhoundRefNotAlreadyUsed);
+};
+
+placingController.updateRaceFlyweight = function(entityRequest){
+    var deferred = q.defer();
+
+    Race.findById(entityRequest.newEntity.raceRef, function(err, model) {
+        if (err) return deferred.reject("cannot check race ref");
+        if (!model) return deferred.reject("cannot find race ref");
+        entityRequest.newEntity.race = model;
+        deferred.resolve(entityRequest);
+    });
+
+    return deferred.promise;
+};
+
+placingController.updateGreyhoundFlyweight = function(entityRequest){
+    var deferred = q.defer();
+    Greyhound.findById(entityRequest.newEntity.greyhoundRef, function(err, model) {
+        if (err) return deferred.reject("cannot check greyhound ref");
+        if (!model) return deferred.reject("cannot find greyhound ref");
+        entityRequest.newEntity.greyhound = model;
+        deferred.resolve(entityRequest);
+    });
+    return deferred.promise;
 };
 
 placingController.preProcessRaw = function(entityRequest){
