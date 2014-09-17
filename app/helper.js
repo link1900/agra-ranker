@@ -71,6 +71,32 @@ helper.cleanFk = function(dao, field, model){
     return deferred.promise;
 };
 
+helper.updateFlyweight = function(dao, ref, flyweightField, model){
+    var deferred = q.defer();
+    var query = {};
+    query[ref] = model._id;
+    dao.find(query).exec(function(err, entities){
+        if (err) {
+            deferred.reject("cannot query this dao");
+        } else {
+            if (entities.length > 0){
+                var promises = _.map(entities, function(entity){
+                    entity[flyweightField] = model;
+                    return helper.savePromise(entity);
+                });
+                deferred.resolve(
+                    q.all(promises).then(function(){
+                        return model;
+                    })
+                );
+            } else {
+                deferred.resolve(q(model));
+            }
+        }
+    });
+    return deferred.promise;
+};
+
 helper.clearAwayChildren = function(dao, field, model){
     var deferred = q.defer();
     var query = {};

@@ -405,6 +405,92 @@ describe("Placing", function(){
         });
     });
 
+    describe("Flyweight" , function(){
+        it("race flyweight should be update when race is updated", function(done){
+            //create a placing
+            var body = {"placing" : "8", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c214773df"};
+            var placingId;
+            testHelper.authSession
+                .post('/placing')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, placingPostRes){
+                    if (err){ throw err; }
+                    assert.equal(placingPostRes.body.race._id, "531d1f72e407586c21476ea8");
+                    assert.equal(placingPostRes.body.race.name, 'race1');
+                    placingId = placingPostRes.body._id;
+
+                    var raceBody = {"name": "differentRace"};
+                    testHelper.authSession
+                        .put('/race/531d1f72e407586c21476ea8')
+                        .send(raceBody)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .end(function(err, raceUpdateRes){
+                            if (err){ throw err; }
+                            assert.equal(raceUpdateRes.body.name, 'differentRace');
+
+                            testHelper.authSession
+                                .get('/placing/'+ placingId)
+                                .set('Accept', 'application/json')
+                                .expect('Content-Type', /json/)
+                                .expect(200)
+                                .end(function(err, res){
+                                    if (err){ throw err; }
+                                    assert.equal(res.body.race._id, "531d1f72e407586c21476ea8");
+                                    assert.equal(res.body.race.name, 'differentRace');
+                                    done();
+                                });
+                        });
+                });
+        });
+
+        it("greyhound flyweight should be update when greyhound is updated", function(done){
+            //create a placing
+            var body = {"placing" : "8", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c214773df"};
+            var placingId;
+            testHelper.authSession
+                .post('/placing')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, placingPostRes){
+                    if (err){ throw err; }
+                    assert.equal(placingPostRes.body.greyhound._id, "531d1f74e407586c214773df");
+                    assert.equal(placingPostRes.body.greyhound.name, 'grey3');
+                    placingId = placingPostRes.body._id;
+
+                    var greyhoundBody = {"name": "different"};
+                    testHelper.authSession
+                        .put('/greyhound/531d1f74e407586c214773df')
+                        .send(greyhoundBody)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .end(function(err, update2){
+                            if (err){ throw err; }
+                            assert.equal(update2.body.name, 'different');
+
+                            testHelper.authSession
+                                .get('/placing/'+ placingId)
+                                .set('Accept', 'application/json')
+                                .expect('Content-Type', /json/)
+                                .expect(200)
+                                .end(function(err, res){
+                                    if (err){ throw err; }
+                                    assert.equal(res.body.greyhound._id, "531d1f74e407586c214773df");
+                                    assert.equal(res.body.greyhound.name, 'different');
+                                    done();
+                                });
+                        });
+                });
+        });
+    });
+
     describe("Delete", function() {
         it("is secure", function (done) {
             testHelper.publicSession

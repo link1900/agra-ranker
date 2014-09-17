@@ -293,6 +293,53 @@ describe("Race", function(){
         });
     });
 
+    describe("Flyweight" , function(){
+        it("race flyweight should be update when group level is updated", function(done){
+            var body = {name:"raceCreated",
+                date: new Date(),
+                "groupLevelRef": "531d1f72e407586c21476ef7",
+                "distanceMeters": 515,
+                "disqualified":false};
+            var raceId;
+            testHelper.authSession
+                .post('/race')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, raceUpdateRes){
+                    if (err){ throw err; }
+                    assert.equal(raceUpdateRes.body.groupLevel._id, "531d1f72e407586c21476ef7");
+                    assert.equal(raceUpdateRes.body.groupLevel.name, 'Group 1');
+                    raceId = raceUpdateRes.body._id;
+
+                    var groupLevelBody = {"name": "Group 5"};
+                    testHelper.authSession
+                        .put('/groupLevel/531d1f72e407586c21476ef7')
+                        .send(groupLevelBody)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .end(function(err, update2){
+                            if (err){ throw err; }
+                            assert.equal(update2.body.name, 'Group 5');
+
+                            testHelper.authSession
+                                .get('/race/'+ raceId)
+                                .set('Accept', 'application/json')
+                                .expect('Content-Type', /json/)
+                                .expect(200)
+                                .end(function(err, res){
+                                    if (err){ throw err; }
+                                    assert.equal(res.body.groupLevel._id, "531d1f72e407586c21476ef7");
+                                    assert.equal(res.body.groupLevel.name, "Group 5");
+                                    done();
+                                });
+                        });
+                });
+        });
+    });
+
     describe("Delete", function() {
         it("is secure", function (done) {
             testHelper.publicSession

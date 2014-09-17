@@ -69,10 +69,17 @@ greyhoundController.update = function(req, res) {
         .then(greyhoundController.processSireField)
         .then(greyhoundController.processDamField)
         .then(helper.mergeEntityRequest)
-        .then(helper.saveEntityRequest);
+        .then(helper.saveEntityRequest)
+        .then(greyhoundController.updateFlyweights);
 
     helper.promiseToResponse(processChain, res);
 
+};
+
+greyhoundController.updateFlyweights = function(entityRequest){
+    return helper.updateFlyweight(Placing, 'greyhoundRef', 'greyhound', entityRequest.savedEntity).then(function(){
+        return entityRequest;
+    });
 };
 
 greyhoundController.preProcessRaw = function(entityRequest){

@@ -51,10 +51,18 @@ groupLevelController.update = function(req, res) {
     var processChain = groupLevelController.preProcessRaw(entityRequest)
         .then(helper.mergeEntityRequest)
         .then(groupLevelController.validate)
-        .then(helper.saveEntityRequest);
+        .then(helper.saveEntityRequest)
+        .then(groupLevelController.updateFlyweights);
 
     helper.promiseToResponse(processChain, res);
 };
+
+groupLevelController.updateFlyweights = function(entityRequest){
+    return helper.updateFlyweight(Race, 'groupLevelRef', 'groupLevel', entityRequest.savedEntity).then(function(){
+        return entityRequest;
+    });
+};
+
 
 groupLevelController.destroy = function(req, res) {
     helper.responseFromPromise(res,

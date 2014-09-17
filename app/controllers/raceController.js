@@ -72,9 +72,16 @@ raceController.update = function(req, res) {
         .then(helper.mergeEntityRequest)
         .then(raceController.validate)
         .then(raceController.updateGroupLevelFlyweight)
-        .then(helper.saveEntityRequest);
+        .then(helper.saveEntityRequest)
+        .then(raceController.updateFlyweights);
 
     helper.promiseToResponse(processChain, res);
+};
+
+raceController.updateFlyweights = function(entityRequest){
+    return helper.updateFlyweight(Placing, 'raceRef', 'race', entityRequest.savedEntity).then(function(){
+        return entityRequest;
+    })
 };
 
 raceController.destroy = function(req, res) {
