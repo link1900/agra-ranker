@@ -80,7 +80,6 @@ module.exports = function(app) {
     //point allotment
     app.get('/pointAllotment', pointAllotmentController.prepareQuery, helper.runQuery);
     app.get('/pointAllotment/:pointAllotmentId', helper.getOne);
-    app.post('/pointAllotment', securityController.checkAuthentication, pointAllotmentController.createMany);
     app.param('pointAllotmentId', pointAllotmentController.setModel);
 
     //rankings
