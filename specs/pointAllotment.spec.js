@@ -87,6 +87,29 @@ describe("Point Allotments", function(){
         });
     });
 
+    describe("post /pointAllotment", function(){
+        it("is secured", function(done){
+            testHelper.publicSession
+                .post('/pointAllotment?rankingSystemRef=53412feb5c4ac1fdcd4781ff')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(401, done);
+        });
+
+        it("generates point allotments", function(done){
+            testHelper.authSession
+                .post('/pointAllotment?rankingSystemRef=53412feb5c4ac1fdcd4781ff')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    assert.equal(res.body.created, 1);
+                    done();
+                });
+        });
+    });
+
     describe("PointAllotmentController", function() {
         describe("#allocatePointAllotment", function() {
             it("get one allotment for place", function(done) {

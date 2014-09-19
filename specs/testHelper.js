@@ -133,12 +133,7 @@ testHelper.loadRankingSystem = function(done){
                             "pointAllotments":[
                                 {
                                     criteria: [
-                                        {field: "placing", "comparator": "=", "value": "1"},
-                                        {field: "race.date", "comparator": ">=", "value": "##currentFinancialYear.start"},
-                                        {field: "race.date", "comparator": "<=", "value": "##currentFinancialYear.end"},
-                                        {field: "race.groupLevel.name", "comparator": "=", "value": "Group 1"},
-                                        {field: "distanceMeters", "comparator": "<", "value": "715"},
-                                        {field: "disqualified", "comparator": "=", "value": false}
+                                        {field: "placing", "comparator": "=", "value": "1"}
                                     ],
                                     points: 70
                                 }

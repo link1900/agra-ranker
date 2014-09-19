@@ -74,8 +74,14 @@ pointAllotmentController.allocatePointAllotments = function(rankingSystem){
         return pointAllotmentController.allocatePointAllotment(rankingSystem, pointAllotment);
     });
     return q.allSettled(pointAllocations).then(function(results){
-        console.log(results);
-        return results;
+        var count = results.filter(function(item){
+            return item.state == 'fulfilled';
+        }).map(function(item){
+            return item.value;
+        }).reduce(function(previousValue, currentValue){
+            return previousValue + currentValue;
+        });
+        return {"created": count};
     });
 };
 
@@ -97,7 +103,9 @@ pointAllotmentController.allocatePointAllotment = function(rankingSystem, pointA
             return helper.savePromise(pointAllotment);
         });
         return q.allSettled(createAllotmentPromises).then(function(results){
-            return results;
+            return results.filter(function(item){
+                return item.state == 'fulfilled';
+            }).length;
         });
     });
 };
