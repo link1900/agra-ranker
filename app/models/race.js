@@ -9,7 +9,7 @@ var RaceDesc = {
     groupLevelRef: {type: Schema.Types.ObjectId},
     groupLevel: {type: GroupLevelSchema},
     distanceMeters: {type: Number},
-    disqualified: {type: Boolean}
+    disqualified: {type: Boolean, default: false}
 };
 
 var RaceSchema = new Schema(RaceDesc);
