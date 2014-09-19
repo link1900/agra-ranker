@@ -164,6 +164,7 @@ testHelper.loadRaces = function(done){
                 "name" : "race1",
                 "date": new Date(),
                 "groupLevelRef":"531d1f72e407586c21476ef7",
+                "groupLevel" : {"name" : "Group 1", "level":1},
                 "distanceMeters": 515,
                 "disqualified":false}).save(function(){
                     new Race({"_id" : "531d1f72e407586c21476ec4",

@@ -120,25 +120,34 @@
 - (DONE) create a ranking system api
 - (DONE) edit a ranking system api
 - (DONE) delete ranking system api
-- clone ranking system
-- build advanced ranking system crud for query and point sets
+- (DONE) clone ranking system
 - (DONE) mongo migrations system
+- build advanced ranking system crud for query and point sets
 - create default system data
 - sire and dam inital data
 - dead heat rule - points from matching positions are summed and divided
 - point decay system in a ranker system
 
+### Point Allotments
+- (DONE) point allotment get api
+- remove point allotment post api
+- unit test point allotment creation
+- change npm test to constant
+- change placing to be fly weight for race and greyhound
+- point allotment display for a ranking system
+- recalculate rankings for a ranking system
+
 ### Ranking System UI
 - add the ranking system page (lists the ranking rules)
 
 ### Point Scale API
-- remove point scale
+-(DONE) remove point scale
 
 ### Query Parameters API
-- remove query params
+-(DONE) remove query params
 
 ### Query API
-- remove query api
+- (DONE) remove query api
 
 ### Ranking API
 - List rankings api
@@ -177,7 +186,7 @@
 - Edit emails on the white list
 - Remove emails from white list
 
-## 0.3 - Beyond the ranker 6
+## Backlog - Beyond the ranker 6
 - on the placing screen have the numbers come from a set list of placings (1st -> 1, 2nd -> 2, DNF -> DNF, Dis -> dis, etc.)
 - global search (on a search page)
 - Add a find parents button
@@ -198,7 +207,16 @@
 - warn for missing race at the end of the month
 - have the ability to send notifications if races are missed
 
-### UI Fixes
+- update batching code to be streaming
+- add image support for uploading a greyhounds image to its profile
+- add track entity
+- add image support for track
+- add description field group level
+- add description field to race
+- add race type which is for annual repeating races
+- show the ranking position for the previous month
+- show the rankings in chart form
+
 - lock form and hide controls when saving
 - should have spinny button when doing ajax call
 - pretty up the view forms to not be so cluttered
