@@ -127,6 +127,7 @@
 - sire and dam inital data
 - dead heat rule - points from matching positions are summed and divided
 - point decay system in a ranker system
+- update placing flyweight in point allotment when placing is updated.
 
 ### Point Allotments
 - (DONE) point allotment get api
@@ -206,6 +207,9 @@
 - graph of point distrobution over the year, showing percentage left, spent
 - warn for missing race at the end of the month
 - have the ability to send notifications if races are missed
+
+- move mongoHelper back into helper
+- cleanup helper to be consistent
 
 - update batching code to be streaming
 - add image support for uploading a greyhounds image to its profile

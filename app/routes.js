@@ -84,8 +84,5 @@ module.exports = function(app) {
     app.param('pointAllotmentId', pointAllotmentController.setModel);
 
     //rankings
-    //app.get('/ranking', rankingController.getRankings);
-    //app.get('/ranking/:rankingId', helper.getOne);
-    //app.post('/calculateRankings/:rankingSystemId', rankingController.calculateRankings);
-    //app.param('rankingSystemId', rankingSystemController.setModel);
+    app.get('/ranking', rankingController.getRankings);
 };

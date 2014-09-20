@@ -26,7 +26,6 @@ describe("Point Allotments", function(){
                 .end(function(err, res){
                     if (err){ console.log(res); throw err; }
                     assert.equal(res.body.points, 70);
-                    assert.equal(res.body.greyhoundRef, '531d1f74e407586c2147737b');
                     done();
                 });
         });

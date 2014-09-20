@@ -292,6 +292,18 @@ helper.findPromise = function(query){
     return deferred.promise;
 };
 
+helper.aggregatePromise = function(dao, aggregations){
+    var deferred = q.defer();
+    dao.aggregate(aggregations, function(err, entities){
+        if (err){
+            deferred.reject(err);
+        } else {
+            deferred.resolve(entities);
+        }
+    });
+    return deferred.promise;
+};
+
 helper.getOne = function(req, res) {
     res.jsonp(req.model);
 };

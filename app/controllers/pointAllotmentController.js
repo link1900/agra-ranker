@@ -25,7 +25,7 @@ pointAllotmentController.prepareQuery = function(req, res, next) {
     var greyhoundRef = req.param('greyhoundRef');
     if (greyhoundRef){
         if (/^[0-9a-fA-F]{24}$/.test(greyhoundRef)){
-            req.searchQuery.greyhoundRef = greyhoundRef;
+            req.searchQuery['placing.greyhoundRef'] = greyhoundRef;
         } else {
             return res.jsonp(400, {"error": "greyhoundRef must be a valid object id"});
         }
@@ -95,8 +95,8 @@ pointAllotmentController.allocatePointAllotment = function(rankingSystem, pointA
         var createAllotmentPromises = placings.map(function(placing){
             var pointAllotmentRaw = {
                 points: points,
-                greyhoundRef: placing.greyhoundRef,
                 placingRef: placing._id,
+                placing: placing,
                 rankingSystemRef: rankingSystem._id
             };
             var pointAllotment = new PointAllotment(pointAllotmentRaw);

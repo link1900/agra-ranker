@@ -1,12 +1,13 @@
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
+var PlacingSchema = require('./placing');
 
 var PointAllotmentSchema = new Schema({
     points : { type: Number },
-    greyhoundRef: {type: Schema.Types.ObjectId},
-    placingRef: {type: Schema.Types.ObjectId},
-    rankingSystemRef: {type: Schema.Types.ObjectId}
+    placingRef: {type: String},
+    placing: {type: PlacingSchema},
+    rankingSystemRef: {type: String}
 });
 
 PointAllotmentSchema.plugin(timestamps);
