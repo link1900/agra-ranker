@@ -137,19 +137,19 @@ pointAllotmentController.getQueryForPointAllotment = function(pointAllotment){
                 query[criteria.field] = criteria.value;
                 break;
             case ">":
-                pointAllotmentController.addField(query, criteria.field, {"$gt": criteria.value});
+                helper.addField(query, criteria.field, {"$gt": criteria.value});
                 break;
             case "<":
-                pointAllotmentController.addField(query, criteria.field, {"$lt": criteria.value});
+                helper.addField(query, criteria.field, {"$lt": criteria.value});
                 break;
             case ">=":
-                pointAllotmentController.addField(query, criteria.field, {"$gte": criteria.value});
+                helper.addField(query, criteria.field, {"$gte": criteria.value});
                 break;
             case "<=":
-                pointAllotmentController.addField(query, criteria.field, {"$lte": criteria.value});
+                helper.addField(query, criteria.field, {"$lte": criteria.value});
                 break;
             case "!=":
-                pointAllotmentController.addField(query, criteria.field, {"$ne": criteria.value});
+                helper.addField(query, criteria.field, {"$ne": criteria.value});
                 break;
             default:
                 query[criteria.field] = criteria.value;
@@ -157,14 +157,6 @@ pointAllotmentController.getQueryForPointAllotment = function(pointAllotment){
         }
     });
     return query;
-};
-
-pointAllotmentController.addField = function(query, field, statement){
-    if (query[field]){
-        query[field] = _.extend(query[field], statement);
-    } else {
-        query[field] = statement;
-    }
 };
 
 pointAllotmentController.convertPlaceHolder = function(placeholder){

@@ -357,3 +357,11 @@ helper.runQuery = function(req, res) {
         }
     );
 };
+
+helper.addField = function(query, field, statement){
+    if (query[field]){
+        query[field] = _.extend(query[field], statement);
+    } else {
+        query[field] = statement;
+    }
+};
