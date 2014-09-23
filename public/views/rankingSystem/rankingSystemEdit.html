@@ -71,40 +71,41 @@
                 <div class="form-group row" ng-show="rankingSystem.pointAllotments[currentPointAllotmentPosition].criteria != null && rankingSystem.pointAllotments[currentPointAllotmentPosition].criteria.length > 0">
                     <div class="col-md-12">
                         <table class="table">
-                        <thead><tr>
-                            <th>Field</th>
-                            <th>Comparator</th>
-                            <th>Value</th>
-                            <th>Options</th>
-                        </tr></thead>
-                        <tbody>
-                            <tr data-ng-repeat="criteria in rankingSystem.pointAllotments[currentPointAllotmentPosition].criteria">
-                                <td>
-                                    <label class="sr-only" for="criteriaField"></label>
-                                    <input id="criteriaField"
-                                           type="text"
-                                           class="form-control"
-                                           data-ng-model="criteria.field"
-                                           autocomplete="off" />
-                                </td>
-                                <td>
-                                    <label class="sr-only" for="rankingSystemCriteriaComparator"></label>
-                                    <select id="rankingSystemCriteriaComparator" class="form-control" data-ng-model="criteria.comparator" ng-options="criteriaCompare.value as criteriaCompare.name for criteriaCompare in criteriaCompare"></select>
-                                </td>
-                                <td>
-                                    <label class="sr-only" for="valueField"></label>
-                                    <input id="valueField"
-                                           type="text"
-                                           class="form-control"
-                                           data-ng-model="criteria.value"
-                                           autocomplete="off" />
-                                </td>
-                                <td>
-                                    <button data-ng-click="removeCriteria(currentPointAllotmentPosition,$index)" class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <thead><tr>
+                                <th>Field</th>
+                                <th>Comparator</th>
+                                <th>Value</th>
+                                <th>Options</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr data-ng-repeat="criteria in rankingSystem.pointAllotments[currentPointAllotmentPosition].criteria">
+                                    <td>
+                                        <label class="sr-only" for="criteriaField"></label>
+                                        <input id="criteriaField"
+                                               type="text"
+                                               class="form-control"
+                                               data-ng-model="criteria.field"
+                                               autocomplete="off" />
+                                    </td>
+                                    <td>
+                                        <label class="sr-only" for="rankingSystemCriteriaComparator"></label>
+                                        <select id="rankingSystemCriteriaComparator" class="form-control" data-ng-model="criteria.comparator" ng-options="criteriaCompare.value as criteriaCompare.name for criteriaCompare in criteriaCompare"></select>
+                                    </td>
+                                    <td>
+                                        <label class="sr-only" for="valueField"></label>
+                                        <input id="valueField"
+                                               type="text"
+                                               class="form-control"
+                                               data-ng-model="criteria.value"
+                                               autocomplete="off" />
+                                    </td>
+                                    <td>
+                                        <button data-ng-click="removeCriteria(currentPointAllotmentPosition,$index)" class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-md-3">
