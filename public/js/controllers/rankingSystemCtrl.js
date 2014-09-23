@@ -24,13 +24,61 @@ angular.module('controllers').controller('RankingSystemCtrl', ['$scope', '$route
         };
 
         $scope.addPointDefinition = function(){
-            if ($scope.rankingSystem){
-                $scope.rankingSystem.pointAllotments.push({});
-            } else {
-                $scope.rankingSystem = {pointAllotments:[]};
-                $scope.rankingSystem.pointAllotments.push({});
+            if (!$scope.rankingSystem){
+                $scope.rankingSystem = {};
+            }
+
+            if (!$scope.rankingSystem.pointAllotments){
+                $scope.rankingSystem.pointAllotments = [];
+            }
+
+            $scope.rankingSystem.pointAllotments.push({});
+            $scope.setPointAllotmentEditor($scope.rankingSystem.pointAllotments.length-1);
+        };
+
+        $scope.clearPointAllotmentEditor = function(){
+            $scope.currentPointAllotmentPosition = null;
+        };
+
+        $scope.removePointAllotment = function(index){
+            if ($scope.rankingSystem.pointAllotments && $scope.rankingSystem.pointAllotments.length > 0){
+                $scope.rankingSystem.pointAllotments.splice(index,1);
+                $scope.clearPointAllotmentEditor();
             }
         };
+
+        $scope.setPointAllotmentEditor = function(index){
+            $scope.currentPointAllotmentPosition = index;
+        };
+
+        $scope.addCriteria = function(pointAllotmentIndex){
+            if ($scope.rankingSystem != null &&
+                $scope.rankingSystem.pointAllotments != null &&
+                $scope.rankingSystem.pointAllotments[pointAllotmentIndex] != null){
+                var pointAllotment = $scope.rankingSystem.pointAllotments[pointAllotmentIndex];
+                if (pointAllotment.criteria == null){
+                    pointAllotment.criteria = [];
+                }
+                pointAllotment.criteria.push({});
+            }
+        };
+
+        $scope.removeCriteria = function(pointAllotmentIndex, criteriaIndex){
+            if ($scope.rankingSystem != null &&
+                $scope.rankingSystem.pointAllotments != null &&
+                $scope.rankingSystem.pointAllotments[pointAllotmentIndex] != null &&
+                $scope.rankingSystem.pointAllotments[pointAllotmentIndex].criteria.length > 0){
+                $scope.rankingSystem.pointAllotments[pointAllotmentIndex].criteria.splice(criteriaIndex,1);
+            }
+        };
+
+        $scope.criteriaCompare = [
+            {name: "Equals", value:"="},
+            {name: "Greater then", value:">"},
+            {name: "Less then", value:"<"},
+            {name: "Less then or equal to", value:"<="},
+            {name: "Greater then or equal to", value:">="}
+        ];
 
         /**
          * Loads default form fields
