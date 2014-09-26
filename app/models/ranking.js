@@ -3,7 +3,9 @@ var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 
 var RankingSchema = new Schema({
-    greyhoundRef: {type: String},
+    rankingSystemRef : { type: String },
+    greyhoundRef: { type: String },
+    greyhoundName: { type: String },
     totalPoints : { type: Number }
 });
 
