@@ -13,6 +13,7 @@
     </ul>
     <div ng-show="user" class="panel-body">
         <a data-ng-href="#/rankingSystem/create" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Create New Ranking System</a>
+        <button ng-controller="RankingSystemCtrl" ng-click="recalculateRankings()" class="btn btn-primary"><span class="glyphicon glyphicon-refresh"></span> Recalculate Rankings</button>
     </div>
 </div>
 <div data-ng-include="'views/rankingSystem/rankingSystemList.html'"></div>

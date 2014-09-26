@@ -1,5 +1,5 @@
 angular.module('controllers').controller('RankingSystemCtrl',
-    function($scope, $routeParams, headerHelperService, rankingSystemService, $location, pointAllotmentService) {
+    function($scope, $routeParams, headerHelperService, rankingSystemService, $location, pointAllotmentService, rankingService) {
 
         $scope.findOne = function() {
             rankingSystemService.get({
@@ -86,11 +86,11 @@ angular.module('controllers').controller('RankingSystemCtrl',
             {name: "Date", value:"date"}
         ];
 
-        $scope.recalculateRankingsForSystem = function(){
+        $scope.recreateAllocations = function(){
             pointAllotmentService.create($routeParams.id).then(function(response){
                     var createdCount = response.data.created;
                     $scope.alerts = [
-                        { type: 'success', msg: "Recalculation complete. Created " + createdCount + " point allocations"}
+                        { type: 'success', msg: "Re-Creation complete. Created " + createdCount + " point allocations"}
                     ];
                 },
                 function(error){
@@ -98,6 +98,19 @@ angular.module('controllers').controller('RankingSystemCtrl',
                         { type: 'danger', msg: error.data.error }
                     ];
                 });
+        };
+
+        $scope.recalculateRankings = function(){
+            rankingService.createAll().then(function(response){
+                console.log(response);
+                $scope.alerts = [
+                    { type: 'success', msg: "Recalculation complete."}
+                ];
+            }, function(error){
+                $scope.alerts = [
+                    { type: 'danger', msg: error.data.error }
+                ];
+            });
         };
 
         /**
