@@ -5,7 +5,8 @@ var Schema = mongoose.Schema;
 var allotmentCriteriaSchema = new Schema({
     field: {type: String},
     comparator:{type: String},
-    value:{type: Schema.Types.Mixed}
+    value:{type: Schema.Types.Mixed},
+    type:{type: String}
 });
 
 var pointAllotmentSchema = new Schema({
