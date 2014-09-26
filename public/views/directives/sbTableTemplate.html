@@ -37,7 +37,7 @@
                 <td data-ng-repeat="column in columnInfo">
                     <div ng-switch data-on="column.link">
                         <div ng-switch-when="true">
-                            <a data-ng-href="{{column.baseLink}}{{model[column.linkField]}}">{{getFieldValue(model,column)}}</a>
+                            <a data-ng-href="{{column.baseLink}}{{getValueFromModel(model, column.linkField)}}">{{getFieldValue(model,column)}}</a>
                         </div>
                         <div ng-switch-default>{{getFieldValue(model,column)}}</div>
                     </div>

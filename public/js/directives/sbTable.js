@@ -46,8 +46,7 @@ angular.module('directives')
                 scope.loadModels();
             };
 
-            scope.getFieldValue = function(model, column) {
-                var field = column.field;
+            scope.getValueFromModel = function(model, field){
                 var finalResult;
                 if (model && field){
                     var result = model;
@@ -66,6 +65,12 @@ angular.module('directives')
                 } else {
                     finalResult = '';
                 }
+                return finalResult;
+            };
+
+            scope.getFieldValue = function(model, column) {
+                var field = column.field;
+                var finalResult = scope.getValueFromModel(model,  column.field);
 
                 //filter final result
                 if (column.filter && column.filterFormat){
