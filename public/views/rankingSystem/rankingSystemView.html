@@ -28,6 +28,7 @@
                         <p>{{rankingSystem.updatedAt | date:'medium'}}</p>
                     </div>
                 </form>
+                <button ng-show="user" class="btn btn-primary" ng-click="recalculateRankingsForSystem()"><span class="glyphicon glyphicon-refresh"></span> Recalculate Rankings</button>
                 <a ng-show="user" data-ng-href="#/rankingSystem/edit/{{rankingSystem._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
                 <a ng-show="user" ng-click="copy()" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Copy</a>
                 <button ng-show="user" data-ng-click="deleteEntity()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
@@ -36,7 +37,7 @@
     </div>
     <div class="panel panel-default" data-ng-show="rankingSystem.pointAllotments">
         <div class="panel-heading">
-            <h3 class="panel-title">Point Allocations</h3>
+            <h3 class="panel-title">Point Definitions</h3>
         </div>
         <div class="panel-body">
             <table class="table table-striped table-bordered">
@@ -55,6 +56,17 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div id="pointAllotmentList" data-ng-controller="PointAllotmentCtrl">
+        <div data-sb-table
+             data-table-title="Point Allotments"
+             data-model-service="pointAllotmentService"
+             data-column-info="columnInfo"
+             data-per-page="15"
+             data-sort-field="date"
+             data-sort-direction="desc"
+             data-post-process="postProcessingCollection">
         </div>
     </div>
     <a data-ng-href="#/rankingSystem">Back to Ranking Systems</a>

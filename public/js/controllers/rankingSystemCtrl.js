@@ -1,5 +1,5 @@
-angular.module('controllers').controller('RankingSystemCtrl', ['$scope', '$routeParams', 'headerHelperService', 'rankingSystemService', '$location', 'groupLevelService', 'generalService',
-    function($scope, $routeParams, headerHelperService, rankingSystemService, $location, groupLevelService, generalService) {
+angular.module('controllers').controller('RankingSystemCtrl',
+    function($scope, $routeParams, headerHelperService, rankingSystemService, $location, pointAllotmentService) {
 
         $scope.findOne = function() {
             rankingSystemService.get({
@@ -59,7 +59,7 @@ angular.module('controllers').controller('RankingSystemCtrl', ['$scope', '$route
                 if (pointAllotment.criteria == null){
                     pointAllotment.criteria = [];
                 }
-                pointAllotment.criteria.push({});
+                pointAllotment.criteria.push({type:"text"});
             }
         };
 
@@ -79,6 +79,26 @@ angular.module('controllers').controller('RankingSystemCtrl', ['$scope', '$route
             {name: "Less then or equal to", value:"<="},
             {name: "Greater then or equal to", value:">="}
         ];
+
+        $scope.criteriaTypes = [
+            {name: "Text", value:"text"},
+            {name: "Number", value:"number"},
+            {name: "Date", value:"date"}
+        ];
+
+        $scope.recalculateRankingsForSystem = function(){
+            pointAllotmentService.create($routeParams.id).then(function(response){
+                    var createdCount = response.data.created;
+                    $scope.alerts = [
+                        { type: 'success', msg: "Recalculation complete. Created " + createdCount + " point allocations"}
+                    ];
+                },
+                function(error){
+                    $scope.alerts = [
+                        { type: 'danger', msg: error.data.error }
+                    ];
+                });
+        };
 
         /**
          * Loads default form fields
@@ -158,4 +178,4 @@ angular.module('controllers').controller('RankingSystemCtrl', ['$scope', '$route
 
         $scope.loadForm();
     }
-]);
+);
