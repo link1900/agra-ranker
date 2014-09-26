@@ -6,9 +6,9 @@ var GreyhoundSchema = require('./greyhound');
 
 var PlacingDesc = {
     placing: { type: String },
-    raceRef: {type: Schema.Types.ObjectId},
+    raceRef: {type: String},
     race : {type: RaceSchema},
-    greyhoundRef: {type: Schema.Types.ObjectId},
+    greyhoundRef: {type: String},
     greyhound : {type: GreyhoundSchema}
 };
 
