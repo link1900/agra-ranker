@@ -1,5 +1,5 @@
 # Todo
-## Round 1 - Basics
+## 0.1 - Basics
 
 ### Greyhound
 - (DONE) interactive validation of name
@@ -101,8 +101,6 @@
 - (DONE) when saving a race on the race edit screen the alerts are also shown for placing edit
 - (DONE) fix spacing on the placing add field
 - (DONE) can editing placing on race creation (or forward onto the race edit screen)
-
-### General Fixes
 - (DONE) put delete on the greyhound view
 - (DONE) Add a clear button on greyhound search
 - (DONE) Error on placing move
@@ -112,6 +110,10 @@
 - (DONE) Race search is lower casing the name
 - (DONE) Replace all greyhound name fields with the directive
 - (DONE) Fix the menu selectors
+- (DONE) remove point scale
+- (DONE) remove query params
+- (DONE) remove query api
+- (DONE) add the ranking system page (lists the ranking rules)
 
 ### Ranking System
 - (DONE) build basic ranking system model (name and desc fields)
@@ -122,33 +124,24 @@
 - (DONE) delete ranking system api
 - (DONE) clone ranking system
 - (DONE) mongo migrations system
-- build advanced ranking system crud for query and point sets
-- create default system data
-- sire and dam inital data
-- dead heat rule - points from matching positions are summed and divided
-- point decay system in a ranker system
-- update placing flyweight in point allotment when placing is updated.
-
-### Point Allotments
+- (DONE) build advanced ranking system crud for query and point sets
 - (DONE) point allotment get api
-- remove point allotment post api
+- (DONE) remove point allotment post api
+- (DONE) change placing to be fly weight for race and greyhound
+- (DONE) recalculate rankings for a ranking system
+- (DONE) point allotment display for a ranking system
+- Add a series field to a point definition
+- Change point definition view to group by series and common criteria
+- add series function which can create many point definitions at once
+- When adding a point definitions series allow range usage [1..10]
+- import point definitions from a file (browser import only?)
+- define agra ranking system
+- define sire and dam ranking systems
+- dead heat rule - points from matching positions are summed and divided
+- update placing flyweight in point allotment when placing is updated
 - unit test point allotment creation
-- change npm test to constant
-- change placing to be fly weight for race and greyhound
-- point allotment display for a ranking system
-- recalculate rankings for a ranking system
+- calculate rankings on race creation
 
-### Ranking System UI
-- add the ranking system page (lists the ranking rules)
-
-### Point Scale API
--(DONE) remove point scale
-
-### Query Parameters API
--(DONE) remove query params
-
-### Query API
-- (DONE) remove query api
 
 ### Ranking API
 - List rankings api
@@ -164,6 +157,7 @@
 - list all rankings on the home screen
 
 ## 0.2 - Getting to Ranker 6 Level
+- change npm test to constant
 - Move upload to a directive
 - race upload section
 - placing upload section
