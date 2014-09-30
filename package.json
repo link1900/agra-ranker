@@ -1,7 +1,7 @@
 {
   "name": "agra-ranker",
   "description": "Agra web server to rank greyhounds",
-  "version": "0.0.1",
+  "version": "0.1",
   "private": false,
   "author": "Scott Brown",
   "repository": {
