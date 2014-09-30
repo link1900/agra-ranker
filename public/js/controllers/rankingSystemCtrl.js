@@ -38,6 +38,7 @@ angular.module('controllers').controller('RankingSystemCtrl',
 
         $scope.clearPointAllotmentEditor = function(){
             $scope.currentPointAllotmentPosition = null;
+            $scope.save();
         };
 
         $scope.removePointAllotment = function(index){

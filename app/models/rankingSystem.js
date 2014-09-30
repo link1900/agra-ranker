@@ -11,6 +11,7 @@ var allotmentCriteriaSchema = new Schema({
 
 var pointAllotmentSchema = new Schema({
     criteria: {type: [allotmentCriteriaSchema]},
+    series: {type: String},
     points: {type: Number}
 });
 
