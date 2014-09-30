@@ -1,7 +1,6 @@
 # Todo
-## 0.1 - Basics
-
-### Greyhound
+## 6.1 - Basics
+### 6.0.1 Greyhound
 - (DONE) interactive validation of name
 - (DONE) have a view form for a greyhound
 - (DONE) clicking table loads greyhound details into view form
@@ -21,13 +20,13 @@
 - (DONE) setup login
 - (DONE) setup action security around editing greyhounds and creating greyhounds
 
-### Deployment
+### 6.0.2 Deployment
 - (DONE) setup heroku app
 - (DONE) setup prod key
 - (DONE) deploy to heroku
 - (DONE) test that it works online
 
-### Refactor Cleanups
+### 6.0.3 Refactor Cleanups
 - (DONE) fix the top menu so that it looks nice in firefox and has highlighting
 - (DONE) force https and piggy back on heroku certs
 - (DONE) make the login screen work with lastpass and normal auto complete
@@ -36,20 +35,20 @@
 - (DONE) fix offspring table to be actual table
 - (DONE) Clean up the server loader. Remove all front end templating.
 
-### Group Rank API
+### 6.0.4 Group Rank API
 - (DONE) add group rank api
 - (DONE) create group rank api
 - (DONE) update group rank api
 - (DONE) delete group rank api
 - (DONE) delete cleaned up race references
 
-### Races API
+### 6.0.5 Races API
 - (DONE) list races api
 - (DONE) create race api (no placings)
 - (DONE) view race api
 - (DONE) edit race api
 
-### Placings API
+### 6.0.6 Placings API
 - (DONE) create a placing api
 - (DONE) edit a placing api
 - (DONE) list placing api (query for by race or greyhound)
@@ -57,19 +56,19 @@
 - (DONE) delete placing when greyhound is deleted
 - (DONE) delete placing when race is deleted
 
-### Group Rank UI
+### 6.0.7 Group Rank UI
 - (DONE) list group levels
 - (DONE) group rank edit screen
 - (DONE) group rank create screen
 - (DONE) group rank delete button
 
-### Race UI
+### 6.0.8 Race UI
 - (DONE) List out all races on the race screen
 - (DONE) race edit screen
 - (DONE) race create screen
 - (DONE) race delete button
 
-### General UI
+###6.0.9 General UI
 - (DONE) Headers need to be standardized
 - (DONE) Menu needs to be darker
 - (DONE) Fix auto login
@@ -81,7 +80,7 @@
 - (DONE) move race display placings out of the race container
 - (DONE) placing directive needs custom text for no items
 
-### Placing UI
+### 6.0.10 Placing UI
 - (DONE) placing shouldn't allow you to place multiple times in a race
 - (DONE) placing shouldn't allow you to have the same placing twice
 - (DONE) change placing position as a string
@@ -115,7 +114,7 @@
 - (DONE) remove query api
 - (DONE) add the ranking system page (lists the ranking rules)
 
-### Ranking System
+### 6.0.11 Ranking System
 - (DONE) build basic ranking system model (name and desc fields)
 - (DONE) build basic ranking system crud controllers and ui
 - (DONE) list ranking systems api
@@ -130,7 +129,7 @@
 - (DONE) change placing to be fly weight for race and greyhound
 - (DONE) recalculate rankings for a ranking system
 - (DONE) point allotment display for a ranking system
-- Add a series field to a point definition
+- (DONE) Add a series field to a point definition
 - Change point definition view to group by series and common criteria
 - add series function which can create many point definitions at once
 - When adding a point definitions series allow range usage [1..10]
@@ -143,7 +142,7 @@
 - calculate rankings on race creation
 
 
-### Ranking API
+### 6.0.12 Ranking API
 - List rankings api
 - calculate rankings based on a ranking system
 - update rankings when race is changed
@@ -153,10 +152,10 @@
 - update when rule set is deleted
 - delete ranking when system is deleted
 
-### Ranking UI
+### 6.1.0 Ranking UI
 - list all rankings on the home screen
 
-## 0.2 - Getting to Ranker 6 Level
+## 6.2 - Getting to Ranker 6 Level
 - change npm test to constant
 - Move upload to a directive
 - race upload section
