@@ -65,6 +65,19 @@ module.exports = function(grunt) {
                 },
                 src: ['specs/**/*.spec.js']
             }
+        },
+        'string-replace': {
+            version: {
+                files: {
+                    'public/views/footer.html': 'templates/public/views/footer.html'
+                },
+                options: {
+                    replacements: [{
+                        pattern: /{{VERSION}}/g,
+                        replacement: '<%= pkg.version %>'
+                    }]
+                }
+            }
         }
     });
 
@@ -75,9 +88,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-env');
     grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-string-replace');
 
     //Making grunt default to force in order not to break the project.
     grunt.option('force', true);
+
+    grunt.registerTask('build', ['string-replace:version']);
 
     //Default task(s).
     grunt.registerTask('default', ['concurrent']);
