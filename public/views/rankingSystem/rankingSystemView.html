@@ -16,7 +16,7 @@
                         <p>{{rankingSystem.description}}</p>
                     </div>
                     <div class="form-group">
-                        <label>Equal Position Resolution</label>
+                        <label>Equal Placing Resolution</label>
                         <p>{{rankingSystem.equalPositionResolution}}</p>
                     </div>
                     <div class="form-group">
@@ -65,7 +65,8 @@
              data-column-info="columnInfo"
              data-per-page="15"
              data-sort-field="date"
-             data-sort-direction="desc">
+             data-sort-direction="desc"
+             data-update-on-event="ENTITY_POINT_UPDATED">
         </div>
     </div>
     <a data-ng-href="#/rankingSystem">Back to Ranking Systems</a>

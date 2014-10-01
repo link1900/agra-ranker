@@ -30,7 +30,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-6">
-                        <label class="control-label" for="rankingSystemEPRField">Equal Position Resolution</label>
+                        <label class="control-label" for="rankingSystemEPRField">Equal Placing Resolution</label>
                         <select id="rankingSystemEPRField" class="form-control" data-ng-model="rankingSystem.equalPositionResolution" ng-options="positionResolution.value as positionResolution.name for positionResolution in positionResolutions"></select>
                     </div>
                 </div>
@@ -82,14 +82,18 @@
                     <div class="col-md-12">
                         <table class="table">
                             <thead><tr>
+                                <th>Type</th>
                                 <th>Field</th>
                                 <th>Comparator</th>
                                 <th>Value</th>
-                                <th>Type</th>
                                 <th>Options</th>
                             </tr></thead>
                             <tbody>
                                 <tr data-ng-repeat="criteria in rankingSystem.pointAllotments[currentPointAllotmentPosition].criteria">
+                                    <td>
+                                        <label class="sr-only" for="typeField"></label>
+                                        <select id="typeField" class="form-control" data-ng-model="criteria.type" ng-options="criteriaType.value as criteriaType.name for criteriaType in criteriaTypes"></select>
+                                    </td>
                                     <td>
                                         <label class="sr-only" for="criteriaField"></label>
                                         <input id="criteriaField"
@@ -109,10 +113,6 @@
                                                class="form-control"
                                                data-ng-model="criteria.value"
                                                autocomplete="off" />
-                                    </td>
-                                    <td>
-                                        <label class="sr-only" for="typeField"></label>
-                                        <select id="typeField" class="form-control" data-ng-model="criteria.type" ng-options="criteriaType.value as criteriaType.name for criteriaType in criteriaTypes"></select>
                                     </td>
                                     <td>
                                         <button data-ng-click="removeCriteria(currentPointAllotmentPosition,$index)" class="btn btn-danger">Delete</button>

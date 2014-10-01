@@ -1,5 +1,5 @@
 angular.module('controllers').controller('RankingSystemCtrl',
-    function($scope, $routeParams, headerHelperService, rankingSystemService, $location, pointAllotmentService, rankingService) {
+    function($scope, $routeParams, headerHelperService, rankingSystemService, $location, pointAllotmentService, rankingService, rankerEventBus) {
 
         $scope.findOne = function() {
             rankingSystemService.get({
@@ -93,6 +93,7 @@ angular.module('controllers').controller('RankingSystemCtrl',
                     $scope.alerts = [
                         { type: 'success', msg: "Re-Creation complete. Created " + createdCount + " point allocations"}
                     ];
+                    rankerEventBus.broadcastEvent(rankerEventBus.EVENTS.ENTITY_POINT_UPDATED, response);
                 },
                 function(error){
                     $scope.alerts = [

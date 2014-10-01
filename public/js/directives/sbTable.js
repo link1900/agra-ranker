@@ -1,5 +1,5 @@
 angular.module('directives')
-    .directive('sbTable', function(headerHelperService, $filter) {
+    .directive('sbTable', function(headerHelperService, $filter, rankerEventBus) {
         function linkBody(scope, element, attrs) {
 
             scope.searchParams = {
@@ -24,6 +24,12 @@ angular.module('directives')
 
             if (scope.searchFields){
                 _.extend(scope.searchParams, scope.searchFields);
+            }
+
+            if (scope.updateOnEvent){
+                scope.$on(scope.updateOnEvent,function() {
+                    scope.loadModels();
+                });
             }
 
             scope.searchFieldType = 'text';
@@ -103,6 +109,7 @@ angular.module('directives')
                 perPage : '@',
                 sortField: '@',
                 sortDirection: '@',
+                updateOnEvent: '@',
                 messageEmpty: '@',
                 searchType: '@',
                 modelService: '=',
