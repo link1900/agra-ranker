@@ -10,7 +10,8 @@ module.exports = function(grunt) {
                 }
             },
             html: {
-                files: ['public/views/**'],
+                files: ['templates/**'],
+                tasks: ['includeSource','string-replace:version'],
                 options: {
                     livereload: true
                 }
@@ -78,6 +79,17 @@ module.exports = function(grunt) {
                     }]
                 }
             }
+        },
+        includeSource: {
+            options :{
+                basePath: 'public',
+                baseUrl: ''
+            },
+            main: {
+                files: {
+                    'public/index.html': 'templates/public/index.html'
+                }
+            }
         }
     });
 
@@ -89,15 +101,16 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-env');
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-string-replace');
+    grunt.loadNpmTasks('grunt-include-source');
 
     //Making grunt default to force in order not to break the project.
     grunt.option('force', true);
 
-    grunt.registerTask('build', ['string-replace:version']);
+    grunt.registerTask('build', ['includeSource','string-replace:version']);
 
     //Default task(s).
-    grunt.registerTask('default', ['concurrent']);
+    grunt.registerTask('default', ['includeSource','string-replace:version','concurrent']);
 
     //Test task.
-    grunt.registerTask('test', ['env:test','mochaTest']);
+    grunt.registerTask('test', ['includeSource','string-replace:version','env:test','mochaTest']);
 };

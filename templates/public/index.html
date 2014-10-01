@@ -18,7 +18,7 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
 
 	<!--[if lt IE 9]>
-		<script src="/js/html5shim.js"></script>
+		<script src="/js/other/html5shim.js"></script>
 	<![endif]-->
 	</head>
 
@@ -58,49 +58,17 @@
         <script type="text/javascript" src="/lib/angular-ui-select2/src/select2.js"></script>
 
 		<!-- Application Core JS -->
-		<script type="text/javascript" src="/js/core.js"></script>
-        <script type="text/javascript" src="/js/routes.js"></script>
+        <!-- include: "type": "js", "files": "js/*.js" -->
 
         <!-- Application Services -->
-        <script type="text/javascript" src="/js/services/rankerEventBus.js"></script>
-        <script type="text/javascript" src="/js/services/securityService.js"></script>
-        <script type="text/javascript" src="/js/services/userService.js"></script>
-        <script type="text/javascript" src="/js/services/headerHelperService.js"></script>
-        <script type="text/javascript" src="/js/services/greyhoundService.js"></script>
-        <script type="text/javascript" src="/js/services/batchService.js"></script>
-        <script type="text/javascript" src="/js/services/batchRecordService.js"></script>
-        <script type="text/javascript" src="/js/services/groupLevelService.js"></script>
-        <script type="text/javascript" src="/js/services/raceService.js"></script>
-        <script type="text/javascript" src="/js/services/placingService.js"></script>
-        <script type="text/javascript" src="/js/services/generalService.js"></script>
-        <script type="text/javascript" src="/js/services/rankingSystemService.js"></script>
-        <script type="text/javascript" src="/js/services/pointAllotmentService.js"></script>
-        <script type="text/javascript" src="/js/services/rankingService.js"></script>
+        <!-- include: "type": "js", "files": "js/services/*.js" -->
 
         <!-- Application Directives -->
-        <script type="text/javascript" src="/js/directives/sbTable.js"></script>
-        <script type="text/javascript" src="/js/directives/sbGreyhoundNameField.js"></script>
-        <script type="text/javascript" src="/js/directives/sbRaceNameField.js"></script>
-        <script type="text/javascript" src="/js/directives/loginAutoFill.js"></script>
+        <!-- include: "type": "js", "files": "js/directives/*.js" -->
 
 		<!-- Application Controllers -->
-        <script type="text/javascript" src="/js/controllers/securityCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/globalCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/menuCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/userCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/greyhoundCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/raceCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/rankingCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/ruleCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/batchCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/batchRecordCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/uploadCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/groupLevelCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/raceCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/placingCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/rankingSystemCtrl.js"></script>
-        <script type="text/javascript" src="/js/controllers/pointAllotmentCtrl.js"></script>
+        <!-- include: "type": "js", "files": "js/controllers/*.js" -->
 
-        <script type="text/javascript" src="/js/googleAnalytics.js"></script>
+        <script type="text/javascript" src="/js/other/googleAnalytics.js"></script>
     </body>
 </html>
