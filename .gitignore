@@ -16,3 +16,5 @@ lib_managed/
 src_managed/
 test-output/
 *.iml
+public/index.html
+public/views/footer.html
