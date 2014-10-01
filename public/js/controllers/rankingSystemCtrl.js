@@ -190,6 +190,15 @@ angular.module('controllers').controller('RankingSystemCtrl',
             );
         };
 
+        $scope.groupBySeries = function(allotments){
+            var grouped = _.groupBy(allotments, function(item){
+                return item.series;
+            });
+            return _.map(_.keys(grouped), function(key){
+                return {series: key,  allotments: grouped[key]}
+            });
+        };
+
         $scope.loadForm();
     }
 );
