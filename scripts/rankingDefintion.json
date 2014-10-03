@@ -1,0 +1,1 @@
+{ "points": 70, "series": "Group 1 Sprint", "criteria": [{"type": "Text", "field":"placing", "comparator": "=", "value":"1"}]}

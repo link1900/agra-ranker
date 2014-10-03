@@ -130,12 +130,11 @@
 - (DONE) recalculate rankings for a ranking system
 - (DONE) point allotment display for a ranking system
 - (DONE) Add a series field to a point definition
-- Change point definition view to group by series and common criteria
-- add series function which can create many point definitions at once
-- When adding a point definitions series allow range usage [1..10]
+- (DONE) Added versioning display
+- (DONE) Change point definition view to group by series
 - import point definitions from a file (browser import only?)
-- define agra ranking system
-- define sire and dam ranking systems
+- define agra ranking system and test importing it
+- define sire and dam ranking systems test import it
 - dead heat rule - points from matching positions are summed and divided
 - update placing flyweight in point allotment when placing is updated
 - unit test point allotment creation
@@ -176,6 +175,7 @@
 - List users
 - Remove users
 - Add users
+- Remove white list and have all sign ups require approval
 - Add emails to the white list
 - Edit emails on the white list
 - Remove emails from white list
@@ -185,12 +185,15 @@
 - global search (on a search page)
 - Add a find parents button
 - fixture data is required
+- On the view point definitions have common criteria sit under the series header on for each definition
 - on the placing screen have a badge displaying points earned this round and the total points
 - have the ability to auto fill a race. When creating a race it should detect what the race is and offer to auto fill.
 - list who is in contention for the wild card
 - list who is going to win dam of the year
 - list who is going to win sire of the year
-
+- have a history log of all actions taken in the system for auditing reason
+- add series function which can create many point definitions at once
+- When adding a point definitions series allow range usage [1..10]
 - had race distance meters be auto completed, driven from track or all races
 - add description and icon to group level. It should describe what is that group level and have approiate icon (like a cup or money amount)
 - list a race calendar when creating a race
