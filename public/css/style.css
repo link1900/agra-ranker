@@ -58,10 +58,15 @@ a {
 }
 
 .navbar-default .navbar-nav > li > a:hover {
-    color: #ffffff;
+    background-color: #ececec;
+    color: #000;
 }
 
 .navbar-default .navbar-brand {
+    color: #ffffff;
+}
+
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
     color: #ffffff;
 }
 
