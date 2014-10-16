@@ -48,9 +48,10 @@
         </div>
         <div class="panel-body">
             <div class="form-group row" ng-show="currentPointAllotmentPosition == null">
-                <div class="col-md-3">
                     <button data-ng-click="addPointDefinition()" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Add Point Definition</button>
-                </div>
+                    <button data-ng-click="openFileSelect()" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Import Point Definitions</button>
+                    <input id="hiddenFileOpen" type="file" style="display:none" data-ng-hide="uploadingFile" ng-file-select="onFileSelect($files)">
+                    <a class="btn btn-primary" download="template.json" ng-href="/template/pointDefinitionTemplate.json"><span class="glyphicon glyphicon-arrow-down"></span> Download Import Template</a>
             </div>
             <form ng-show="currentPointAllotmentPosition != null">
                 <div class="form-group row">

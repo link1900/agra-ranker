@@ -23,6 +23,91 @@ angular.module('controllers').controller('RankingSystemCtrl',
             $scope.postProcess($scope.rankingSystem);
         };
 
+        $scope.openFileSelect = function(){
+            $('#hiddenFileOpen').click();
+        };
+
+        $scope.onFileSelect = function($files){
+            if ($files.length == 1) {
+                var r = new FileReader();
+                var f = $files[0];
+                r.onload = (function (f) {
+                    return function (e) {
+                        try{
+                            $scope.importPointDefinitions(JSON.parse(e.target.result));
+                        } catch(exception){
+                            $scope.alerts = [
+                                { type: 'danger', msg: "Error importing point definitions" }
+                            ];
+                        }
+                    };
+                })(f);
+                r.readAsText(f);
+            }
+        };
+
+        $scope.importPointDefinitions = function(definitions){
+            if (definitions != null &&
+                definitions.length != null &&
+                definitions.length > 0 &&
+                definitions.length < 1000){
+                definitions.forEach(function(definition){
+                    var definitionToAdd = {};
+                    if (definition.points != null){
+                        definitionToAdd.points = definition.points;
+                    }
+
+                    if (definition.series != null){
+                        definitionToAdd.series = definition.series;
+                    }
+
+                    if (definition.series != null){
+                        definitionToAdd.series = definition.series;
+                    }
+
+                    if(definition.criteria != null && definition.criteria.length != null && definition.criteria.length > 0){
+                        definitionToAdd.criteria = [];
+                        for(var i = 0; i<definition.criteria.length;i++){
+                            var criteria = definition.criteria[i];
+                            var criteriaToAdd = {};
+                            if(criteria.type != null){
+                                criteriaToAdd.type = criteria.type;
+                            }
+
+                            if(criteria.field != null){
+                                criteriaToAdd.field = criteria.field;
+                            }
+
+                            if(criteria.comparator != null){
+                                criteriaToAdd.comparator = criteria.comparator;
+                            }
+
+                            if(criteria.value != null){
+                                criteriaToAdd.value = criteria.value;
+                            }
+
+                            definitionToAdd.criteria.push(criteriaToAdd);
+                        }
+                    }
+
+                    if (!$scope.rankingSystem){
+                        $scope.rankingSystem = {};
+                    }
+
+                    if (!$scope.rankingSystem.pointAllotments){
+                        $scope.rankingSystem.pointAllotments = [];
+                    }
+
+                    $scope.rankingSystem.pointAllotments.push(definitionToAdd);
+                    $scope.$apply();
+                });
+            } else {
+                $scope.alerts = [
+                    { type: 'danger', msg: "Error importing point definitions" }
+                ];
+            }
+        };
+
         $scope.addPointDefinition = function(){
             if (!$scope.rankingSystem){
                 $scope.rankingSystem = {};
