@@ -72,8 +72,7 @@ batchController.createBatchFromFile = function(req, res){
                 file.resume();
                 res.jsonp(400, {'error':err.errors});
             } else {
-                csv()
-                    .from.stream(file)
+                csv().from.stream(file)
                     .on('record', function(row,index){
                         batchController.createBatchRecord(batch, index+1, row, function(err){
                             if (err){

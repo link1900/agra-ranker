@@ -5,7 +5,7 @@
         Uploading file...
     </div>
     <div data-ng-show="uploadResult">
-        Upload complete. This file is being processed in batch. You can view the progress of the batch <a data-ng-href="#/batch/view/{{uploadResult._id}}">here</a>
+        Upload complete. This file is being processed in batch. You can view the progress of the batch <a data-ng-href="#/batch/view/{{uploadResult.result._id}}">here</a>
         <br><br>
         <button data-ng-click="clearSelectedFiles()" class="btn btn-primary">
             Upload another file

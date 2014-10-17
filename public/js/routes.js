@@ -17,12 +17,6 @@ angular.module('core').config(function($routeProvider) {
         .when('/greyhound/import', {
             templateUrl : '/views/greyhound/greyhoundUpload.html'
         })
-        .when('/batch', {
-            templateUrl : '/views/batch/batchList.html'
-        })
-        .when('/batch/view/:id', {
-            templateUrl : '/views/batch/batchView.html'
-        })
         .when('/signup', {
             templateUrl : '/views/signup.html'
         })
@@ -62,8 +56,11 @@ angular.module('core').config(function($routeProvider) {
         .when('/groupLevel', {
             templateUrl : '/views/groupLevel/groupLevel.html'
         })
-        .when('/import', {
+        .when('/batch', {
             templateUrl : '/views/batch/batch.html'
+        })
+        .when('/batch/view/:id', {
+            templateUrl : '/views/batch/batchView.html'
         })
         .otherwise({
             redirectTo : '/'
