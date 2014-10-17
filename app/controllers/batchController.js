@@ -47,14 +47,18 @@ batchController.checkFields = function(req, res, next){
 };
 
 batchController.destroy = function(req, res) {
-    //clean up references
-    helper.killChildren(BatchRecord, 'batchRef', req.model._id, res);
-
-    req.model.remove(function(err, removedModel) {
-        if (err) {
-            res.jsonp({'error':err.errors});
+    //clean up batch records
+    BatchRecord.remove({'batchRef': req.model._id}, function(childErr){
+        if (childErr != null){
+            res.jsonp({'error':childErr.errors});
         } else {
-            res.jsonp(removedModel);
+            req.model.remove(function(err, removedModel) {
+                if (err) {
+                    res.jsonp({'error':err.errors});
+                } else {
+                    res.jsonp(removedModel);
+                }
+            });
         }
     });
 };
