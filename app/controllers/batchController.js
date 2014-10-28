@@ -81,8 +81,13 @@ batchController.createBatchFromFile = function(req, res){
                         });
                     })
                     .on('end', function(count){
-                        res.jsonp(200, {'result':batch});
-                        console.log('Finishing parsing file ' + filename + ' with lines ' + count);
+                        batch.status = constants.batchTypes.awaitingProcessing;
+                        helper.savePromise(batch).then(function(){
+                            res.jsonp(200, {'result':batch});
+                            console.log('Finishing parsing file ' + filename + ' with lines ' + count);
+                        },function(errorBatchUpdate){
+                            res.jsonp(400, {'error':errorBatchUpdate});
+                        });
                     })
                     .on('error', function(error){
                         res.jsonp(400, {'error':error});
@@ -96,7 +101,7 @@ batchController.createBatchFromFile = function(req, res){
 
 batchController.createBatch = function(name, type, recordStream, callback) {
     //generate the batch model
-    var batch = new Batch({name:name, type:type, status: constants.batchTypes.awaitingProcessing});
+    var batch = new Batch({name:name, type:type, status: constants.batchTypes.uploading});
     //then check the fields
     batch = batchController.cleanFields(batch);
     var error = batchController.hasError(batch);
