@@ -61,7 +61,7 @@ rankingSystemController.destroy = function(req, res) {
 };
 
 rankingSystemController.checkNameDoesNotExist = function(model){
-    return mongoHelper.findAny(RankingSystem, {name: model.name}).then(function(results){
+    return mongoHelper.find(RankingSystem, {name: model.name}).then(function(results){
         if (results.length == 0){
             return q(true);
         } else if (results.length == 1 && _.isEqual(results[0]._id,model._id)) {

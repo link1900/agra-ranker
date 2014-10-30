@@ -129,7 +129,7 @@ raceController.validate = function(entityRequest){
 };
 
 raceController.checkNameAndDateDoNotExist = function(model){
-    return mongoHelper.findAny(Race, {name: model.name, date: model.date}).then(function(results){
+    return mongoHelper.find(Race, {name: model.name, date: model.date}).then(function(results){
         if (results.length == 0){
             return q(true);
         } else if (results.length == 1 && _.isEqual(results[0]._id,model._id)) {
