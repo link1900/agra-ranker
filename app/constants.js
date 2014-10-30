@@ -16,7 +16,6 @@ constants.batchRecordTypes = {
 };
 
 constants.batchTypes = {
-    uploading: 'Uploading',
     awaitingProcessing: 'Awaiting processing',
     failed:'Failed',
     cancelled:'Cancelled',
