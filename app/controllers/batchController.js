@@ -4,13 +4,11 @@ var batchController = module.exports = {};
 var mongoose = require('mongoose');
 var BatchJob = mongoose.model('BatchJob');
 var BatchResult = mongoose.model('BatchResult');
-var Greyhound = mongoose.model('Greyhound');
 var Busboy = require('busboy');
 var _ = require('lodash');
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
 var q = require('q');
-var constants = require('../constants');
 var grid = require('gridfs-stream');
 var gfs = grid(mongoose.connection.db);
 var uuid = require('node-uuid');
@@ -58,7 +56,7 @@ batchController.destroy = function(req, res) {
 };
 
 batchController.checkFields = function(req, res, next){
-    if (req.previousModel.status == constants.batchTypes.awaitingProcessing && req.model.status == constants.batchTypes.cancelled){
+    if (req.previousModel.status == batchService.batchStatuses.awaitingProcessing && req.model.status == batchService.batchStatuses.cancelled){
         return next();
     } else {
         return res.jsonp(400, {'error':'you are only allowed edit a batch by cancelling it'});
@@ -100,7 +98,7 @@ batchController.createBatch = function(name, type, metadata) {
         name:name,
         type:type,
         metadata: metadata,
-        status: constants.batchTypes.awaitingProcessing
+        status: batchService.batchStatuses.awaitingProcessing
     });
     //then check the fields
     var error = batchController.hasError(batch);
