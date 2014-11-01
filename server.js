@@ -17,6 +17,8 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 // Initializing system variables 
 var config = require('./config/config');
 var mongoose = require('mongoose');
+var grid = require('gridfs-stream');
+grid.mongo = mongoose.mongo;
 
 // Bootstrap db connection
 var db = mongoose.connect(config.db);
@@ -67,8 +69,8 @@ migrationController.applyMigrations(migrationDir).then(function(){
     exports = module.exports = app;
 
     //start scheduler
-    var batchController = require('./app/controllers/batchController');
-    setInterval(batchController.processBatches, 5000);
+    var batchService = require('./app/services/batchService');
+    batchService.startBatchProcessors();
 },function(error){
     console.log(error);
     console.error("critical failure apply migration exiting without server start");

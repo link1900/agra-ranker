@@ -30,20 +30,6 @@ angular.module('controllers').controller('BatchCtrl', ['$scope', '$routeParams',
             );
         };
 
-        $scope.runBatch = function(){
-            batchService.run($scope.batch._id).then(function(){
-                    $scope.alerts = [
-                        { type: 'success', msg: "Started batch" }
-                    ];
-                },
-                function(error){
-                    $scope.alerts = [
-                        { type: 'danger', msg: "Failed to start batch: " + error.data }
-                    ];
-                }
-            );
-        };
-
         $scope.loadBatch = function(batch){
             $scope.batch = batch;
         };
@@ -52,7 +38,8 @@ angular.module('controllers').controller('BatchCtrl', ['$scope', '$routeParams',
 
         $scope.columnInfo = [
             {title: "Status", field:"status", baseLink:"#/batch/view/", linkField: "_id", link:true},
-            {title: "Name", field:"name"},
+            {title: "File Name", field:"name"},
+            {title: "Batch Type", field:"type"},
             {title: "Created Date", field:"createdAt", filter: "date", filterFormat: 'medium'}
         ];
 

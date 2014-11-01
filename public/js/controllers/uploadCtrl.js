@@ -4,11 +4,10 @@ angular.module('controllers').controller('UploadCtrl', ['$scope', '$upload', 'ra
         $scope.onFileSelect = function($files) {
             if ($files.length == 1){
                 $scope.uploadingFile = $files[0];
-
                 $upload.upload({
-                    url: 'upload/batch', //upload.php script, node.js route, or servlet url
-                    // method: POST or PUT,
-                    // headers: {'headerKey': 'headerValue'},
+                    url: 'upload/batch/greyhound/csv',
+                    method: 'POST',
+                    headers: {'uploadFilename': $scope.uploadingFile.name},
                     // withCredentials: true,
                     file: $scope.uploadingFile
                 })

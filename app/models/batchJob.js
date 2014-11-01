@@ -3,13 +3,12 @@ var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 
 
-var Batch = new Schema({
+var BatchJob = new Schema({
     name: { type: String },
     type: { type: String },
     status: { type: String},
-    processTime : { type : Number },
-    successCount: { type: Number },
-    failureCount : {type: Number}
+    metadata : { type: Schema.Types.Mixed },
+    processingTime : { type : Number }
 });
 
 //Awaiting processing
@@ -19,6 +18,6 @@ var Batch = new Schema({
 //Completed - means the job completed with 100% success
 //Completed with failures - means the job completed but records failed
 
-Batch.plugin(timestamps);
+BatchJob.plugin(timestamps);
 
-mongoose.model('Batch', Batch);
+mongoose.model('BatchJob', BatchJob);

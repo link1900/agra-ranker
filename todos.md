@@ -132,13 +132,30 @@
 - (DONE) Add a series field to a point definition
 - (DONE) Added versioning display
 - (DONE) Change point definition view to group by series
-- import point definitions from a file (browser import only?)
+- (DONE) import point definitions from a file (browser import only?)
+- (DONE) Fix import link after the upload to be correct
+- (DONE) Fix the delete batch to be faster
+- Rewrite the batch processor to seperate the file upload from the csv processing
+- Add file uploading into the gridfs
+- Add batch processes which control and details information about current batch jobs
+- Add a failed batch job checker which checks if a in progress batch job is in a batch processor
+- Change Import greyhound csv batch job to just create a new batch job Import Greyhound
+- Add a web stocket which display the batch processor information
+- Add processed percentage to the processor information
+- Fix an issue where batch process clogs the server
+- Fix an issue where batch processing begins before the file is finished uploading
+- Fix an issue where when server crashes before batch processing is finished then the batch is ignored
+- Fix an issue where the paging on the batch doesn't seem to work for high numbers of records
+- restructure files into functional groups not hoz slices
+- Add race importing
 - define agra ranking system and test importing it
+- in the grid when there is no results have no search
 - define sire and dam ranking systems test import it
 - dead heat rule - points from matching positions are summed and divided
 - update placing flyweight in point allotment when placing is updated
 - unit test point allotment creation
 - calculate rankings on race creation
+- Add websocket support to detect if the site is up or down
 
 
 ### 6.0.12 Ranking API
@@ -151,10 +168,12 @@
 - update when rule set is deleted
 - delete ranking when system is deleted
 
-### 6.1.0 Ranking UI
+### 6.1 Ranking UI
 - list all rankings on the home screen
 
-## 6.2 - Getting to Ranker 6 Level
+## 6.1.1 - Getting to Ranker 6 Level
+- put in proper action logging
+- save the history log to the database
 - change npm test to constant
 - Move upload to a directive
 - race upload section
@@ -171,10 +190,11 @@
 - race & placing csv import api
 - Switch test data loading to fixtures
 
-### Admin controls
+### 6.1.2 Admin controls
 - List users
 - Remove users
 - Add users
+- Approve users and remove white list
 - Remove white list and have all sign ups require approval
 - Add emails to the white list
 - Edit emails on the white list

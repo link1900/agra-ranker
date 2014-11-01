@@ -1,11 +1,10 @@
-'use strict';
-var batchRecordController = module.exports = {};
+var batchResultController = module.exports = {};
 
 var mongoose = require('mongoose');
-var BatchRecord = mongoose.model('BatchRecord');
+var BatchResult = mongoose.model('BatchResult');
 
 
-batchRecordController.prepareQuery = function(req, res, next) {
+batchResultController.prepareQuery = function(req, res, next) {
     req.searchQuery = {};
     var like = req.param('like');
     var batchRef = req.param('batchRef');
@@ -15,6 +14,6 @@ batchRecordController.prepareQuery = function(req, res, next) {
     if (batchRef){
         req.searchQuery.batchRef = batchRef;
     }
-    req.dao = BatchRecord;
+    req.dao = BatchResult;
     next();
 };

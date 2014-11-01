@@ -2,19 +2,21 @@
 var batchController = module.exports = {};
 
 var mongoose = require('mongoose');
-var Batch = mongoose.model('Batch');
+var BatchJob = mongoose.model('BatchJob');
+var BatchResult = mongoose.model('BatchResult');
 var Greyhound = mongoose.model('Greyhound');
-var greyhoundController = require('./greyhoundController');
-var BatchRecord = mongoose.model('BatchRecord');
 var Busboy = require('busboy');
-var csv = require('csv');
 var _ = require('lodash');
 var helper = require('../helper');
 var q = require('q');
 var constants = require('../constants');
+var grid = require('gridfs-stream');
+var gfs = grid(mongoose.connection.db);
+var uuid = require('node-uuid');
+var batchService = require('../services/batchService');
 
 batchController.setBatch = function(req, res, next, id) {
-    Batch.findById(id, function(err, model) {
+    BatchJob.findById(id, function(err, model) {
         if (err) return next(err);
         if (!model) return next(new Error('Failed to load batch ' + id));
         req.model = model;
@@ -33,122 +35,71 @@ batchController.prepareBatchQuery = function(req, res, next) {
     if (name){
         req.searchQuery = {'name': name.toLowerCase()};
     }
-    req.dao = Batch;
+    req.dao = BatchJob;
     next();
-};
-
-batchController.checkFields = function(req, res, next){
-    if (req.previousModel.status == constants.batchTypes.awaitingProcessing && req.model.status == constants.batchTypes.cancelled){
-        helper.pushChangeToFk(BatchRecord, 'batchRef', req.model._id, req.model.status, 'status');
-        return next();
-    } else {
-        return res.jsonp(400, {'error':'you are only allowed edit a batch by cancelling it'});
-    }
 };
 
 batchController.destroy = function(req, res) {
     //clean up batch records
-    BatchRecord.remove({'batchRef': req.model._id}, function(childErr){
+    BatchResult.remove({'batchRef': req.model._id}, function(childErr){
         if (childErr != null){
-            res.jsonp({'error':childErr.errors});
+            res.jsonp(400, {'error':childErr.errors});
         } else {
             req.model.remove(function(err, removedModel) {
                 if (err) {
-                    res.jsonp({'error':err.errors});
+                    res.jsonp(400, {'error':err.errors});
                 } else {
-                    res.jsonp(removedModel);
+                    res.jsonp(200, removedModel);
                 }
             });
         }
     });
 };
 
-batchController.createBatchFromFile = function(req, res){
+batchController.createGreyhoundImportBatchFromFile = function(req, res){
+    var storageId = uuid.v4();
+    var fileWriteStream = gfs.createWriteStream({
+        filename: storageId
+    });
+
+    fileWriteStream.on('error', function(gridfsError){
+        console.log("error saving file to gridfs", gridfsError);
+        res.jsonp(400, {'error':err});
+    });
+
+    fileWriteStream.on('close', function(file){
+        batchController.createBatch(req.headers.uploadfilename, batchService.batchTypes.importGreyhoundCSV, {fileId : file._id}).then(function(batch){
+            res.jsonp(200, batch);
+        }, function(batchCreationError){
+            console.log("batch creation error");
+            res.jsonp(400, {'error':batchCreationError});
+        });
+    });
+
     var busboy = new Busboy({ headers: req.headers });
 
     busboy.on('file', function(fieldname, file, filename) {
-        batchController.createBatch(filename, fieldname, file, function(err, batch){
-            if (err){
-                file.resume();
-                res.jsonp(400, {'error':err.errors});
-            } else {
-                csv().from.stream(file)
-                    .on('record', function(row,index){
-                        batchController.createBatchRecord(batch, index+1, row, function(err){
-                            if (err){
-                                res.jsonp(400, {'error':err});
-                            }
-                        });
-                    })
-                    .on('end', function(count){
-                        batch.status = constants.batchTypes.awaitingProcessing;
-                        helper.savePromise(batch).then(function(){
-                            res.jsonp(200, {'result':batch});
-                            console.log('Finishing parsing file ' + filename + ' with lines ' + count);
-                        },function(errorBatchUpdate){
-                            res.jsonp(400, {'error':errorBatchUpdate});
-                        });
-                    })
-                    .on('error', function(error){
-                        res.jsonp(400, {'error':error});
-                    });
-            }
-        });
+        file.pipe(fileWriteStream);
     });
 
     req.pipe(busboy);
 };
 
-batchController.createBatch = function(name, type, recordStream, callback) {
+batchController.createBatch = function(name, type, metadata) {
     //generate the batch model
-    var batch = new Batch({name:name, type:type, status: constants.batchTypes.uploading});
+    var batch = new BatchJob({
+        name:name,
+        type:type,
+        metadata: metadata,
+        status: constants.batchTypes.awaitingProcessing
+    });
     //then check the fields
-    batch = batchController.cleanFields(batch);
     var error = batchController.hasError(batch);
     if (error){
-        callback(error, batch);
+        return q.reject(error);
+    } else {
+        return helper.savePromise(batch);
     }
-    //then parse the stream and generate the records
-
-    //then save the batch and pass to call back
-    batch.save(function(err, savedModel) {
-        if (err) {
-           callback(err, savedModel);
-        } else {
-           callback(null, savedModel);
-        }
-    });
-};
-
-batchController.createBatchRecord = function(batch, recordNumber, data, callback){
-    var batchRecord = new BatchRecord({
-        batchRef:batch._id,
-        type:batch.type,
-        recordNumber: recordNumber,
-        status: constants.batchTypes.awaitingProcessing,
-        rawData: data
-    });
-    batchRecord.save(function(err, savedModel) {
-        if (err) {
-            callback(err, savedModel);
-        } else {
-            callback(null, savedModel);
-        }
-    });
-};
-
-batchController.newBatchModel = function(json){
-    return new Batch(json);
-};
-
-batchController.cleanFields = function(batch){
-    if (batch.name){
-        batch.name = batch.name.toLowerCase().trim();
-    }
-    if (batch.type){
-        batch.type = batch.type.toLowerCase().trim();
-    }
-    return batch;
 };
 
 batchController.hasError = function(batch){
@@ -176,139 +127,4 @@ batchController.hasError = function(batch){
     } else {
         return null;
     }
-};
-
-//Main method for processing pending batches
-//query for all pending batches and pass to process batch
-batchController.processBatches = function(){
-    //first query all batches that are waiting processing
-    Batch.find({status: constants.batchTypes.awaitingProcessing}).exec(function(err, entities) {
-        if (err) {
-            console.log("error reading batch");
-        } else {
-            _.each(entities, function(entity){
-                batchController.processBatch(entity);
-            });
-        }
-    });
-};
-
-batchController.processSpecificBatch = function(req, res){
-    batchController.processBatch(req.model);
-    res.json(200, {'result':'Started batch'});
-};
-
-batchController.processBatch = function(batch){
-    batchController.setToInProgress(batch)
-        .then(batchController.processBatchRecords)
-        .fail(function(err){
-            console.log("had a batch error: " + err);
-        });
-};
-
-batchController.setToInProgress = function(batch){
-    batch.status = constants.batchTypes.inProgress;
-    return helper.savePromise(batch);
-};
-
-batchController.processBatchRecords = function(batch){
-    var query = BatchRecord.find({'batchRef': batch._id, 'status':constants.batchRecordTypes.awaitingProcessing });
-    var batchRecordResultPromise = helper.findPromise(query).then(function(entities){
-        var counters = {
-            batch : batch,
-            successCount: -1,
-            failedCount : 0
-        };
-
-        var finalPromiseOfChain = _.reduce(entities, function(previousResult, currentValue) {
-            return previousResult.then(function(){
-                counters.successCount += 1;
-                return batchController.processBatchRecord(currentValue);
-            }).fail(function(){
-                counters.failedCount += 1;
-                return batchController.processBatchRecord(currentValue);
-            });
-        },
-            q()
-        );
-
-        return finalPromiseOfChain.then(function(){
-            return counters;
-        }).fail(function(){return counters;});
-
-    });
-
-    //handle result
-    return batchRecordResultPromise
-        .then(batchController.saveBatchResult)
-        .fail(batchController.saveBatchResult);
-};
-
-batchController.saveBatchResult = function(result){
-    if (result.failedCount > 0){
-        result.batch.status = constants.batchTypes.completedWithFailures;
-    } else {
-        result.batch.status = constants.batchTypes.completed;
-    }
-
-    result.batch.successCount = result.successCount;
-    result.batch.failureCount = result.failedCount;
-
-    return helper.savePromise(result.batch);
-};
-
-//find out the batch type then get the correct handler for that type
-batchController.processBatchRecord = function(batchRecord){
-    return batchController.setToInProgress(batchRecord)
-        .then(batchController.convertBatchRecord);
-};
-
-batchController.convertBatchRecord = function(batchRecord){
-    var handler = batchController.getBatchRecordHandler(batchRecord.type);
-    if (handler){
-        return handler.process(batchRecord.rawData)
-            .then(function(result){
-                batchRecord.status = constants.batchRecordTypes.success;
-                batchRecord.resultRef = result._id;
-                return helper.savePromise(batchRecord);
-            }).fail(function(err){
-                console.log('failed to create entity: ' + err);
-                batchRecord.status = constants.batchRecordTypes.failed;
-                return helper.savePromise(batchRecord).then(function(){
-                    var deferred = q.defer();
-                    deferred.reject('failed to create entity: ' + err);
-                    return deferred.promise;
-                });
-            });
-    } else {
-        console.log('error processing batch record of type ' + batchRecord.type + ' cannot find handler');
-        batchRecord.status = constants.batchRecordTypes.failed;
-        return helper.savePromise(batchRecord);
-    }
-};
-
-batchController.getBatchRecordHandler = function(batchRecordType){
-    if (batchRecordType = 'csvToGreyhound'){
-        return batchController.csvToGreyhoundProvider();
-    }
-    console.log("cannot load handler for type " + batchRecordType);
-    return null;
-};
-
-batchController.handlerFactory = function(rawToObject, persistObject){
-    var handler = {};
-    handler.rawToObject = rawToObject;
-    handler.persistObject = persistObject;
-    handler.process = function(raw){
-        var object = handler.rawToObject(raw);
-        return handler.persistObject(object);
-    };
-    return handler;
-};
-
-batchController.csvToGreyhoundProvider = function(){
-    return batchController.handlerFactory(
-        greyhoundController.rawCsvArrayToGreyhound,
-        greyhoundController.processGreyhoundImportObject
-    );
 };

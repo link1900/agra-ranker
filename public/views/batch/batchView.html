@@ -7,25 +7,18 @@
         <div class="panel-body">
             <div data-ng-show="batch">
                 <dl class="dl-horizontal">
-                    <dt>Name</dt>
+                    <dt>File Name</dt>
                     <dd>{{batch.name}}</dd>
+                    <dt>Batch Type</dt>
+                    <dd>{{batch.type}}</dd>
                     <dt>Status</dt>
                     <dd>{{batch.status}}</dd>
-                    <dt data-ng-show="batch.successCount != null">Success Count</dt>
-                    <dd data-ng-show="batch.successCount != null">{{batch.successCount}}</dd>
-                    <dt data-ng-show="batch.failureCount != null">Failure Count</dt>
-                    <dd data-ng-show="batch.failureCount != null">{{batch.failureCount}}</dd>
                     <dt>Created at</dt>
                     <dd>{{batch.createdAt | date:'medium'}}</dd>
                     <dt>Last updated</dt>
                     <dd>{{batch.updatedAt | date:'medium'}}</dd>
                     <dt>Actions</dt>
                     <dd>
-                        <button class="btn btn-primary"
-                                ng-show="batch.status == 'Awaiting processing'"
-                                ng-click="runBatch()">
-                            <span class="glyphicon glyphicon-play"></span> Run Batch
-                        </button>
                         <button class="btn btn-danger"
                                 ng-show="batch.status == 'Awaiting processing'"
                                 ng-click="cancelBatch()">
@@ -34,7 +27,7 @@
                         <button data-ng-click="deleteBatch()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete Batch</button>
                     </dd>
                 </dl>
-                <div data-ng-include="'views/batch/batchRecordList.html'"></div>
+                <div data-ng-include="'views/batch/batchResultList.html'"></div>
             </div>
         </div>
     </div>

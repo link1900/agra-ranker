@@ -1,5 +1,5 @@
-angular.module('services').factory('batchService', ['$resource', '$http',
-    function($resource, $http){
+angular.module('services').factory('batchService', ['$resource',
+    function($resource){
         var batchService = $resource(
             'batch/:batchId',
             {
@@ -10,10 +10,6 @@ angular.module('services').factory('batchService', ['$resource', '$http',
                 }
             }
         );
-
-        batchService.run = function(id){
-            return $http.put('/batch/'+id+'/run',{});
-        };
 
         return batchService;
     }

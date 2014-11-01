@@ -2,7 +2,7 @@
 
 var greyhoundController = require('./controllers/greyhoundController');
 var batchController = require('./controllers/batchController');
-var batchRecordController = require('./controllers/batchRecordController');
+var batchResultController = require('./batch/batchResultController');
 var userController = require('./controllers/userController');
 var securityController = require('./controllers/securityController');
 var raceController = require('./controllers/raceController');
@@ -34,14 +34,12 @@ module.exports = function(app) {
     //batch routes
     app.get('/batch',securityController.checkAuthentication, batchController.prepareBatchQuery, helper.runQuery);
     app.get('/batch/:batchId',securityController.checkAuthentication, helper.getOne);
-    app.put('/batch/:batchId',securityController.checkAuthentication, helper.mergeBody, batchController.checkFields, helper.save);
     app.del('/batch/:batchId',securityController.checkAuthentication, batchController.destroy);
-    app.put('/batch/:batchId/run',securityController.checkAuthentication, batchController.processSpecificBatch);
     app.post('/upload/batch/greyhound/csv',securityController.checkAuthentication, batchController.createGreyhoundImportBatchFromFile);
     app.param('batchId',securityController.checkAuthentication, batchController.setBatch);
 
     //batch record routes
-    app.get('/batchRecord', securityController.checkAuthentication, batchRecordController.prepareQuery, helper.runQuery);
+    app.get('/batchResult', securityController.checkAuthentication, batchResultController.prepareQuery, helper.runQuery);
 
     //race routes
     app.get('/race', raceController.prepareQuery, helper.runQuery);
