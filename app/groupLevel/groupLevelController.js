@@ -3,7 +3,7 @@
 var groupLevelController = module.exports = {};
 
 var mongoose = require('mongoose');
-var GroupLevel = mongoose.model('GroupLevel');
+var GroupLevel = require('./groupLevel').model;
 var Race = mongoose.model('Race');
 var _ = require('lodash');
 var helper = require('../helper');

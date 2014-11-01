@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
-var GroupLevelSchema = require('./groupLevel');
+var GroupLevelSchema = require('../groupLevel/groupLevel').definition;
 
 var RaceDesc = {
     name: { type: String },
