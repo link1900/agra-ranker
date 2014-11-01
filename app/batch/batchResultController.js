@@ -1,7 +1,7 @@
 var batchResultController = module.exports = {};
 
 var mongoose = require('mongoose');
-var BatchResult = mongoose.model('BatchResult');
+var BatchResult = require('./batchResult').model;
 
 
 batchResultController.prepareQuery = function(req, res, next) {

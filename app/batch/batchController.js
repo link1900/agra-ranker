@@ -3,7 +3,7 @@ var batchController = module.exports = {};
 
 var mongoose = require('mongoose');
 var BatchJob = mongoose.model('BatchJob');
-var BatchResult = mongoose.model('BatchResult');
+var BatchResult = require('./batchResult').model;
 var Busboy = require('busboy');
 var _ = require('lodash');
 var helper = require('../helper');
@@ -12,7 +12,7 @@ var q = require('q');
 var grid = require('gridfs-stream');
 var gfs = grid(mongoose.connection.db);
 var uuid = require('node-uuid');
-var batchService = require('batchService');
+var batchService = require('./batchService');
 
 batchController.setBatch = function(req, res, next, id) {
     BatchJob.findById(id, function(err, model) {

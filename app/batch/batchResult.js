@@ -1,9 +1,10 @@
+var batchResult = module.exports = {};
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 
 
-var BatchResult = new Schema({
+batchResult.schema = new Schema({
     batchRef: { type: Schema.Types.ObjectId },
     status: { type: String },
     processingTime: { type: Number },
@@ -15,7 +16,6 @@ var BatchResult = new Schema({
 //Failed - record failed
 //Success - record succeed
 
+batchResult.schema.plugin(timestamps);
 
-BatchResult.plugin(timestamps);
-
-mongoose.model('BatchResult', BatchResult);
+batchResult.model = mongoose.model('BatchResult', batchResult.schema);
