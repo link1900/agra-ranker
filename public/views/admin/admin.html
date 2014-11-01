@@ -1,0 +1,12 @@
+<div class="page-header">
+    <h2>Site Administration</h2>
+</div>
+<div ng-show="user" ng-controller="adminCtrl" class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Data Management</h3>
+    </div>
+    <div class="panel-body">
+        <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+        <button ng-show="user" data-ng-click="removeAllGreyhounds()" class="btn btn-danger">Remove all greyhounds</button>
+    </div>
+</div>

@@ -11,6 +11,7 @@ var placingController = require('./controllers/placingController');
 var rankingSystemController = require('./controllers/rankingSystemController');
 var pointAllotmentController = require('./controllers/pointAllotmentController');
 var rankingController = require('./controllers/rankingController');
+var adminController = require('./admin/adminController');
 var helper = require('./helper');
 
 module.exports = function(app) {
@@ -36,7 +37,7 @@ module.exports = function(app) {
     app.put('/batch/:batchId',securityController.checkAuthentication, helper.mergeBody, batchController.checkFields, helper.save);
     app.del('/batch/:batchId',securityController.checkAuthentication, batchController.destroy);
     app.put('/batch/:batchId/run',securityController.checkAuthentication, batchController.processSpecificBatch);
-    app.post('/upload/batch',securityController.checkAuthentication, batchController.createBatchFromFile);
+    app.post('/upload/batch/greyhound/csv',securityController.checkAuthentication, batchController.createGreyhoundImportBatchFromFile);
     app.param('batchId',securityController.checkAuthentication, batchController.setBatch);
 
     //batch record routes
@@ -88,4 +89,7 @@ module.exports = function(app) {
     app.get('/ranking/:rankingId', helper.getOne);
     app.post('/ranking', securityController.checkAuthentication, rankingController.createRankings);
     app.param('rankingId', rankingController.setModel);
+
+    //admin
+    app.del('/admin/greyhound', securityController.checkAuthentication, adminController.removeAllGreyhounds);
 };
