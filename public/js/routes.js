@@ -65,6 +65,9 @@ angular.module('core').config(function($routeProvider) {
         .when('/admin', {
             templateUrl : '/views/admin/admin.html'
         })
+        .when('/login', {
+            templateUrl : '/views/user/login.html'
+        })
         .otherwise({
             redirectTo : '/'
         });
