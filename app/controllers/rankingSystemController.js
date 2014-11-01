@@ -57,7 +57,7 @@ rankingSystemController.update = function(req, res) {
 };
 
 rankingSystemController.destroy = function(req, res) {
-    helper.responseFromPromise(res,helper.remove(req.model));
+    helper.responseFromPromise(res,mongoHelper.removePromise(req.model));
 };
 
 rankingSystemController.checkNameDoesNotExist = function(model){

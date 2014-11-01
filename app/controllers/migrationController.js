@@ -55,7 +55,7 @@ controller.applyMigrations = function(migrationDir) {
 
 controller.getAppliedMigrations = function(){
     var query = Migration.find({});
-    return helper.findPromise(query);
+    return mongoHelper.find(Migration, {});
 };
 
 controller.getMigrationsToBeRun = function(appliedMigrations, definedMigrations){

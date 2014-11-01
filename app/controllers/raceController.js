@@ -86,8 +86,8 @@ raceController.updateFlyweights = function(entityRequest){
 
 raceController.destroy = function(req, res) {
     helper.responseFromPromise(res,
-    helper.clearAwayChildren(Placing, 'raceRef', req.model)
-    .then(helper.remove));
+        mongoHelper.clearAwayChildren(Placing, 'raceRef', req.model)
+    .then(mongoHelper.removePromise));
 };
 
 raceController.makeRace = function(entityRequest) {

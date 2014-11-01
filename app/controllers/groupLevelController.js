@@ -68,7 +68,7 @@ groupLevelController.updateFlyweights = function(entityRequest){
 groupLevelController.destroy = function(req, res) {
     helper.responseFromPromise(res,
         mongoHelper.cleanFk(Race, 'groupLevelRef', req.model)
-        .then(helper.remove)
+        .then(mongoHelper.removePromise)
     );
 };
 

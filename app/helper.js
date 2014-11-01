@@ -20,96 +20,6 @@ helper.buildPagingLinks = function(urlString, currentPage, lastPage){
     };
 };
 
-helper.findOneById = function(dao, id){
-    var deferred = q.defer();
-    dao.findById(id, function (err, model) {
-        if (err) {
-            deferred.reject(err);
-        } else {
-            deferred.resolve(model);
-        }
-    });
-    return deferred.promise;
-};
-
-helper.removeAll = function(dao, query){
-    var deferred = q.defer();
-    dao.remove(query, function (err) {
-        if (err) {
-            deferred.reject(err);
-        } else {
-            deferred.resolve(true);
-        }
-    });
-    return deferred.promise;
-};
-
-helper.clearAwayChildren = function(dao, field, model){
-    var deferred = q.defer();
-    var query = {};
-    query[field] = model._id;
-    dao.find(query).exec(function(err, entities){
-        if (err) {
-            deferred.reject("cannot query this dao");
-        } else {
-            if (entities.length > 0){
-                var promises = _.map(entities, function(entity){
-                    return helper.remove(entity);
-                });
-                deferred.resolve(
-                    q.all(promises).then(function(){
-                        return model;
-                    })
-                );
-            } else {
-                deferred.resolve(q(model));
-            }
-        }
-    });
-    return deferred.promise;
-};
-
-helper.killChildren = function(dao, field, id, res){
-    var query = {};
-    query[field] = id;
-    dao.find(query).exec(function(err, entities){
-        if (err) {
-            res.jsonp(500,  {'error':' finding children to kill'});
-        } else {
-            _.each(entities, function(entity){
-                entity.remove();
-            });
-        }
-    });
-};
-
-helper.pushChangeToFk = function(dao, fkField, parentId, parentValue, childField){
-    var query = {};
-    query[fkField] = parentId;
-    dao.find(query).exec(function(err, entities){
-        if (err) {
-            console.log('error applying parent field to child field');
-        } else {
-            _.each(entities, function(entity){
-                entity[childField] = parentValue;
-                entity.save();
-            });
-        }
-    });
-};
-
-helper.checkIfRefExists = function(dao, field, model){
-    var deferred = q.defer();
-
-    dao.findById(model[field], function(err, model) {
-        if (err) return deferred.reject("cannot find entity for reference " + field);
-        if (!model) return deferred.reject("cannot find entity for reference " + field);
-        return deferred.resolve(model);
-    });
-
-    return deferred.promise;
-};
-
 helper.mergeBody = function(req, res, next) {
     req.model = _.extend(req.model, req.body);
     next();
@@ -123,18 +33,6 @@ helper.save = function(req, res) {
             res.jsonp(savedModel);
         }
     });
-};
-
-helper.remove = function(entity){
-    var deferred = q.defer();
-    entity.remove(function(err, removedModel){
-        if (err){
-            deferred.reject(err);
-        } else {
-            deferred.resolve(removedModel);
-        }
-    });
-    return deferred.promise;
 };
 
 helper.saveEntityRequest = function(entityRequest){
@@ -199,30 +97,6 @@ helper.promiseResult = function(req, res, promise){
     }).fail(function(result){
         res.jsonp(result.code, result.message);
     });
-};
-
-helper.findPromise = function(query){
-    var deferred = q.defer();
-    query.exec(function(err, entities){
-        if (err){
-            deferred.reject(err);
-        } else {
-            deferred.resolve(entities);
-        }
-    });
-    return deferred.promise;
-};
-
-helper.aggregatePromise = function(dao, aggregations){
-    var deferred = q.defer();
-    dao.aggregate(aggregations, function(err, entities){
-        if (err){
-            deferred.reject(err);
-        } else {
-            deferred.resolve(entities);
-        }
-    });
-    return deferred.promise;
 };
 
 helper.getOne = function(req, res) {

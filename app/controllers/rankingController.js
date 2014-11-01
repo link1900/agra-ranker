@@ -8,6 +8,7 @@ var Placing = mongoose.model('Placing');
 var Ranking = mongoose.model('Ranking');
 var _ = require('lodash');
 var helper = require('../helper');
+var mongoHelper = require('../mongoHelper');
 var Schema = mongoose.Schema;
 var q = require('q');
 
@@ -37,7 +38,7 @@ rankingController.createRankings = function(req, res) {
         {$sort: {"totalPoints": -1}},
         {$out: "rankings"}
     ];
-    helper.responseFromPromise(res,  helper.aggregatePromise(PointAllotment, pipeline));
+    helper.responseFromPromise(res,  mongoHelper.aggregatePromise(PointAllotment, pipeline));
 };
 //
 //rankingController.getRankings = function(req, res) {

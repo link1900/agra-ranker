@@ -17,6 +17,30 @@ mongoHelper.find = function(dao, search){
     return deferred.promise;
 };
 
+mongoHelper.findOneById = function(dao, id){
+    var deferred = q.defer();
+    dao.findById(id, function (err, model) {
+        if (err) {
+            deferred.reject(err);
+        } else {
+            deferred.resolve(model);
+        }
+    });
+    return deferred.promise;
+};
+
+mongoHelper.removePromise = function(entity){
+    var deferred = q.defer();
+    entity.remove(function(err, removedModel){
+        if (err){
+            deferred.reject(err);
+        } else {
+            deferred.resolve(removedModel);
+        }
+    });
+    return deferred.promise;
+};
+
 mongoHelper.savePromise = function(entity){
     var deferred = q.defer();
     entity.save(function(err, entity){
@@ -28,6 +52,56 @@ mongoHelper.savePromise = function(entity){
     });
     return deferred.promise;
 };
+
+mongoHelper.aggregatePromise = function(dao, aggregations){
+    var deferred = q.defer();
+    dao.aggregate(aggregations, function(err, entities){
+        if (err){
+            deferred.reject(err);
+        } else {
+            deferred.resolve(entities);
+        }
+    });
+    return deferred.promise;
+};
+
+mongoHelper.removeAll = function(dao, query){
+    var deferred = q.defer();
+    dao.remove(query, function (err) {
+        if (err) {
+            deferred.reject(err);
+        } else {
+            deferred.resolve(true);
+        }
+    });
+    return deferred.promise;
+};
+
+mongoHelper.clearAwayChildren = function(dao, field, model){
+    var deferred = q.defer();
+    var query = {};
+    query[field] = model._id;
+    dao.find(query).exec(function(err, entities){
+        if (err) {
+            deferred.reject("cannot query this dao");
+        } else {
+            if (entities.length > 0){
+                var promises = _.map(entities, function(entity){
+                    return mongoHelper.removePromise(entity);
+                });
+                deferred.resolve(
+                    q.all(promises).then(function(){
+                        return model;
+                    })
+                );
+            } else {
+                deferred.resolve(q(model));
+            }
+        }
+    });
+    return deferred.promise;
+};
+
 
 mongoHelper.cleanFk = function(dao, field, model){
     var deferred = q.defer();

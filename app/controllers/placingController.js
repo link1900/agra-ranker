@@ -8,6 +8,7 @@ var Race = mongoose.model('Race');
 var Greyhound = mongoose.model('Greyhound');
 var _ = require('lodash');
 var helper = require('../helper');
+var mongoHelper = require('../mongoHelper');
 var q = require('q');
 
 placingController.setModel = function(req, res, next, id) {
@@ -62,7 +63,7 @@ placingController.update = function(req, res) {
 };
 
 placingController.destroy = function(req, res) {
-    helper.responseFromPromise(res, helper.remove(req.model));
+    helper.responseFromPromise(res, mongoHelper.removePromise(req.model));
 };
 
 placingController.make = function(entityRequest) {

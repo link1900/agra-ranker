@@ -57,7 +57,7 @@ pointAllotmentController.createMany = function(req, res) {
 };
 
 pointAllotmentController.createManyPointAllotments = function(rankingSystemRef){
-    return helper.findOneById(RankingSystem, rankingSystemRef).then(function(rankingSystem){
+    return mongoHelper.findOneById(RankingSystem, rankingSystemRef).then(function(rankingSystem){
         return pointAllotmentController.clearPointAllotmentsForRankingSystem(rankingSystem).then(function(){
             return pointAllotmentController.allocatePointAllotments(rankingSystem).then(function(results){
                 return results;
@@ -67,7 +67,7 @@ pointAllotmentController.createManyPointAllotments = function(rankingSystemRef){
 };
 
 pointAllotmentController.clearPointAllotmentsForRankingSystem = function(rankingSystem){
-    return helper.removeAll(PointAllotment, {rankingSystemRef : rankingSystem._id});
+    return mongoHelper.removeAll(PointAllotment, {rankingSystemRef : rankingSystem._id});
 };
 
 pointAllotmentController.allocatePointAllotments = function(rankingSystem){

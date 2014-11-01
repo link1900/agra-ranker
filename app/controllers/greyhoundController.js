@@ -245,7 +245,7 @@ greyhoundController.destroy = function(req, res) {
         .then(function(){
             return mongoHelper.cleanFk(Placing, 'greyhoundRef', req.model);
         })
-        .then(helper.remove)
+        .then(mongoHelper.removePromise)
     );
 };
 

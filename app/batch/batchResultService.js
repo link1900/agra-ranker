@@ -1,6 +1,10 @@
 var batchResultService = module.exports = {};
 
+var _ = require('lodash');
+var q = require('q');
+var mongoose = require('mongoose');
 var BatchResult = mongoose.model('BatchResult');
+var mongoHelper = require('../mongoHelper');
 
 batchResultService.statuses = {
     'failed':'Failed',
