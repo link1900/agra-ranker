@@ -12,7 +12,7 @@ var q = require('q');
 var grid = require('gridfs-stream');
 var gfs = grid(mongoose.connection.db);
 var uuid = require('node-uuid');
-var batchService = require('../services/batchService');
+var batchService = require('../batch/batchService');
 
 batchController.setBatch = function(req, res, next, id) {
     BatchJob.findById(id, function(err, model) {

@@ -69,7 +69,7 @@ migrationController.applyMigrations(migrationDir).then(function(){
     exports = module.exports = app;
 
     //start scheduler
-    var batchService = require('./app/services/batchService');
+    var batchService = require('./app/batch/batchService');
     batchService.startBatchProcessors();
 },function(error){
     console.log(error);
