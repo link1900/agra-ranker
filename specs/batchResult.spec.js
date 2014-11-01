@@ -1,28 +1,21 @@
 var request = require('supertest');
 var mongoose = require('mongoose');
-var Batch = mongoose.model('Batch');
-var BatchRecord = mongoose.model('BatchRecord');
+var BatchJob = mongoose.model('BatchJob');
+var BatchResult = mongoose.model('BatchResult');
 var testHelper = require('./testHelper');
 
-describe("BatchRecord", function() {
+describe("BatchResult", function() {
     before(function (done) {
         testHelper.setup(done);
     });
 
     beforeEach(function(done){
-        BatchRecord.remove({}, function(){
-            new BatchRecord({
+        BatchResult.remove({}, function(){
+            new BatchResult({
                 "_id" : "531d1f68e407586c2147532a",
                 "batchRef" : "531d1f67e407586c21474b33",
-                "rawData" : [
-                    "GREYBATCH1",
-                    "GREYBATCH1SIRE",
-                    "GREYBATCH1DAM"
-                ],
                 "recordNumber" : 1,
-                "resultRef" : "531d1f69e407586c21475907",
-                "status" : "Success",
-                "type" : "file"
+                "status" : "Success"
             }).save(done);
         });
     });
@@ -30,7 +23,7 @@ describe("BatchRecord", function() {
     describe("Get many", function(){
         it("is secure", function (done) {
             testHelper.publicSession
-                .get('/batchRecord')
+                .get('/batchResult')
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(401, done);

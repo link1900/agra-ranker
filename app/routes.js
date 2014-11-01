@@ -34,6 +34,7 @@ module.exports = function(app) {
     //batch routes
     app.get('/batch',securityController.checkAuthentication, batchController.prepareBatchQuery, helper.runQuery);
     app.get('/batch/:batchId',securityController.checkAuthentication, helper.getOne);
+    app.put('/batch/:batchId',securityController.checkAuthentication, helper.mergeBody, batchController.checkFields, helper.save);
     app.del('/batch/:batchId',securityController.checkAuthentication, batchController.destroy);
     app.post('/upload/batch/greyhound/csv',securityController.checkAuthentication, batchController.createGreyhoundImportBatchFromFile);
     app.param('batchId',securityController.checkAuthentication, batchController.setBatch);

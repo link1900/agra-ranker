@@ -56,6 +56,14 @@ batchController.destroy = function(req, res) {
     });
 };
 
+batchController.checkFields = function(req, res, next){
+    if (req.previousModel.status == constants.batchTypes.awaitingProcessing && req.model.status == constants.batchTypes.cancelled){
+        return next();
+    } else {
+        return res.jsonp(400, {'error':'you are only allowed edit a batch by cancelling it'});
+    }
+};
+
 batchController.createGreyhoundImportBatchFromFile = function(req, res){
     var storageId = uuid.v4();
     var fileWriteStream = gfs.createWriteStream({
