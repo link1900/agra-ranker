@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 var RaceSchema = require('./race');
-var GreyhoundDefinition = require('../greyhound/greyhoundModel').definition;
+var GreyhoundDefinition = require('../greyhound/greyhound').definition;
 
 var PlacingDesc = {
     placing: { type: String },
