@@ -4,7 +4,6 @@ var url = require('url');
 var _ = require('lodash');
 var q = require('q');
 
-
 helper.changeUrlParam = function(urlString, paramName, paramValue){
     var urlObject = url.parse(urlString, true);
     urlObject.query[paramName] = paramValue;
@@ -40,58 +39,6 @@ helper.removeAll = function(dao, query){
             deferred.reject(err);
         } else {
             deferred.resolve(true);
-        }
-    });
-    return deferred.promise;
-};
-
-helper.cleanFk = function(dao, field, model){
-    var deferred = q.defer();
-    var query = {};
-    query[field] = model._id;
-    dao.find(query).exec(function(err, entities){
-        if (err) {
-            deferred.reject("cannot query this dao");
-        } else {
-            if (entities.length > 0){
-                var promises = _.map(entities, function(entity){
-                    entity[field] = null;
-                    return helper.savePromise(entity);
-                });
-                deferred.resolve(
-                    q.all(promises).then(function(){
-                        return model;
-                    })
-                );
-            } else {
-                deferred.resolve(q(model));
-            }
-        }
-    });
-    return deferred.promise;
-};
-
-helper.updateFlyweight = function(dao, ref, flyweightField, model){
-    var deferred = q.defer();
-    var query = {};
-    query[ref] = model._id;
-    dao.find(query).exec(function(err, entities){
-        if (err) {
-            deferred.reject("cannot query this dao");
-        } else {
-            if (entities.length > 0){
-                var promises = _.map(entities, function(entity){
-                    entity[flyweightField] = model;
-                    return helper.savePromise(entity);
-                });
-                deferred.resolve(
-                    q.all(promises).then(function(){
-                        return model;
-                    })
-                );
-            } else {
-                deferred.resolve(q(model));
-            }
         }
     });
     return deferred.promise;
@@ -176,32 +123,6 @@ helper.save = function(req, res) {
             res.jsonp(savedModel);
         }
     });
-};
-
-helper.savePromise = function(entity){
-    var deferred = q.defer();
-    entity.save(function(err, entity){
-        if (err){
-            deferred.reject(err);
-        } else {
-            deferred.resolve(entity);
-        }
-    });
-    return deferred.promise;
-};
-
-helper.mongooseSave = function(dao, rawObject){
-    return helper.savePromise(new dao(rawObject));
-};
-
-helper.saveAll = function(entities){
-    return _.reduce(entities, function(previousResult, currentValue) {
-            return previousResult.then(function(){
-                return helper.savePromise(currentValue);
-            });
-        },
-        q()
-    );
 };
 
 helper.remove = function(entity){

@@ -8,6 +8,7 @@ var Greyhound = mongoose.model('Greyhound');
 var Busboy = require('busboy');
 var _ = require('lodash');
 var helper = require('../helper');
+var mongoHelper = require('../mongoHelper');
 var q = require('q');
 var constants = require('../constants');
 var grid = require('gridfs-stream');
@@ -106,7 +107,7 @@ batchController.createBatch = function(name, type, metadata) {
     if (error){
         return q.reject(error);
     } else {
-        return helper.savePromise(batch);
+        return mongoHelper.savePromise(batch);
     }
 };
 

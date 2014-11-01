@@ -8,6 +8,7 @@ var Greyhound = mongoose.model('Greyhound');
 var Placing = mongoose.model('Placing');
 var _ = require('lodash');
 var helper = require('../helper');
+var mongoHelper = require('../mongoHelper');
 var q = require('q');
 
 /**
@@ -77,7 +78,7 @@ greyhoundController.update = function(req, res) {
 };
 
 greyhoundController.updateFlyweights = function(entityRequest){
-    return helper.updateFlyweight(Placing, 'greyhoundRef', 'greyhound', entityRequest.savedEntity).then(function(){
+    return mongoHelper.updateFlyweight(Placing, 'greyhoundRef', 'greyhound', entityRequest.savedEntity).then(function(){
         return entityRequest;
     });
 };
@@ -237,12 +238,12 @@ greyhoundController.processDamField = function(updateRequest) {
  */
 greyhoundController.destroy = function(req, res) {
     helper.responseFromPromise(res,
-        helper.cleanFk(Greyhound, 'sireRef', req.model)
+        mongoHelper.cleanFk(Greyhound, 'sireRef', req.model)
         .then(function(){
-            return helper.cleanFk(Greyhound, 'damRef', req.model);
+            return mongoHelper.cleanFk(Greyhound, 'damRef', req.model);
         })
         .then(function(){
-            return helper.cleanFk(Placing, 'greyhoundRef', req.model);
+            return mongoHelper.cleanFk(Placing, 'greyhoundRef', req.model);
         })
         .then(helper.remove)
     );
@@ -306,7 +307,7 @@ greyhoundController.newGreyhound = function(json){
 
 greyhoundController.saveOrFindGreyhoundImportObject = function(greyhound){
     greyhound = greyhoundController.newGreyhound(greyhound);
-    return greyhoundController.findExisting(greyhound).then(helper.savePromise);
+    return greyhoundController.findExisting(greyhound).then(mongoHelper.savePromise);
 };
 
 greyhoundController.findExisting = function(greyhound) {
@@ -326,7 +327,7 @@ greyhoundController.findExisting = function(greyhound) {
 
 greyhoundController.saveGreyhoundImportObject = function(greyhound){
     greyhound = greyhoundController.newGreyhound(greyhound);
-    return greyhoundController.checkForExistsImport(greyhound).then(helper.savePromise);
+    return greyhoundController.checkForExistsImport(greyhound).then(mongoHelper.savePromise);
 };
 
 greyhoundController.checkForExistsImport = function(greyhound) {

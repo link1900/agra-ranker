@@ -8,6 +8,7 @@ var Placing = mongoose.model('Placing');
 var _ = require('lodash');
 var helper = require('../helper');
 var q = require('q');
+var mongoHelper = require('../mongoHelper');
 
 
 greyhoundService.rawCsvArrayToGreyhound = function(rawRow){
@@ -68,7 +69,7 @@ greyhoundService.newGreyhound = function(json){
 
 greyhoundService.saveOrFindGreyhoundImportObject = function(greyhound){
     greyhound = greyhoundService.newGreyhound(greyhound);
-    return greyhoundService.findExisting(greyhound).then(helper.savePromise);
+    return greyhoundService.findExisting(greyhound).then(mongoHelper.savePromise);
 };
 
 greyhoundService.findExisting = function(greyhound) {
@@ -88,7 +89,7 @@ greyhoundService.findExisting = function(greyhound) {
 
 greyhoundService.saveGreyhoundImportObject = function(greyhound){
     greyhound = greyhoundService.newGreyhound(greyhound);
-    return greyhoundService.checkForExistsImport(greyhound).then(helper.savePromise);
+    return greyhoundService.checkForExistsImport(greyhound).then(mongoHelper.savePromise);
 };
 
 greyhoundService.checkForExistsImport = function(greyhound) {

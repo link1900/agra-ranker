@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var Migration = mongoose.model('Migration');
 var _ = require('lodash');
 var helper = require('../helper');
+var mongoHelper = require('../mongoHelper');
 var q = require('q');
 var path = require('path');
 var fs = require('fs');
@@ -113,7 +114,7 @@ controller.runMigration = function(migration, migrationDir){
     var migrationCode = require(migrationRefPath);
     return migrationCode.up().then(function(){
         console.log("Applying migration: " + migration.file);
-        return helper.savePromise(new Migration(migration));
+        return mongoHelper.savePromise(new Migration(migration));
     }).fail(function(){
         console.error("migration " + migration + " failed");
         process.exit(1);

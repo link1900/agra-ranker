@@ -79,7 +79,7 @@ raceController.update = function(req, res) {
 };
 
 raceController.updateFlyweights = function(entityRequest){
-    return helper.updateFlyweight(Placing, 'raceRef', 'race', entityRequest.savedEntity).then(function(){
+    return mongoHelper.updateFlyweight(Placing, 'raceRef', 'race', entityRequest.savedEntity).then(function(){
         return entityRequest;
     })
 };

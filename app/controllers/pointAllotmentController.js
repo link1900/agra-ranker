@@ -7,6 +7,7 @@ var RankingSystem = mongoose.model('RankingSystem');
 var Placing = mongoose.model('Placing');
 var _ = require('lodash');
 var helper = require('../helper');
+var mongoHelper = require('../mongoHelper');
 var q = require('q');
 var moment = require('moment');
 
@@ -100,7 +101,7 @@ pointAllotmentController.allocatePointAllotment = function(rankingSystem, pointA
                 rankingSystemRef: rankingSystem._id
             };
             var pointAllotment = new PointAllotment(pointAllotmentRaw);
-            return helper.savePromise(pointAllotment);
+            return mongoHelper.savePromise(pointAllotment);
         });
         return q.allSettled(createAllotmentPromises).then(function(results){
             return results.filter(function(item){

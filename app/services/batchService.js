@@ -64,7 +64,7 @@ batchService.failedBatchJobChecker = function(){
                 if(!batchService.doesAnyProcessContainBatch(batchInProgress)){
                     //batch in progress that is not in a processor. mark it as failed
                     batchInProgress.status = constants.batchTypes.failed;
-                    return helper.savePromise(batchInProgress).then(function(result){
+                    return mongoHelper.savePromise(batchInProgress).then(function(result){
                         console.log("[failed batch job checker] has marked batch job " +
                             " id: " + batchInProgress._id +
                             " name: " + batchInProgress.name +
@@ -130,7 +130,7 @@ batchService.executeProcessor = function(processor){
             batchService.processBatch(processor.processingBatch).then(function(){
                 console.log(processor.name + " finished processing batch job " + batchToProcess.name);
                 batchToProcess.status = constants.batchTypes.completed;
-                helper.savePromise(batchToProcess).then(function(){
+                mongoHelper.savePromise(batchToProcess).then(function(){
                     batchService.clearProcessor(processor);
                 }, function(){
                     console.log(processor.name + " had an error updating batch", err);
@@ -139,7 +139,7 @@ batchService.executeProcessor = function(processor){
             }, function(batchProcessError){
                 console.log(processor.name + " had an error processing batch job ", batchProcessError);
                 batchToProcess.status = constants.batchTypes.failed;
-                helper.savePromise(batchToProcess).then(function(){
+                mongoHelper.savePromise(batchToProcess).then(function(){
                     batchService.clearProcessor(processor);
                 }, function(){
                     console.log(processor.name + " had an error updating batch", err);
