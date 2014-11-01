@@ -1,6 +1,6 @@
 var request = require('supertest');
 var mongoose = require('mongoose');
-var BatchJob = mongoose.model('BatchJob');
+var BatchJob = require('../app/batch/batchJob').model;
 var BatchResult = require('../app/batch/batchResult').model;
 var testHelper = require('./testHelper');
 

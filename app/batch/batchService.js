@@ -3,7 +3,7 @@ var batchService = module.exports = {};
 var _ = require('lodash');
 var uuid = require('node-uuid');
 var mongoose = require('mongoose');
-var BatchJob = mongoose.model('BatchJob');
+var BatchJob = require('./batchJob').model;
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
 var greyhoundService = require('../greyhound/greyhoundService');

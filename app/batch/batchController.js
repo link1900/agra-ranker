@@ -2,7 +2,7 @@
 var batchController = module.exports = {};
 
 var mongoose = require('mongoose');
-var BatchJob = mongoose.model('BatchJob');
+var BatchJob = require('./batchJob').model;
 var BatchResult = require('./batchResult').model;
 var Busboy = require('busboy');
 var _ = require('lodash');

@@ -1,9 +1,10 @@
+var batchJob = module.exports = {};
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 
 
-var BatchJob = new Schema({
+batchJob.schema = new Schema({
     name: { type: String },
     type: { type: String },
     status: { type: String},
@@ -18,6 +19,6 @@ var BatchJob = new Schema({
 //Completed - means the job completed with 100% success
 //Completed with failures - means the job completed but records failed
 
-BatchJob.plugin(timestamps);
+batchJob.schema.plugin(timestamps);
 
-mongoose.model('BatchJob', BatchJob);
+batchJob.model = mongoose.model('BatchJob', batchJob.schema);
