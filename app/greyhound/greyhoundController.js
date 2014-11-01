@@ -1,10 +1,7 @@
-'use strict';
 var greyhoundController = module.exports = {};
-/**
- * Module dependencies.
- */
+
 var mongoose = require('mongoose');
-var Greyhound = mongoose.model('Greyhound');
+var Greyhound = require('./greyhoundModel').model;
 var Placing = mongoose.model('Placing');
 var _ = require('lodash');
 var helper = require('../helper');

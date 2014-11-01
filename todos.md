@@ -135,23 +135,26 @@
 - (DONE) import point definitions from a file (browser import only?)
 - (DONE) Fix import link after the upload to be correct
 - (DONE) Fix the delete batch to be faster
-- Rewrite the batch processor to seperate the file upload from the csv processing
-- Add file uploading into the gridfs
-- Add batch processes which control and details information about current batch jobs
-- Add a failed batch job checker which checks if a in progress batch job is in a batch processor
-- Change Import greyhound csv batch job to just create a new batch job Import Greyhound
+- (DONE) Rewrite the batch processor to make sure it does block
+- (DONE) Add file uploading into the gridfs
+- (DONE) Add batch processes which control and details information about current batch jobs
+- (DONE) Add a failed batch job checker which checks if a in progress batch job is in a batch processor
+- (DONE) Change Import greyhound csv batch job to just create a new batch job Import Greyhound
+- (DONE) Fix an issue where batch process clogs the server
+- (DONE) Fix an issue where batch processing begins before the file is finished uploading
+- (DONE) Fix an issue where when server crashes before batch processing is finished then the batch is ignored
+- BatchResult - Create new a result for each action a batch does
+- Batch - add a total processed time field, calculate it and display it
+- Batch - add the ability to cancel/suspend a batch mid process
+- Batch - display percentage when in progress
+- Batch Controller - Add the ability to get the batch controller to suspend/dump what it is doing
+- Batch - count the result records to get a total count of success and failure and unprocessed
 - Add a web stocket which display the batch processor information
 - Add processed percentage to the processor information
-- Fix an issue where batch process clogs the server
-- Fix an issue where batch processing begins before the file is finished uploading
-- Fix an issue where when server crashes before batch processing is finished then the batch is ignored
 - Fix an issue where the paging on the batch doesn't seem to work for high numbers of records
 - restructure files into functional groups not hoz slices
 - Add race importing
-- define agra ranking system and test importing it
 - in the grid when there is no results have no search
-- define sire and dam ranking systems test import it
-- dead heat rule - points from matching positions are summed and divided
 - update placing flyweight in point allotment when placing is updated
 - unit test point allotment creation
 - calculate rankings on race creation
@@ -159,6 +162,9 @@
 
 
 ### 6.0.12 Ranking API
+- define agra ranking system and test importing it
+- define sire and dam ranking systems test import it
+- dead heat rule - points from matching positions are summed and divided
 - List rankings api
 - calculate rankings based on a ranking system
 - update rankings when race is changed
