@@ -1,7 +1,7 @@
 'use strict';
 
 var greyhoundController = require('./greyhound/greyhoundController');
-var batchController = require('./controllers/batchController');
+var batchController = require('./batch/batchController');
 var batchResultController = require('./batch/batchResultController');
 var userController = require('./controllers/userController');
 var securityController = require('./controllers/securityController');
