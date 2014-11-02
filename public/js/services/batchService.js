@@ -1,5 +1,5 @@
-angular.module('services').factory('batchService', ['$resource',
-    function($resource){
+angular.module('services').factory('batchService',
+    function($resource, $http){
         var batchService = $resource(
             'batch/:batchId',
             {
@@ -11,6 +11,13 @@ angular.module('services').factory('batchService', ['$resource',
             }
         );
 
+        batchService.getTotals = function(batch){
+            return $http.get("/batch/"+batch._id+"/totals").then(function(result){
+                return result.data;
+            });
+        };
+
+
         return batchService;
     }
-]);
+);

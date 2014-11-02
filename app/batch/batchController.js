@@ -145,3 +145,18 @@ batchController.hasError = function(batch){
         return null;
     }
 };
+
+batchController.totalForBatch = function(req, res){
+    var pipeline =[
+        {$match : {batchRef: req.model._id}},
+        {
+            $project : {
+                duration : {$subtract :["$endDate","$startDate"]},
+                success : {$cond: { if: {$eq : ["$status","Success"]}, then: 1, else: 0 }},
+                failure : {$cond: { if: {$eq : ["$status","Failed"]}, then: 1, else: 0 }}
+            }
+        },
+        {$group: { '_id': {'batchRef' : "$batchRef"}, 'totalDuration' : { '$sum' : "$duration" }, totalSuccess : { '$sum' : "$success" }, totalFailure : { '$sum' : "$failure" }}}
+    ];
+    helper.responseFromPromise(res,  mongoHelper.aggregateSinglePromise(BatchResult, pipeline));
+};

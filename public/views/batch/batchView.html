@@ -13,6 +13,12 @@
                     <dd>{{batch.type}}</dd>
                     <dt>Status</dt>
                     <dd>{{batch.status}}</dd>
+                    <dt>Total processing time</dt>
+                    <dd>{{batch.totalDuration | duration}}</dd>
+                    <dt>Total successful</dt>
+                    <dd>{{batch.totalSuccess}}</dd>
+                    <dt>Total failure</dt>
+                    <dd>{{batch.totalFailure}}</dd>
                     <dt>Created at</dt>
                     <dd>{{batch.createdAt | date:'medium'}}</dd>
                     <dt>Last updated</dt>
@@ -22,9 +28,9 @@
                         <button class="btn btn-danger"
                                 ng-show="batch.status == 'Awaiting processing'"
                                 ng-click="cancelBatch()">
-                            <span class="glyphicon glyphicon-stop"></span> Cancel Batch
+                            <span class="glyphicon glyphicon-stop"></span> Cancel Batch Job
                         </button>
-                        <button data-ng-click="deleteBatch()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete Batch</button>
+                        <button data-ng-click="deleteBatch()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete Batch Job</button>
                     </dd>
                 </dl>
                 <div data-ng-include="'views/batch/batchResultList.html'"></div>

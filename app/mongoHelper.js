@@ -83,6 +83,22 @@ mongoHelper.aggregatePromise = function(dao, aggregations){
     return deferred.promise;
 };
 
+mongoHelper.aggregateSinglePromise = function(dao, aggregations){
+    var deferred = q.defer();
+    dao.aggregate(aggregations, function(err, entities){
+        if (err){
+            deferred.reject(err);
+        } else {
+            if (entities != null && entities.length == 1){
+                deferred.resolve(entities[0]);
+            } else {
+                deferred.resolve(entities);
+            }
+        }
+    });
+    return deferred.promise;
+};
+
 mongoHelper.removeAll = function(dao, query){
     var deferred = q.defer();
     dao.remove(query, function (err) {

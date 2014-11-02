@@ -30,8 +30,19 @@ angular.module('controllers').controller('BatchCtrl', ['$scope', '$routeParams',
             );
         };
 
+        $scope.getTotalDuration = function(batch){
+            if (batch != null){
+                batchService.getTotals(batch).then(function(result){
+                    batch.totalDuration = result.totalDuration;
+                    batch.totalSuccess = result.totalSuccess;
+                    batch.totalFailure = result.totalFailure;
+                });
+            }
+        };
+
         $scope.loadBatch = function(batch){
             $scope.batch = batch;
+            $scope.getTotalDuration($scope.batch);
         };
 
         $scope.batchService = batchService;
