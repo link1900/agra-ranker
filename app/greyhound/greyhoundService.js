@@ -61,13 +61,18 @@ greyhoundService.processGreyhoundImportObject = function(greyhound){
 };
 
 greyhoundService.processGreyhoundRow = function(record){
+    var resultInfo = {info: {}};
+    resultInfo.info.raw = record;
     var newGreyhound = greyhoundService.rawCsvArrayToGreyhound(record);
     return greyhoundService.processGreyhoundImportObject(newGreyhound).then(function(savedGreyhound){
-        var resultInfo = {isSuccessful : true, info: {greyhoundRef: savedGreyhound._id}};
+        resultInfo.isSuccessful = true;
+        resultInfo.info.greyhoundRef = savedGreyhound._id;
+        resultInfo.info.message = "Created greyhound";
         return q(resultInfo);
     }, function(importError){
         console.log("error import greyhound csv", importError);
-        var resultInfo = {isSuccessful : false, info: {error: importError}};
+        resultInfo.isSuccessful = false;
+        resultInfo.info.error = importError;
         return q(resultInfo);
     });
 };
