@@ -143,22 +143,14 @@
 - (DONE) Fix an issue where batch process clogs the server
 - (DONE) Fix an issue where batch processing begins before the file is finished uploading
 - (DONE) Fix an issue where when server crashes before batch processing is finished then the batch is ignored
-- BatchResult - Create new a result for each action a batch does
-- Batch - add a total processed time field, calculate it and display it
-- Batch - add the ability to cancel/suspend a batch mid process
-- Batch - display percentage when in progress
-- Batch Controller - Add the ability to get the batch controller to suspend/dump what it is doing
-- Batch - count the result records to get a total count of success and failure and unprocessed
-- Add a web stocket which display the batch processor information
-- Add processed percentage to the processor information
-- Fix an issue where the paging on the batch doesn't seem to work for high numbers of records
-- restructure files into functional groups not hoz slices
-- Add race importing
+- (DONE) BatchResult - Create new a result for each action a batch does
+- (DONE) Batch - add a total processed time field, calculate it and display it
+- (DONE) Batch - count the result records to get a total count of success and failure and unprocessed
 - in the grid when there is no results have no search
 - update placing flyweight in point allotment when placing is updated
+- Add race importing
 - unit test point allotment creation
 - calculate rankings on race creation
-- Add websocket support to detect if the site is up or down
 
 
 ### 6.0.12 Ranking API
@@ -229,6 +221,15 @@
 - graph of point distrobution over the year, showing percentage left, spent
 - warn for missing race at the end of the month
 - have the ability to send notifications if races are missed
+
+- Batch - add the ability to cancel/suspend a batch mid process
+- Batch - display percentage when in progress
+- Batch Controller - Add the ability to get the batch controller to suspend/dump what it is doing
+- Add a web socket which display the batch processor information
+- Add processed percentage to the processor information
+- Fix an issue where the paging on the batch doesn't seem to work for high numbers of records
+- restructure files into functional groups not hoz slices
+- Add totals to the admin data screen
 
 - move mongoHelper back into helper
 - cleanup helper to be consistent
