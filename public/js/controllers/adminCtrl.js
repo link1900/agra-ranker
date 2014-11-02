@@ -12,4 +12,16 @@ angular.module('controllers').controller('adminCtrl', function($scope, $http) {
         });
     };
 
+    $scope.removeAllBatchJobs = function(){
+        $http.delete('/admin/batch').then(function(){
+            $scope.alerts = [
+                { type: 'success', msg: "Deleted all batch jobs" }
+            ];
+        }, function(res){
+            $scope.alerts = [
+                { type: 'danger', msg: "Failed to delete batch jobs: " + res.data.error }
+            ];
+        });
+    };
+
 });

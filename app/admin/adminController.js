@@ -7,3 +7,7 @@ var helper = require('../helper');
 adminController.removeAllGreyhounds = function(req, res){
     helper.responseFromPromise(res, adminService.removeAllGreyhounds());
 };
+
+adminController.removeAllBatchJobs = function(req, res){
+    helper.responseFromPromise(res, adminService.removeAllBatchJobs());
+};

@@ -8,5 +8,6 @@
     <div class="panel-body">
         <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
         <button ng-show="user" data-ng-click="removeAllGreyhounds()" class="btn btn-danger">Remove all greyhounds</button>
+        <button ng-show="user" data-ng-click="removeAllBatchJobs()" class="btn btn-danger">Remove all batch jobs</button>
     </div>
 </div>

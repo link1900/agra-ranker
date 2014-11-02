@@ -91,4 +91,5 @@ module.exports = function(app) {
 
     //admin
     app.del('/admin/greyhound', securityController.checkAuthentication, adminController.removeAllGreyhounds);
+    app.del('/admin/batch', securityController.checkAuthentication, adminController.removeAllBatchJobs);
 };
