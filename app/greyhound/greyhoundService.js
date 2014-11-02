@@ -60,6 +60,18 @@ greyhoundService.processGreyhoundImportObject = function(greyhound){
     });
 };
 
+greyhoundService.processGreyhoundRow = function(record){
+    var newGreyhound = greyhoundService.rawCsvArrayToGreyhound(record);
+    return greyhoundService.processGreyhoundImportObject(newGreyhound).then(function(savedGreyhound){
+        var resultInfo = {isSuccessful : true, info: {greyhoundRef: savedGreyhound._id}};
+        return q(resultInfo);
+    }, function(importError){
+        console.log("error import greyhound csv", importError);
+        var resultInfo = {isSuccessful : false, info: {error: importError}};
+        return q(resultInfo);
+    });
+};
+
 greyhoundService.newGreyhound = function(json){
     return new Greyhound(json);
 };

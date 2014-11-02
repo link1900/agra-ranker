@@ -7,7 +7,8 @@ var Schema = mongoose.Schema;
 batchResult.schema = new Schema({
     batchRef: { type: Schema.Types.ObjectId },
     status: { type: String },
-    processingTime: { type: Number },
+    startDate: { type: Date },
+    endDate: {type: Date},
     recordNumber: {type: Number },
     metadata: { type: Schema.Types.Mixed }
 });

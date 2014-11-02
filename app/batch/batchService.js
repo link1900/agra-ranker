@@ -4,6 +4,7 @@ var _ = require('lodash');
 var uuid = require('node-uuid');
 var mongoose = require('mongoose');
 var BatchJob = require('./batchJob').model;
+var BatchResult = require('./batchResult').model;
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
 var greyhoundService = require('../greyhound/greyhoundService');
@@ -182,7 +183,7 @@ batchService.processGreyhoundCSV = function(batchJob){
         batchJob.metadata.fileId != null){
         //find the file and stream it in
         var fileReadStream = gfs.createReadStream({_id: batchJob.metadata.fileId});
-
+        var recordCount = 0;
         fileReadStream.on('error', function(fileReadError){
             console.log("error streaming from gridfs", fileReadError);
             deferred.reject(fileReadError);
@@ -190,34 +191,49 @@ batchService.processGreyhoundCSV = function(batchJob){
 
         var parser = csv.parse();
 
+        parser.on('data', function(record){
+            recordCount += 1;
+            var index = recordCount;
+            var recordStart = new Date();
+            greyhoundService.processGreyhoundRow(record).then(function(resultInfo) {
+                var resultType = batchService.getBatchResultFromBoolean(resultInfo.isSuccessful);
+                var batchResult = new BatchResult({
+                    batchRef: batchJob._id,
+                    recordNumber: index,
+                    status: resultType,
+                    startDate: recordStart,
+                    endDate: new Date(),
+                    metadata: resultInfo.info
+                });
+                mongoHelper.savePromise(batchResult);
+            });
+        });
+
+        parser.on('finish', function(){
+            deferred.resolve({results: true});
+        });
+
         parser.on('error', function(parserError){
             console.log("error parsing csv", parserError);
             deferred.reject(parserError);
         });
 
-        var transformer = csv.transform(function(record, callback){
-            var newGreyhound = greyhoundService.rawCsvArrayToGreyhound(record);
-            greyhoundService.processGreyhoundImportObject(newGreyhound).then(function(){
-                callback();
-            }, function(importError){
-                console.log("error import greyhound csv", importError);
-                callback();
-            });
-        });
-
-        transformer.on('error', function(transformError){
-            console.log("error transforming csv", transformError);
-            deferred.reject(transformError);
-        });
-
-        transformer.on('finish', function(){
-            console.log("batch job is complete finish");
-            deferred.resolve({results: true});
-        });
-
-        fileReadStream.pipe(parser).pipe(transformer);
+        fileReadStream.pipe(parser);
     } else {
         deferred.reject({error: "batch job does not contain enough data to process"});
     }
     return deferred.promise;
+};
+
+batchService.batchJobResultOptions = {
+    'failed':'Failed',
+    'success':'Success'
+};
+
+batchService.getBatchResultFromBoolean = function(boolean){
+    if (boolean){
+        return batchService.batchJobResultOptions.success;
+    } else {
+        return batchService.batchJobResultOptions.failed;
+    }
 };
