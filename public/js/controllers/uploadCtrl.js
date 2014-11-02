@@ -1,6 +1,10 @@
 angular.module('controllers').controller('UploadCtrl', ['$scope', '$upload', 'rankerEventBus',
     function($scope, $upload,rankerEventBus) {
 
+        $scope.openFileSelect = function(){
+            $('#hiddenFileOpen').click();
+        };
+
         $scope.onFileSelect = function($files) {
             if ($files.length == 1){
                 $scope.uploadingFile = $files[0];
