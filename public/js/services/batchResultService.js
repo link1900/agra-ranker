@@ -1,3 +1,8 @@
 angular.module('services').factory('batchResultService',function($resource){
-    return $resource('batchResult');
+    return $resource(
+        'batchResult/:batchResultId',
+        {
+            batchResultId:'@_id'
+        }
+    );
 });

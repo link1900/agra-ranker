@@ -62,6 +62,9 @@ angular.module('core').config(function($routeProvider) {
         .when('/batch/view/:id', {
             templateUrl : '/views/batch/batchView.html'
         })
+        .when('/batchResult/view/:id', {
+            templateUrl : '/views/batch/batchResultView.html'
+        })
         .when('/admin', {
             templateUrl : '/views/admin/admin.html'
         })

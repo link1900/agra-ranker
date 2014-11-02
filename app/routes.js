@@ -41,6 +41,8 @@ module.exports = function(app) {
 
     //batch record routes
     app.get('/batchResult', securityController.checkAuthentication, batchResultController.prepareQuery, helper.runQuery);
+    app.get('/batchResult/:batchResultId',securityController.checkAuthentication, helper.getOne);
+    app.param('batchResultId',securityController.checkAuthentication, batchController.setBatchResult);
 
     //race routes
     app.get('/race', raceController.prepareQuery, helper.runQuery);

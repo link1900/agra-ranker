@@ -38,43 +38,110 @@ greyhoundService.rawCsvArrayToGreyhound = function(rawRow){
     return greyhound;
 };
 
-greyhoundService.processGreyhoundImportObject = function(greyhound){
-    var parentPromises = [];
-    if (greyhound.sire){
-        parentPromises.push(greyhoundService.saveOrFindGreyhoundImportObject(greyhound.sire));
-    }
-    if (greyhound.dam){
-        parentPromises.push(greyhoundService.saveOrFindGreyhoundImportObject (greyhound.dam));
-    }
-
-    return q.all(parentPromises).then(function(parentResults){
-        if (parentResults.length > 0){
-            greyhound.sireRef = parentResults[0]._id;
+greyhoundService.createGreyhoundByName = function(greyhoundName){
+    return mongoHelper.findOne(Greyhound, {name: greyhoundName}).then(function(possibleGreyhound){
+        if (possibleGreyhound != null){
+            return {
+                model : possibleGreyhound,
+                details: "Found existing greyhound \"" + possibleGreyhound.name + "\" skipping greyhound creation"
+            };
+        } else {
+            return mongoHelper.savePromise({name: greyhoundName}).then(function(saveResult){
+                return {
+                    model : saveResult,
+                    details: "Created greyhound \"" + saveResult.name + "\""
+                };
+            });
         }
-
-        if (parentResults.length > 1){
-            greyhound.damRef = parentResults[1]._id;
-        }
-
-        return greyhoundService.saveOrFindGreyhoundImportObject(greyhound);
     });
 };
 
-greyhoundService.processGreyhoundRow = function(record){
-    var resultInfo = {info: {}};
-    resultInfo.info.raw = record;
-    var newGreyhound = greyhoundService.rawCsvArrayToGreyhound(record);
-    return greyhoundService.processGreyhoundImportObject(newGreyhound).then(function(savedGreyhound){
-        resultInfo.isSuccessful = true;
-        resultInfo.info.greyhoundRef = savedGreyhound._id;
-        resultInfo.info.message = "Created greyhound";
-        return q(resultInfo);
-    }, function(importError){
-        console.log("error import greyhound csv", importError);
-        resultInfo.isSuccessful = false;
-        resultInfo.info.error = importError;
-        return q(resultInfo);
+greyhoundService.createStep = function(batchRecord){
+    return greyhoundService.createGreyhoundByName(batchRecord.greyhoundRecord.name).then(function(greyhoundImportResult) {
+        batchRecord.createdGreyhound = greyhoundImportResult.model;
+        batchRecord.stepResults.push(greyhoundImportResult.details);
+        return batchRecord;
+    },function(creationFailure){
+        batchRecord.stepResults.push("Failed to greyhound \"" + batchRecord.greyhoundRecord.name + "\" error:" + creationFailure);
+        return batchRecord;
     });
+};
+
+greyhoundService.createSireStep = function(batchRecord){
+    if (batchRecord.greyhoundRecord.sire != null && batchRecord.createdGreyhound != null){
+        return greyhoundService.createGreyhoundByName(batchRecord.greyhoundRecord.sire.name).then(function(sireImportResult) {
+            batchRecord.createdSire = sireImportResult.model;
+            batchRecord.stepResults.push(sireImportResult.details);
+            return batchRecord;
+        }, function(creationFailure){
+            batchRecord.stepResults.push("Failed to sire greyhound \"" + batchRecord.greyhoundRecord.name + "\" error:" + creationFailure);
+            return batchRecord;
+        });
+    } else {
+        return q(batchRecord);
+    }
+};
+
+greyhoundService.setSireStep = function(batchRecord){
+    if (batchRecord.createdSire != null && batchRecord.createdGreyhound != null){
+        batchRecord.createdGreyhound.sireRef = batchRecord.createdSire._id;
+        return mongoHelper.savePromise(batchRecord.createdGreyhound).then(function(updatedGreyhound){
+            batchRecord.createdGreyhound = updatedGreyhound;
+            batchRecord.stepResults.push("Updated \"" + updatedGreyhound.name + "\" to have sire \"" + batchRecord.createdSire.name + "\"");
+            return batchRecord;
+        }, function(updateSireError){
+            batchRecord.stepResults.push("Failed to update sire for \"" + batchRecord.createdGreyhound.name + "\" error:" + updateSireError);
+            return batchRecord;
+        });
+    } else {
+        return q(batchRecord);
+    }
+};
+
+greyhoundService.createDamStep = function(batchRecord){
+    if (batchRecord.greyhoundRecord.dam != null && batchRecord.createdGreyhound != null){
+        return greyhoundService.createGreyhoundByName(batchRecord.greyhoundRecord.dam.name).then(function(damImportResult) {
+            batchRecord.createdDam = damImportResult.model;
+            batchRecord.stepResults.push(damImportResult.details);
+            return batchRecord;
+        }, function(creationFailure){
+            batchRecord.stepResults.push("Failed to dam greyhound \"" + batchRecord.greyhoundRecord.name + "\" error:" + creationFailure);
+            return batchRecord;
+        });
+    } else {
+        return q(batchRecord);
+    }
+};
+
+greyhoundService.setDamStep = function(batchRecord){
+    if (batchRecord.createdDam != null && batchRecord.createdGreyhound != null){
+        batchRecord.createdGreyhound.damRef = batchRecord.createdDam._id;
+        return mongoHelper.savePromise(batchRecord.createdGreyhound).then(function(updatedGreyhound){
+            batchRecord.createdGreyhound = updatedGreyhound;
+            batchRecord.stepResults.push("Updated \"" + updatedGreyhound.name + "\" to have dam \"" + batchRecord.createdDam.name + "\"");
+            return batchRecord;
+        }, function(updateSireError){
+            batchRecord.stepResults.push("Failed to update dam for \"" + batchRecord.createdGreyhound.name + "\" error:" + updateSireError);
+            return batchRecord;
+        });
+    } else {
+        return q(batchRecord);
+    }
+};
+
+greyhoundService.processGreyhoundRow = function(record){
+    var batchRecord = {stepResults: [], greyhoundRecord: greyhoundService.rawCsvArrayToGreyhound(record)};
+    return greyhoundService.createStep(batchRecord)
+        .then(greyhoundService.createSireStep)
+        .then(greyhoundService.setSireStep)
+        .then(greyhoundService.createDamStep)
+        .then(greyhoundService.setDamStep)
+        .then(function(finalBatchRecord){
+            return {isSuccessful : true, stepResults: finalBatchRecord.stepResults};
+        }).fail(function(importError){
+            console.log("error importing greyhound csv", importError);
+            return q({isSuccessful : false, stepResults: [JSON.stringify(importError)]});
+        });
 };
 
 greyhoundService.newGreyhound = function(json){

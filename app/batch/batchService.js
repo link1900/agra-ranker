@@ -203,7 +203,8 @@ batchService.processGreyhoundCSV = function(batchJob){
                     status: resultType,
                     startDate: recordStart,
                     endDate: new Date(),
-                    metadata: resultInfo.info
+                    raw: record,
+                    stepResults: resultInfo.stepResults
                 });
                 mongoHelper.savePromise(batchResult);
             });

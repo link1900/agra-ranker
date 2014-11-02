@@ -24,6 +24,16 @@ batchController.setBatch = function(req, res, next, id) {
     });
 };
 
+batchController.setBatchResult = function(req, res, next, id) {
+    BatchResult.findById(id, function(err, model) {
+        if (err) return next(err);
+        if (!model) return next(new Error('Failed to load batch result' + id));
+        req.model = model;
+        req.previousModel = _.clone(model.toObject());
+        return next();
+    });
+};
+
 batchController.prepareBatchQuery = function(req, res, next) {
     req.searchQuery = {};
     var like = req.param('like');

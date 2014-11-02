@@ -17,6 +17,24 @@ mongoHelper.find = function(dao, search){
     return deferred.promise;
 };
 
+mongoHelper.oneExists = function(dao, search){
+  return mongoHelper.findOne(dao, search).then(function(result){
+      return result != null;
+  });
+};
+
+mongoHelper.findOne = function(dao, search){
+    var deferred = q.defer();
+    dao.findOne(search, function(err, result){
+        if(err){
+            deferred.reject(err);
+        } else {
+            deferred.resolve(result);
+        }
+    });
+    return deferred.promise;
+};
+
 mongoHelper.findOneById = function(dao, id){
     var deferred = q.defer();
     dao.findById(id, function (err, model) {

@@ -9,8 +9,9 @@ batchResult.schema = new Schema({
     status: { type: String },
     startDate: { type: Date },
     endDate: {type: Date},
-    recordNumber: {type: Number },
-    metadata: { type: Schema.Types.Mixed }
+    recordNumber: {type: Number},
+    raw : {type: String},
+    stepResults : {type: [String]}
 });
 
 //statuses
