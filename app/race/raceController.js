@@ -3,14 +3,13 @@
 var raceController = module.exports = {};
 
 var mongoose = require('mongoose');
-var Race = mongoose.model('Race');
-var GroupLevel = mongoose.model('GroupLevel');
+var Race = require('./race').model;
+var GroupLevel = require('../groupLevel/groupLevel').model;
 var Placing = mongoose.model('Placing');
 var _ = require('lodash');
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
 var q = require('q');
-
 
 raceController.setRace = function(req, res, next, id) {
     Race.findById(id, function(err, race) {
