@@ -35,6 +35,21 @@ mongoHelper.findOne = function(dao, search){
     return deferred.promise;
 };
 
+mongoHelper.findOneAndCreate = function(dao, search, doc){
+    var deferred = q.defer();
+    var findOptions = {
+        upsert: true
+    };
+    dao.findOneAndUpdate(search, doc, findOptions, function(err, result){
+        if(err){
+            deferred.reject(err);
+        } else {
+            deferred.resolve(result);
+        }
+    });
+    return deferred.promise;
+};
+
 mongoHelper.findOneById = function(dao, id){
     var deferred = q.defer();
     dao.findById(id, function (err, model) {

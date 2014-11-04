@@ -62,8 +62,9 @@ greyhoundService.createStep = function(batchRecord){
         batchRecord.stepResults.push(greyhoundImportResult.details);
         return batchRecord;
     },function(creationFailure){
-        batchRecord.stepResults.push("Failed to greyhound \"" + batchRecord.greyhoundRecord.name + "\" error:" + creationFailure);
-        return batchRecord;
+        console.log(creationFailure);
+        batchRecord.stepResults.push("Failed to create greyhound \"" + batchRecord.greyhoundRecord.name + "\" error:" + creationFailure);
+        return q.reject(batchRecord);
     });
 };
 
@@ -74,8 +75,9 @@ greyhoundService.createSireStep = function(batchRecord){
             batchRecord.stepResults.push(sireImportResult.details);
             return batchRecord;
         }, function(creationFailure){
-            batchRecord.stepResults.push("Failed to sire greyhound \"" + batchRecord.greyhoundRecord.name + "\" error:" + creationFailure);
-            return batchRecord;
+            console.log(creationFailure);
+            batchRecord.stepResults.push("Failed to create sire greyhound \"" + batchRecord.greyhoundRecord.name + "\" error:" + creationFailure);
+            return q.reject(batchRecord);
         });
     } else {
         return q(batchRecord);
@@ -90,8 +92,9 @@ greyhoundService.setSireStep = function(batchRecord){
             batchRecord.stepResults.push("Updated \"" + updatedGreyhound.name + "\" to have sire \"" + batchRecord.createdSire.name + "\"");
             return batchRecord;
         }, function(updateSireError){
+            console.log(updateSireError);
             batchRecord.stepResults.push("Failed to update sire for \"" + batchRecord.createdGreyhound.name + "\" error:" + updateSireError);
-            return batchRecord;
+            return q.reject(batchRecord);
         });
     } else {
         return q(batchRecord);
@@ -105,8 +108,9 @@ greyhoundService.createDamStep = function(batchRecord){
             batchRecord.stepResults.push(damImportResult.details);
             return batchRecord;
         }, function(creationFailure){
-            batchRecord.stepResults.push("Failed to dam greyhound \"" + batchRecord.greyhoundRecord.name + "\" error:" + creationFailure);
-            return batchRecord;
+            console.log(creationFailure);
+            batchRecord.stepResults.push("Failed to create dam greyhound \"" + batchRecord.greyhoundRecord.name + "\" error:" + creationFailure);
+            return q.reject(batchRecord);
         });
     } else {
         return q(batchRecord);
@@ -121,8 +125,9 @@ greyhoundService.setDamStep = function(batchRecord){
             batchRecord.stepResults.push("Updated \"" + updatedGreyhound.name + "\" to have dam \"" + batchRecord.createdDam.name + "\"");
             return batchRecord;
         }, function(updateSireError){
+            console.log(updateSireError);
             batchRecord.stepResults.push("Failed to update dam for \"" + batchRecord.createdGreyhound.name + "\" error:" + updateSireError);
-            return batchRecord;
+            return q.reject(batchRecord);
         });
     } else {
         return q(batchRecord);
