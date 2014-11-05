@@ -4,11 +4,14 @@ var fs = require('fs');
 var path = require('path');
 var passport = require('passport');
 var logger = require('mean-logger');
+var winston = require('winston');
 
 /**
  * Main application entry file.
  * Please note that the order of loading is important.
  */
+winston.remove(winston.transports.Console);
+winston.add(winston.transports.Console, {timestamp: true});
 
 // Load configurations
 // Set the node enviornment variable if not set before
