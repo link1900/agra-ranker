@@ -192,10 +192,11 @@ batchService.processGreyhoundCSV = function(batchJob){
         var parser = csv.parse();
 
         parser.on('data', function(record){
+            parser.pause();
             recordCount += 1;
             var index = recordCount;
             var recordStart = new Date();
-            greyhoundService.processGreyhoundRow(record).then(function(resultInfo) {
+            return greyhoundService.processGreyhoundRow(record).then(function(resultInfo) {
                 var resultType = batchService.getBatchResultFromBoolean(resultInfo.isSuccessful);
                 var batchResult = new BatchResult({
                     batchRef: batchJob._id,
@@ -206,7 +207,9 @@ batchService.processGreyhoundCSV = function(batchJob){
                     raw: record,
                     stepResults: resultInfo.stepResults
                 });
-                mongoHelper.savePromise(batchResult);
+                return mongoHelper.savePromise(batchResult).then(function(){
+                    parser.resume();
+                });
             });
         });
 

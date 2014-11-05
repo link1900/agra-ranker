@@ -46,7 +46,7 @@ greyhoundService.createGreyhoundByName = function(greyhoundName){
                 details: "Found existing greyhound \"" + possibleGreyhound.name + "\" skipping greyhound creation"
             };
         } else {
-            return mongoHelper.savePromise({name: greyhoundName}).then(function(saveResult){
+            return mongoHelper.findOneAndCreate(Greyhound, {name: greyhoundName},{name: greyhoundName}).then(function(saveResult){
                 return {
                     model : saveResult,
                     details: "Created greyhound \"" + saveResult.name + "\""
