@@ -62,14 +62,16 @@ migrationController.applyMigrations(migrationDir).then(function(){
 
     // Start the app by listening on <port>
     var port = process.env.PORT || config.port;
-    app.listen(port);
+    var server = require('http').createServer(app);
+    var io = require('socket.io')(server);
+
+    require('./app/sockets.js').setup(io);
+
+    server.listen(port);
     console.log('Express app started on port ' + port);
 
     // Initializing logger
     logger.init(app, passport, mongoose);
-
-    // Expose app
-    exports = module.exports = app;
 
     //start scheduler
     var batchService = require('./app/batch/batchService');

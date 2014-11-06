@@ -146,7 +146,9 @@
 - (DONE) BatchResult - Create new a result for each action a batch does
 - (DONE) Batch - add a total processed time field, calculate it and display it
 - (DONE) Batch - count the result records to get a total count of success and failure and unprocessed
-- in the grid when there is no results have no search
+- (DONE) in the grid when there is no results have no search
+- (DONE) Change the batch to wait until it has finished processing a record before it does the next record
+- (DONE) Fix an issue where greyhound import is creating multiple same greyhounds
 - update placing flyweight in point allotment when placing is updated
 - Add race importing
 - unit test point allotment creation
