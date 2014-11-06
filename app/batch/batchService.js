@@ -247,3 +247,7 @@ batchService.getBatchResultFromBoolean = function(boolean){
         return batchService.batchJobResultOptions.failed;
     }
 };
+
+batchService.getBatchInfo = function(){
+    return batchService.processes[0];
+};

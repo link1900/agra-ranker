@@ -4,7 +4,6 @@ angular.module('controllers').controller('BatchCtrl', function($scope, $routePar
     $scope.$on('socket:batchInfo', function(event, batchInfo) {
         if (batchInfo != null){
             $scope.batchInfo = batchInfo;
-            console.log(batchInfo)
         }
     });
 
