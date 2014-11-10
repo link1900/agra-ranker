@@ -9,10 +9,10 @@ sockets.setup = function(io){
 };
 
 sockets.updateBatchInfo = _.throttle(function(){
-    sockets.io.emit('batchInfo', batchService.getBatchInfo());
+    if (sockets.io != null){
+        sockets.io.emit('batchInfo', batchService.getBatchInfo());
+    }
 }, 1000);
-
-
 
 sockets.main = function() {
     sockets.io.on('connection', function(socket){

@@ -63,9 +63,9 @@ migrationController.applyMigrations(migrationDir).then(function(){
     // Start the app by listening on <port>
     var port = process.env.PORT || config.port;
     var server = require('http').createServer(app);
-    var io = require('socket.io')(server);
 
-    require('./app/sockets.js').setup(io);
+    //var io = require('socket.io')(server);
+    //require('./app/sockets.js').setup(io);
 
     server.listen(port);
     console.log('Express app started on port ' + port);
