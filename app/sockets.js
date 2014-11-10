@@ -10,7 +10,7 @@ sockets.setup = function(io){
 
 sockets.updateBatchInfo = _.throttle(function(){
     sockets.io.emit('batchInfo', batchService.getBatchInfo());
-}, 5000);
+}, 1000);
 
 
 
