@@ -11,6 +11,7 @@ var GroupLevel = require('../groupLevel/groupLevel').model;
 var Greyhound = require('../greyhound/greyhound').model;
 var BatchJob = require('../batch/batchJob').model;
 var BatchResult = require('../batch/batchResult').model;
+var File = require('../batch/file').model;
 var _ = require('lodash');
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
@@ -54,6 +55,9 @@ adminService.getAllCounts = function(){
         }),
         mongoHelper.getCollectionCount(BatchJob).then(function(count){
             return {"batchResult": count};
+        }),
+        mongoHelper.getCollectionCount(File).then(function(count){
+            return {"file": count};
         })
     ];
 
