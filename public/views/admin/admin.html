@@ -7,6 +7,26 @@
     </div>
     <div class="panel-body">
         <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+        <h2>Counts</h2>
+        <dl class="dl-horizontal-wide">
+            <dt>Total users</dt>
+            <dd>{{counts.user}}</dd>
+            <dt>Total greyhounds</dt>
+            <dd>{{counts.greyhound}}</dd>
+            <dt>Total placings</dt>
+            <dd>{{counts.placing}}</dd>
+            <dt>Total group levels</dt>
+            <dd>{{counts.groupLevel}}</dd>
+            <dt>Total races</dt>
+            <dd>{{counts.race}}</dd>
+            <dt>Total ranking systems</dt>
+            <dd>{{counts.rankingSystem}}</dd>
+            <dt>Total batch jobs</dt>
+            <dd>{{counts.batchJob}}</dd>
+            <dt>Total batch result</dt>
+            <dd>{{counts.batchResult}}</dd>
+        </dl>
+        <h2>Deletes</h2>
         <button ng-show="user" data-ng-click="removeAllGreyhounds()" class="btn btn-danger">Remove all greyhounds</button>
         <button ng-show="user" data-ng-click="removeAllBatchJobs()" class="btn btn-danger">Remove all batch jobs</button>
     </div>

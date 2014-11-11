@@ -214,6 +214,24 @@ mongoHelper.saveAll = function(entities){
     );
 };
 
+mongoHelper.getCollectionCount = function(dao){
+    var deferred = q.defer();
+    mongoHelper.collectionExists(dao.collection.name).then(function(collectionExists){
+        if (collectionExists){
+            dao.collection.count(function(err, totalCount){
+                if(err){
+                    deferred.reject(err);
+                } else {
+                    deferred.resolve(totalCount);
+                }
+            });
+        } else {
+            deferred.resolve(0);
+        }
+    });
+    return deferred.promise;
+};
+
 mongoHelper.dropCollection = function(dao){
     var deferred = q.defer();
     mongoHelper.collectionExists(dao.collection.name).then(function(result){

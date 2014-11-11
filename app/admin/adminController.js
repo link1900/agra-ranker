@@ -11,3 +11,7 @@ adminController.removeAllGreyhounds = function(req, res){
 adminController.removeAllBatchJobs = function(req, res){
     helper.responseFromPromise(res, adminService.removeAllBatchJobs());
 };
+
+adminController.getCounts = function(req, res){
+    helper.responseFromPromise(res, adminService.getAllCounts());
+};

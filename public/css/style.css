@@ -159,3 +159,14 @@ a {
     padding: 5px;
     min-height: 45px;
 }
+
+.dl-horizontal-wide dt {
+    float: left;
+    width: 200px;
+    overflow: hidden;
+    clear: left;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 20px;
+}
