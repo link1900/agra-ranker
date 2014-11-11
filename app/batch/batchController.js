@@ -73,7 +73,23 @@ batchController.checkFields = function(req, res, next){
     }
 };
 
-batchController.createGreyhoundImportBatchFromFile = function(req, res){
+batchController.setImportType = function(req, res, next, type){
+    if (type == 'greyhound'){
+        req.importType = batchService.batchTypes.importGreyhoundCSV;
+    }
+    if (type == 'race'){
+        req.importType = batchService.batchTypes.importRaceCSV;
+    }
+
+    return next();
+};
+
+batchController.setImportFileType = function(req, res, next, fileType){
+    req.importFileType = fileType;
+    return next();
+};
+
+batchController.createBatchFromFile = function(req, res){
     var storageId = uuid.v4();
     var fileWriteStream = gfs.createWriteStream({
         filename: storageId
@@ -85,7 +101,7 @@ batchController.createGreyhoundImportBatchFromFile = function(req, res){
     });
 
     fileWriteStream.on('close', function(file){
-        batchController.createBatch(req.headers.uploadfilename, batchService.batchTypes.importGreyhoundCSV, {fileId : file._id}).then(function(batch){
+        batchController.createBatch(req.headers.uploadfilename, req.importType, {fileId : file._id}).then(function(batch){
             res.jsonp(200, batch);
         }, function(batchCreationError){
             console.log("batch creation error");

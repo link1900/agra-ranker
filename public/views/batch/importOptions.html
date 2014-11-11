@@ -1,0 +1,22 @@
+<div ng-show="user" class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Import options</h3>
+    </div>
+    <div class="panel-body">
+        <div ng-controller="UploadCtrl">
+            <button data-ng-hide="uploadingFile" data-ng-click="openFileSelect('greyhound')" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Import greyhound .csv file</button>
+            <button data-ng-hide="uploadingFile" data-ng-click="openFileSelect('race')" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Import race .csv file</button>
+            <input id="hiddenFileOpen" type="file" style="display:none" ng-file-select="onFileSelect($files)">
+            <div data-ng-show="uploadingFile && !uploadResult">
+                Uploading file...
+            </div>
+            <div data-ng-show="uploadResult">
+                Upload complete and batch job has been created. You can view the details of the batch job <a data-ng-href="#/batch/view/{{uploadResult._id}}">here</a>
+                <br><br>
+                <button data-ng-click="clearSelectedFiles()" class="btn btn-primary">
+                    Upload another file
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

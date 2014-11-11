@@ -22,7 +22,8 @@ batchService.states = {
 };
 
 batchService.batchTypes = {
-    importGreyhoundCSV : "Import greyhound csv"
+    importGreyhoundCSV : "Import greyhound csv",
+    importRaceCSV : "Import race csv"
 };
 
 batchService.batchHandlers = {};

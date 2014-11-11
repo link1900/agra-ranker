@@ -1,7 +1,13 @@
 angular.module('controllers').controller('UploadCtrl', ['$scope', '$upload', 'rankerEventBus',
     function($scope, $upload,rankerEventBus) {
 
-        $scope.openFileSelect = function(){
+        $scope.openFileSelect = function(type){
+            if (type == 'greyhound'){
+                $scope.uploadUrl = 'upload/batch/greyhound/csv';
+            }
+            if (type == 'race'){
+                $scope.uploadUrl = 'upload/batch/race/csv';
+            }
             $('#hiddenFileOpen').click();
         };
 
@@ -9,7 +15,7 @@ angular.module('controllers').controller('UploadCtrl', ['$scope', '$upload', 'ra
             if ($files.length == 1){
                 $scope.uploadingFile = $files[0];
                 $upload.upload({
-                    url: 'upload/batch/greyhound/csv',
+                    url: $scope.uploadUrl,
                     method: 'POST',
                     headers: {'uploadFilename': $scope.uploadingFile.name},
                     // withCredentials: true,
