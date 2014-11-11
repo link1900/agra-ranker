@@ -149,11 +149,18 @@
 - (DONE) in the grid when there is no results have no search
 - (DONE) Change the batch to wait until it has finished processing a record before it does the next record
 - (DONE) Fix an issue where greyhound import is creating multiple same greyhounds
+- (DONE) fix an issue with imported greyhounds not having created and updated date
+- have the ability to list files stored
+- have the ability to download a file from a batch
+- export greyhound csv
+- export greyhound json
+- export races csv
+- export races json
+- allow race search to be done by two dates
 - update placing flyweight in point allotment when placing is updated
 - Add race importing
 - unit test point allotment creation
 - calculate rankings on race creation
-
 
 ### 6.0.12 Ranking API
 - define agra ranking system and test importing it

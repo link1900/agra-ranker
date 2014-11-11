@@ -13,12 +13,12 @@
                     <dd>{{batch.type}}</dd>
                     <dt>Status</dt>
                     <dd>{{batch.status}}</dd>
-                    <dt>Total processing time</dt>
-                    <dd>{{batch.totalDuration | duration}}</dd>
-                    <dt>Total successful</dt>
-                    <dd>{{batch.totalSuccess}}</dd>
-                    <dt>Total failure</dt>
-                    <dd>{{batch.totalFailure}}</dd>
+                    <dt ng-show="batch.totalDuration">Total processing time</dt>
+                    <dd ng-show="batch.totalDuration">{{batch.totalDuration | duration}}</dd>
+                    <dt ng-show="batch.totalSuccess">Total successful</dt>
+                    <dd ng-show="batch.totalSuccess">{{batch.totalSuccess}}</dd>
+                    <dt ng-show="batch.totalFailure">Total failure</dt>
+                    <dd ng-show="batch.totalFailure">{{batch.totalFailure}}</dd>
                     <dt>Created at</dt>
                     <dd>{{batch.createdAt | date:'medium'}}</dd>
                     <dt>Last updated</dt>
