@@ -31,6 +31,12 @@ adminService.removeAllBatchJobs = function(){
     });
 };
 
+adminService.removeAllFiles = function(){
+    return mongoHelper.dropCollection(Chunk).then(function(){
+        return mongoHelper.dropCollection(File);
+    });
+};
+
 adminService.getAllCounts = function(){
     var proms = [
         mongoHelper.getCollectionCount(User).then(function(count){

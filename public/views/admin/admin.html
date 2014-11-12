@@ -31,7 +31,8 @@
             <dd>{{counts.fileSize | bytes}}</dd>
         </dl>
         <h2>Deletes</h2>
-        <button ng-show="user" data-ng-click="removeAllGreyhounds()" class="btn btn-danger">Remove all greyhounds</button>
-        <button ng-show="user" data-ng-click="removeAllBatchJobs()" class="btn btn-danger">Remove all batch jobs</button>
+        <button ng-show="user" data-ng-click="removeAll('greyhound')" class="btn btn-danger">Remove all greyhounds</button>
+        <button ng-show="user" data-ng-click="removeAll('batch')" class="btn btn-danger">Remove all batch jobs</button>
+        <button ng-show="user" data-ng-click="removeAll('file')" class="btn btn-danger">Remove all files</button>
     </div>
 </div>

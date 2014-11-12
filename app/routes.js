@@ -95,7 +95,7 @@ module.exports = function(app) {
     app.param('rankingId', rankingController.setModel);
 
     //admin
-    app.del('/admin/greyhound', securityController.checkAuthentication, adminController.removeAllGreyhounds);
-    app.del('/admin/batch', securityController.checkAuthentication, adminController.removeAllBatchJobs);
+    app.del('/admin/drop/:collectionName', securityController.checkAuthentication, adminController.dropCollection);
     app.get('/admin/count', securityController.checkAuthentication, adminController.getCounts);
+    app.param('collectionName', adminController.setCollectionName);
 };

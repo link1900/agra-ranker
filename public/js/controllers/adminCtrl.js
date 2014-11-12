@@ -1,27 +1,14 @@
 angular.module('controllers').controller('adminCtrl', function($scope, $http) {
 
-    $scope.removeAllGreyhounds = function(){
-        $http.delete('/admin/greyhound').then(function(){
+    $scope.removeAll = function(collection){
+        $http.delete('/admin/drop/'+collection).then(function(){
             $scope.loadCounts();
             $scope.alerts = [
-                { type: 'success', msg: "Deleted all greyhounds" }
+                { type: 'success', msg: "Deleted all "+ collection+ "s" }
             ];
         }, function(res){
             $scope.alerts = [
-                { type: 'danger', msg: "Failed to delete greyhounds: " + res.data.error }
-            ];
-        });
-    };
-
-    $scope.removeAllBatchJobs = function(){
-        $http.delete('/admin/batch').then(function(){
-            $scope.loadCounts();
-            $scope.alerts = [
-                { type: 'success', msg: "Deleted all batch jobs" }
-            ];
-        }, function(res){
-            $scope.alerts = [
-                { type: 'danger', msg: "Failed to delete batch jobs: " + res.data.error }
+                { type: 'danger', msg: "Failed to delete "+ collection+ "s: " + res.data.error }
             ];
         });
     };
