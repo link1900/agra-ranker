@@ -1,5 +1,4 @@
 'use strict';
-
 // https://github.com/angular/angular.js/issues/1414
 angular.module('filter.duration', ['ng'])
 

@@ -15,3 +15,5 @@ file.definition = {
 file.schema = new Schema(file.definition);
 
 file.model = mongoose.model('fs.file', file.schema);
+
+file.chunkModel = mongoose.model('fs.chunk', new Schema({}));

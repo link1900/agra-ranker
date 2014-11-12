@@ -232,6 +232,24 @@ mongoHelper.getCollectionCount = function(dao){
     return deferred.promise;
 };
 
+mongoHelper.getCollectionStats = function(dao){
+    var deferred = q.defer();
+    mongoHelper.collectionExists(dao.collection.name).then(function(collectionExists){
+        if (collectionExists){
+            dao.collection.stats(function(err, results){
+                if(err){
+                    deferred.reject(err);
+                } else {
+                    deferred.resolve(results);
+                }
+            });
+        } else {
+            deferred.resolve({});
+        }
+    });
+    return deferred.promise;
+};
+
 mongoHelper.dropCollection = function(dao){
     var deferred = q.defer();
     mongoHelper.collectionExists(dao.collection.name).then(function(result){
