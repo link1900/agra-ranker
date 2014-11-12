@@ -96,9 +96,10 @@ module.exports = function(app) {
     app.param('rankingId', rankingController.setModel);
 
     //file routes
-    app.get('/file', fileController.prepareQuery, helper.runQuery);
-    app.get('/file/:fileId', helper.getOne);
-    app.del('/file/:fileId',securityController.checkAuthentication, fileController.destroy);
+    app.get('/file', securityController.checkAuthentication, fileController.prepareQuery, helper.runQuery);
+    app.get('/file/:fileId', securityController.checkAuthentication, helper.getOne);
+    app.get('/file/:fileId/download', securityController.checkAuthentication, fileController.downloadFile);
+    app.del('/file/:fileId', securityController.checkAuthentication, fileController.destroy);
     app.param('fileId', fileController.setModel);
 
     //admin

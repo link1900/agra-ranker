@@ -4,6 +4,7 @@ var q = require('q');
 var _ = require('lodash');
 
 var File = require('./file').model;
+var fileService = require('./fileService');
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
 
@@ -31,5 +32,13 @@ fileController.prepareQuery = function(req, res, next) {
 };
 
 fileController.destroy = function(req, res) {
-    helper.responseFromPromise(res, mongoHelper.removePromise(req.model));
+    helper.responseFromPromise(res, fileService.removeFile(req.model._id));
+};
+
+fileController.downloadFile = function(req, res){
+    res.setHeader('Content-disposition', 'attachment; filename=' + req.model.filename);
+    res.setHeader('Content-type', req.model.contentType);
+
+    var filestream = fileService.getFileReadStream(req.model._id);
+    filestream.pipe(res);
 };
