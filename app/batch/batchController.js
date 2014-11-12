@@ -11,7 +11,6 @@ var mongoHelper = require('../mongoHelper');
 var q = require('q');
 var grid = require('gridfs-stream');
 var gfs = grid(mongoose.connection.db);
-var uuid = require('node-uuid');
 var batchService = require('./batchService');
 
 batchController.setBatch = function(req, res, next, id) {
@@ -90,28 +89,27 @@ batchController.setImportFileType = function(req, res, next, fileType){
 };
 
 batchController.createBatchFromFile = function(req, res){
-    var storageId = uuid.v4();
-    var fileWriteStream = gfs.createWriteStream({
-        filename: storageId
-    });
-
-    fileWriteStream.on('error', function(gridfsError){
-        console.log("error saving file to gridfs", gridfsError);
-        res.jsonp(400, {'error':err});
-    });
-
-    fileWriteStream.on('close', function(file){
-        batchController.createBatch(req.headers.uploadfilename, req.importType, {fileId : file._id}).then(function(batch){
-            res.jsonp(200, batch);
-        }, function(batchCreationError){
-            console.log("batch creation error");
-            res.jsonp(400, {'error':batchCreationError});
-        });
-    });
-
     var busboy = new Busboy({ headers: req.headers });
 
     busboy.on('file', function(fieldname, file, filename) {
+        var fileWriteStream = gfs.createWriteStream({
+            filename: filename
+        });
+
+        fileWriteStream.on('error', function(gridfsError){
+            console.log("error saving file to gridfs", gridfsError);
+            res.jsonp(400, {'error':err});
+        });
+
+        fileWriteStream.on('close', function(file){
+            batchController.createBatch(req.headers.uploadfilename, req.importType, {fileId : file._id}).then(function(batch){
+                res.jsonp(200, batch);
+            }, function(batchCreationError){
+                console.log("batch creation error");
+                res.jsonp(400, {'error':batchCreationError});
+            });
+        });
+
         file.pipe(fileWriteStream);
     });
 
