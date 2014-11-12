@@ -150,9 +150,9 @@
 - (DONE) Change the batch to wait until it has finished processing a record before it does the next record
 - (DONE) Fix an issue where greyhound import is creating multiple same greyhounds
 - (DONE) fix an issue with imported greyhounds not having created and updated date
-- on the count screen list the total stored file size
-- add the ability to delete all files
-- list all disk usage on the counts page
+- (DONE) on the count screen list the total stored file size
+- (DONE) add the ability to delete all files
+- (DONE) list all disk usage on the counts page
 - have the ability to list files stored and download them
 - have the ability to download a file from a batch
 - export greyhound csv

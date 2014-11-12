@@ -12,6 +12,7 @@ var rankingSystemController = require('./controllers/rankingSystemController');
 var pointAllotmentController = require('./controllers/pointAllotmentController');
 var rankingController = require('./controllers/rankingController');
 var adminController = require('./admin/adminController');
+var fileController = require('./file/fileController');
 var helper = require('./helper');
 
 module.exports = function(app) {
@@ -93,6 +94,12 @@ module.exports = function(app) {
     app.get('/ranking/:rankingId', helper.getOne);
     app.post('/ranking', securityController.checkAuthentication, rankingController.createRankings);
     app.param('rankingId', rankingController.setModel);
+
+    //file routes
+    app.get('/file', fileController.prepareQuery, helper.runQuery);
+    app.get('/file/:fileId', helper.getOne);
+    app.del('/file/:fileId',securityController.checkAuthentication, fileController.destroy);
+    app.param('fileId', fileController.setModel);
 
     //admin
     app.del('/admin/drop/:collectionName', securityController.checkAuthentication, adminController.dropCollection);
