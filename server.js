@@ -3,7 +3,6 @@ var express = require('express');
 var fs = require('fs');
 var path = require('path');
 var passport = require('passport');
-var logger = require('mean-logger');
 var winston = require('winston');
 
 /**
@@ -69,9 +68,6 @@ migrationController.applyMigrations(migrationDir).then(function(){
 
     server.listen(port);
     console.log('Express app started on port ' + port);
-
-    // Initializing logger
-    logger.init(app, passport, mongoose);
 
     //start scheduler
     var batchService = require('./app/batch/batchService');

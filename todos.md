@@ -153,15 +153,15 @@
 - (DONE) on the count screen list the total stored file size
 - (DONE) add the ability to delete all files
 - (DONE) list all disk usage on the counts page
-- have the ability to list files stored and download them
-- have the ability to download a file from a batch
+- (DONE) have the ability to list files stored and download them
+- (DONE) have the ability to download a file from a batch
 - export greyhound csv
 - export greyhound json
-- export races csv
-- export races json
 - allow race search to be done by two dates
 - update placing flyweight in point allotment when placing is updated
 - Add race importing
+- export races csv
+- export races json
 - unit test point allotment creation
 - calculate rankings on race creation
 
