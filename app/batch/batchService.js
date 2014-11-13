@@ -11,7 +11,6 @@ var greyhoundService = require('../greyhound/greyhoundService');
 var q = require('q');
 var csv = require('csv');
 var grid = require('gridfs-stream');
-var sockets = require('../sockets');
 var gfs = grid(mongoose.connection.db);
 
 batchService.states = {
@@ -127,7 +126,6 @@ batchService.processorTick = function(processor){
 
 batchService.executeProcessor = function(processor){
     processor.state = batchService.states.searching;
-    sockets.updateBatchInfo();
     //find a batch that requires processing
     var query = {status: batchService.batchStatuses.awaitingProcessing};
     var update = {status: batchService.batchStatuses.inProgress};
@@ -140,11 +138,9 @@ batchService.executeProcessor = function(processor){
             console.log(processor.name + " started processing batch job " + batchToProcess.name);
             processor.state = batchService.states.processing;
             processor.processingBatch = batchToProcess;
-            sockets.updateBatchInfo();
             batchService.processBatch(processor.processingBatch).then(function(){
                 console.log(processor.name + " finished processing batch job " + batchToProcess.name);
                 batchToProcess.status = batchService.batchStatuses.completed;
-                sockets.updateBatchInfo();
                 mongoHelper.savePromise(batchToProcess).then(function(){
                     batchService.clearProcessor(processor);
                 }, function(){
@@ -171,7 +167,6 @@ batchService.executeProcessor = function(processor){
 batchService.clearProcessor = function(processor){
     delete processor.processingBatch;
     processor.state = batchService.states.standby;
-    sockets.updateBatchInfo();
 };
 
 batchService.processBatch = function(batchJob){
