@@ -3,6 +3,10 @@ var greyhoundService = module.exports = {};
 var mongoose = require('mongoose');
 var Greyhound = require('./greyhound').model;
 var Placing = mongoose.model('Placing');
+var BatchResult = require('../batch/batchResult').model;
+var batchService = require('../batch/batchService');
+var fileService = require('../file/fileService');
+var csv = require('csv');
 var _ = require('lodash');
 var helper = require('../helper');
 var q = require('q');
@@ -193,13 +197,6 @@ greyhoundService.checkForExistsImport = function(greyhound) {
     return deferred.promise;
 };
 
-var BatchJob = require('../batch/batchJob').model;
-var BatchResult = require('../batch/batchResult').model;
-var batchService = require('../batch/batchService');
-var csv = require('csv');
-var grid = require('gridfs-stream');
-var gfs = grid(mongoose.connection.db);
-
 greyhoundService.processGreyhoundCSV = function(batchJob){
     var deferred = q.defer();
     if (batchJob.type != null &&
@@ -207,7 +204,7 @@ greyhoundService.processGreyhoundCSV = function(batchJob){
         batchJob.metadata != null &&
         batchJob.metadata.fileId != null){
         //find the file and stream it in
-        var fileReadStream = gfs.createReadStream({_id: batchJob.metadata.fileId});
+        var fileReadStream =  fileService.getFileReadStream(batchJob.metadata.fileId);
         var recordCount = 0;
         fileReadStream.on('error', function(fileReadError){
             console.log("error streaming from gridfs", fileReadError);
