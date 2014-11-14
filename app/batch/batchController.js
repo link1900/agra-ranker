@@ -12,6 +12,9 @@ var q = require('q');
 var grid = require('gridfs-stream');
 var gfs = grid(mongoose.connection.db);
 var batchService = require('./batchService');
+var greyhoundService = require('../greyhound/greyhoundService');
+var raceService = require('../race/raceService');
+var q = require('q');
 
 batchController.setBatch = function(req, res, next, id) {
     BatchJob.findById(id, function(err, model) {
@@ -74,10 +77,10 @@ batchController.checkFields = function(req, res, next){
 
 batchController.setImportType = function(req, res, next, type){
     if (type == 'greyhound'){
-        req.importType = batchService.batchTypes.importGreyhoundCSV;
+        req.importType = greyhoundService.greyhoundBatchTypes.importGreyhoundCSV;
     }
     if (type == 'race'){
-        req.importType = batchService.batchTypes.importRaceCSV;
+        req.importType = raceService.raceBatchTypes.importRaceCSV;
     }
 
     return next();

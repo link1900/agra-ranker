@@ -9,20 +9,12 @@ var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
 var greyhoundService = require('../greyhound/greyhoundService');
 var q = require('q');
-var csv = require('csv');
-var grid = require('gridfs-stream');
-var gfs = grid(mongoose.connection.db);
 
 batchService.states = {
     standby : 'Sleeping',
     processing : 'Processing',
     searching: 'Searching...',
     inactive : 'Disabled'
-};
-
-batchService.batchTypes = {
-    importGreyhoundCSV : "Import greyhound csv",
-    importRaceCSV : "Import race csv"
 };
 
 batchService.batchHandlers = {};
@@ -56,7 +48,7 @@ batchService.startBatchProcessors = function(){
 };
 
 batchService.loadBatchHandlers = function(){
-    batchService.batchHandlers[batchService.batchTypes.importGreyhoundCSV] = batchService.processGreyhoundCSV;
+    batchService.batchHandlers[greyhoundService.greyhoundBatchTypes.importGreyhoundCSV] = greyhoundService.processGreyhoundCSV;
 };
 
 /**
@@ -175,60 +167,6 @@ batchService.processBatch = function(batchJob){
     } else {
         return q.reject("unknown batch of type: " + batchJob.type);
     }
-};
-
-batchService.processGreyhoundCSV = function(batchJob){
-    var deferred = q.defer();
-    if (batchJob.type != null &&
-        batchJob.type == batchService.batchTypes.importGreyhoundCSV &&
-        batchJob.metadata != null &&
-        batchJob.metadata.fileId != null){
-        //find the file and stream it in
-        var fileReadStream = gfs.createReadStream({_id: batchJob.metadata.fileId});
-        var recordCount = 0;
-        fileReadStream.on('error', function(fileReadError){
-            console.log("error streaming from gridfs", fileReadError);
-            deferred.reject(fileReadError);
-        });
-
-        var parser = csv.parse();
-
-        parser.on('data', function(record){
-            parser.pause();
-            recordCount += 1;
-            var index = recordCount;
-            var recordStart = new Date();
-            return greyhoundService.processGreyhoundRow(record).then(function(resultInfo) {
-                var resultType = batchService.getBatchResultFromBoolean(resultInfo.isSuccessful);
-                var batchResult = new BatchResult({
-                    batchRef: batchJob._id,
-                    recordNumber: index,
-                    status: resultType,
-                    startDate: recordStart,
-                    endDate: new Date(),
-                    raw: record,
-                    stepResults: resultInfo.stepResults
-                });
-                return mongoHelper.savePromise(batchResult).then(function(){
-                    parser.resume();
-                });
-            });
-        });
-
-        parser.on('finish', function(){
-            deferred.resolve({results: true});
-        });
-
-        parser.on('error', function(parserError){
-            console.log("error parsing csv", parserError);
-            deferred.reject(parserError);
-        });
-
-        fileReadStream.pipe(parser);
-    } else {
-        deferred.reject({error: "batch job does not contain enough data to process"});
-    }
-    return deferred.promise;
 };
 
 batchService.batchJobResultOptions = {
