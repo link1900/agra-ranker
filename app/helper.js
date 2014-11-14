@@ -63,7 +63,7 @@ helper.responseFromPromise = function(res, promise){
         res.jsonp(200, result);
     })
     .fail(function(error){
-        res.jsonp(400, {"error":"failed: " + error});
+        res.jsonp(400, {"error": error});
     });
 };
 

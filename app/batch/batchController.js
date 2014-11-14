@@ -4,17 +4,15 @@ var batchController = module.exports = {};
 var mongoose = require('mongoose');
 var BatchJob = require('./batchJob').model;
 var BatchResult = require('./batchResult').model;
-var Busboy = require('busboy');
+
 var _ = require('lodash');
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
 var q = require('q');
-var grid = require('gridfs-stream');
-var gfs = grid(mongoose.connection.db);
+
 var batchService = require('./batchService');
 var greyhoundService = require('../greyhound/greyhoundService');
 var raceService = require('../race/raceService');
-var q = require('q');
 
 batchController.setBatch = function(req, res, next, id) {
     BatchJob.findById(id, function(err, model) {
@@ -72,94 +70,6 @@ batchController.checkFields = function(req, res, next){
         return next();
     } else {
         return res.jsonp(400, {'error':'you are only allowed edit a batch by cancelling it'});
-    }
-};
-
-batchController.setImportType = function(req, res, next, type){
-    if (type == 'greyhound'){
-        req.importType = greyhoundService.greyhoundBatchTypes.importGreyhoundCSV;
-    }
-    if (type == 'race'){
-        req.importType = raceService.raceBatchTypes.importRaceCSV;
-    }
-
-    return next();
-};
-
-batchController.setImportFileType = function(req, res, next, fileType){
-    req.importFileType = fileType;
-    return next();
-};
-
-batchController.createBatchFromFile = function(req, res){
-    var busboy = new Busboy({ headers: req.headers });
-
-    busboy.on('file', function(fieldname, file, filename) {
-        var fileWriteStream = gfs.createWriteStream({
-            filename: filename
-        });
-
-        fileWriteStream.on('error', function(gridfsError){
-            console.log("error saving file to gridfs", gridfsError);
-            res.jsonp(400, {'error':err});
-        });
-
-        fileWriteStream.on('close', function(file){
-            batchController.createBatch(req.headers.uploadfilename, req.importType, {fileId : file._id}).then(function(batch){
-                res.jsonp(200, batch);
-            }, function(batchCreationError){
-                console.log("batch creation error");
-                res.jsonp(400, {'error':batchCreationError});
-            });
-        });
-
-        file.pipe(fileWriteStream);
-    });
-
-    req.pipe(busboy);
-};
-
-batchController.createBatch = function(name, type, metadata) {
-    //generate the batch model
-    var batch = new BatchJob({
-        name:name,
-        type:type,
-        metadata: metadata,
-        status: batchService.batchStatuses.awaitingProcessing
-    });
-    //then check the fields
-    var error = batchController.hasError(batch);
-    if (error){
-        return q.reject(error);
-    } else {
-        return mongoHelper.savePromise(batch);
-    }
-};
-
-batchController.hasError = function(batch){
-    var error;
-    var nameValid = batch.name && batch.name.length > 0;
-    var typeValid = batch.type && batch.type.length > 0;
-    if (!nameValid){
-        if (!error){
-            error = {errors:[]};
-        }
-        error.message = 'invalid field';
-        error.errors.push('name is required');
-    }
-
-    if (!typeValid){
-        if (!error){
-            error = {errors:[]};
-        }
-        error.message = 'invalid field';
-        error.errors.push('type is required');
-    }
-
-    if (error){
-        return error;
-    } else {
-        return null;
     }
 };
 

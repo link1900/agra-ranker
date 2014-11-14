@@ -3,16 +3,17 @@ angular.module('controllers').controller('UploadCtrl', ['$scope', '$upload', 'ra
 
         $scope.openFileSelect = function(type){
             if (type == 'greyhound'){
-                $scope.uploadUrl = 'upload/batch/greyhound/csv';
+                $scope.uploadUrl = 'file/batch?batchType=importGreyhoundCSV';
             }
             if (type == 'race'){
-                $scope.uploadUrl = 'upload/batch/race/csv';
+                $scope.uploadUrl = 'file/batch?batchType=importRaceCSV';
             }
             $('#hiddenFileOpen').click();
         };
 
         $scope.onFileSelect = function($files) {
             if ($files.length == 1){
+                $scope.isUploading = true;
                 $scope.uploadingFile = $files[0];
                 $upload.upload({
                     url: $scope.uploadUrl,
@@ -22,13 +23,14 @@ angular.module('controllers').controller('UploadCtrl', ['$scope', '$upload', 'ra
                     file: $scope.uploadingFile
                 })
                 .success(function(data, status, headers, config) {
-                    // file is uploaded successfully
+                    $scope.isUploading = false;
                     $scope.uploadResult = data;
                     rankerEventBus.broadcastEvent(rankerEventBus.EVENTS.ENTITY_BATCH_CREATED, data);
+
                 })
                 .error(function(data, status, headers, config) {
-                    // file is uploaded successfully
-                    $scope.uploadResult = data;
+                    $scope.isUploading = false;
+                    $scope.errorResult = data;
                 });
             }
         };
@@ -36,5 +38,6 @@ angular.module('controllers').controller('UploadCtrl', ['$scope', '$upload', 'ra
         $scope.clearSelectedFiles = function(){
             delete $scope.uploadingFile;
             delete $scope.uploadResult;
+            delete $scope.errorResult;
         };
     }]);

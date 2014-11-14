@@ -194,7 +194,7 @@ greyhoundService.checkForExistsImport = function(greyhound) {
 };
 
 greyhoundService.greyhoundBatchTypes = {
-    "importGreyhoundCSV":"Import greyhound csv"
+    "importGreyhoundCSV":"importGreyhoundCSV"
 };
 
 var BatchJob = require('../batch/batchJob').model;

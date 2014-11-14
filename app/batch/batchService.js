@@ -185,3 +185,47 @@ batchService.getBatchResultFromBoolean = function(boolean){
 batchService.getBatchInfo = function(){
     return batchService.processes[0];
 };
+
+batchService.createBatch = function(name, type, metadata) {
+    //generate the batch model
+    var batch = new BatchJob({
+        name:name,
+        type:type,
+        metadata: metadata,
+        status: batchService.batchStatuses.awaitingProcessing
+    });
+    //then check the fields
+    var error = batchService.hasError(batch);
+    if (error){
+        return q.reject(error);
+    } else {
+        return mongoHelper.savePromise(batch);
+    }
+};
+
+batchService.hasError = function(batch){
+    var error;
+    var nameValid = batch.name && batch.name.length > 0;
+    var typeValid = batch.type && batch.type.length > 0;
+    if (!nameValid){
+        if (!error){
+            error = {errors:[]};
+        }
+        error.message = 'invalid field';
+        error.errors.push('name is required');
+    }
+
+    if (!typeValid){
+        if (!error){
+            error = {errors:[]};
+        }
+        error.message = 'invalid field';
+        error.errors.push('type is required');
+    }
+
+    if (error){
+        return error;
+    } else {
+        return null;
+    }
+};

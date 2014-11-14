@@ -7,7 +7,7 @@
             <button data-ng-hide="uploadingFile" data-ng-click="openFileSelect('greyhound')" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Import greyhound .csv file</button>
             <button data-ng-hide="uploadingFile" data-ng-click="openFileSelect('race')" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Import race .csv file</button>
             <input id="hiddenFileOpen" type="file" style="display:none" ng-file-select="onFileSelect($files)">
-            <div data-ng-show="uploadingFile && !uploadResult">
+            <div data-ng-show="isUploading">
                 Uploading file...
             </div>
             <div data-ng-show="uploadResult">
@@ -15,6 +15,13 @@
                 <br><br>
                 <button data-ng-click="clearSelectedFiles()" class="btn btn-primary">
                     Upload another file
+                </button>
+            </div>
+            <div data-ng-show="errorResult">
+                Upload failed unexpectedly. {{errorResult.error}}
+                <br><br>
+                <button data-ng-click="clearSelectedFiles()" class="btn btn-primary">
+                    Try again
                 </button>
             </div>
         </div>

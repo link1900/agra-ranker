@@ -38,10 +38,7 @@ module.exports = function(app) {
     app.get('/batch/:batchId/totals',securityController.checkAuthentication, batchController.totalForBatch);
     app.put('/batch/:batchId',securityController.checkAuthentication, helper.mergeBody, batchController.checkFields, helper.save);
     app.del('/batch/:batchId',securityController.checkAuthentication, batchController.destroy);
-    app.post('/upload/batch/:importType/:importFileType',securityController.checkAuthentication, batchController.createBatchFromFile);
     app.param('batchId',securityController.checkAuthentication, batchController.setBatch);
-    app.param('importType',securityController.checkAuthentication, batchController.setImportType);
-    app.param('importFileType',securityController.checkAuthentication, batchController.setImportFileType);
 
     //batch record routes
     app.get('/batchResult', securityController.checkAuthentication, batchResultController.prepareQuery, helper.runQuery);
@@ -100,6 +97,8 @@ module.exports = function(app) {
     app.get('/file/:fileId', securityController.checkAuthentication, helper.getOne);
     app.get('/file/:fileId/download', securityController.checkAuthentication, fileController.downloadFile);
     app.del('/file/:fileId', securityController.checkAuthentication, fileController.destroy);
+    app.post('/file/:uploadType',securityController.checkAuthentication, fileController.uploadFile);
+    app.param('uploadType',securityController.checkAuthentication, fileController.setUploadType);
     app.param('fileId', fileController.setModel);
 
     //admin
