@@ -9,6 +9,20 @@ var mongoose = require('mongoose');
 var grid = require('gridfs-stream');
 var gfs = grid(mongoose.connection.db);
 
+fileService.postUploadHandlers = {};
+
+fileService.createPostUploadHandler = function(uploadType, handler){
+    fileService.postUploadHandlers[uploadType] = handler;
+};
+
+fileService.processPostUpload = function(req, file, uploadType){
+    if (_.contains(_.keys(fileService.postUploadHandlers), uploadType)){
+        return fileService.postUploadHandlers[uploadType](req, file);
+    } else {
+        return q.reject("Upload of type '" + uploadType + "' is not a valid.");
+    }
+};
+
 fileService.removeFile = function(id){
     var deferred = q.defer();
     gfs.remove({_id: id}, function (err) {

@@ -8,6 +8,7 @@ var BatchResult = require('./batchResult').model;
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
 var greyhoundService = require('../greyhound/greyhoundService');
+var fileService = require('../file/fileService');
 var q = require('q');
 
 batchService.states = {
@@ -229,3 +230,14 @@ batchService.hasError = function(batch){
         return null;
     }
 };
+
+batchService.createBatchHandler = function(req, file){
+    return batchService.createBatch(req.headers.uploadfilename, req.param('batchType'), {fileId : file._id}).then(function(batch){
+        return q(batch);
+    }, function(batchCreationError){
+        console.log("batch creation error");
+        return q.reject({'error':batchCreationError});
+    });
+};
+
+fileService.createPostUploadHandler('batch', batchService.createBatchHandler);

@@ -2,7 +2,6 @@ var fileController = module.exports = {};
 
 var q = require('q');
 var _ = require('lodash');
-
 var File = require('./file').model;
 var fileService = require('./fileService');
 var helper = require('../helper');
@@ -47,33 +46,6 @@ fileController.downloadFile = function(req, res){
     filestream.pipe(res);
 };
 
-fileController.createPostUploadHandler = function(uploadType, handler){
-    fileController.postUploadHandlers[uploadType] = handler;
-};
-
-fileController.postUploadHandlers = {};
-
-var batchService = require('../batch/batchService');
-
-fileController.createBatchHandler = function(req, file){
-    return batchService.createBatch(req.headers.uploadfilename, req.param('batchType'), {fileId : file._id}).then(function(batch){
-        return q(batch);
-    }, function(batchCreationError){
-        console.log("batch creation error");
-        return q.reject({'error':batchCreationError});
-    });
-};
-
-fileController.createPostUploadHandler('batch', fileController.createBatchHandler);
-
-fileController.processPostUpload = function(req, file, uploadType){
-    if (_.contains(_.keys(fileController.postUploadHandlers), uploadType)){
-        return fileController.postUploadHandlers[uploadType](req, file);
-    } else {
-        return q.reject("Upload of type '" + uploadType + "' is not a valid.");
-    }
-};
-
 fileController.uploadFile = function(req, res){
     var busboy = new Busboy({ headers: req.headers });
 
@@ -88,7 +60,7 @@ fileController.uploadFile = function(req, res){
         });
 
         fileWriteStream.on('close', function(file){
-            helper.responseFromPromise(res, fileController.processPostUpload(req, file, req.uploadType));
+            helper.responseFromPromise(res, fileService.processPostUpload(req, file, req.uploadType));
         });
 
         file.pipe(fileWriteStream);
