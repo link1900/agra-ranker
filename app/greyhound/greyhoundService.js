@@ -193,10 +193,6 @@ greyhoundService.checkForExistsImport = function(greyhound) {
     return deferred.promise;
 };
 
-greyhoundService.greyhoundBatchTypes = {
-    "importGreyhoundCSV":"importGreyhoundCSV"
-};
-
 var BatchJob = require('../batch/batchJob').model;
 var BatchResult = require('../batch/batchResult').model;
 var batchService = require('../batch/batchService');
@@ -207,7 +203,7 @@ var gfs = grid(mongoose.connection.db);
 greyhoundService.processGreyhoundCSV = function(batchJob){
     var deferred = q.defer();
     if (batchJob.type != null &&
-        batchJob.type == greyhoundService.greyhoundBatchTypes.importGreyhoundCSV &&
+        batchJob.type == "importGreyhoundCSV" &&
         batchJob.metadata != null &&
         batchJob.metadata.fileId != null){
         //find the file and stream it in
@@ -257,3 +253,5 @@ greyhoundService.processGreyhoundCSV = function(batchJob){
     }
     return deferred.promise;
 };
+
+batchService.loadBatchHandler("importGreyhoundCSV", greyhoundService.processGreyhoundCSV);

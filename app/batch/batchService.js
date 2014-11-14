@@ -7,7 +7,6 @@ var BatchJob = require('./batchJob').model;
 var BatchResult = require('./batchResult').model;
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
-var greyhoundService = require('../greyhound/greyhoundService');
 var fileService = require('../file/fileService');
 var q = require('q');
 
@@ -38,7 +37,6 @@ batchService.batchStatuses = {
 };
 
 batchService.startBatchProcessors = function(){
-    batchService.loadBatchHandlers();
     batchService.processes.forEach(function(process){
         console.log("["+process.name+"]" + " has been started");
         setInterval(batchService.processorTick, 5000, process);
@@ -48,8 +46,8 @@ batchService.startBatchProcessors = function(){
     setInterval(batchService.failedBatchJobChecker, 10000);
 };
 
-batchService.loadBatchHandlers = function(){
-    batchService.batchHandlers[greyhoundService.greyhoundBatchTypes.importGreyhoundCSV] = greyhoundService.processGreyhoundCSV;
+batchService.loadBatchHandler = function(key, handler){
+    batchService.batchHandlers[key] = handler;
 };
 
 /**

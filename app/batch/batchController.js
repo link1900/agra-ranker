@@ -9,10 +9,8 @@ var _ = require('lodash');
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
 var q = require('q');
-
 var batchService = require('./batchService');
-var greyhoundService = require('../greyhound/greyhoundService');
-var raceService = require('../race/raceService');
+
 
 batchController.setBatch = function(req, res, next, id) {
     BatchJob.findById(id, function(err, model) {
