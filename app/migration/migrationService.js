@@ -1,9 +1,7 @@
-'use strict';
-
-var controller = module.exports = {};
+var migrationService = module.exports = {};
 
 var mongoose = require('mongoose');
-var Migration = mongoose.model('Migration');
+var Migration = require('./migration').model;
 var _ = require('lodash');
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
@@ -12,7 +10,7 @@ var path = require('path');
 var fs = require('fs');
 var migrationIndex = require('../migrations/migrationIndex');
 
-controller.applyMigrations = function(migrationDir) {
+migrationService.applyMigrations = function(migrationDir) {
     var migrations = migrationIndex.index;
     console.log("Checking for migrations");
     if (migrations.length <= 0){
@@ -22,15 +20,15 @@ controller.applyMigrations = function(migrationDir) {
 
     migrations = _.sortBy(migrations, function(migration){ return migration.sequence; });
 
-    if (controller.validateMigrations(migrations, migrationDir)){
-        return controller.getAppliedMigrations().then(function(migrationsOnDatabase){
-            var migrationsToRun = controller.getMigrationsToBeRun(migrationsOnDatabase, migrations);
+    if (migrationService.validateMigrations(migrations, migrationDir)){
+        return migrationService.getAppliedMigrations().then(function(migrationsOnDatabase){
+            var migrationsToRun = migrationService.getMigrationsToBeRun(migrationsOnDatabase, migrations);
             if (migrationsToRun.length > 0){
                 console.log("Applying " + migrationsToRun.length + " migrations");
 
                 var finalPromiseOfChain = _.reduce(migrationsToRun, function(previousResult, currentValue) {
                         return previousResult.then(function(){
-                            return controller.runMigration(currentValue, migrationDir);
+                            return migrationService.runMigration(currentValue, migrationDir);
                         });
                     },
                     q()
@@ -53,12 +51,12 @@ controller.applyMigrations = function(migrationDir) {
     }
 };
 
-controller.getAppliedMigrations = function(){
+migrationService.getAppliedMigrations = function(){
     var query = Migration.find({});
     return mongoHelper.find(Migration, {});
 };
 
-controller.getMigrationsToBeRun = function(appliedMigrations, definedMigrations){
+migrationService.getMigrationsToBeRun = function(appliedMigrations, definedMigrations){
     var appliedSeq = _.map(appliedMigrations, function(migration){return migration.sequence;});
     var definedSeq = _.map(definedMigrations, function(migration){return migration.sequence;});
     var lastAppliedMigration = _.max(appliedSeq);
@@ -71,7 +69,7 @@ controller.getMigrationsToBeRun = function(appliedMigrations, definedMigrations)
     });
 };
 
-controller.validateMigrations = function(migrations, migrationDir){
+migrationService.validateMigrations = function(migrations, migrationDir){
     //check that each entry is valid (it has a sequence number and file name and it exists)
     _.each(migrations, function(migration){
         if (!migration.sequence){
@@ -109,7 +107,7 @@ controller.validateMigrations = function(migrations, migrationDir){
     return true;
 };
 
-controller.runMigration = function(migration, migrationDir){
+migrationService.runMigration = function(migration, migrationDir){
     var migrationRefPath = path.join(migrationDir, migration.file);
     var migrationCode = require(migrationRefPath);
     return migrationCode.up().then(function(){

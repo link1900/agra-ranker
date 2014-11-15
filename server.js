@@ -43,10 +43,9 @@ var walk = function(path) {
 walk(models_path);
 
 //apply migrations
-var migrationControllerPath = path.join(__dirname, '/app/controllers/migrationController');
 var migrationDir = path.join(__dirname, '/app/migrations');
-var migrationController = require(migrationControllerPath);
-migrationController.applyMigrations(migrationDir).then(function(){
+var migrationService = require('./app/migration/migrationService');
+migrationService.applyMigrations(migrationDir).then(function(){
     // Bootstrap passport config
     require('./config/passport')(passport);
 
