@@ -1,14 +1,11 @@
-'use strict';
-
 var rankingSystemController = module.exports = {};
 
-var mongoose = require('mongoose');
-var RankingSystem = mongoose.model('RankingSystem');
 var _ = require('lodash');
-var helper = require('../helper');
 var q = require('q');
+var mongoose = require('mongoose');
+var RankingSystem = require('./rankingSystem').model;
+var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
-
 
 rankingSystemController.setModel = function(req, res, next, id) {
     RankingSystem.findById(id, function(err, model) {

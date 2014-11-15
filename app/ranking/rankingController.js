@@ -1,16 +1,14 @@
-'use strict';
-
 var rankingController = module.exports = {};
 
-var mongoose = require('mongoose');
-var PointAllotment = mongoose.model('PointAllotment');
-var Placing = require('../placing/placing').model;
-var Ranking = mongoose.model('Ranking');
 var _ = require('lodash');
+var q = require('q');
+var mongoose = require('mongoose');
+var PointAllotment = require('./pointAllotment').model;
+var Ranking = require('./ranking').model;
+var Placing = require('../placing/placing').model;
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
-var Schema = mongoose.Schema;
-var q = require('q');
+
 
 rankingController.setModel = function(req, res, next, id) {
     Ranking.findById(id, function(err, ranking) {

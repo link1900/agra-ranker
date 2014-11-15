@@ -1,13 +1,12 @@
 var placingController = module.exports = {};
 
-var mongoose = require('mongoose');
-var Placing = require('./placing').model;
-var Race = mongoose.model('Race');
-var Greyhound = mongoose.model('Greyhound');
 var _ = require('lodash');
+var q = require('q');
+var Placing = require('./placing').model;
+var Race = require('../race/race').model;
+var Greyhound = require('../greyhound/greyhound').model;
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
-var q = require('q');
 
 placingController.setModel = function(req, res, next, id) {
     Placing.findById(id, function(err, model) {

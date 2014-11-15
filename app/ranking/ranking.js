@@ -1,14 +1,18 @@
+var ranking = module.exports = {};
+
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 
-var RankingSchema = new Schema({
+ranking.definition = {
     rankingSystemRef : { type: String },
     greyhoundRef: { type: String },
     greyhoundName: { type: String },
     totalPoints : { type: Number }
-});
+};
 
-RankingSchema.plugin(timestamps);
+ranking.schema = new Schema(ranking.definition);
 
-mongoose.model('Ranking', RankingSchema);
+ranking.schema.plugin(timestamps);
+
+ranking.model = mongoose.model('Ranking', ranking.schema);

@@ -1,3 +1,5 @@
+var rankingSystem = module.exports = {};
+
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
@@ -15,16 +17,16 @@ var pointAllotmentSchema = new Schema({
     points: {type: Number}
 });
 
-var RankingSystemSchema = new Schema({
+rankingSystem.schema = new Schema({
     name: { type: String },
     description: {type: String},
     equalPositionResolution: {type: String},
     pointAllotments: {type: [pointAllotmentSchema]}
 });
 
-RankingSystemSchema.plugin(timestamps);
+rankingSystem.schema.plugin(timestamps);
 
-mongoose.model('RankingSystem', RankingSystemSchema);
+rankingSystem.model = mongoose.model('RankingSystem', rankingSystem.schema);
 
 //var a = {
 //    "name": "Agra Rankings",

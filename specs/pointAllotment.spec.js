@@ -3,8 +3,8 @@ var mongoose = require('mongoose');
 var _ = require('lodash');
 var assert = require('chai').assert;
 var testHelper = require('./testHelper');
-var pointAllotmentController = require('../app/controllers/pointAllotmentController');
-var PointAllotment = mongoose.model('PointAllotment');
+var pointAllotmentController = require('../app/ranking/pointAllotmentController').model;
+var PointAllotment = require('../app/ranking/pointAllotment').model;
 var Placing = require('../app/placing/placing').model;
 
 describe("Point Allotments", function(){
