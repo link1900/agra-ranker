@@ -53,6 +53,17 @@ userController.createActiveUser = function(req, res){
     helper.responseFromPromise(res, processChain);
 };
 
+userController.inviteUser = function(req, res){
+
+};
+
+/**
+ * Takes on the admin role. Can only be used if there are no admins in the system. Requires
+ * code to take control.
+ */
+userController.assumeAdmin = function(req, res){
+
+};
 
 userController.checkIfUserExists = function(user){
     return mongoService.oneExists(User, {email: user.email}).then(function(exists){
@@ -85,10 +96,6 @@ userController.validateUser = function(user){
     }
 
     return q(user);
-
-};
-
-userController.inviteUser = function(req, res){
 
 };
 

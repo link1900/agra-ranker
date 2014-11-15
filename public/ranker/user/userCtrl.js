@@ -3,13 +3,10 @@ angular.module('controllers').controller('userCtrl', ['$scope', '$routeParams', 
 
         $scope.signUp = function(){
             userService.signUp($scope.user).then(function(){
-                $scope.userCreated = true;
+                $scope.registeredSuccess = true;
+            }, function(failedResponse){
                 $scope.alerts = [
-                    { type: 'success', msg: "User created successfully" }
-                ];
-            }, function(error){
-                $scope.alerts = [
-                    { type: 'danger', msg: "Failed to create user: " + error.data.error }
+                    { type: 'danger', msg: "Failed to register user: " + failedResponse.data.error }
                 ];
             });
         };
