@@ -4,6 +4,7 @@ var securityController = module.exports = {};
 var mongoose = require('mongoose');
 var passport = require('passport');
 var User = require('./user').model;
+var userStates = require('./user').states;
 
 securityController.login = function(req, res, next){
     passport.authenticate('local', function(err, user) {
@@ -12,6 +13,9 @@ securityController.login = function(req, res, next){
             }
             if (!user) {
                 return res.jsonp(401, {"error": 'incorrect login details'});
+            }
+            if(user.state != userStates.active){
+                return res.jsonp(401, {"error": 'cannot login as this user is ' + user.state});
             }
             return req.logIn(user, function(err) {
                 if (err) {

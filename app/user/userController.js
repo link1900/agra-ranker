@@ -1,9 +1,10 @@
-'use strict';
-
 var userController = module.exports = {};
 
+var _ = require('lodash');
+var q = require('q');
 var mongoose = require('mongoose');
 var User = require('./user').model;
+var userStates = require('./user').states;
 var AllowedUser = require('./allowedUser').model;
 var mongoService = require('../mongoService');
 var helper = require('../helper');
@@ -35,32 +36,60 @@ userController.destroy = function(req, res) {
     helper.responseFromPromise(res, mongoService.removePromise(req.model));
 };
 
-userController.create = function(req, res) {
-    var user = new User(req.body);
-    user.provider = 'local';
-    AllowedUser.findOne({"email": user.email}, function(err, result){
-        if (err){
-            res.jsonp(400, {error:err});
-        } else if (result) {
-            User.findOne({"email": user.email}, function(err, userResult){
-                if (err){
-                    res.jsonp(400, {error:err});
-                } else if (userResult) {
-                    res.jsonp(400, {error:'user with the email ' + user.email + " already exists"});
-                } else {
-                    user.save(function(err, result){
-                        if (err){
-                            res.jsonp(400, {error:err});
-                        } else {
-                            res.jsonp(200, result);
-                        }
-                    });
-                }
-            });
+userController.requestAccess = function(req, res){
+    var processChain = userController.newUser(req.body, userStates.requested)
+        .then(userController.validateUser)
+        .then(userController.checkIfUserExists)
+        .then(mongoService.savePromise);
+    helper.responseFromPromise(res, processChain);
+};
+
+userController.createActiveUser = function(req, res){
+    var processChain = userController.newUser(req.body, userStates.active)
+        .then(userController.validateUser)
+        .then(userController.checkIfUserExists)
+        .then(mongoService.savePromise);
+
+    helper.responseFromPromise(res, processChain);
+};
+
+
+userController.checkIfUserExists = function(user){
+    return mongoService.oneExists(User, {email: user.email}).then(function(exists){
+        if (exists){
+            return q.reject('user with the email ' + user.email + " already exists");
         } else {
-            res.jsonp(400, {error:'email is not on the allowed white list'});
+            return q(user);
         }
-    });
+    })
+};
+
+userController.newUser = function(userRequest, startingState){
+    var user = {email: userRequest.email};
+    if (startingState != null){
+        user.state = startingState;
+    }
+    if(userRequest.password){
+        user.password= userRequest.password;
+    }
+    return q(new User(user));
+};
+
+userController.validateUser = function(user){
+    if(user.email == null){
+        return q.reject("must provide an email field");
+    }
+
+    if (user.password == null){
+        return q.reject("must provide a password field");
+    }
+
+    return q(user);
+
+};
+
+userController.inviteUser = function(req, res){
+
 };
 
 userController.me = function(req, res) {

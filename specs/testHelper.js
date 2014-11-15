@@ -64,6 +64,7 @@ testHelper.loadUsers = function(done){
         "provider" : "local",
         "email" : "link1900@gmail.com",
         "password" : "test",
+        "state" : "Active",
         "_id" : "532675365d68bab8234c7e7f"
     }).save(done);
 };

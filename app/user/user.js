@@ -7,7 +7,7 @@ var crypto = require('crypto');
 user.states = {
     "inactive": "Inactive",
     "active": "Active",
-    "requested": "Requested",
+    "requested": "Requires Approval",
     "invited": "Invited"
 };
 
@@ -17,7 +17,7 @@ user.definition = {
         required: true
     },
     hashed_password: {type: String, required : true},
-    provider: {type: String, required : true},
+    provider: {type: String, required : true, default: 'local'},
     salt: String,
     state: {type: String, required: true, default: user.states.requested},
     lastLoggedIn: Date,
