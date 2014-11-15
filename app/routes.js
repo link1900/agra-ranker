@@ -22,7 +22,9 @@ module.exports = function(app) {
 
     //user routes
     app.post('/user', userController.create);
+    app.get('/user/:userId', securityController.checkAuthentication, helper.getOne);
     app.get('/me', userController.me);
+    app.param('userId', userController.setModel);
 
     //greyhound routes
     app.get('/greyhound', greyhoundController.prepareQuery,  helper.runQuery);

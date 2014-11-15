@@ -5,6 +5,16 @@ var userController = module.exports = {};
 var mongoose = require('mongoose');
 var User = require('./user').model;
 var AllowedUser = require('./allowedUser').model;
+var mongoService = require('../mongoService');
+
+userController.setModel = function(req, res, next, id) {
+    User.findById(id, function(err, model) {
+        if (err) return next(err);
+        if (!model) return next(new Error('Failed to load ' + id));
+        req.model = model;
+        return next();
+    });
+};
 
 userController.create = function(req, res) {
     var user = new User(req.body);

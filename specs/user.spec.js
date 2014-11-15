@@ -2,6 +2,7 @@ var request = require('supertest');
 var mongoose = require('mongoose');
 var User = require('../app/user/user').model;
 var testHelper = require('./testHelper');
+var assert = require('chai').assert;
 
 describe("User", function() {
     before(function (done) {
@@ -29,6 +30,49 @@ describe("User", function() {
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(400, done);
+        });
+
+//        it ("all users api is secured", function(done){
+//            testHelper.publicSession
+//                .get('/user')
+//                .set('Accept', 'application/json')
+//                .expect('Content-Type', /json/)
+//                .expect(401, done);
+//        });
+//
+//        it("get all users", function(done){
+//            testHelper.authSession
+//                .get('/user/532675365d68bab8234c7e7f')
+//                .set('Accept', 'application/json')
+//                .expect('Content-Type', /json/)
+//                .expect(200)
+//                .end(function(err, res){
+//                    if (err){ throw err; }
+//                    assert.lengthOf(res.body, 1);
+//                    done();
+//                });
+//        });
+
+        it ("single users api is secured", function(done){
+            testHelper.publicSession
+                .get('/user/532675365d68bab8234c7e7f')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(401, done);
+        });
+
+        it("single user get the user", function(done){
+            testHelper.authSession
+                .get('/user/532675365d68bab8234c7e7f')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    assert.property(res.body, "email");
+                    assert.equal(res.body.email, "link1900@gmail.com");
+                    done();
+                });
         });
     });
 
