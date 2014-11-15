@@ -3,7 +3,7 @@ var securityController = module.exports = {};
 
 var mongoose = require('mongoose');
 var passport = require('passport');
-var User = require('../user/user').model;
+var User = require('./user').model;
 
 securityController.login = function(req, res, next){
     passport.authenticate('local', function(err, user) {
