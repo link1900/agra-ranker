@@ -155,6 +155,22 @@
 - (DONE) list all disk usage on the counts page
 - (DONE) have the ability to list files stored and download them
 - (DONE) have the ability to download a file from a batch
+
+### 6.0.12 Admin controls
+- List users
+- Remove users
+- Add user
+- Add state to users [inactive, active, requested, invited]
+- New api to request access to the site
+- Notification System
+- On user invite send an email to the users email
+- Remove white list and have all sign ups require approval
+- Forgotten password system (emails you a reset link)
+- Add roles [user, admin] (user allows editing, admin allows access to admin api)
+- System bootstrapping mode which is active when no users have the admin role users preloaded code to take admin
+- On user request send an email to all users with admin role
+
+### 6.0.13 Ranking Phase 1
 - export greyhound csv
 - export greyhound json
 - allow race search to be done by two dates
@@ -165,7 +181,7 @@
 - unit test point allotment creation
 - calculate rankings on race creation
 
-### 6.0.12 Ranking API
+### 6.0.14 Ranking Phase 2
 - define agra ranking system and test importing it
 - define sire and dam ranking systems test import it
 - dead heat rule - points from matching positions are summed and divided
@@ -199,16 +215,6 @@
 - search on keydown for tables search box
 - race & placing csv import api
 - Switch test data loading to fixtures
-
-### 6.1.2 Admin controls
-- List users
-- Remove users
-- Add users
-- Approve users and remove white list
-- Remove white list and have all sign ups require approval
-- Add emails to the white list
-- Edit emails on the white list
-- Remove emails from white list
 
 ## Backlog - Beyond the ranker 6
 - on the placing screen have the numbers come from a set list of placings (1st -> 1, 2nd -> 2, DNF -> DNF, Dis -> dis, etc.)
