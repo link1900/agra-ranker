@@ -2,7 +2,7 @@ var greyhoundController = module.exports = {};
 
 var mongoose = require('mongoose');
 var Greyhound = require('./greyhound').model;
-var Placing = mongoose.model('Placing');
+var Placing = require('../placing/placing').model;
 var _ = require('lodash');
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');

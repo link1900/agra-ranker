@@ -1,12 +1,12 @@
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
-var PlacingSchema = require('./placing');
+var PlacingDefinition = require('../placing/placing').definition;
 
 var PointAllotmentSchema = new Schema({
     points : { type: Number },
     placingRef: {type: String},
-    placing: {type: PlacingSchema},
+    placing: {type: PlacingDefinition},
     rankingSystemRef: {type: String}
 });
 

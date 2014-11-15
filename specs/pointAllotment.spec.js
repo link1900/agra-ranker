@@ -5,7 +5,7 @@ var assert = require('chai').assert;
 var testHelper = require('./testHelper');
 var pointAllotmentController = require('../app/controllers/pointAllotmentController');
 var PointAllotment = mongoose.model('PointAllotment');
-var Placing = mongoose.model('Placing');
+var Placing = require('../app/placing/placing').model;
 
 describe("Point Allotments", function(){
     before(function (done) {

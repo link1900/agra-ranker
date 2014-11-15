@@ -1,10 +1,12 @@
+var placing = module.exports = {};
+
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 var RaceSchema = require('../race/race').definition;
 var GreyhoundDefinition = require('../greyhound/greyhound').definition;
 
-var PlacingDesc = {
+placing.definition = {
     placing: { type: String },
     raceRef: {type: String},
     race : {type: RaceSchema},
@@ -12,9 +14,8 @@ var PlacingDesc = {
     greyhound : {type: GreyhoundDefinition}
 };
 
-var PlacingSchema = new Schema(PlacingDesc);
+placing.schema = new Schema(placing.definition);
 
-PlacingSchema.plugin(timestamps);
+placing.schema.plugin(timestamps);
 
-mongoose.model('Placing', PlacingSchema);
-module.exports = PlacingDesc;
+placing.model = mongoose.model('Placing', placing.schema);

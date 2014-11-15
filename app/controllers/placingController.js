@@ -1,9 +1,7 @@
-'use strict';
-
 var placingController = module.exports = {};
 
 var mongoose = require('mongoose');
-var Placing = mongoose.model('Placing');
+var Placing = require('../placing/placing').model;
 var Race = mongoose.model('Race');
 var Greyhound = mongoose.model('Greyhound');
 var _ = require('lodash');

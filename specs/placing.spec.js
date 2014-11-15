@@ -4,7 +4,7 @@ var chai = require('chai');
 chai.should();
 var assert = require('chai').assert;
 var expect = chai.expect;
-var Placing = mongoose.model('Placing');
+var Placing = require('../app/placing/placing').model;
 var testHelper = require('./testHelper');
 
 describe("Placing", function(){

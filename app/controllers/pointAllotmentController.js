@@ -4,7 +4,7 @@ var pointAllotmentController = module.exports = {};
 var mongoose = require('mongoose');
 var PointAllotment = mongoose.model('PointAllotment');
 var RankingSystem = mongoose.model('RankingSystem');
-var Placing = mongoose.model('Placing');
+var Placing = require('../placing/placing').model;
 var _ = require('lodash');
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');

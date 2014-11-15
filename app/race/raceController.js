@@ -5,7 +5,7 @@ var raceController = module.exports = {};
 var mongoose = require('mongoose');
 var Race = require('./race').model;
 var GroupLevel = require('../groupLevel/groupLevel').model;
-var Placing = mongoose.model('Placing');
+var Placing = require('../placing/placing').model;
 var _ = require('lodash');
 var helper = require('../helper');
 var mongoHelper = require('../mongoHelper');
