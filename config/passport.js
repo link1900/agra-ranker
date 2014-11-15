@@ -1,9 +1,7 @@
-'use strict';
-
-var mongoose = require('mongoose'),
-    LocalStrategy = require('passport-local').Strategy,
-    User = mongoose.model('User'),
-    config = require('./config');
+var mongoose = require('mongoose');
+var LocalStrategy = require('passport-local').Strategy;
+var User = require('../app/user/user').model;
+var config = require('./config');
 
 
 module.exports = function(passport) {

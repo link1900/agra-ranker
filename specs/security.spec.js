@@ -1,7 +1,7 @@
 var request = require('supertest');
 var siteUrl = process.env.testUrl;
 var mongoose = require('mongoose');
-var User = mongoose.model('User');
+var User = require('../user/user').model;
 var testHelper = require('./testHelper');
 
 describe("Security", function() {

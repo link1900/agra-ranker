@@ -1,11 +1,9 @@
+var user = module.exports = {};
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 
-/**
- * User Schema
- */
-var UserSchema = new Schema({
+user.definition = {
     email: {
         type: String,
         required: true
@@ -18,9 +16,11 @@ var UserSchema = new Schema({
     github: {},
     google: {},
     linkedin: {}
-});
+};
 
-UserSchema.set('toJSON', {
+user.schema = new Schema(user.definition);
+
+user.schema.set('toJSON', {
     transform: function(doc, ret) {
         delete ret.hashed_password;
         delete ret.salt;
@@ -32,7 +32,7 @@ UserSchema.set('toJSON', {
 /**
  * Virtuals
  */
-UserSchema.virtual('password').set(function(password) {
+user.schema.virtual('password').set(function(password) {
     this._password = password;
     this.salt = this.makeSalt();
     this.hashed_password = this.encryptPassword(password);
@@ -47,11 +47,11 @@ var validatePresenceOf = function(value) {
     return value && value.length;
 };
 
-UserSchema.path('email').validate(function(email) {
+user.schema.path('email').validate(function(email) {
     return (typeof email === 'string' && email.length > 0);
 }, 'Email cannot be blank');
 
-UserSchema.path('hashed_password').validate(function(hashed_password) {
+user.schema.path('hashed_password').validate(function(hashed_password) {
     return (typeof hashed_password === 'string' && hashed_password.length > 0);
 }, 'Password cannot be blank');
 
@@ -59,7 +59,7 @@ UserSchema.path('hashed_password').validate(function(hashed_password) {
 /**
  * Pre-save hook
  */
-UserSchema.pre('save', function(next) {
+user.schema.pre('save', function(next) {
     if (this.isNew && !validatePresenceOf(this.password)){
         return next(new Error('Invalid password'));
     } else {
@@ -70,7 +70,7 @@ UserSchema.pre('save', function(next) {
 /**
  * Methods
  */
-UserSchema.methods = {
+user.schema.methods = {
     /**
      * Authenticate - check if the passwords are the same
      *
@@ -106,4 +106,4 @@ UserSchema.methods = {
     }
 };
 
-mongoose.model('User', UserSchema);
+user.model = mongoose.model('User', user.schema);
