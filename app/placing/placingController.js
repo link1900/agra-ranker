@@ -1,7 +1,7 @@
 var placingController = module.exports = {};
 
 var mongoose = require('mongoose');
-var Placing = require('../placing/placing').model;
+var Placing = require('./placing').model;
 var Race = mongoose.model('Race');
 var Greyhound = mongoose.model('Greyhound');
 var _ = require('lodash');
