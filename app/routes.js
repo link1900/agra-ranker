@@ -22,7 +22,7 @@ module.exports = function(app) {
 
     //user routes
     app.post('/user', userController.create);
-    app.get('/user/me', userController.me);
+    app.get('/me', userController.me);
 
     //greyhound routes
     app.get('/greyhound', greyhoundController.prepareQuery,  helper.runQuery);

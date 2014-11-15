@@ -2,7 +2,7 @@ angular.module('services').service('securityService',  function($http) {
     var securityService = {};
 
     securityService.getCurrentUser = function(){
-        return $http.get("/user/me").then(function(result){
+        return $http.get("/me").then(function(result){
             return result.data;
         });
     };

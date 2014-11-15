@@ -11,7 +11,7 @@ describe("User", function() {
     describe("Get", function(){
         it("me when logged in", function(done){
             testHelper.authSession
-                .get('/user/me')
+                .get('/me')
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -25,7 +25,7 @@ describe("User", function() {
 
         it("me not logged in", function(done) {
             testHelper.publicSession
-                .get('/user/me')
+                .get('/me')
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(400, done);
