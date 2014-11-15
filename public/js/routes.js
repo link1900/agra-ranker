@@ -18,7 +18,7 @@ angular.module('core').config(function($routeProvider) {
             templateUrl : '/views/greyhound/greyhoundUpload.html'
         })
         .when('/signup', {
-            templateUrl : '/views/signup.html'
+            templateUrl : '/ranker/user/signup.html'
         })
         .when('/race/create', {
             templateUrl : '/views/race/raceCreate.html'
@@ -75,7 +75,7 @@ angular.module('core').config(function($routeProvider) {
             templateUrl : '/views/admin/admin.html'
         })
         .when('/login', {
-            templateUrl : '/views/user/login.html'
+            templateUrl : '/ranker/user/login.html'
         })
         .otherwise({
             redirectTo : '/'
