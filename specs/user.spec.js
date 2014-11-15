@@ -138,6 +138,24 @@ describe("User", function() {
         });
     });
 
+    describe("Delete", function() {
+        it("is secure", function (done) {
+            testHelper.publicSession
+                .del('/user/532675365d68bab8234c7e7f')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(401, done);
+        });
+
+        it("delete yourself", function (done) {
+            testHelper.authSession
+                .del('/user/532675365d68bab8234c7e7f')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+    });
+
     after(function (done) {
         testHelper.tearDown(done);
     });

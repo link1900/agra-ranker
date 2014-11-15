@@ -21,10 +21,11 @@ module.exports = function(app) {
     app.post('/logout', securityController.logout);
 
     //user routes
-    app.get('/user',securityController.checkAuthentication, userController.prepareQuery,  helper.runQuery);
+    app.get('/user', securityController.checkAuthentication, userController.prepareQuery,  helper.runQuery);
     app.get('/user/:userId', securityController.checkAuthentication, helper.getOne);
     app.get('/me', userController.me);
     app.post('/user', userController.create);
+    app.del('/user/:userId', securityController.checkAuthentication, userController.destroy);
     app.param('userId', userController.setModel);
 
     //greyhound routes

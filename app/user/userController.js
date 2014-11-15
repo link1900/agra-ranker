@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var User = require('./user').model;
 var AllowedUser = require('./allowedUser').model;
 var mongoService = require('../mongoService');
+var helper = require('../helper');
 
 userController.setModel = function(req, res, next, id) {
     User.findById(id, function(err, model) {
@@ -28,6 +29,10 @@ userController.prepareQuery = function(req, res, next) {
     }
     req.dao = User;
     next();
+};
+
+userController.destroy = function(req, res) {
+    helper.responseFromPromise(res, mongoService.removePromise(req.model));
 };
 
 userController.create = function(req, res) {

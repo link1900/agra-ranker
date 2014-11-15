@@ -1,7 +1,15 @@
 var user = module.exports = {};
 var mongoose = require('mongoose');
+var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
+
+user.states = {
+    "inactive": "Inactive",
+    "active": "Active",
+    "requested": "Requested",
+    "invited": "Invited"
+};
 
 user.definition = {
     email: {
@@ -11,6 +19,8 @@ user.definition = {
     hashed_password: {type: String, required : true},
     provider: {type: String, required : true},
     salt: String,
+    state: {type: String, required: true, default: user.states.requested},
+    lastLoggedIn: Date,
     facebook: {},
     twitter: {},
     github: {},
@@ -105,5 +115,7 @@ user.schema.methods = {
         return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
     }
 };
+
+user.schema.plugin(timestamps);
 
 user.model = mongoose.model('User', user.schema);
