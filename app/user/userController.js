@@ -16,6 +16,20 @@ userController.setModel = function(req, res, next, id) {
     });
 };
 
+userController.prepareQuery = function(req, res, next) {
+    req.searchQuery = {};
+    var like = req.param('like');
+    var email = req.param('email');
+    if (like){
+        req.searchQuery = {'email': {'$regex': email}};
+    }
+    if (email){
+        req.searchQuery = {'email': email};
+    }
+    req.dao = User;
+    next();
+};
+
 userController.create = function(req, res) {
     var user = new User(req.body);
     user.provider = 'local';

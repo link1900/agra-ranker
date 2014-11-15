@@ -32,26 +32,26 @@ describe("User", function() {
                 .expect(400, done);
         });
 
-//        it ("all users api is secured", function(done){
-//            testHelper.publicSession
-//                .get('/user')
-//                .set('Accept', 'application/json')
-//                .expect('Content-Type', /json/)
-//                .expect(401, done);
-//        });
-//
-//        it("get all users", function(done){
-//            testHelper.authSession
-//                .get('/user/532675365d68bab8234c7e7f')
-//                .set('Accept', 'application/json')
-//                .expect('Content-Type', /json/)
-//                .expect(200)
-//                .end(function(err, res){
-//                    if (err){ throw err; }
-//                    assert.lengthOf(res.body, 1);
-//                    done();
-//                });
-//        });
+        it ("/user should return 401 when not logged in", function(done){
+            testHelper.publicSession
+                .get('/user')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(401, done);
+        });
+
+        it("/user should get all users", function(done){
+            testHelper.authSession
+                .get('/user')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    assert.lengthOf(res.body, 1);
+                    done();
+                });
+        });
 
         it ("single users api is secured", function(done){
             testHelper.publicSession
