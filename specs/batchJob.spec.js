@@ -66,16 +66,6 @@ describe("BatchJob", function() {
         });
     });
 
-    describe("Create", function(){
-        it("is secure", function (done) {
-            testHelper.publicSession
-                .post('/upload/batch/greyhound/csv')
-                .set('Accept', 'application/json')
-                .expect('Content-Type', /json/)
-                .expect(401, done);
-        });
-    });
-
     afterEach(function(done){
         BatchJob.remove({}, function(){
             BatchResult.remove({}, done);

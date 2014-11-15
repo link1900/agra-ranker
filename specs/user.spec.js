@@ -1,6 +1,6 @@
 var request = require('supertest');
 var mongoose = require('mongoose');
-var User = require('../user/user').model;
+var User = require('../app/user/user').model;
 var testHelper = require('./testHelper');
 
 describe("User", function() {

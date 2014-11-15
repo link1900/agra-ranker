@@ -2,14 +2,14 @@ var testHelper = module.exports = {};
 var request = require('supertest');
 var siteUrl = process.env.testUrl;
 var mongoose = require('mongoose');
-var User = mongoose.model('User');
+var User = require('../app/user/user').model;
 var GroupLevel = mongoose.model('GroupLevel');
 var RankingSystem = mongoose.model('RankingSystem');
 var Race = mongoose.model('Race');
 var Greyhound = mongoose.model('Greyhound');
 var Placing = mongoose.model('Placing');
 var PointAllotment = mongoose.model('PointAllotment');
-var AllowedUser = mongoose.model('AllowedUser');
+var AllowedUser = require('../app/user/allowedUser').model;
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
 
