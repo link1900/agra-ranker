@@ -4,7 +4,7 @@ var userController = module.exports = {};
 
 var mongoose = require('mongoose');
 var User = require('./user').model;
-var AllowedUser = mongoose.model('AllowedUser');
+var AllowedUser = require('./allowedUser').model;
 
 userController.create = function(req, res) {
     var user = new User(req.body);

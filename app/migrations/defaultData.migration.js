@@ -2,7 +2,7 @@ var migration = module.exports = {};
 
 var q = require('q');
 var mongoose = require('mongoose');
-var AllowedUser = mongoose.model('AllowedUser');
+var AllowedUser = require('../app/user/allowedUser').model;
 var GroupLevel = mongoose.model('GroupLevel');
 var mongoHelper = require('../mongoHelper');
 

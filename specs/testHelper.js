@@ -2,7 +2,7 @@ var testHelper = module.exports = {};
 var request = require('supertest');
 var siteUrl = process.env.testUrl;
 var mongoose = require('mongoose');
-var User = require('../user/user').model;
+var User = mongoose.model('User');
 var GroupLevel = mongoose.model('GroupLevel');
 var RankingSystem = mongoose.model('RankingSystem');
 var Race = mongoose.model('Race');
