@@ -5,7 +5,7 @@ var q = require('q');
 var mongoose = require('mongoose');
 var RankingSystem = require('./rankingSystem').model;
 var helper = require('../helper');
-var mongoHelper = require('../mongoHelper');
+var mongoService = require('../mongoService');
 
 rankingSystemController.setModel = function(req, res, next, id) {
     RankingSystem.findById(id, function(err, model) {
@@ -54,11 +54,11 @@ rankingSystemController.update = function(req, res) {
 };
 
 rankingSystemController.destroy = function(req, res) {
-    helper.responseFromPromise(res,mongoHelper.removePromise(req.model));
+    helper.responseFromPromise(res,mongoService.removePromise(req.model));
 };
 
 rankingSystemController.checkNameDoesNotExist = function(model){
-    return mongoHelper.find(RankingSystem, {name: model.name}).then(function(results){
+    return mongoService.find(RankingSystem, {name: model.name}).then(function(results){
         if (results.length == 0){
             return q(true);
         } else if (results.length == 1 && _.isEqual(results[0]._id,model._id)) {

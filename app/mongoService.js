@@ -1,11 +1,11 @@
-var mongoHelper = module.exports = {};
+var mongoService = module.exports = {};
 
 var _ = require('lodash');
 var q = require('q');
 var mongoose = require('mongoose');
 var db = mongoose.connection.db;
 
-mongoHelper.find = function(dao, search){
+mongoService.find = function(dao, search){
     var deferred = q.defer();
     dao.find(search).exec(function(err, results){
         if(err){
@@ -17,13 +17,13 @@ mongoHelper.find = function(dao, search){
     return deferred.promise;
 };
 
-mongoHelper.oneExists = function(dao, search){
-  return mongoHelper.findOne(dao, search).then(function(result){
+mongoService.oneExists = function(dao, search){
+  return mongoService.findOne(dao, search).then(function(result){
       return result != null;
   });
 };
 
-mongoHelper.findOne = function(dao, search){
+mongoService.findOne = function(dao, search){
     var deferred = q.defer();
     dao.findOne(search, function(err, result){
         if(err){
@@ -35,7 +35,7 @@ mongoHelper.findOne = function(dao, search){
     return deferred.promise;
 };
 
-mongoHelper.findOneAndCreate = function(dao, search, doc){
+mongoService.findOneAndCreate = function(dao, search, doc){
     var deferred = q.defer();
     var findOptions = {
         upsert: true
@@ -50,7 +50,7 @@ mongoHelper.findOneAndCreate = function(dao, search, doc){
     return deferred.promise;
 };
 
-mongoHelper.findOneById = function(dao, id){
+mongoService.findOneById = function(dao, id){
     var deferred = q.defer();
     dao.findById(id, function (err, model) {
         if (err) {
@@ -62,7 +62,7 @@ mongoHelper.findOneById = function(dao, id){
     return deferred.promise;
 };
 
-mongoHelper.removePromise = function(entity){
+mongoService.removePromise = function(entity){
     var deferred = q.defer();
     entity.remove(function(err, removedModel){
         if (err){
@@ -74,7 +74,7 @@ mongoHelper.removePromise = function(entity){
     return deferred.promise;
 };
 
-mongoHelper.savePromise = function(entity){
+mongoService.savePromise = function(entity){
     var deferred = q.defer();
     entity.save(function(err, entity){
         if (err){
@@ -86,7 +86,7 @@ mongoHelper.savePromise = function(entity){
     return deferred.promise;
 };
 
-mongoHelper.aggregatePromise = function(dao, aggregations){
+mongoService.aggregatePromise = function(dao, aggregations){
     var deferred = q.defer();
     dao.aggregate(aggregations, function(err, entities){
         if (err){
@@ -98,7 +98,7 @@ mongoHelper.aggregatePromise = function(dao, aggregations){
     return deferred.promise;
 };
 
-mongoHelper.aggregateSinglePromise = function(dao, aggregations){
+mongoService.aggregateSinglePromise = function(dao, aggregations){
     var deferred = q.defer();
     dao.aggregate(aggregations, function(err, entities){
         if (err){
@@ -114,7 +114,7 @@ mongoHelper.aggregateSinglePromise = function(dao, aggregations){
     return deferred.promise;
 };
 
-mongoHelper.removeAll = function(dao, query){
+mongoService.removeAll = function(dao, query){
     var deferred = q.defer();
     dao.remove(query, function (err) {
         if (err) {
@@ -126,7 +126,7 @@ mongoHelper.removeAll = function(dao, query){
     return deferred.promise;
 };
 
-mongoHelper.clearAwayChildren = function(dao, field, model){
+mongoService.clearAwayChildren = function(dao, field, model){
     var deferred = q.defer();
     var query = {};
     query[field] = model._id;
@@ -136,7 +136,7 @@ mongoHelper.clearAwayChildren = function(dao, field, model){
         } else {
             if (entities.length > 0){
                 var promises = _.map(entities, function(entity){
-                    return mongoHelper.removePromise(entity);
+                    return mongoService.removePromise(entity);
                 });
                 deferred.resolve(
                     q.all(promises).then(function(){
@@ -152,7 +152,7 @@ mongoHelper.clearAwayChildren = function(dao, field, model){
 };
 
 
-mongoHelper.cleanFk = function(dao, field, model){
+mongoService.cleanFk = function(dao, field, model){
     var deferred = q.defer();
     var query = {};
     query[field] = model._id;
@@ -163,7 +163,7 @@ mongoHelper.cleanFk = function(dao, field, model){
             if (entities.length > 0){
                 var promises = _.map(entities, function(entity){
                     entity[field] = null;
-                    return mongoHelper.savePromise(entity);
+                    return mongoService.savePromise(entity);
                 });
                 deferred.resolve(
                     q.all(promises).then(function(){
@@ -178,7 +178,7 @@ mongoHelper.cleanFk = function(dao, field, model){
     return deferred.promise;
 };
 
-mongoHelper.updateFlyweight = function(dao, ref, flyweightField, model){
+mongoService.updateFlyweight = function(dao, ref, flyweightField, model){
     var deferred = q.defer();
     var query = {};
     query[ref] = model._id;
@@ -189,7 +189,7 @@ mongoHelper.updateFlyweight = function(dao, ref, flyweightField, model){
             if (entities.length > 0){
                 var promises = _.map(entities, function(entity){
                     entity[flyweightField] = model;
-                    return mongoHelper.savePromise(entity);
+                    return mongoService.savePromise(entity);
                 });
                 deferred.resolve(
                     q.all(promises).then(function(){
@@ -204,19 +204,19 @@ mongoHelper.updateFlyweight = function(dao, ref, flyweightField, model){
     return deferred.promise;
 };
 
-mongoHelper.saveAll = function(entities){
+mongoService.saveAll = function(entities){
     return _.reduce(entities, function(previousResult, currentValue) {
             return previousResult.then(function(){
-                return mongoHelper.savePromise(currentValue);
+                return mongoService.savePromise(currentValue);
             });
         },
         q()
     );
 };
 
-mongoHelper.getCollectionCount = function(dao){
+mongoService.getCollectionCount = function(dao){
     var deferred = q.defer();
-    mongoHelper.collectionExists(dao.collection.name).then(function(collectionExists){
+    mongoService.collectionExists(dao.collection.name).then(function(collectionExists){
         if (collectionExists){
             dao.collection.count(function(err, totalCount){
                 if(err){
@@ -232,9 +232,9 @@ mongoHelper.getCollectionCount = function(dao){
     return deferred.promise;
 };
 
-mongoHelper.getCollectionStats = function(dao){
+mongoService.getCollectionStats = function(dao){
     var deferred = q.defer();
-    mongoHelper.collectionExists(dao.collection.name).then(function(collectionExists){
+    mongoService.collectionExists(dao.collection.name).then(function(collectionExists){
         if (collectionExists){
             dao.collection.stats(function(err, results){
                 if(err){
@@ -250,9 +250,9 @@ mongoHelper.getCollectionStats = function(dao){
     return deferred.promise;
 };
 
-mongoHelper.dropCollection = function(dao){
+mongoService.dropCollection = function(dao){
     var deferred = q.defer();
-    mongoHelper.collectionExists(dao.collection.name).then(function(result){
+    mongoService.collectionExists(dao.collection.name).then(function(result){
         if (result){
             dao.collection.drop(function(err, results){
                 if(err){
@@ -268,7 +268,7 @@ mongoHelper.dropCollection = function(dao){
     return deferred.promise;
 };
 
-mongoHelper.collectionExists = function(collectionName){
+mongoService.collectionExists = function(collectionName){
     var deferred = q.defer();
     db.collections(function(err, collections){
         if(err){

@@ -8,7 +8,7 @@ var PointAllotment = require('./pointAllotment').model;
 var RankingSystem = require('./rankingSystem').model;
 var Placing = require('../placing/placing').model;
 var helper = require('../helper');
-var mongoHelper = require('../mongoHelper');
+var mongoService = require('../mongoService');
 
 pointAllotmentController.setModel = function(req, res, next, id) {
     PointAllotment.findById(id, function(err, model) {
@@ -55,7 +55,7 @@ pointAllotmentController.createMany = function(req, res) {
 };
 
 pointAllotmentController.createManyPointAllotments = function(rankingSystemRef){
-    return mongoHelper.findOneById(RankingSystem, rankingSystemRef).then(function(rankingSystem){
+    return mongoService.findOneById(RankingSystem, rankingSystemRef).then(function(rankingSystem){
         return pointAllotmentController.clearPointAllotmentsForRankingSystem(rankingSystem).then(function(){
             return pointAllotmentController.allocatePointAllotments(rankingSystem).then(function(results){
                 return results;
@@ -65,7 +65,7 @@ pointAllotmentController.createManyPointAllotments = function(rankingSystemRef){
 };
 
 pointAllotmentController.clearPointAllotmentsForRankingSystem = function(rankingSystem){
-    return mongoHelper.removeAll(PointAllotment, {rankingSystemRef : rankingSystem._id});
+    return mongoService.removeAll(PointAllotment, {rankingSystemRef : rankingSystem._id});
 };
 
 pointAllotmentController.allocatePointAllotments = function(rankingSystem){
@@ -99,7 +99,7 @@ pointAllotmentController.allocatePointAllotment = function(rankingSystem, pointA
                 rankingSystemRef: rankingSystem._id
             };
             var pointAllotment = new PointAllotment(pointAllotmentRaw);
-            return mongoHelper.savePromise(pointAllotment);
+            return mongoService.savePromise(pointAllotment);
         });
         return q.allSettled(createAllotmentPromises).then(function(results){
             return results.filter(function(item){

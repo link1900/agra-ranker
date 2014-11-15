@@ -7,7 +7,7 @@ var PointAllotment = require('./pointAllotment').model;
 var Ranking = require('./ranking').model;
 var Placing = require('../placing/placing').model;
 var helper = require('../helper');
-var mongoHelper = require('../mongoHelper');
+var mongoService = require('../mongoService');
 
 
 rankingController.setModel = function(req, res, next, id) {
@@ -36,7 +36,7 @@ rankingController.createRankings = function(req, res) {
         {$sort: {"totalPoints": -1}},
         {$out: "rankings"}
     ];
-    helper.responseFromPromise(res,  mongoHelper.aggregatePromise(PointAllotment, pipeline));
+    helper.responseFromPromise(res,  mongoService.aggregatePromise(PointAllotment, pipeline));
 };
 //
 //rankingController.getRankings = function(req, res) {

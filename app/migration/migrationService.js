@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Migration = require('./migration').model;
 var _ = require('lodash');
 var helper = require('../helper');
-var mongoHelper = require('../mongoHelper');
+var mongoService = require('../mongoService');
 var q = require('q');
 var path = require('path');
 var fs = require('fs');
@@ -53,7 +53,7 @@ migrationService.applyMigrations = function(migrationDir) {
 
 migrationService.getAppliedMigrations = function(){
     var query = Migration.find({});
-    return mongoHelper.find(Migration, {});
+    return mongoService.find(Migration, {});
 };
 
 migrationService.getMigrationsToBeRun = function(appliedMigrations, definedMigrations){
@@ -112,7 +112,7 @@ migrationService.runMigration = function(migration, migrationDir){
     var migrationCode = require(migrationRefPath);
     return migrationCode.up().then(function(){
         console.log("Applying migration: " + migration.file);
-        return mongoHelper.savePromise(new Migration(migration));
+        return mongoService.savePromise(new Migration(migration));
     }).fail(function(){
         console.error("migration " + migration + " failed");
         process.exit(1);

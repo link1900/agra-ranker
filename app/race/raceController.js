@@ -8,7 +8,7 @@ var GroupLevel = require('../groupLevel/groupLevel').model;
 var Placing = require('../placing/placing').model;
 var _ = require('lodash');
 var helper = require('../helper');
-var mongoHelper = require('../mongoHelper');
+var mongoService = require('../mongoService');
 var q = require('q');
 
 raceController.setRace = function(req, res, next, id) {
@@ -78,15 +78,15 @@ raceController.update = function(req, res) {
 };
 
 raceController.updateFlyweights = function(entityRequest){
-    return mongoHelper.updateFlyweight(Placing, 'raceRef', 'race', entityRequest.savedEntity).then(function(){
+    return mongoService.updateFlyweight(Placing, 'raceRef', 'race', entityRequest.savedEntity).then(function(){
         return entityRequest;
     })
 };
 
 raceController.destroy = function(req, res) {
     helper.responseFromPromise(res,
-        mongoHelper.clearAwayChildren(Placing, 'raceRef', req.model)
-    .then(mongoHelper.removePromise));
+        mongoService.clearAwayChildren(Placing, 'raceRef', req.model)
+    .then(mongoService.removePromise));
 };
 
 raceController.makeRace = function(entityRequest) {
@@ -128,7 +128,7 @@ raceController.validate = function(entityRequest){
 };
 
 raceController.checkNameAndDateDoNotExist = function(model){
-    return mongoHelper.find(Race, {name: model.name, date: model.date}).then(function(results){
+    return mongoService.find(Race, {name: model.name, date: model.date}).then(function(results){
         if (results.length == 0){
             return q(true);
         } else if (results.length == 1 && _.isEqual(results[0]._id,model._id)) {

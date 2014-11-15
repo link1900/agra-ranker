@@ -3,7 +3,7 @@ var fileService = module.exports = {};
 var q = require('q');
 var _ = require('lodash');
 var helper = require('../helper');
-var mongoHelper = require('../mongoHelper');
+var mongoService = require('../mongoService');
 var File = require('./file').model;
 var mongoose = require('mongoose');
 var grid = require('gridfs-stream');

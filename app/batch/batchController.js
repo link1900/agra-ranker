@@ -7,7 +7,7 @@ var BatchResult = require('./batchResult').model;
 
 var _ = require('lodash');
 var helper = require('../helper');
-var mongoHelper = require('../mongoHelper');
+var mongoService = require('../mongoService');
 var q = require('q');
 var batchService = require('./batchService');
 
@@ -83,5 +83,5 @@ batchController.totalForBatch = function(req, res){
         },
         {$group: { '_id': {'batchRef' : "$batchRef"}, 'totalDuration' : { '$sum' : "$duration" }, totalSuccess : { '$sum' : "$success" }, totalFailure : { '$sum' : "$failure" }}}
     ];
-    helper.responseFromPromise(res,  mongoHelper.aggregateSinglePromise(BatchResult, pipeline));
+    helper.responseFromPromise(res,  mongoService.aggregateSinglePromise(BatchResult, pipeline));
 };

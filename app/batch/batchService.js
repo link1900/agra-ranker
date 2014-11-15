@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var BatchJob = require('./batchJob').model;
 var BatchResult = require('./batchResult').model;
 var helper = require('../helper');
-var mongoHelper = require('../mongoHelper');
+var mongoService = require('../mongoService');
 var fileService = require('../file/fileService');
 var q = require('q');
 
@@ -60,12 +60,12 @@ batchService.failedBatchJobChecker = function(){
     if (batchService.failedCheckerState == batchService.states.standby){
         batchService.failedCheckerState = batchService.states.processing;
         //make debug console.log("[failed batch job checker] started looking for stuck batch jobs");
-        mongoHelper.find(BatchJob, {status: batchService.batchStatuses.inProgress}).then(function(batchesInProgress){
+        mongoService.find(BatchJob, {status: batchService.batchStatuses.inProgress}).then(function(batchesInProgress){
             var proms = batchesInProgress.map(function(batchInProgress){
                 if(!batchService.doesAnyProcessContainBatch(batchInProgress)){
                     //batch in progress that is not in a processor. mark it as failed
                     batchInProgress.status = batchService.batchStatuses.failed;
-                    return mongoHelper.savePromise(batchInProgress).then(function(result){
+                    return mongoService.savePromise(batchInProgress).then(function(result){
                         console.log("[failed batch job checker] has marked batch job " +
                             " id: " + batchInProgress._id +
                             " name: " + batchInProgress.name +
@@ -132,7 +132,7 @@ batchService.executeProcessor = function(processor){
             batchService.processBatch(processor.processingBatch).then(function(){
                 console.log(processor.name + " finished processing batch job " + batchToProcess.name);
                 batchToProcess.status = batchService.batchStatuses.completed;
-                mongoHelper.savePromise(batchToProcess).then(function(){
+                mongoService.savePromise(batchToProcess).then(function(){
                     batchService.clearProcessor(processor);
                 }, function(){
                     console.log(processor.name + " had an error updating batch", err);
@@ -141,7 +141,7 @@ batchService.executeProcessor = function(processor){
             }, function(batchProcessError){
                 console.log(processor.name + " had an error processing batch job ", batchProcessError);
                 batchToProcess.status = batchService.batchStatuses.failed;
-                mongoHelper.savePromise(batchToProcess).then(function(){
+                mongoService.savePromise(batchToProcess).then(function(){
                     batchService.clearProcessor(processor);
                 }, function(){
                     console.log(processor.name + " had an error updating batch", err);
@@ -198,7 +198,7 @@ batchService.createBatch = function(name, type, metadata) {
     if (error){
         return q.reject(error);
     } else {
-        return mongoHelper.savePromise(batch);
+        return mongoService.savePromise(batch);
     }
 };
 

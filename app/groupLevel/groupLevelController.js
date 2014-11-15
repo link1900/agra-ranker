@@ -7,7 +7,7 @@ var GroupLevel = require('./groupLevel').model;
 var Race = mongoose.model('Race');
 var _ = require('lodash');
 var helper = require('../helper');
-var mongoHelper = require('../mongoHelper');
+var mongoService = require('../mongoService');
 var q = require('q');
 
 
@@ -59,7 +59,7 @@ groupLevelController.update = function(req, res) {
 };
 
 groupLevelController.updateFlyweights = function(entityRequest){
-    return mongoHelper.updateFlyweight(Race, 'groupLevelRef', 'groupLevel', entityRequest.savedEntity).then(function(){
+    return mongoService.updateFlyweight(Race, 'groupLevelRef', 'groupLevel', entityRequest.savedEntity).then(function(){
         return entityRequest;
     });
 };
@@ -67,8 +67,8 @@ groupLevelController.updateFlyweights = function(entityRequest){
 
 groupLevelController.destroy = function(req, res) {
     helper.responseFromPromise(res,
-        mongoHelper.cleanFk(Race, 'groupLevelRef', req.model)
-        .then(mongoHelper.removePromise)
+        mongoService.cleanFk(Race, 'groupLevelRef', req.model)
+        .then(mongoService.removePromise)
     );
 };
 

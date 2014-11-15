@@ -6,7 +6,7 @@ var Placing = require('./placing').model;
 var Race = require('../race/race').model;
 var Greyhound = require('../greyhound/greyhound').model;
 var helper = require('../helper');
-var mongoHelper = require('../mongoHelper');
+var mongoService = require('../mongoService');
 
 placingController.setModel = function(req, res, next, id) {
     Placing.findById(id, function(err, model) {
@@ -60,7 +60,7 @@ placingController.update = function(req, res) {
 };
 
 placingController.destroy = function(req, res) {
-    helper.responseFromPromise(res, mongoHelper.removePromise(req.model));
+    helper.responseFromPromise(res, mongoService.removePromise(req.model));
 };
 
 placingController.make = function(entityRequest) {

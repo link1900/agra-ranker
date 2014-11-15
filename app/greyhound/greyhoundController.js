@@ -5,7 +5,7 @@ var Greyhound = require('./greyhound').model;
 var Placing = require('../placing/placing').model;
 var _ = require('lodash');
 var helper = require('../helper');
-var mongoHelper = require('../mongoHelper');
+var mongoService = require('../mongoService');
 var greyhoundService = require('./greyhoundService');
 var q = require('q');
 
@@ -76,7 +76,7 @@ greyhoundController.update = function(req, res) {
 };
 
 greyhoundController.updateFlyweights = function(entityRequest){
-    return mongoHelper.updateFlyweight(Placing, 'greyhoundRef', 'greyhound', entityRequest.savedEntity).then(function(){
+    return mongoService.updateFlyweight(Placing, 'greyhoundRef', 'greyhound', entityRequest.savedEntity).then(function(){
         return entityRequest;
     });
 };
@@ -236,13 +236,13 @@ greyhoundController.processDamField = function(updateRequest) {
  */
 greyhoundController.destroy = function(req, res) {
     helper.responseFromPromise(res,
-        mongoHelper.cleanFk(Greyhound, 'sireRef', req.model)
+        mongoService.cleanFk(Greyhound, 'sireRef', req.model)
         .then(function(){
-            return mongoHelper.cleanFk(Greyhound, 'damRef', req.model);
+            return mongoService.cleanFk(Greyhound, 'damRef', req.model);
         })
         .then(function(){
-            return mongoHelper.cleanFk(Placing, 'greyhoundRef', req.model);
+            return mongoService.cleanFk(Placing, 'greyhoundRef', req.model);
         })
-        .then(mongoHelper.removePromise)
+        .then(mongoService.removePromise)
     );
 };

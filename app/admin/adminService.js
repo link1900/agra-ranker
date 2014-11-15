@@ -15,58 +15,58 @@ var File = require('../file/file').model;
 var Chunk = require('../file/file').chunkModel;
 var _ = require('lodash');
 var helper = require('../helper');
-var mongoHelper = require('../mongoHelper');
+var mongoService = require('../mongoService');
 var Schema = mongoose.Schema;
 var q = require('q');
 
 adminService.removeAllGreyhounds = function(){
-    return mongoHelper.dropCollection(Placing).then(function(){
-        return mongoHelper.dropCollection(Greyhound);
+    return mongoService.dropCollection(Placing).then(function(){
+        return mongoService.dropCollection(Greyhound);
     });
 };
 
 adminService.removeAllBatchJobs = function(){
-    return mongoHelper.dropCollection(BatchResult).then(function(){
-        return mongoHelper.dropCollection(BatchJob);
+    return mongoService.dropCollection(BatchResult).then(function(){
+        return mongoService.dropCollection(BatchJob);
     });
 };
 
 adminService.removeAllFiles = function(){
-    return mongoHelper.dropCollection(Chunk).then(function(){
-        return mongoHelper.dropCollection(File);
+    return mongoService.dropCollection(Chunk).then(function(){
+        return mongoService.dropCollection(File);
     });
 };
 
 adminService.getAllCounts = function(){
     var proms = [
-        mongoHelper.getCollectionCount(User).then(function(count){
+        mongoService.getCollectionCount(User).then(function(count){
             return {"user": count};
         }),
-        mongoHelper.getCollectionCount(Greyhound).then(function(count){
+        mongoService.getCollectionCount(Greyhound).then(function(count){
             return {"greyhound": count};
         }),
-        mongoHelper.getCollectionCount(Placing).then(function(count){
+        mongoService.getCollectionCount(Placing).then(function(count){
             return {"placing": count};
         }),
-        mongoHelper.getCollectionCount(GroupLevel).then(function(count){
+        mongoService.getCollectionCount(GroupLevel).then(function(count){
             return {"groupLevel": count};
         }),
-        mongoHelper.getCollectionCount(Race).then(function(count){
+        mongoService.getCollectionCount(Race).then(function(count){
             return {"race": count};
         }),
-        mongoHelper.getCollectionCount(RankingSystem).then(function(count){
+        mongoService.getCollectionCount(RankingSystem).then(function(count){
             return {"rankingSystem": count};
         }),
-        mongoHelper.getCollectionCount(BatchResult).then(function(count){
+        mongoService.getCollectionCount(BatchResult).then(function(count){
             return {"batchJob": count};
         }),
-        mongoHelper.getCollectionCount(BatchJob).then(function(count){
+        mongoService.getCollectionCount(BatchJob).then(function(count){
             return {"batchResult": count};
         }),
-        mongoHelper.getCollectionCount(File).then(function(count){
+        mongoService.getCollectionCount(File).then(function(count){
             return {"file": count};
         }),
-        mongoHelper.getCollectionStats(Chunk).then(function(stats){
+        mongoService.getCollectionStats(Chunk).then(function(stats){
             return {"fileSize":stats.size};
         })
     ];
