@@ -48,7 +48,7 @@ describe("User", function() {
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    assert.lengthOf(res.body, 1);
+                    assert.lengthOf(res.body, 2);
                     done();
                 });
         });
@@ -77,32 +77,23 @@ describe("User", function() {
         });
     });
 
+    describe("Request access", function(){
+        it("success with new email", function(done){
+            var body = {
+                "email" : "jimmy@gmail.com",
+                "password" : "test"
+            };
+
+            testHelper.publicSession
+                .post('/user/register')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+    });
+
     describe("Create active user", function(){
-//        it("with new email not on white list", function(done){
-//            var body = {
-//                "email" : "joe@gmail.com",
-//                "password" : "test"
-//            };
-//            testHelper.publicSession
-//                .post('/user')
-//                .send(body)
-//                .set('Accept', 'application/json')
-//                .expect('Content-Type', /json/)
-//                .expect(400, done);
-//        });
-//
-//        it("with new email on white list", function(done){
-//            var body = {
-//                "email" : "nbrown99@gmail.com",
-//                "password" : "test"
-//            };
-//            testHelper.publicSession
-//                .post('/user')
-//                .send(body)
-//                .set('Accept', 'application/json')
-//                .expect('Content-Type', /json/)
-//                .expect(200, done);
-//        });
          it("is secured", function(done){
             var body = {
                 "email" : "nbrown99@gmail.com",
@@ -201,6 +192,16 @@ describe("User", function() {
             var body = {state: "dog"};
             testHelper.authSession
                 .put('/user/532675365d68bab8234c7e7f')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("fails when using an existing email", function(done){
+            var body = {"email" : "link1900@gmail.com"};
+            testHelper.authSession
+                .put('/user/54683fd3daad610cccdd34da')
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)

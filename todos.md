@@ -157,10 +157,10 @@
 - (DONE) have the ability to download a file from a batch
 
 ### 6.0.12 Admin controls
-- List users
-- Remove users
-- Add user
-- Add state to users [inactive, active, requested, invited]
+- (DONE) List users
+- (DONE) Remove users
+- (DONE) Add user
+- (DONE) Add state to users [inactive, active, requested, invited]
 - New api to request access to the site
 - Notification System
 - On user invite send an email to the users email

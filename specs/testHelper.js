@@ -58,15 +58,21 @@ testHelper.letter1000 = "0123456789012345678901234567890123456789012345678901234
     "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
 
 testHelper.loadUsers = function(done){
-    new AllowedUser({"email":"nbrown99@gmail.com"}).save();
-    new AllowedUser({"email":"link1900@gmail.com"}).save();
     new User({
         "provider" : "local",
         "email" : "link1900@gmail.com",
         "password" : "test",
         "state" : "Active",
         "_id" : "532675365d68bab8234c7e7f"
-    }).save(done);
+    }).save(function(){
+            new User({
+                "provider" : "local",
+                "email" : "joe@gmail.com",
+                "password" : "test",
+                "state" : "Active",
+                "_id" : "54683fd3daad610cccdd34da"
+            }).save(done);
+        });
 };
 
 testHelper.clearUsers = function(done){
