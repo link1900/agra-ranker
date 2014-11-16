@@ -34,7 +34,19 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
         };
 
         $scope.deleteUser = function(){
-
+            $scope.selectedUser.$delete(function(data){
+                    delete $scope.selectedUser;
+                    $scope.alerts = [
+                        { type: 'success', msg: "Deleted " + data.email.toUpperCase() }
+                    ];
+                    $location.path('/user');
+                },
+                function(failedResponse){
+                    $scope.alerts = [
+                        { type: 'danger', msg: "Failed to delete: " + failedResponse.data.error }
+                    ];
+                }
+            );
         };
 
         $scope.userService  = userService;
