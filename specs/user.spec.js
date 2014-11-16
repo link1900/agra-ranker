@@ -197,6 +197,26 @@ describe("User", function() {
                 .expect(401, done);
         });
 
+        it("fails given invalid state", function (done) {
+            var body = {state: "dog"};
+            testHelper.authSession
+                .put('/user/532675365d68bab8234c7e7f')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("succeeds given valid state", function (done) {
+            var body = {state: "Active"};
+            testHelper.authSession
+                .put('/user/532675365d68bab8234c7e7f')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+
         it("email address", function (done) {
             var body = {email:"link1704@hotmail.com"};
             testHelper.authSession

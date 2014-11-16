@@ -107,6 +107,10 @@ userController.validateUser = function(user){
         return q.reject("must provide an email field");
     }
 
+    if (!_.contains(_.values(userStates), user.state)){
+        return q.reject("unknown user status of type: " + user.state);
+    }
+
     return q(user);
 };
 
