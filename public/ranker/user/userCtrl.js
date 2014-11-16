@@ -35,7 +35,7 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
         $scope.save = function(){
             $scope.selectedUser.$update(function(data){
                     $scope.alerts = [
-                        { type: 'success', msg: "Updated " + data.name.toUpperCase() }
+                        { type: 'success', msg: "Updated user" }
                     ];
                     $scope.selectedUser = data;
                 },
