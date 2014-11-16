@@ -19,11 +19,14 @@
                                required />
                         <span class="help-block error" data-ng-show="createForm.userEmailField.$dirty && createForm.userEmailField.$invalid">Email is invalid</span>
                     </div>
-                    <div class="form-group">
+                    <div ng-show="selectedUser.state == 'Active' || selectedUser.state == 'Inactive'" class="form-group">
                         <div class="btn-group">
                             <label class="btn btn-primary" data-ng-model="selectedUser.state" btn-radio="'Active'">Active</label>
                             <label class="btn btn-primary" data-ng-model="selectedUser.state" btn-radio="'Inactive'">Inactive</label>
                         </div>
+                    </div>
+                    <div ng-show="selectedUser.state == 'Requested'" class="form-group">
+                        <button data-ng-click="makeActive()" class="btn btn-primary">Approve Request</button>
                     </div>
                     <button data-ng-click="save()" class="btn btn-success">Save</button>
                     <a ng-href="#/user/view/{{selectedUser._id}}" class="btn btn-default">Back</a>

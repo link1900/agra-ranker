@@ -46,6 +46,10 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
                 });
         };
 
+        $scope.makeActive = function(){
+            $scope.selectedUser.state = 'Active';
+        };
+
         $scope.deleteUser = function(){
             $scope.selectedUser.$delete(function(data){
                     delete $scope.selectedUser;
