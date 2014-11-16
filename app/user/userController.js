@@ -39,6 +39,7 @@ userController.destroy = function(req, res) {
 userController.requestAccess = function(req, res){
     var processChain = userController.newUser(req.body, userStates.requested)
         .then(userController.validateUser)
+        .then(userController.checkForPassword)
         .then(userController.checkIfUserExists)
         .then(mongoService.savePromise);
     helper.responseFromPromise(res, processChain);
@@ -47,6 +48,7 @@ userController.requestAccess = function(req, res){
 userController.createActiveUser = function(req, res){
     var processChain = userController.newUser(req.body, userStates.active)
         .then(userController.validateUser)
+        .then(userController.checkForPassword)
         .then(userController.checkIfUserExists)
         .then(mongoService.savePromise);
 
@@ -65,8 +67,22 @@ userController.assumeAdmin = function(req, res){
 
 };
 
+userController.updateUser = function(req, res){
+    var processChain = userController.mergeUpdateRequest(req.body, req.model)
+        .then(userController.validateUser)
+        .then(userController.checkIfUserExists)
+        .then(mongoService.savePromise);
+
+    helper.responseFromPromise(res, processChain);
+};
+
+userController.mergeUpdateRequest = function(updateRequest, existingEntity){
+    delete updateRequest.password;
+    return q(_.extend(existingEntity, updateRequest));
+};
+
 userController.checkIfUserExists = function(user){
-    return mongoService.oneExists(User, {email: user.email}).then(function(exists){
+    return mongoService.oneExists(User, {_id: {$ne: user._id}, email: user.email}).then(function(exists){
         if (exists){
             return q.reject('user with the email ' + user.email + " already exists");
         } else {
@@ -87,16 +103,19 @@ userController.newUser = function(userRequest, startingState){
 };
 
 userController.validateUser = function(user){
-    if(user.email == null){
+    if(user.email == null && user.email.length > 0){
         return q.reject("must provide an email field");
     }
 
+    return q(user);
+};
+
+userController.checkForPassword = function(user){
     if (user.password == null){
         return q.reject("must provide a password field");
     }
 
     return q(user);
-
 };
 
 userController.me = function(req, res) {

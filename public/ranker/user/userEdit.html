@@ -1,0 +1,28 @@
+<div data-ng-controller="userCtrl" data-ng-init="findOne()">
+    <div class="col-xs-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">User Edit</h2>
+            </div>
+            <div class="panel-body">
+                <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+
+                <form name="editUserForm">
+                    <div class="form-group">
+                        <label class="control-label" for="userEmailField" >Email</label>
+                        <input id="userEmailField"
+                               type="email"
+                               class="form-control"
+                               name="userEmailField"
+                               data-ng-model="selectedUser.email"
+                               autocomplete="off"
+                               required />
+                        <span class="help-block error" data-ng-show="createForm.userEmailField.$dirty && createForm.userEmailField.$invalid">Email is invalid</span>
+                    </div>
+                    <button data-ng-click="save()" class="btn btn-success">Save</button>
+                    <a ng-href="#/user/view/{{selectedUser._id}}" class="btn btn-default">Back</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

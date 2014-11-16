@@ -28,6 +28,7 @@ module.exports = function(app) {
     //app.post('/user/register', securityController.checkAuthentication, userController.requestAccess);
     //app.post('/user/invite', securityController.checkAuthentication, userController.inviteUser);
     //app.post('/user/becomeAdmin', securityController.checkAuthentication, userController.assumeAdmin);
+    app.put('/user/:userId', securityController.checkAuthentication, userController.updateUser);
     app.del('/user/:userId', securityController.checkAuthentication, userController.destroy);
     app.param('userId', userController.setModel);
 

@@ -186,6 +186,47 @@ describe("User", function() {
         });
     });
 
+    describe("Update", function() {
+        it("is secure", function (done) {
+            var body = {email:"link1704@hotmail.com"};
+            testHelper.publicSession
+                .put('/user/532675365d68bab8234c7e7f')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(401, done);
+        });
+
+        it("email address", function (done) {
+            var body = {email:"link1704@hotmail.com"};
+            testHelper.authSession
+                .put('/user/532675365d68bab8234c7e7f')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    assert.property(res.body, "email");
+                    assert.property(res.body, "_id");
+                    assert.notProperty(res.body, "password");
+                    assert.equal(res.body.email, "link1704@hotmail.com");
+                    var url = '/user/' + res.body._id;
+                    testHelper.authSession
+                        .get(url)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .end(function(err, res){
+                            if (err){ throw err; }
+                            assert.property(res.body, "email");
+                            assert.equal(res.body.email, "link1704@hotmail.com");
+                            done();
+                        });
+                });
+        });
+    });
+
     describe("Delete", function() {
         it("is secure", function (done) {
             testHelper.publicSession

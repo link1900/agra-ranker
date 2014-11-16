@@ -1,5 +1,4 @@
 angular.module('controllers').controller('userCtrl', function($scope, $routeParams, userService, $location) {
-
         $scope.findOne = function() {
             userService.get({
                 userId: $routeParams.id
@@ -31,6 +30,20 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
                     { type: 'danger', msg: "Failed to register user: " + failedResponse.data.error }
                 ];
             });
+        };
+
+        $scope.save = function(){
+            $scope.selectedUser.$update(function(data){
+                    $scope.alerts = [
+                        { type: 'success', msg: "Updated " + data.name.toUpperCase() }
+                    ];
+                    $scope.selectedUser = data;
+                },
+                function(error){
+                    $scope.alerts = [
+                        { type: 'danger', msg: error.data.error }
+                    ];
+                });
         };
 
         $scope.deleteUser = function(){
