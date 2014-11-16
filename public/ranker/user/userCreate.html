@@ -1,0 +1,39 @@
+<div data-ng-controller="userCtrl">
+    <div class="col-xs-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">User Creation</h3>
+        </div>
+        <div class="panel-body">
+            <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+
+            <form name="createUserForm">
+                <div class="form-group">
+                    <label class="control-label" for="userEmailField" >Email</label>
+                    <input id="userEmailField"
+                           type="email"
+                           class="form-control"
+                           name="userEmailField"
+                           data-ng-model="selectedUser.email"
+                           autocomplete="off"
+                           required />
+                    <span class="help-block error" data-ng-show="createForm.userEmailField.$dirty && createForm.userEmailField.$invalid">Email is invalid</span>
+                </div>
+                <div class="form-group">
+                    <label class="ontrol-label" for="userPasswordField" >Password</label>
+                    <input id="userPasswordField"
+                           type="password"
+                           class="form-control"
+                           name="userPasswordField"
+                           data-ng-model="selectedUser.password"
+                           autocomplete="off"
+                           required />
+                    <span class="help-block error" data-ng-show="createForm.userPasswordField.$dirty && createForm.userPasswordField.$invalid">Password is invalid</span>
+                </div>
+                <button data-ng-click="createUser()" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Save</button>
+                <a ng-href="#/user" class="btn btn-default">Cancel</a>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>

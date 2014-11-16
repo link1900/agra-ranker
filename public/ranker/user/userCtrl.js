@@ -1,16 +1,26 @@
-angular.module('controllers').controller('userCtrl', ['$scope', '$routeParams', 'userService',
-    function($scope, $routeParams, userService) {
+angular.module('controllers').controller('userCtrl', function($scope, $routeParams, userService, $location) {
 
         $scope.findOne = function() {
             userService.get({
                 userId: $routeParams.id
-            }, function(file) {
-                $scope.user = user;
+            }, function(foundUser) {
+                $scope.selectedUser = foundUser;
             }, function(){
                 $scope.alerts = [
                     { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
                 ];
             });
+        };
+
+        $scope.createUser = function(){
+            userService.save({}, $scope.selectedUser, function(response){
+                    $location.path('user/view/'+ response._id);
+                },
+                function(error){
+                    $scope.alerts = [
+                        { type: 'danger', msg: "create failed - " + error.data.error }
+                    ];
+                });
         };
 
         $scope.signUp = function(){
@@ -35,4 +45,4 @@ angular.module('controllers').controller('userCtrl', ['$scope', '$routeParams', 
             {title: "Created Date", field:"createdAt", filter: "date", filterFormat: 'medium'}
         ];
     }
-]);
+);

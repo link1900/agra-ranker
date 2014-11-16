@@ -1,19 +1,19 @@
 <div id="userView" data-ng-controller="userCtrl" data-ng-init="findOne()">
     <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
-    <div class="panel panel-default" data-ng-show="user">
+    <div class="panel panel-default" data-ng-show="selectedUser">
         <div class="panel-heading">
-            <h1 class="panel-title">User</h1>
+            <h1 class="panel-title">User Details</h1>
         </div>
         <div class="panel-body">
             <dl class="dl-horizontal">
                 <dt>Email</dt>
-                <dd>{{user.email}}</dd>
+                <dd>{{selectedUser.email}}</dd>
                 <dt>Status</dt>
-                <dd>{{user.state}}</dd>
+                <dd>{{selectedUser.state}}</dd>
                 <dt>Created at</dt>
-                <dd>{{batch.createdAt | date:'medium'}}</dd>
+                <dd>{{selectedUser.createdAt | date:'medium'}}</dd>
                 <dt>Last updated</dt>
-                <dd>{{batch.updatedAt | date:'medium'}}</dd>
+                <dd>{{selectedUser.updatedAt | date:'medium'}}</dd>
             </dl>
             <div>
                 <h4>Actions</h4>
