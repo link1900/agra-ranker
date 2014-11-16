@@ -14,7 +14,7 @@ angular.module('controllers').controller('FileCtrl', function($scope, $routePara
     };
 
     $scope.columnInfo = [
-        {title: "File Name", field:"filename", baseLink:"#/admin/file/view/", linkField: "_id", link:true},
+        {title: "File Name", field:"filename", baseLink:"#/file/view/", linkField: "_id", link:true},
         {title: "Uploaded Date", field:"uploadDate", filter: "date", filterFormat: 'medium'}
     ];
 
@@ -26,7 +26,7 @@ angular.module('controllers').controller('FileCtrl', function($scope, $routePara
                 $scope.alerts = [
                     { type: 'success', msg: "Deleted file" }
                 ];
-                $location.path('/admin/file');
+                $location.path('/file');
             },
             function(error){
                 $scope.alerts = [
