@@ -1,6 +1,6 @@
 <div ng-controller="userCtrl" class="container">
     <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
-    <form ng-hide="userCreated" class="col-md-4">
+    <form ng-hide="registeredSuccess" class="col-md-4">
         <h2>Request access to ranker</h2>
         <div class="form-group">
             <label for="emailInput">Email Address</label>
