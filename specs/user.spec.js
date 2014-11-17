@@ -48,7 +48,7 @@ describe("User", function() {
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    assert.lengthOf(res.body, 2);
+                    assert.lengthOf(res.body, 3);
                     done();
                 });
         });
@@ -85,7 +85,7 @@ describe("User", function() {
             };
 
             testHelper.publicSession
-                .post('/user/register')
+                .post('/user/requestAccess')
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -198,6 +198,16 @@ describe("User", function() {
                 .expect(400, done);
         });
 
+        it("fails when trying to set the state incorrectly", function (done) {
+            var body = {state: "Requested Access"};
+            testHelper.authSession
+                .put('/user/532675365d68bab8234c7e7f')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
         it("fails when using an existing email", function(done){
             var body = {"email" : "link1900@gmail.com"};
             testHelper.authSession
@@ -248,6 +258,38 @@ describe("User", function() {
         });
     });
 
+    describe("Request Access", function() {
+        it("is secure", function (done) {
+            testHelper.publicSession
+                .post('/user/grantAccess/5469d48ddaad610cccdd34db')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(401, done);
+        });
+
+        it("check you cannot grant access to users that haven't requested it", function (done) {
+            testHelper.authSession
+                .post('/user/grantAccess/532675365d68bab8234c7e7f')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("check you can successfully grants access", function (done) {
+            testHelper.authSession
+                .post('/user/grantAccess/5469d48ddaad610cccdd34db')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    assert.property(res.body, "state");
+                    assert.equal(res.body.state, "Active");
+                    done();
+                });
+        });
+    });
+
     describe("Delete", function() {
         it("is secure", function (done) {
             testHelper.publicSession
@@ -269,4 +311,5 @@ describe("User", function() {
     after(function (done) {
         testHelper.tearDown(done);
     });
+
 });

@@ -11,7 +11,7 @@ angular.module('services').service('userService',  function($http,$resource) {
     );
 
     userService.signUp = function(user) {
-        return $http.post("/user/register", user).then(function(result){
+        return $http.post("/user/requestAccess", user).then(function(result){
             return result.data;
         });
     };

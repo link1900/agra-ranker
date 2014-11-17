@@ -7,7 +7,7 @@ var crypto = require('crypto');
 user.states = {
     "inactive": "Inactive",
     "active": "Active",
-    "requested": "Requires Approval",
+    "requested": "Requested Access",
     "invited": "Invited"
 };
 

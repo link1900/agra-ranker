@@ -25,8 +25,10 @@ module.exports = function(app) {
     app.get('/user/:userId', securityController.checkAuthentication, helper.getOne);
     app.get('/me', userController.me);
     app.post('/user', securityController.checkAuthentication, userController.createActiveUser);
-    app.post('/user/register', userController.requestAccess);
+    app.post('/user/requestAccess', userController.requestAccess);
+    app.post('/user/grantAccess/:userId', securityController.checkAuthentication, userController.grantAccess);
     //app.post('/user/invite', securityController.checkAuthentication, userController.inviteUser);
+    //app.post('/user/acceptInvite', securityController.checkToken, userController.acceptInvite);
     //app.post('/user/becomeAdmin', securityController.checkAuthentication, userController.assumeAdmin);
     app.put('/user/:userId', securityController.checkAuthentication, userController.updateUser);
     app.del('/user/:userId', securityController.checkAuthentication, userController.destroy);

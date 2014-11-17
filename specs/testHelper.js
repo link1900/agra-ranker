@@ -71,7 +71,15 @@ testHelper.loadUsers = function(done){
                 "password" : "test",
                 "state" : "Active",
                 "_id" : "54683fd3daad610cccdd34da"
-            }).save(done);
+            }).save(function(){
+                    new User({
+                        "provider" : "local",
+                        "email" : "newuser@gmail.com",
+                        "password" : "test",
+                        "state" : "Requested Access",
+                        "_id" : "5469d48ddaad610cccdd34db"
+                    }).save(done);
+                });
         });
 };
 

@@ -5,7 +5,7 @@ var q = require('q');
 var mongoose = require('mongoose');
 var User = require('./user').model;
 var userStates = require('./user').states;
-var AllowedUser = require('./allowedUser').model;
+var notificationService = require('../notification/notificationService');
 var mongoService = require('../mongoService');
 var helper = require('../helper');
 
@@ -45,6 +45,42 @@ userController.requestAccess = function(req, res){
     helper.responseFromPromise(res, processChain);
 };
 
+userController.grantAccess = function(req, res){
+    var processChain = userController.checkIfAccessCanBeGranted(req.model)
+        .then(userController.setUserActive)
+        .then(mongoService.savePromise)
+        .then(userController.sendUserAcceptedEmail);
+    helper.responseFromPromise(res, processChain);
+};
+
+userController.setUserActive = function(user){
+    user.state = 'Active';
+    return q(user);
+};
+
+userController.checkIfAccessCanBeGranted = function(user){
+    if (user.state == "Requested Access"){
+        return q(user);
+    } else {
+        return q.reject("Can only grant access to new users that have requested it");
+    }
+};
+
+userController.sendUserAcceptedEmail = function(user){
+    var email = {};
+    email.to = user.email;
+    email.subject = "Access request accepted";
+    email.html = "" +
+        "Hi " + email.to + ",\n" +
+        "Your request to join the website " + process.env.HOST + " has been accepted."
+    ;
+    return notificationService.sendEmail(email).then(function(){
+        return user;
+    }, function(failure){
+        q.reject(failure);
+    });
+};
+
 userController.createActiveUser = function(req, res){
     var processChain = userController.newUser(req.body, userStates.active)
         .then(userController.validateUser)
@@ -69,6 +105,7 @@ userController.assumeAdmin = function(req, res){
 
 userController.updateUser = function(req, res){
     var processChain = userController.mergeUpdateRequest(req.body, req.model)
+        .then(userController.validateUserIsEditable)
         .then(userController.validateUser)
         .then(userController.checkIfUserExists)
         .then(mongoService.savePromise);
@@ -89,6 +126,14 @@ userController.checkIfUserExists = function(user){
             return q(user);
         }
     })
+};
+
+userController.validateUserIsEditable = function(user){
+    if (!_.contains(['Active','Inactive'], user.state)){
+        return q.reject("can only edit a user that is active or inactive: " + user.state);
+    }
+
+    return q(user);
 };
 
 userController.newUser = function(userRequest, startingState){
