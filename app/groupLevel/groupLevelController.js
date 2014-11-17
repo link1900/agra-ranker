@@ -1,5 +1,3 @@
-'use strict';
-
 var groupLevelController = module.exports = {};
 
 var mongoose = require('mongoose');
