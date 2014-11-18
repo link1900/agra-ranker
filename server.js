@@ -3,6 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var passport = require('passport');
 var winston = require('winston');
+var dotenv = require('dotenv');
 
 /**
  * Main application entry file.
@@ -12,6 +13,7 @@ winston.remove(winston.transports.Console);
 winston.add(winston.transports.Console, {timestamp: true});
 
 // Load configurations
+dotenv.load();
 // Set the node enviornment variable if not set before
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
