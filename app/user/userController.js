@@ -48,8 +48,8 @@ userController.requestAccess = function(req, res){
 userController.grantAccess = function(req, res){
     var processChain = userController.checkIfAccessCanBeGranted(req.model)
         .then(userController.setUserActive)
-        .then(mongoService.savePromise)
-        .then(userController.sendUserAcceptedEmail);
+        .then(userController.sendUserAcceptedEmail)
+        .then(mongoService.savePromise);
     helper.responseFromPromise(res, processChain);
 };
 
@@ -67,14 +67,9 @@ userController.checkIfAccessCanBeGranted = function(user){
 };
 
 userController.sendUserAcceptedEmail = function(user){
-    var email = {};
-    email.to = user.email;
-    email.subject = "Access request accepted";
-    email.html = "" +
-        "Hi " + email.to + ",\n" +
-        "Your request to join the website " + process.env.HOST + " has been accepted."
-    ;
-    return notificationService.sendEmail(email).then(function(){
+    var subject = "Access request accepted";
+    var message = "Your request to join the AGRA Ranker website has been accepted.";
+    return notificationService.sendEmail(user.email, subject, message).then(function(){
         return user;
     }, function(failure){
         q.reject(failure);
@@ -130,7 +125,7 @@ userController.checkIfUserExists = function(user){
 
 userController.validateUserIsEditable = function(user){
     if (!_.contains(['Active','Inactive'], user.state)){
-        return q.reject("can only edit a user that is active or inactive: " + user.state);
+        return q.reject("can only edit a user that is active or inactive");
     }
 
     return q(user);

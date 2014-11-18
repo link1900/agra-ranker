@@ -164,11 +164,24 @@
 - New api to request access to the site
 - Notification System
 - On user invite send an email to the users email
+- Fix an issue when calling DELETE /user/badid
+- Investigate what happens with an un matched route
 - Remove white list and have all sign ups require approval
+- Date directive that does both date filter and time ago filter
+- Add first and last name to user
+- Add name helper on the user model to access this field
+- Add created by which is a flyweight to user
+- Standard fields directive which does created at, updated at and created by and shows dates with the new filter
+- Add user setting option recieve system emails ecieve email
+- Add user setting timezone and make sure timezones works
+- Add gravatar link to new window for avatar
+- Default avatar to be svg initals or first two letter of email
 - Forgotten password system (emails you a reset link)
 - Add roles [user, admin] (user allows editing, admin allows access to admin api)
 - System bootstrapping mode which is active when no users have the admin role users preloaded code to take admin
 - On user request send an email to all users with admin role
+- Add a system event register
+- Add activity stream admin page
 
 ### 6.0.13 Ranking Phase 1
 - export greyhound csv

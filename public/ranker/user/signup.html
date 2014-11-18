@@ -1,7 +1,7 @@
 <div ng-controller="userCtrl" class="container">
+    <h2>New user registration</h2>
     <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
     <form ng-hide="registeredSuccess" class="col-md-4">
-        <h2>Request access to ranker</h2>
         <div class="form-group">
             <label for="emailInput">Email Address</label>
             <input id="emailInput" ng-model="user.email" type="email" class="form-control" placeholder="Email address" required autofocus>
