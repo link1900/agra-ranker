@@ -81,7 +81,9 @@ describe("User", function() {
         it("success with new email", function(done){
             var body = {
                 "email" : "jimmy@gmail.com",
-                "password" : "test"
+                "password" : "test",
+                "firstName": "jim",
+                "lastName":"goodwin"
             };
 
             testHelper.publicSession
@@ -97,6 +99,8 @@ describe("User", function() {
          it("is secured", function(done){
             var body = {
                 "email" : "nbrown99@gmail.com",
+                "firstName":"Neil",
+                "lastName": "Brown",
                 "password" : "test"
             };
             testHelper.publicSession
@@ -110,6 +114,8 @@ describe("User", function() {
         it("with new email", function(done){
             var body = {
                 "email" : "nbrown99@gmail.com",
+                "firstName":"Neil",
+                "lastName": "Brown",
                 "password" : "test"
             };
 
@@ -142,7 +148,10 @@ describe("User", function() {
 
         it("fails when using an existing email", function(done){
             var body = {
-                "email" : "link1900@gmail.com"
+                "email" : "link1900@gmail.com",
+                "firstName":"Neil",
+                "lastName": "Brown",
+                "password" : "test"
             };
             testHelper.authSession
                 .post('/user')
@@ -154,6 +163,8 @@ describe("User", function() {
 
         it("without an email", function(done){
             var body = {
+                "firstName":"Neil",
+                "lastName": "Brown",
                 "password" : "test"
             };
             testHelper.authSession
@@ -166,7 +177,39 @@ describe("User", function() {
 
         it("without a password", function(done){
             var body = {
-                "email" : "joe@gmail.com"
+                "email" : "joe@gmail.com",
+                "firstName":"Neil",
+                "lastName": "Brown"
+            };
+            testHelper.authSession
+                .post('/user')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("without a first name", function(done){
+            var body = {
+                "email" : "joe@gmail.com",
+                "lastName": "Brown",
+                "password" : "test"
+
+            };
+            testHelper.authSession
+                .post('/user')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("without a last name", function(done){
+            var body = {
+                "email" : "joe@gmail.com",
+                "firstName": "Brown",
+                "password" : "test"
+
             };
             testHelper.authSession
                 .post('/user')

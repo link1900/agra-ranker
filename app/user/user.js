@@ -16,6 +16,8 @@ user.definition = {
         type: String,
         required: true
     },
+    firstName: {type: String},
+    lastName: {type: String},
     hashed_password: {type: String, required : true},
     provider: {type: String, required : true, default: 'local'},
     salt: String,

@@ -40,6 +40,7 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
                     $scope.selectedUser = data;
                 },
                 function(error){
+                    console.log(error.data);
                     $scope.alerts = [
                         { type: 'danger', msg: error.data.error }
                     ];
@@ -89,6 +90,8 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
 
         $scope.columnInfo = [
             {title: "Email", field:"email", baseLink:"#/user/view/", linkField: "_id", link:true},
+            {title: "First Name", field:"firstName"},
+            {title: "Last Name", field:"lastName"},
             {title: "Status", field:"state"},
             {title: "Created Date", field:"createdAt", filter: "date", filterFormat: 'medium'}
         ];

@@ -8,6 +8,8 @@ var userStates = require('./user').states;
 var notificationService = require('../notification/notificationService');
 var mongoService = require('../mongoService');
 var helper = require('../helper');
+var validator = require('validator');
+var cleaner = require('validator');
 
 userController.setModel = function(req, res, next, id) {
     User.findById(id, function(err, model) {
@@ -38,6 +40,7 @@ userController.destroy = function(req, res) {
 
 userController.requestAccess = function(req, res){
     var processChain = userController.newUser(req.body, userStates.requested)
+        .then(userController.cleanUser)
         .then(userController.validateUser)
         .then(userController.checkForPassword)
         .then(userController.checkIfUserExists)
@@ -78,10 +81,17 @@ userController.sendUserAcceptedEmail = function(user){
 
 userController.createActiveUser = function(req, res){
     var processChain = userController.newUser(req.body, userStates.active)
+        .then(userController.cleanUser)
         .then(userController.validateUser)
         .then(userController.checkForPassword)
         .then(userController.checkIfUserExists)
-        .then(mongoService.savePromise);
+        .then(mongoService.savePromise).then(function(a){
+            console.log(a);
+            return a;
+        },function(e){
+            console.log(e);
+            return q.reject(e);
+        });
 
     helper.responseFromPromise(res, processChain);
 };
@@ -100,6 +110,7 @@ userController.assumeAdmin = function(req, res){
 
 userController.updateUser = function(req, res){
     var processChain = userController.mergeUpdateRequest(req.body, req.model)
+        .then(userController.cleanUser)
         .then(userController.validateUserIsEditable)
         .then(userController.validateUser)
         .then(userController.checkIfUserExists)
@@ -116,7 +127,7 @@ userController.mergeUpdateRequest = function(updateRequest, existingEntity){
 userController.checkIfUserExists = function(user){
     return mongoService.oneExists(User, {_id: {$ne: user._id}, email: user.email}).then(function(exists){
         if (exists){
-            return q.reject('user with the email ' + user.email + " already exists");
+            return q.reject('email ' + user.email + " is already used");
         } else {
             return q(user);
         }
@@ -132,19 +143,40 @@ userController.validateUserIsEditable = function(user){
 };
 
 userController.newUser = function(userRequest, startingState){
-    var user = {email: userRequest.email};
+    var user = userRequest;
     if (startingState != null){
         user.state = startingState;
-    }
-    if(userRequest.password){
-        user.password= userRequest.password;
     }
     return q(new User(user));
 };
 
+userController.cleanUser = function(user){
+    if (user.email){
+        user.email = cleaner.normalizeEmail(user.email);
+    }
+    if(user.password){
+        user.password = cleaner.trim(user.password);
+    }
+    if(user.firstName){
+        user.firstName = cleaner.trim(user.firstName);
+    }
+    if(user.lastName){
+        user.lastName = cleaner.trim(user.lastName);
+    }
+    return q(user);
+};
+
 userController.validateUser = function(user){
-    if(user.email == null && user.email.length > 0){
-        return q.reject("must provide an email field");
+    if (validator.isNull(user.email) || !validator.isEmail(user.email)){
+        return q.reject("must provide a valid email");
+    }
+
+    if(validator.isNull(user.firstName) || !validator.isLength(user.firstName, 0, 50)){
+        return q.reject("must provide an first name");
+    }
+
+    if(validator.isNull(user.lastName) || !validator.isLength(user.lastName, 0, 50)){
+        return q.reject("must provide an last name");
     }
 
     if (!_.contains(_.values(userStates), user.state)){

@@ -7,7 +7,7 @@ var sendgrid = require('sendgrid')(process.env.SENDGRID_USERNAME, process.env.SE
 notificationService.active = process.env.SENDGRID_USERNAME != null &&
     process.env.SENDGRID_PASSWORD != null &&
     process.env.NODE_ENV != 'test';
-notificationService.from = process.env.EMAIL_FROM || 'noreply';
+notificationService.from = process.env.EMAIL_FROM || 'noreply@localhost';
 
 /**
  * Sends an email using send grid
@@ -17,11 +17,12 @@ notificationService.sendEmail = function(to, subject, message){
         var deferred = q.defer();
         var email = new sendgrid.Email();
         if (process.env.EMAIL_OVERRIDE){
-            email.addTo(process.env.EMAIL_OVERRIDE);
-        } else {
-            email.addTo(to);
+            to = process.env.EMAIL_OVERRIDE;
         }
-        email.setFrom();
+
+        email.addTo(to);
+        email.setFrom(notificationService.from);
+        email.fromname = "Agra Ranker";
         email.setSubject(subject);
         email.addSubstitution('-name-', to);
         email.setText('Hi -name-,\n\n'+message+'\n\nRegards');
@@ -31,7 +32,7 @@ notificationService.sendEmail = function(to, subject, message){
                 deferred.reject(err);
 
             }else{
-                logger.info("successfully sent email to " + email.to);
+                logger.info("successfully sent email to " + to);
                 deferred.resolve(result);
             }
         });

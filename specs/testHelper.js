@@ -61,6 +61,8 @@ testHelper.loadUsers = function(done){
     new User({
         "provider" : "local",
         "email" : "link1900@gmail.com",
+        "firstName": "link",
+        "lastName": "1900",
         "password" : "test",
         "state" : "Active",
         "_id" : "532675365d68bab8234c7e7f"
@@ -68,6 +70,8 @@ testHelper.loadUsers = function(done){
             new User({
                 "provider" : "local",
                 "email" : "joe@gmail.com",
+                "firstName": "joe",
+                "lastName": "doe",
                 "password" : "test",
                 "state" : "Active",
                 "_id" : "54683fd3daad610cccdd34da"
@@ -75,6 +79,8 @@ testHelper.loadUsers = function(done){
                     new User({
                         "provider" : "local",
                         "email" : "newuser@gmail.com",
+                        "firstName": "new",
+                        "lastName": "user",
                         "password" : "test",
                         "state" : "Requested Access",
                         "_id" : "5469d48ddaad610cccdd34db"
