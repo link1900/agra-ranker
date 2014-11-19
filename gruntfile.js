@@ -40,9 +40,6 @@ module.exports = function(grunt) {
                     watchedExtensions: ['js'],
                     nodeArgs: ['--debug'],
                     delayTime: 1,
-                    env: {
-                        PORT: 3000
-                    },
                     cwd: __dirname
                 }
             }
@@ -51,12 +48,6 @@ module.exports = function(grunt) {
             tasks: ['nodemon', 'watch'],
             options: {
                 logConcurrentOutput: true
-            }
-        },
-        env: {
-            test: {
-                NODE_ENV: 'test',
-                testUrl: 'http://localhost:3001'
             }
         },
         mochaTest: {
@@ -98,7 +89,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-concurrent');
-    grunt.loadNpmTasks('grunt-env');
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks('grunt-include-source');
@@ -112,5 +102,5 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['includeSource','string-replace:version','concurrent']);
 
     //Test task.
-    grunt.registerTask('test', ['includeSource','string-replace:version','env:test','mochaTest']);
+    grunt.registerTask('test', ['includeSource','string-replace:version','mochaTest']);
 };

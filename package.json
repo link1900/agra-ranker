@@ -31,7 +31,6 @@
     "grunt-concurrent": "~0.4.2",
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-env": "~0.4.1",
     "grunt-include-source": "^0.4.1",
     "grunt-nodemon": "0.1.2",
     "grunt-string-replace": "^1.0.0",
