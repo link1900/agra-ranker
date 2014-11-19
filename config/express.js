@@ -6,7 +6,8 @@
 var express = require('express');
 var mongoStore = require('connect-mongo')(express);
 var flash = require('connect-flash');
-var config = require('./config');
+var path = require('path');
+var rootPath = path.normalize(__dirname + '/../..');
 
 module.exports = function(app, passport, db) {
     app.set('showStackError', true);
@@ -35,7 +36,7 @@ module.exports = function(app, passport, db) {
     // Enable jsonp
     app.enable('jsonp callback');
 
-    var sessionSec = process.env.SESSION_SECRET || config.sessionSecret;
+    var sessionSec = process.env.SESSION_SECRET;
 
     app.configure(function() {
         // The cookieParser should be above session
@@ -62,7 +63,7 @@ module.exports = function(app, passport, db) {
             secret: sessionSec,
             store: new mongoStore({
                 db: db.connection.db,
-                collection: config.sessionCollection
+                collection: 'sessions'
             })
         }));
 
@@ -77,7 +78,7 @@ module.exports = function(app, passport, db) {
         app.use(app.router);
 
         // Setting static folder
-        app.use(express.static(config.root + '/public'));
+        app.use(express.static(rootPath + '/public'));
 
     });
 };

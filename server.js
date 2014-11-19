@@ -17,14 +17,13 @@ dotenv.load();
 // Set the node enviornment variable if not set before
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-// Initializing system variables 
-var config = require('./config/config');
+// Initializing system variables
 var mongoose = require('mongoose');
 var grid = require('gridfs-stream');
 grid.mongo = mongoose.mongo;
 
 // Bootstrap db connection
-var db = mongoose.connect(config.db);
+var db = mongoose.connect(process.env.MONGOHQ_URL);
 
 //apply migrations
 var migrationDir = path.join(__dirname, '/app/migrations');
@@ -43,7 +42,7 @@ migrationService.applyMigrations(migrationDir).then(function(){
 
 
     // Start the app by listening on <port>
-    var port = process.env.PORT || config.port;
+    var port = process.env.PORT || 3000;
     var server = require('http').createServer(app);
 
     //var io = require('socket.io')(server);

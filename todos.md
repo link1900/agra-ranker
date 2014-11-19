@@ -156,30 +156,34 @@
 - (DONE) have the ability to list files stored and download them
 - (DONE) have the ability to download a file from a batch
 
-### 6.0.12 Admin controls
+### 6.0.12 Admin controls and user
 - (DONE) List users
 - (DONE) Remove users
 - (DONE) Add user
 - (DONE) Add state to users [inactive, active, requested, invited]
-- New api to request access to the site
-- Notification System
-- On user invite send an email to the users email
+- (DONE) New api to request access to the site
+- (DONE) Api to approve access requests
+- (DONE) Send email to users that have been approved
+- Add first and last name to user
+- Add name helper on the user model to access full name field
+- New api to allow admin to invite a user 
+- Send an email to invited users (with a link to the accept invite and token checker)
+- Fix up the email template to look pretty
+- Forgotten password system (emails you a reset link)
+- Put rate limiting on the registration api
+- Add roles [user, admin] (user allows editing, admin allows access to admin api)
+- System bootstrapping mode which is active when no users have the admin role users preloaded code to take admin
+- On user request send an email to all users with admin role
 - Fix an issue when calling DELETE /user/badid
 - Investigate what happens with an un matched route
 - Remove white list and have all sign ups require approval
 - Date directive that does both date filter and time ago filter
-- Add first and last name to user
-- Add name helper on the user model to access this field
-- Add created by which is a flyweight to user
+- Add created by which is a flyweight to user?
 - Standard fields directive which does created at, updated at and created by and shows dates with the new filter
 - Add user setting option recieve system emails ecieve email
 - Add user setting timezone and make sure timezones works
 - Add gravatar link to new window for avatar
 - Default avatar to be svg initals or first two letter of email
-- Forgotten password system (emails you a reset link)
-- Add roles [user, admin] (user allows editing, admin allows access to admin api)
-- System bootstrapping mode which is active when no users have the admin role users preloaded code to take admin
-- On user request send an email to all users with admin role
 - Add a system event register
 - Add activity stream admin page
 
