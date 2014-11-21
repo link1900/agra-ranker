@@ -85,13 +85,7 @@ userController.createActiveUser = function(req, res){
         .then(userController.validateUser)
         .then(userController.checkForPassword)
         .then(userController.checkIfUserExists)
-        .then(mongoService.savePromise).then(function(a){
-            console.log(a);
-            return a;
-        },function(e){
-            console.log(e);
-            return q.reject(e);
-        });
+        .then(mongoService.savePromise);
 
     helper.responseFromPromise(res, processChain);
 };
@@ -187,8 +181,8 @@ userController.validateUser = function(user){
 };
 
 userController.checkForPassword = function(user){
-    if (user.password == null){
-        return q.reject("must provide a password field");
+    if (validator.isNull(user.password) || !validator.isLength(user.password, 6, 150)){
+        return q.reject("must provide a valid password field");
     }
 
     return q(user);
@@ -200,5 +194,22 @@ userController.me = function(req, res) {
     } else {
         res.jsonp(400, {"error":'no user session found'});
     }
+};
 
+userController.changePassword = function(req, res){
+    if (req.body != null && req.body.existingPassword != null && req.body.newPassword != null){
+        mongoService.findOneById(User, req.user._id).then(function(currentUser){
+            if(currentUser.authenticate(req.body.existingPassword)){
+                req.user.password = req.body.newPassword;
+                var chain = userController.checkForPassword(req.user).then(mongoService.savePromise);
+                helper.responseFromPromise(res, chain);
+            } else {
+                res.jsonp(400, {"error":'incorrect existing password'});
+            }
+        }, function(err){
+            res.jsonp(400, {"error":err});
+        });
+    } else {
+        res.jsonp(400, {"error":'invalid body'});
+    }
 };

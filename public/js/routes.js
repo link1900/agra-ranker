@@ -74,21 +74,6 @@ angular.module('core').config(function($routeProvider) {
         .when('/data', {
             templateUrl : '/ranker/admin/data.html'
         })
-        .when('/user', {
-            templateUrl : '/ranker/user/user.html'
-        })
-        .when('/user/view/:id', {
-            templateUrl : '/ranker/user/userView.html'
-        })
-        .when('/user/create', {
-            templateUrl : '/ranker/user/userCreate.html'
-        })
-        .when('/user/edit/:id', {
-            templateUrl : '/ranker/user/userEdit.html'
-        })
-        .when('/login', {
-            templateUrl : '/ranker/user/login.html'
-        })
         .otherwise({
             redirectTo : '/'
         });

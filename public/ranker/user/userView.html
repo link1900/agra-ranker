@@ -23,6 +23,7 @@
                 <h4>Actions</h4>
                 <a data-ng-href="#/user/edit/{{selectedUser._id}}" ng-show="canEdit(selectedUser)" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit User</a>
                 <button data-ng-click="grantAccess(selectedUser)" ng-show="selectedUser.state == 'Requested Access'" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Grant Access</button>
+                <a data-ng-href="#/user/passwordEdit" ng-show="selectedUser._id == user._id" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Change Password</a>
                 <button data-ng-click="deleteUser()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete User</button>
             </div>
         </div>

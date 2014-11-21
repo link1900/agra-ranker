@@ -14,7 +14,7 @@ testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
 
 testHelper.login = function(agent , done){
-    var cred = {email: 'link1900@gmail.com', password: 'test'};
+    var cred = {email: 'link1900@gmail.com', password: 'tester'};
     agent
         .post('/login')
         .send(cred)
@@ -24,7 +24,7 @@ testHelper.login = function(agent , done){
 };
 
 testHelper.logout = function(agent , done){
-    var cred = {email: 'link1900@gmail.com', password: 'test'};
+    var cred = {email: 'link1900@gmail.com', password: 'tester'};
     agent
         .post('/logout')
         .send(cred)
@@ -63,7 +63,7 @@ testHelper.loadUsers = function(done){
         "email" : "link1900@gmail.com",
         "firstName": "link",
         "lastName": "1900",
-        "password" : "test",
+        "password" : "tester",
         "state" : "Active",
         "_id" : "532675365d68bab8234c7e7f"
     }).save(function(){
@@ -72,7 +72,7 @@ testHelper.loadUsers = function(done){
                 "email" : "joe@gmail.com",
                 "firstName": "joe",
                 "lastName": "doe",
-                "password" : "test",
+                "password" : "tester",
                 "state" : "Active",
                 "_id" : "54683fd3daad610cccdd34da"
             }).save(function(){
@@ -81,7 +81,7 @@ testHelper.loadUsers = function(done){
                         "email" : "newuser@gmail.com",
                         "firstName": "new",
                         "lastName": "user",
-                        "password" : "test",
+                        "password" : "tester",
                         "state" : "Requested Access",
                         "_id" : "5469d48ddaad610cccdd34db"
                     }).save(done);

@@ -11,21 +11,17 @@ describe("Security", function() {
 
     describe("Login", function(){
         it("with known user and valid credentials", function(done){
-            var cred = {email: 'link1900@gmail.com', password: 'test'};
+            var cred = {email: 'link1900@gmail.com', password: 'tester'};
             request(siteUrl)
                 .post('/login')
                 .send(cred)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(200)
-                .end(function(err, res){
-                    if (err){ throw err; }
-                    done();
-                });
+                .expect(200, done);
         });
 
         it("with unknown user", function(done){
-            var cred = {email: 'fake@gmail.com', password: 'test'};
+            var cred = {email: 'fake@gmail.com', password: 'tester'};
             request(siteUrl)
                 .post('/login')
                 .send(cred)

@@ -2,10 +2,11 @@ var request = require('supertest');
 var mongoose = require('mongoose');
 var User = require('../app/user/user').model;
 var testHelper = require('./testHelper');
+var siteUrl = process.env.testUrl;
 var assert = require('chai').assert;
 
 describe("User", function() {
-    before(function (done) {
+    beforeEach(function (done) {
         testHelper.setup(done);
     });
 
@@ -81,7 +82,7 @@ describe("User", function() {
         it("success with new email", function(done){
             var body = {
                 "email" : "jimmy@gmail.com",
-                "password" : "test",
+                "password" : "tester",
                 "firstName": "jim",
                 "lastName":"goodwin"
             };
@@ -116,7 +117,7 @@ describe("User", function() {
                 "email" : "nbrown99@gmail.com",
                 "firstName":"Neil",
                 "lastName": "Brown",
-                "password" : "test"
+                "password" : "tester"
             };
 
             testHelper.authSession
@@ -333,6 +334,64 @@ describe("User", function() {
         });
     });
 
+    describe("Change Password", function() {
+        it("is secure", function (done) {
+            testHelper.publicSession
+                .post('/user/changePassword')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(401, done);
+        });
+
+        it("cant change with empty body", function (done) {
+            var body = {};
+            testHelper.authSession
+                .post('/user/changePassword')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("cant change with incorrect existing password body", function (done) {
+            var body = {existingPassword: "nope", newPassword : "tester1"};
+            testHelper.authSession
+                .post('/user/changePassword')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("cant change with invalid new password", function (done) {
+            var body = {existingPassword: "tester", newPassword : "sml"};
+            testHelper.authSession
+                .post('/user/changePassword')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("can change password", function (done) {
+            var body = {existingPassword: "tester", newPassword : "tester2"};
+            var cred = {email: 'link1900@gmail.com', password: 'tester2'};
+            testHelper.authSession
+                .post('/user/changePassword')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, function(){
+                    request(siteUrl)
+                        .post('/login')
+                        .send(cred)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200, done);
+                });
+        });
+    });
+
     describe("Delete", function() {
         it("is secure", function (done) {
             testHelper.publicSession
@@ -351,7 +410,7 @@ describe("User", function() {
         });
     });
 
-    after(function (done) {
+    afterEach(function (done) {
         testHelper.tearDown(done);
     });
 

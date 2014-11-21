@@ -164,8 +164,11 @@
 - (DONE) New api to request access to the site
 - (DONE) Api to approve access requests
 - (DONE) Send email to users that have been approved
-- Add first and last name to user
-- Add name helper on the user model to access full name field
+- (DONE) Add first and last name to user
+- add change password(self user only security)
+- add reset users password
+- Change email template to have a red header and footer
+- Change email template to send the users name
 - New api to allow admin to invite a user 
 - Send an email to invited users (with a link to the accept invite and token checker)
 - Fix up the email template to look pretty

@@ -10,6 +10,21 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
                 ];
             });
         };
+        $scope.passwordChange = {};
+        $scope.submitPasswordChange = function(){
+            userService.changePassword($scope.passwordChange).then(function(){
+                    $scope.alerts = [
+                        { type: 'success', msg: "Your password has been updated"}
+                    ];
+                    $scope.passwordChange = {};
+                },
+                function(failedResponse){
+                    $scope.alerts = [
+                        { type: 'danger', msg: "Failed to update your password - reason: " + failedResponse.data.error }
+                    ];
+                }
+            );
+        };
 
         $scope.createUser = function(){
             userService.save({}, $scope.selectedUser, function(response){
@@ -83,7 +98,9 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
         };
 
         $scope.canEdit = function(user){
-            return user.state == 'Active' || user.state == 'Inactive';
+            if (user != null && user.state != null){
+                return user.state == 'Active' || user.state == 'Inactive';
+            }
         };
 
         $scope.userService  = userService;

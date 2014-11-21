@@ -16,6 +16,12 @@ angular.module('services').service('userService',  function($http,$resource) {
         });
     };
 
+    userService.changePassword = function(passwordChange){
+        return $http.post("/user/changePassword", passwordChange).then(function(result){
+            return result.data;
+        });
+    };
+
     userService.signUp = function(user) {
         return $http.post("/user/requestAccess", user).then(function(result){
             return result.data;
