@@ -6,7 +6,7 @@ var siteUrl = process.env.testUrl;
 var assert = require('chai').assert;
 
 describe("User", function() {
-    beforeEach(function (done) {
+    before(function (done) {
         testHelper.setup(done);
     });
 
@@ -49,7 +49,7 @@ describe("User", function() {
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    assert.lengthOf(res.body, 3);
+                    assert.lengthOf(res.body, 5);
                     done();
                 });
         });
@@ -335,6 +335,13 @@ describe("User", function() {
     });
 
     describe("Change Password", function() {
+
+        before(function (done) {
+            testHelper.tearDown(function(){
+                testHelper.setup(done);
+            });
+        });
+
         it("is secure", function (done) {
             testHelper.publicSession
                 .post('/user/changePassword')
@@ -392,6 +399,58 @@ describe("User", function() {
         });
     });
 
+    describe("Reset Password", function() {
+        it("is secure", function (done) {
+            testHelper.publicSession
+                .post('/user/resetPassword/532675365d68bab8234c7e7f')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(401, done);
+        });
+
+        it("can change user password", function (done) {
+            testHelper.authSession
+                .post('/user/resetPassword/532675365d68bab8234c7e7f')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, function(err, res){
+                    if (err){ throw err; }
+                    assert.notProperty(res.body,'passwordReset');
+                    done();
+                });
+        });
+
+        it("user with a valid reset token can change password", function (done) {
+            var body = {newPassword : "tester2"};
+            var cred = {email: 'needpassword@gmail.com', password: 'tester2'};
+            testHelper.publicSession
+                .post('/user/changePasswordToken/123a')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    request(siteUrl)
+                        .post('/login')
+                        .send(cred)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200, done);
+                });
+        });
+
+        it("user with a expired reset token should fail", function (done) {
+            var body = {newPassword : "tester3"};
+            testHelper.publicSession
+                .post('/user/changePasswordToken/123b')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+    });
+
     describe("Delete", function() {
         it("is secure", function (done) {
             testHelper.publicSession
@@ -410,7 +469,7 @@ describe("User", function() {
         });
     });
 
-    afterEach(function (done) {
+    after(function (done) {
         testHelper.tearDown(done);
     });
 

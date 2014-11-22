@@ -103,8 +103,8 @@ testHelper.loadUsers = function(done){
         "state" : "Active",
         "passwordReset":{
             tokenCreated: new Date(),
-            token: "123",
-            tokenExpire: moment().add(5, 'd').toDate()
+            token: "123a",
+            expirationDate: moment().add(5, 'd').toDate()
         },
         "_id" : "546ff82ddaad610cccdd34de"
     }));
@@ -118,8 +118,8 @@ testHelper.loadUsers = function(done){
         "state" : "Active",
         "passwordReset":{
             tokenCreated: new Date(),
-            token: "123",
-            tokenExpire: new Date()
+            token: "123b",
+            expirationDate: new Date()
         },
         "_id" : "546ff836daad610cccdd34df"
     }));

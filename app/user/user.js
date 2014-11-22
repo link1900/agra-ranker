@@ -22,7 +22,11 @@ user.definition = {
     provider: {type: String, required : true, default: 'local'},
     salt: String,
     state: {type: String, required: true, default: user.states.requested},
-    lastLoggedIn: Date,
+    passwordReset : {
+        tokenCreated : {type: Date},
+        token : {type : String},
+        expirationDate : {type: Date}
+    },
     facebook: {},
     twitter: {},
     github: {},
@@ -37,6 +41,7 @@ user.schema.set('toJSON', {
         delete ret.hashed_password;
         delete ret.salt;
         delete ret.provider;
+        delete ret.passwordReset;
         return ret;
     }
 });

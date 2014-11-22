@@ -3,6 +3,8 @@ var userController = module.exports = {};
 var _ = require('lodash');
 var q = require('q');
 var mongoose = require('mongoose');
+var uuid = require('node-uuid');
+var moment = require('moment');
 var User = require('./user').model;
 var userStates = require('./user').states;
 var notificationService = require('../notification/notificationService');
@@ -70,12 +72,29 @@ userController.checkIfAccessCanBeGranted = function(user){
 };
 
 userController.sendUserAcceptedEmail = function(user){
-    var subject = "Access request accepted";
-    var message = "Your request to join the AGRA Ranker website has been accepted.";
-    return notificationService.sendEmail(user.email, subject, message).then(function(){
+    var email = notificationService.createNewEmail();
+    email.addTo(user.email);
+    email.setSubject("Welcome to the -siteName-");
+    email.setText("Your request to join the -siteName- website has been accepted. You can now login at -siteUrl-");
+    return notificationService.sendEmail(email).then(function(){
         return user;
-    }, function(failure){
-        q.reject(failure);
+    });
+};
+
+userController.sendUserPasswordReset = function(user){
+    var email = notificationService.createNewEmail();
+
+    email.addTo(user.email);
+    email.setSubject("Password change request");
+    email.addSubstitution('-email-', user.email);
+    email.addSubstitution('-passwordLink-', notificationService.siteUrl + "/user/passwordReset/#/" + user.passwordReset.token);
+    email.setText("A request to change the password for your -siteName- account -email- has been received. Please follow the link below to set a new password.\n-passwordLink-\n\n" +
+        "You received this email because you or someone else has requested a password change.\n If you do not wish to change your password you can ignore this email.\n" +
+        "For your security, this link is only valid for 24 hours from the time of your request. Also note that if you requested to change your password multiple times, only the link contained in the most recent email will be valid. If the link does not work, please resubmit your password change request.");
+
+
+    return notificationService.sendEmail(email).then(function(){
+        return user;
     });
 };
 
@@ -210,6 +229,50 @@ userController.changePassword = function(req, res){
             res.jsonp(400, {"error":err});
         });
     } else {
-        res.jsonp(400, {"error":'invalid body'});
+        res.jsonp(400, {"error":'required fields are missing'});
     }
+};
+
+userController.changePasswordWithToken = function(req, res){
+    var token = req.param('userResetToken');
+    if (req.body != null && req.body.newPassword != null && token != null){
+        var chain = userController.getUserForToken(token).then(function(user){
+            user.passwordReset = {};
+            user.password = req.body.newPassword;
+            return user;
+        }).then(userController.checkForPassword).then(mongoService.savePromise);
+
+        helper.responseFromPromise(res, chain);
+    } else {
+        res.jsonp(400, {"error":'required fields are missing'});
+    }
+};
+
+userController.resetPassword = function(req, res){
+    if (req.model != null){
+        req.model.passwordReset = {
+            tokenCreated: new Date(),
+            token: uuid.v4(),
+            expirationDate: moment().add(24,'h').toDate()
+        };
+        var chain = mongoService.savePromise(req.model)
+            .then(userController.sendUserPasswordReset);
+        helper.responseFromPromise(res, chain);
+    } else {
+        res.jsonp(400, {"error":'invalid user id'});
+    }
+};
+
+userController.getUserForToken = function(token){
+    var deferred = q.defer();
+    User.findOne({"passwordReset.token": token, "passwordReset.expirationDate" : {$gt : new Date()}}, function(err, model) {
+        if(err){
+            deferred.reject(err);
+        } else if(!model){
+            deferred.reject({"error": 'Cannot find valid token: ' + token});
+        } else {
+            deferred.resolve(model);
+        }
+    });
+    return deferred.promise;
 };

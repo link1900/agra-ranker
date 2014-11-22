@@ -165,7 +165,7 @@
 - (DONE) Api to approve access requests
 - (DONE) Send email to users that have been approved
 - (DONE) Add first and last name to user
-- add change password(self user only security)
+- (DONE) add change password(self user only security)
 - add reset users password
 - Change email template to have a red header and footer
 - Change email template to send the users name

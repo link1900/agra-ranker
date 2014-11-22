@@ -26,6 +26,22 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
             );
         };
 
+        $scope.submitPasswordChangeToken = function(){
+            userService.changePasswordToken($routeParams.token, $scope.passwordChange).then(function(){
+                    $scope.alerts = [
+                        { type: 'success', msg: "Your password has been updated"}
+                    ];
+                    $scope.passwordChange = {};
+                    $scope.passwordChanged = true;
+                },
+                function(failedResponse){
+                    $scope.alerts = [
+                        { type: 'danger', msg: "Failed to update your password - reason: " + failedResponse.data.error }
+                    ];
+                }
+            );
+        };
+
         $scope.createUser = function(){
             userService.save({}, $scope.selectedUser, function(response){
                     $location.path('user/view/'+ response._id);
@@ -92,6 +108,20 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
                 function(failedResponse){
                     $scope.alerts = [
                         { type: 'danger', msg: "Failed to grant system access to user - reason: " + failedResponse.data.error }
+                    ];
+                }
+            );
+        };
+
+        $scope.resetPassword = function(user){
+            userService.resetPassword(user).then(function(data){
+                    $scope.alerts = [
+                        { type: 'success', msg: "Sent password reset email to " + user.email }
+                    ];
+                },
+                function(failedResponse){
+                    $scope.alerts = [
+                        { type: 'danger', msg: "Failed reset password - reason: " + failedResponse.data.error }
                     ];
                 }
             );

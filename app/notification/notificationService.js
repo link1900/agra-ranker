@@ -8,24 +8,28 @@ notificationService.active = process.env.SENDGRID_USERNAME != null &&
     process.env.SENDGRID_PASSWORD != null &&
     process.env.NODE_ENV != 'test';
 notificationService.from = process.env.EMAIL_FROM || 'noreply@localhost';
+notificationService.siteUrl = process.env.SITE_URL || "http://localhost:3000";
+
+notificationService.createNewEmail = function(){
+    return new sendgrid.Email();
+};
 
 /**
  * Sends an email using send grid
  */
-notificationService.sendEmail = function(to, subject, message){
+notificationService.sendEmail = function(email){
     if (notificationService.active){
         var deferred = q.defer();
-        var email = new sendgrid.Email();
         if (process.env.EMAIL_OVERRIDE){
             to = process.env.EMAIL_OVERRIDE;
         }
 
-        email.addTo(to);
+        email.addSubstitution('-siteUrl-', notificationService.siteUrl);
+        email.addSubstitution('-siteName-', "AGRA Ranker");
+        email.setText(email.text + "\n\nBest regards,\nThe -siteName- Team\n-siteUrl-");
         email.setFrom(notificationService.from);
         email.fromname = "Agra Ranker";
-        email.setSubject(subject);
-        email.addSubstitution('-name-', to);
-        email.setText('Hi -name-,\n\n'+message+'\n\nRegards');
+
         sendgrid.send(email, function(err, result) {
             if(err){
                 logger.error("failed to send email due to : " + err);
