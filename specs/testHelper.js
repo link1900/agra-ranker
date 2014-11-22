@@ -2,6 +2,8 @@ var testHelper = module.exports = {};
 var request = require('supertest');
 var siteUrl = process.env.testUrl;
 var mongoose = require('mongoose');
+var moment = require('moment');
+var mongoService = require('../app/mongoService');
 var User = require('../app/user/user').model;
 var GroupLevel = require('../app/groupLevel/groupLevel').model;
 var RankingSystem = require('../app/ranking/rankingSystem').model;
@@ -12,6 +14,7 @@ var PointAllotment = require('../app/ranking/pointAllotment').model;
 var AllowedUser = require('../app/user/allowedUser').model;
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
+server = require("../server.js");
 
 testHelper.login = function(agent , done){
     var cred = {email: 'link1900@gmail.com', password: 'tester'};
@@ -34,8 +37,10 @@ testHelper.logout = function(agent , done){
 };
 
 testHelper.setup = function(done){
-    testHelper.loadUsers(function(){
-        testHelper.login(testHelper.authSession, done);
+    server.start().then(function(){
+        testHelper.loadUsers(function(){
+            testHelper.login(testHelper.authSession, done);
+        });
     });
 };
 
@@ -58,7 +63,8 @@ testHelper.letter1000 = "0123456789012345678901234567890123456789012345678901234
     "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
 
 testHelper.loadUsers = function(done){
-    new User({
+    var docs = [];
+    docs.push(new User({
         "provider" : "local",
         "email" : "link1900@gmail.com",
         "firstName": "link",
@@ -66,27 +72,63 @@ testHelper.loadUsers = function(done){
         "password" : "tester",
         "state" : "Active",
         "_id" : "532675365d68bab8234c7e7f"
-    }).save(function(){
-            new User({
-                "provider" : "local",
-                "email" : "joe@gmail.com",
-                "firstName": "joe",
-                "lastName": "doe",
-                "password" : "tester",
-                "state" : "Active",
-                "_id" : "54683fd3daad610cccdd34da"
-            }).save(function(){
-                    new User({
-                        "provider" : "local",
-                        "email" : "newuser@gmail.com",
-                        "firstName": "new",
-                        "lastName": "user",
-                        "password" : "tester",
-                        "state" : "Requested Access",
-                        "_id" : "5469d48ddaad610cccdd34db"
-                    }).save(done);
-                });
-        });
+    }));
+
+    docs.push(new User({
+        "provider" : "local",
+        "email" : "joe@gmail.com",
+        "firstName": "joe",
+        "lastName": "doe",
+        "password" : "tester",
+        "state" : "Active",
+        "_id" : "54683fd3daad610cccdd34da"
+    }));
+
+    docs.push(new User({
+        "provider" : "local",
+        "email" : "newuser@gmail.com",
+        "firstName": "new",
+        "lastName": "user",
+        "password" : "tester",
+        "state" : "Requested Access",
+        "_id" : "5469d48ddaad610cccdd34db"
+    }));
+
+    docs.push(new User({
+        "provider" : "local",
+        "email" : "needpassword@gmail.com",
+        "firstName": "need",
+        "lastName": "password",
+        "password" : "tester",
+        "state" : "Active",
+        "passwordReset":{
+            tokenCreated: new Date(),
+            token: "123",
+            tokenExpire: moment().add(5, 'd').toDate()
+        },
+        "_id" : "546ff82ddaad610cccdd34de"
+    }));
+
+    docs.push(new User({
+        "provider" : "local",
+        "email" : "needpasswordexpire@gmail.com",
+        "firstName": "need",
+        "lastName": "password",
+        "password" : "tester",
+        "state" : "Active",
+        "passwordReset":{
+            tokenCreated: new Date(),
+            token: "123",
+            tokenExpire: new Date()
+        },
+        "_id" : "546ff836daad610cccdd34df"
+    }));
+
+    mongoService.createMany(docs).then(function(){
+        done();
+    }, function(err){
+        done(err);
+    });
 };
 
 testHelper.clearUsers = function(done){
