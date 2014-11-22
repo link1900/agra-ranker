@@ -419,7 +419,9 @@ describe("User", function() {
                     done();
                 });
         });
+    });
 
+    describe("Change password with token" ,function(){
         it("user with a valid reset token can change password", function (done) {
             var body = {newPassword : "tester2"};
             var cred = {email: 'needpassword@gmail.com', password: 'tester2'};
@@ -438,6 +440,17 @@ describe("User", function() {
                         .expect('Content-Type', /json/)
                         .expect(200, done);
                 });
+        });
+
+        it("doesnt work with unknown token", function (done) {
+            var body = {newPassword : "tester2"};
+            var cred = {email: 'needpassword@gmail.com', password: 'tester2'};
+            testHelper.publicSession
+                .post('/user/changePasswordToken/fakeToken')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
         });
 
         it("user with a expired reset token should fail", function (done) {
