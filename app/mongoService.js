@@ -35,6 +35,22 @@ mongoService.findOne = function(dao, search){
     return deferred.promise;
 };
 
+mongoService.createSave = function(doc){
+    var deferred = q.defer();
+    doc.save(function(err, result){
+        if(err){
+            deferred.reject(err);
+        } else {
+            deferred.resolve(result);
+        }
+    });
+    return deferred.promise;
+};
+
+mongoService.createMany = function(docs){
+    return q.all(docs.forEach(mongoService.createSave));
+};
+
 mongoService.findOneAndCreate = function(dao, search, doc){
     var deferred = q.defer();
     var findOptions = {
