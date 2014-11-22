@@ -34,6 +34,12 @@ angular.module('services').service('userService',  function($http,$resource) {
         });
     };
 
+    userService.findToken = function(token){
+        return $http.get("/user/token/" + token).then(function(result){
+            return result.data;
+        });
+    };
+
     userService.signUp = function(user) {
         return $http.post("/user/requestAccess", user).then(function(result){
             return result.data;

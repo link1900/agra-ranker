@@ -12,32 +12,66 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
         };
         $scope.passwordChange = {};
         $scope.submitPasswordChange = function(){
-            userService.changePassword($scope.passwordChange).then(function(){
+            if ($scope.passwordChange.existingPassword != null && $scope.passwordChange.newPassword != null && $scope.passwordChange.confirmPassword != null){
+                if ($scope.passwordChange.newPassword == $scope.passwordChange.confirmPassword){
+                    userService.changePassword($scope.passwordChange).then(function(){
+                            $scope.alerts = [
+                                { type: 'success', msg: "Your password has been updated"}
+                            ];
+                            $scope.passwordChange = {};
+                        },
+                        function(failedResponse){
+                            $scope.alerts = [
+                                { type: 'danger', msg: "Failed to update your password - reason: " + failedResponse.data.error }
+                            ];
+                        }
+                    );
+                } else {
                     $scope.alerts = [
-                        { type: 'success', msg: "Your password has been updated"}
-                    ];
-                    $scope.passwordChange = {};
-                },
-                function(failedResponse){
-                    $scope.alerts = [
-                        { type: 'danger', msg: "Failed to update your password - reason: " + failedResponse.data.error }
+                        { type: 'danger', msg: "Your new password and confirmed passwords do not match"}
                     ];
                 }
-            );
+            } else {
+                $scope.alerts = [
+                    { type: 'danger', msg: "You must complete all fields"}
+                ];
+            }
         };
 
         $scope.submitPasswordChangeToken = function(){
-            userService.changePasswordToken($routeParams.token, $scope.passwordChange).then(function(){
+            if ($scope.passwordChange.newPassword != null && $scope.passwordChange.confirmPassword != null){
+                if ($scope.passwordChange.newPassword == $scope.passwordChange.confirmPassword){
+                    userService.changePasswordToken($routeParams.token, $scope.passwordChange).then(function(){
+                            $scope.alerts = [
+                                { type: 'success', msg: "Your password has been updated"}
+                            ];
+                            $scope.passwordChange = {};
+                            $scope.passwordChanged = true;
+                        },
+                        function(failedResponse){
+                            $scope.alerts = [
+                                { type: 'danger', msg: "Failed to update your password - reason: " + failedResponse.data.error }
+                            ];
+                        }
+                    );
+                } else {
                     $scope.alerts = [
-                        { type: 'success', msg: "Your password has been updated"}
+                        { type: 'danger', msg: "Your new password and confirmed passwords do not match"}
                     ];
-                    $scope.passwordChange = {};
-                    $scope.passwordChanged = true;
+                }
+            } else {
+                $scope.alerts = [
+                    { type: 'danger', msg: "You must complete all fields"}
+                ];
+            }
+        };
+
+        $scope.checkToken = function(){
+            userService.findToken($routeParams.token).then(function(){
+                    $scope.tokenStatus = 'valid';
                 },
                 function(failedResponse){
-                    $scope.alerts = [
-                        { type: 'danger', msg: "Failed to update your password - reason: " + failedResponse.data.error }
-                    ];
+                    $scope.tokenStatus = 'invalid';
                 }
             );
         };

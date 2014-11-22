@@ -166,13 +166,11 @@
 - (DONE) Send email to users that have been approved
 - (DONE) Add first and last name to user
 - (DONE) add change password(self user only security)
-- add reset users password
-- Change email template to have a red header and footer
-- Change email template to send the users name
+- (DONE) add reset users password
+- Forgotten password system (emails you a reset link)
+- Display users name in the user list
 - New api to allow admin to invite a user 
 - Send an email to invited users (with a link to the accept invite and token checker)
-- Fix up the email template to look pretty
-- Forgotten password system (emails you a reset link)
 - Put rate limiting on the registration api
 - Add roles [user, admin] (user allows editing, admin allows access to admin api)
 - System bootstrapping mode which is active when no users have the admin role users preloaded code to take admin

@@ -237,7 +237,7 @@ userController.changePasswordWithToken = function(req, res){
     var token = req.param('userResetToken');
     if (req.body != null && req.body.newPassword != null && token != null){
         var chain = userController.getUserForToken(token).then(function(user){
-            user.passwordReset = {};
+            user.passwordReset = undefined;
             user.password = req.body.newPassword;
             return user;
         }).then(userController.checkForPassword).then(mongoService.savePromise);
@@ -263,13 +263,22 @@ userController.resetPassword = function(req, res){
     }
 };
 
+userController.findUserToken = function(){
+    var token = req.param('userResetToken');
+    if (token != null){
+        helper.responseFromPromise(res, userController.getUserForToken(token));
+    } else {
+        res.jsonp(400, {"error":'required fields are missing'});
+    }
+};
+
 userController.getUserForToken = function(token){
     var deferred = q.defer();
     User.findOne({"passwordReset.token": token, "passwordReset.expirationDate" : {$gt : new Date()}}, function(err, model) {
         if(err){
             deferred.reject(err);
         } else if(!model){
-            deferred.reject({"error": 'Cannot find valid token: ' + token});
+            deferred.reject('Invalid token');
         } else {
             deferred.resolve(model);
         }
