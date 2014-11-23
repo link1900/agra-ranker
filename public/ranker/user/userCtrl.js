@@ -75,6 +75,21 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
                 }
             );
         };
+        $scope.passwordResetSent = false;
+        $scope.sendForgotPasswordRequest = function(){
+            userService.forgotPassword($scope.forgot).then(function(data){
+                    $scope.alerts = [
+                        { type: 'primary', msg: "We have sent an email to " + $scope.forgot.email + " with further instructions" }
+                    ];
+                    $scope.passwordResetSent = true;
+                },
+                function(failedResponse){
+                    $scope.alerts = [
+                        { type: 'danger', msg: "Password reset failed due to: " + failedResponse.data.error }
+                    ];
+                }
+            );
+        };
 
         $scope.createUser = function(){
             userService.save({}, $scope.selectedUser, function(response){

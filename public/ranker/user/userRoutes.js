@@ -21,4 +21,7 @@ angular.module('core').config(function($routeProvider) {
         .when('/user/passwordReset/:token', {
             templateUrl : '/ranker/user/passwordEditToken.html'
         })
+        .when('/user/forgotPassword', {
+            templateUrl : '/ranker/user/forgotPassword.html'
+        })
 });

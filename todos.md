@@ -168,11 +168,13 @@
 - (DONE) add change password(self user only security)
 - (DONE) add reset users password
 - Forgotten password system (emails you a reset link)
+- Send emails when password is changed
 - Display users name in the user list
 - New api to allow admin to invite a user 
 - Send an email to invited users (with a link to the accept invite and token checker)
 - Put rate limiting on the registration api
 - Add roles [user, admin] (user allows editing, admin allows access to admin api)
+- Send an email when a user request is made (to admins or users that elect to get the email?)
 - System bootstrapping mode which is active when no users have the admin role users preloaded code to take admin
 - On user request send an email to all users with admin role
 - Fix an issue when calling DELETE /user/badid
@@ -235,6 +237,8 @@
 - Switch test data loading to fixtures
 
 ## Backlog - Beyond the ranker 6
+- add scheduling to batch system
+- new batch job to automatic backup database to s3
 - on the placing screen have the numbers come from a set list of placings (1st -> 1, 2nd -> 2, DNF -> DNF, Dis -> dis, etc.)
 - global search (on a search page)
 - Add a find parents button

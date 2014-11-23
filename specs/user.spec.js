@@ -464,6 +464,46 @@ describe("User", function() {
         });
     });
 
+    describe("Forgotten password" ,function(){
+        it("should fail with no email", function (done) {
+            var body = {email : ""};
+            testHelper.publicSession
+                .post('/user/forgotten')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("should fail with no body", function (done) {
+            testHelper.publicSession
+                .post('/user/forgotten')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("should work with non user", function (done) {
+            var body = {email : "notauser@gmail.com"};
+            testHelper.publicSession
+                .post('/user/forgotten')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+
+        it("should work with real user", function (done) {
+            var body = {email : "joe@gmail.com"};
+            testHelper.publicSession
+                .post('/user/forgotten')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+    });
+
     describe("Delete", function() {
         it("is secure", function (done) {
             testHelper.publicSession

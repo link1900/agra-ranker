@@ -28,6 +28,7 @@ module.exports = function(app) {
     app.post('/user/resetPassword/:userId', securityController.checkAuthentication, userController.resetPassword);
     app.post('/user/changePasswordToken/:userResetToken', userController.changePasswordWithToken);
     app.get('/user/token/:userResetToken', userController.findUserToken);
+    app.post('/user/forgotten', userController.forgottenPasswordRequest);
     //app.post('/user/invite', securityController.checkAuthentication, userController.inviteUser);
     //app.post('/user/acceptInvite', securityController.checkToken, userController.acceptInvite);
     //app.post('/user/becomeAdmin', securityController.checkAuthentication, userController.assumeAdmin);
