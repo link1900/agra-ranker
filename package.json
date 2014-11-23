@@ -25,6 +25,8 @@
     "csv": "0.4.0",
     "dotenv": "^0.4.0",
     "express": "~3.4.7",
+    "express-brute": "^0.5.1",
+    "express-brute-mongo": "^0.1.0",
     "gridfs-stream": "^0.5.1",
     "grunt": "~0.4.2",
     "grunt-cli": "~0.1.11",

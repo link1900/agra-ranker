@@ -12,10 +12,11 @@ var rankingController = require('./ranking/rankingController');
 var adminController = require('./admin/adminController');
 var fileController = require('./file/fileController');
 var helper = require('./helper');
+var rateLimiter = require('./rateLimiter');
 
 module.exports = function(app) {
     //security routes
-    app.post('/login', securityController.login);
+    app.post('/login',rateLimiter.limitedAccess.prevent, securityController.login);
     app.post('/logout', securityController.logout);
 
     //user routes
@@ -23,12 +24,12 @@ module.exports = function(app) {
     app.get('/user/:userId', securityController.checkAuthentication, helper.getOne);
     app.get('/me', userController.me);
     app.post('/user', securityController.checkAuthentication, userController.createActiveUser);
-    app.post('/user/requestAccess', userController.requestAccess);
+    app.post('/user/requestAccess', rateLimiter.limitedAccess.prevent, userController.requestAccess);
     app.post('/user/grantAccess/:userId', securityController.checkAuthentication, userController.grantAccess);
     app.post('/user/resetPassword/:userId', securityController.checkAuthentication, userController.resetPassword);
-    app.post('/user/changePasswordToken/:userResetToken', userController.changePasswordWithToken);
+    app.post('/user/changePasswordToken/:userResetToken', rateLimiter.limitedAccess.prevent, userController.changePasswordWithToken);
     app.get('/user/token/:userResetToken', userController.findUserToken);
-    app.post('/user/forgotten', userController.forgottenPasswordRequest);
+    app.post('/user/forgotten', rateLimiter.limitedAccess.prevent, userController.forgottenPasswordRequest);
     //app.post('/user/invite', securityController.checkAuthentication, userController.inviteUser);
     //app.post('/user/acceptInvite', securityController.checkToken, userController.acceptInvite);
     //app.post('/user/becomeAdmin', securityController.checkAuthentication, userController.assumeAdmin);

@@ -85,7 +85,7 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
                 },
                 function(failedResponse){
                     $scope.alerts = [
-                        { type: 'danger', msg: "Password reset failed due to: " + failedResponse.data.error }
+                        { type: 'danger', msg: failedResponse.data.error }
                     ];
                 }
             );

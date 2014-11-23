@@ -167,12 +167,11 @@
 - (DONE) Add first and last name to user
 - (DONE) add change password(self user only security)
 - (DONE) add reset users password
-- Forgotten password system (emails you a reset link)
-- Send emails when password is changed
-- Display users name in the user list
+- (DONE) Forgotten password system (emails you a reset link)
+- (DONE) Display users name in the user list
+- Put rate limiting on the public apis
 - New api to allow admin to invite a user 
 - Send an email to invited users (with a link to the accept invite and token checker)
-- Put rate limiting on the registration api
 - Add roles [user, admin] (user allows editing, admin allows access to admin api)
 - Send an email when a user request is made (to admins or users that elect to get the email?)
 - System bootstrapping mode which is active when no users have the admin role users preloaded code to take admin
@@ -243,6 +242,7 @@
 - global search (on a search page)
 - Add a find parents button
 - fixture data is required
+- Send emails when password is changed
 - On the view point definitions have common criteria sit under the series header on for each definition
 - on the placing screen have a badge displaying points earned this round and the total points
 - have the ability to auto fill a race. When creating a race it should detect what the race is and offer to auto fill.
