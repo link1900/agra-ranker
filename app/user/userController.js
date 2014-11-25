@@ -65,10 +65,6 @@ userController.createActiveUser = function(req, res){
     helper.responseFromPromise(res, processChain);
 };
 
-userController.inviteUser = function(req, res){
-
-};
-
 /**
  * Takes on the admin role. Can only be used if there are no admins in the system. Requires
  * code to take control.
