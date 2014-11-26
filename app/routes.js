@@ -11,6 +11,7 @@ var pointAllotmentController = require('./ranking/pointAllotmentController');
 var rankingController = require('./ranking/rankingController');
 var adminController = require('./admin/adminController');
 var fileController = require('./file/fileController');
+var inviteController = require('./invite/inviteController');
 var helper = require('./helper');
 var rateLimiter = require('./rateLimiter');
 
@@ -30,13 +31,14 @@ module.exports = function(app) {
     app.post('/user/changePasswordToken/:userResetToken', rateLimiter.limitedAccess.prevent, userController.changePasswordWithToken);
     app.get('/user/token/:userResetToken', userController.findUserToken);
     app.post('/user/forgotten', rateLimiter.limitedAccess.prevent, userController.forgottenPasswordRequest);
-    //app.post('/user/invite', securityController.checkAuthentication, userController.inviteUser);
     //app.post('/user/acceptInvite', securityController.checkToken, userController.acceptInvite);
     //app.post('/user/becomeAdmin', securityController.checkAuthentication, userController.assumeAdmin);
     app.post('/user/changePassword', securityController.checkAuthentication, userController.changePassword);
     app.put('/user/:userId', securityController.checkAuthentication, userController.updateUser);
     app.del('/user/:userId', securityController.checkAuthentication, userController.destroy);
     app.param('userId', userController.setModel);
+
+    app.post('/invite', securityController.checkAuthentication, inviteController.createInvite);
 
     //greyhound routes
     app.get('/greyhound', greyhoundController.prepareQuery,  helper.runQuery);
