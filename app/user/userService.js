@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var uuid = require('node-uuid');
 var moment = require('moment');
 var User = require('./user').model;
+var Invite = require('../invite/invite').model;
 var userStates = require('./user').states;
 var notificationService = require('../notification/notificationService');
 var mongoService = require('../mongoService');
@@ -77,6 +78,46 @@ userService.cleanUser = function(user){
         user.lastName = cleaner.trim(user.lastName);
     }
     return q(user);
+};
+
+userService.checkForPasscode = function(user, bootstrap){
+    if (bootstrap != null){
+        if (bootstrap == process.env.BOOTSTRAP){
+            return userService.systemRequiresUsers().then(function(requiresUsers){
+                if (requiresUsers){
+                    user.state = userStates.active;
+                    return q(user);
+                } else {
+                    return q.reject('can only user passcode when the system has no users');
+                }
+            });
+        } else {
+            return q.reject('passcode incorrect');
+        }
+    } else {
+        return q(user);
+    }
+};
+
+userService.checkForInvite = function(user, inviteToken){
+    if (inviteToken){
+        return mongoService.findOne(Invite, {token: inviteToken, "expiry" : {$gt : new Date()}}).then(function(foundInvite){
+            if (foundInvite){
+                user.state = userStates.active;
+                return q(user);
+            } else {
+                return q.reject('invite token is invalid');
+            }
+        });
+    } else {
+        return q(user);
+    }
+};
+
+userService.clearAllInvites = function(user){
+    return mongoService.removeAll(Invite, {email: user.email}).then(function(){
+        return q(user);
+    });
 };
 
 userService.validateUserIsEditable = function(user){
@@ -170,4 +211,10 @@ userService.checkIfUserExists = function(user){
 userService.mergeUpdateRequest = function(updateRequest, existingEntity){
     delete updateRequest.password;
     return q(_.extend(existingEntity, updateRequest));
+};
+
+userService.systemRequiresUsers = function(){
+    return mongoService.getCollectionCount(User).then(function(count){
+        return count == 0;
+    });
 };

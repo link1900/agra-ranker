@@ -42,7 +42,14 @@ userController.requestAccess = function(req, res){
         .then(userService.validateUser)
         .then(userService.checkForPassword)
         .then(userService.checkIfUserExists)
-        .then(mongoService.savePromise);
+        .then(function(user){
+            return userService.checkForPasscode(user, req.body.bootstrap)
+        })
+        .then(function(user){
+            return userService.checkForInvite(user, req.body.inviteToken);
+        })
+        .then(mongoService.savePromise)
+        .then(userService.clearAllInvites);
     helper.responseFromPromise(res, processChain);
 };
 

@@ -31,7 +31,7 @@ module.exports = function(app) {
     app.post('/user/changePasswordToken/:userResetToken', rateLimiter.limitedAccess.prevent, userController.changePasswordWithToken);
     app.get('/user/token/:userResetToken', userController.findUserToken);
     app.post('/user/forgotten', rateLimiter.limitedAccess.prevent, userController.forgottenPasswordRequest);
-    //app.post('/user/acceptInvite', securityController.checkToken, userController.acceptInvite);
+
     //app.post('/user/becomeAdmin', securityController.checkAuthentication, userController.assumeAdmin);
     app.post('/user/changePassword', securityController.checkAuthentication, userController.changePassword);
     app.put('/user/:userId', securityController.checkAuthentication, userController.updateUser);
@@ -39,6 +39,7 @@ module.exports = function(app) {
     app.param('userId', userController.setModel);
 
     app.post('/invite', securityController.checkAuthentication, inviteController.createInvite);
+    //app.post('/invite/acceptInvite', securityController.checkToken, userController.acceptInvite);
 
     //greyhound routes
     app.get('/greyhound', greyhoundController.prepareQuery,  helper.runQuery);

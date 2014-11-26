@@ -12,6 +12,7 @@ var Greyhound = require('../app/greyhound/greyhound').model;
 var Placing = require('../app/placing/placing').model;
 var PointAllotment = require('../app/ranking/pointAllotment').model;
 var AllowedUser = require('../app/user/allowedUser').model;
+var Invite = require('../app/invite/invite').model;
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
 server = require("../server.js");
@@ -61,6 +62,29 @@ testHelper.letter1000 = "0123456789012345678901234567890123456789012345678901234
     "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789" +
     "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789" +
     "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
+
+
+testHelper.loadInvites = function(done){
+    new Invite({
+        "email" : "lilly@gmail.com",
+        "token": "inviteToken1",
+        "expiry" : moment().add(5, 'd').toDate(),
+        "_id" : "5475a85de622166913516271"
+    }).save(function(){
+            new Invite({
+                "email" : "oldinvite@gmail.com",
+                "token": "inviteToken2",
+                "expiry" : moment().subtract(5, 'd').toDate(),
+                "_id" : "5475b7e6e622166913516273"
+            }).save(done);
+        });
+};
+
+testHelper.dropInvites = function(done){
+    Invite.remove({}, function(){
+        done();
+    });
+};
 
 testHelper.loadUsers = function(done){
     var docs = [];

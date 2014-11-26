@@ -1,13 +1,16 @@
 var request = require('supertest');
 var mongoose = require('mongoose');
 var User = require('../app/user/user').model;
+var Invite = require('../app/invite/invite').model;
 var testHelper = require('./testHelper');
 var siteUrl = process.env.testUrl;
 var assert = require('chai').assert;
 
 describe("User", function() {
     before(function (done) {
-        testHelper.setup(done);
+        testHelper.setup(function(){
+            testHelper.loadInvites(done);
+        });
     });
 
     describe("Get", function(){
@@ -79,6 +82,15 @@ describe("User", function() {
     });
 
     describe("Request access", function(){
+        it("fails with invalid body", function(done){
+            var body = {};
+
+            testHelper.publicSession
+                .post('/user/requestAccess')
+                .send(body).set('Accept', 'application/json').expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
         it("success with new email", function(done){
             var body = {
                 "email" : "jimmy@gmail.com",
@@ -92,7 +104,94 @@ describe("User", function() {
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(200, done);
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    assert.equal(res.body.state, "Requested Access");
+                    done();
+                });
+        });
+
+        it("fails with invalid invite token", function(done){
+            var body = {"email" : "lilly@gmail.com", "password" : "tester", "firstName": "Lilly", "lastName":"Brown",
+                "inviteToken": "badToken"
+            };
+
+            testHelper.publicSession
+                .post('/user/requestAccess')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("fails with expired invite token", function(done){
+            var body = {"email" : "oldinvite@gmail.com", "password" : "tester", "firstName": "old", "lastName":"invite",
+                "inviteToken": "inviteToken2"
+            };
+
+            testHelper.publicSession
+                .post('/user/requestAccess')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it("success with valid invite token", function(done){
+            var body = {"email" : "lilly@gmail.com", "password" : "tester", "firstName": "Lilly", "lastName":"Brown",
+                "inviteToken": "inviteToken1"
+            };
+
+            testHelper.publicSession
+                .post('/user/requestAccess')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    assert.equal(res.body.state, "Active");
+                    Invite.findOne({"email" : "lilly@gmail.com"}, function(err2, result){
+                        if (err2){ throw err2; }
+                        assert.equal(result, null);
+                        done();
+                    });
+                });
+        });
+
+        it("success with valid bootstrap", function(done){
+            var body = {
+                "email" : "admin@gmail.com",
+                "password" : "tester",
+                "firstName": "Admin",
+                "lastName":"Master",
+                "bootstrap": "teststart"
+            };
+
+            testHelper.tearDown(function() {
+                testHelper.publicSession
+                    .post('/user/requestAccess')
+                    .send(body)
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect(200)
+                    .end(function(err, res){
+                        if (err){ throw err; }
+                        assert.equal(res.body.state, "Active");
+                        done();
+                    });
+            });
+        });
+
+        after(function (done) {
+            testHelper.tearDown(function(){
+                testHelper.dropInvites(function(){
+                    testHelper.setup(function(){
+                        testHelper.loadInvites(done);
+                    });
+                });
+            });
         });
     });
 
@@ -142,6 +241,7 @@ describe("User", function() {
                             if (err){ throw err; }
                             assert.property(res.body, "email");
                             assert.equal(res.body.email, "nbrown99@gmail.com");
+                            assert.equal(res.body.state, "Active");
                             done();
                         });
                 });
@@ -302,7 +402,7 @@ describe("User", function() {
         });
     });
 
-    describe("Request Access", function() {
+    describe("Grant Access", function() {
         it("is secure", function (done) {
             testHelper.publicSession
                 .post('/user/grantAccess/5469d48ddaad610cccdd34db')
@@ -523,7 +623,9 @@ describe("User", function() {
     });
 
     after(function (done) {
-        testHelper.tearDown(done);
+        testHelper.tearDown(function(){
+            testHelper.dropInvites(done);
+        });
     });
 
 });

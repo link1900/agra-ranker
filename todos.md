@@ -170,10 +170,11 @@
 - (DONE) Forgotten password system (emails you a reset link)
 - (DONE) Display users name in the user list
 - (DONE) Put rate limiting on the public apis
+- System bootstrapping mode which is active when no users system has no users and uses preloaded code to take admin
 - Send an email to invited users (with a link to the accept invite and token checker)
+- View all invites
 - Add roles [user, admin] (user allows editing, admin allows access to admin api)
 - Send an email when a user request is made (to admins or users that elect to get the email?)
-- System bootstrapping mode which is active when no users have the admin role users preloaded code to take admin
 - On user request send an email to all users with admin role
 - Fix an issue when calling DELETE /user/badid
 - Investigate what happens with an un matched route
@@ -241,6 +242,7 @@
 - global search (on a search page)
 - Add a find parents button
 - fixture data is required
+- batch job to clean up expired invites or (mongo TTL index)
 - Send emails when password is changed
 - On the view point definitions have common criteria sit under the series header on for each definition
 - on the placing screen have a badge displaying points earned this round and the total points
