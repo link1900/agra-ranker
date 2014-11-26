@@ -169,8 +169,7 @@
 - (DONE) add reset users password
 - (DONE) Forgotten password system (emails you a reset link)
 - (DONE) Display users name in the user list
-- Put rate limiting on the public apis
-- New api to allow admin to invite a user 
+- (DONE) Put rate limiting on the public apis
 - Send an email to invited users (with a link to the accept invite and token checker)
 - Add roles [user, admin] (user allows editing, admin allows access to admin api)
 - Send an email when a user request is made (to admins or users that elect to get the email?)
