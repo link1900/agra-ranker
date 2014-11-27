@@ -182,6 +182,11 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
             }
         };
 
+        $scope.showPasscode = false;
+        $scope.setShowPasscode = function(change){
+            $scope.showPasscode = change;
+        };
+
         $scope.userService  = userService;
 
         $scope.columnInfo = [

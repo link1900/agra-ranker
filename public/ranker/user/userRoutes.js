@@ -24,4 +24,7 @@ angular.module('core').config(function($routeProvider) {
         .when('/user/forgotPassword', {
             templateUrl : '/ranker/user/forgotPassword.html'
         })
+        .when('/signup', {
+            templateUrl : '/ranker/user/signup.html'
+        })
 });

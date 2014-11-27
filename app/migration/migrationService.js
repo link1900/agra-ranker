@@ -14,8 +14,8 @@ migrationService.applyMigrations = function(migrationDir) {
     var migrations = migrationIndex.index;
     console.log("Checking for migrations");
     if (migrations.length <= 0){
-        console.log("migration index does not list any migrations for " + app.name + " skipping migrations");
-        return false;
+        console.log("No outstanding migrations");
+        return q(true);
     }
 
     migrations = _.sortBy(migrations, function(migration){ return migration.sequence; });

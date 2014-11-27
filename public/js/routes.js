@@ -17,9 +17,6 @@ angular.module('core').config(function($routeProvider) {
         .when('/greyhound/import', {
             templateUrl : '/views/greyhound/greyhoundUpload.html'
         })
-        .when('/signup', {
-            templateUrl : '/ranker/user/signup.html'
-        })
         .when('/race/create', {
             templateUrl : '/views/race/raceCreate.html'
         })
