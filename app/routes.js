@@ -32,7 +32,7 @@ module.exports = function(app) {
     app.get('/user/token/:userResetToken', userController.findUserToken);
     app.post('/user/forgotten', rateLimiter.limitedAccess.prevent, userController.forgottenPasswordRequest);
 
-    //app.post('/user/becomeAdmin', securityController.checkAuthentication, userController.assumeAdmin);
+    app.get('/bootstrap', userController.getBootstrap);
     app.post('/user/changePassword', securityController.checkAuthentication, userController.changePassword);
     app.put('/user/:userId', securityController.checkAuthentication, userController.updateUser);
     app.del('/user/:userId', securityController.checkAuthentication, userController.destroy);

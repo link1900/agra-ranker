@@ -46,10 +46,9 @@ userController.requestAccess = function(req, res){
             return userService.checkForPasscode(user, req.body.bootstrap)
         })
         .then(function(user){
-            return userService.checkForInvite(user, req.body.inviteToken);
+            return userService.checkForInvite(user, req.body.invite);
         })
-        .then(mongoService.savePromise)
-        .then(userService.clearAllInvites);
+        .then(mongoService.savePromise);
     helper.responseFromPromise(res, processChain);
 };
 
@@ -138,6 +137,9 @@ userController.resetPassword = function(req, res){
     } else {
         res.jsonp(400, {"error":'invalid user id'});
     }
+};
+userController.getBootstrap = function(req, res) {
+    helper.responseFromPromise(res, userService.systemRequiresUsers());
 };
 
 userController.findUserToken = function(){

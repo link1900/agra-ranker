@@ -52,5 +52,11 @@ angular.module('services').service('userService',  function($http,$resource) {
         });
     };
 
+    userService.isInBootstrap = function() {
+        return $http.get("/bootstrap").then(function(result){
+            return result.data;
+        });
+    };
+
     return userService;
 });

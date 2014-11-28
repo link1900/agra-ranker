@@ -183,8 +183,11 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
         };
 
         $scope.showPasscode = false;
-        $scope.setShowPasscode = function(change){
-            $scope.showPasscode = change;
+
+        $scope.setBootstrap = function(){
+            userService.isInBootstrap().then(function(data){
+                $scope.showPasscode = data.result;
+            });
         };
 
         $scope.userService  = userService;
