@@ -43,7 +43,7 @@ inviteController.validate = function(invite){
 inviteController.checkIsNotUser = function(invite){
     return userService.findUserByEmail(invite.email).then(function(foundUser){
         if (foundUser != null){
-            return q.reject("email is already a user");
+            return q.reject("email is already used");
         } else {
             return q(invite);
         }
@@ -52,12 +52,12 @@ inviteController.checkIsNotUser = function(invite){
 
 inviteController.sendInviteEmail = function(invite){
     var email = notificationService.createNewEmail();
-    email.addTo(invite.email);
     email.setSubject("Invitation to join -siteName-");
     email.addSubstitution('-email-', invite.email);
-    email.addSubstitution('-inviteLink-', notificationService.siteUrl + "/#/invite/" + invite.token);
+    email.addSubstitution('-inviteLink-', notificationService.siteUrl + "/#/signup/" + invite.token);
     email.setText("Hi -email-,\nYou have been invited to join the -siteName- website. You can create your new account by following the link below and completing your user details.\n-inviteLink-");
-    return notificationService.sendEmail(email).then(function(){
-        return invite;
-    });
+    return q(invite);
+    //return notificationService.sendEmail(invite.email, email).then(function(){
+    //    return invite;
+    //});
 };

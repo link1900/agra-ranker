@@ -170,9 +170,9 @@
 - (DONE) Forgotten password system (emails you a reset link)
 - (DONE) Display users name in the user list
 - (DONE) Put rate limiting on the public apis
-- System bootstrapping mode which is active when no users system has no users and uses preloaded code to take admin
-- auto login on active user sign up
-- hide passcode if system not in bootstrap
+- (DONE) system bootstrapping mode which is active when no users system has no users and uses preloaded code to take admin
+- (DONE) auto login on active user sign up
+- (DONE) hide passcode if system not in bootstrap
 - Send an email to invited users (with a link to the accept invite and token checker)
 - View all invites
 - Add roles [user, admin] (user allows editing, admin allows access to admin api)

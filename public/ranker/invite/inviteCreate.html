@@ -1,0 +1,26 @@
+<div data-ng-controller="inviteCtrl">
+    <div class="col-sm-6 col-md-4 col-md-offset-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Invite User</h3>
+            </div>
+            <div class="panel-body">
+                <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+
+                <form name="createUserForm" ng-hide="inviteSent">
+                    <div class="form-group">
+                        <label class="control-label" for="inviteEmailField" >Email</label>
+                        <input id="inviteEmailField"
+                               type="email"
+                               class="form-control"
+                               data-ng-model="invite.email"
+                               autocomplete="off"/>
+                    </div>
+                    <button data-ng-click="inviteUser()" class="btn btn-success">Invite</button>
+                    <a ng-href="#/user" class="btn btn-default">Cancel</a>
+                </form>
+                <a ng-href="#/user" ng-show="inviteSent" class="btn btn-default">Back</a>
+            </div>
+        </div>
+    </div>
+</div>

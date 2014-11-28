@@ -206,7 +206,11 @@ angular.module('controllers').controller('userCtrl', function($scope,
 
         $scope.showPasscode = false;
 
-        $scope.setBootstrap = function(){
+        $scope.signUpPrep = function(){
+            if($routeParams.token){
+                $scope.user.inviteToken = $routeParams.token;
+            }
+
             userService.isInBootstrap().then(function(data){
                 $scope.showPasscode = data.result;
             });

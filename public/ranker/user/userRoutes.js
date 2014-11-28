@@ -27,4 +27,7 @@ angular.module('core').config(function($routeProvider) {
         .when('/signup', {
             templateUrl : '/ranker/user/signup.html'
         })
+        .when('/signup/:token', {
+            templateUrl : '/ranker/user/signup.html'
+        })
 });
