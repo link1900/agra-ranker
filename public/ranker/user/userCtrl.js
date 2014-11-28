@@ -1,4 +1,10 @@
-angular.module('controllers').controller('userCtrl', function($scope, $routeParams, userService, $location) {
+angular.module('controllers').controller('userCtrl', function($scope,
+                                                              $routeParams,
+                                                              userService,
+                                                              rankerEventBus,
+                                                              securityService,
+                                                              $location,
+                                                              $window) {
         $scope.findOne = function() {
             userService.get({
                 userId: $routeParams.id
@@ -103,8 +109,24 @@ angular.module('controllers').controller('userCtrl', function($scope, $routePara
         };
 
         $scope.signUp = function(){
-            userService.signUp($scope.user).then(function(){
-                $scope.registeredSuccess = true;
+            userService.signUp($scope.user).then(function(user){
+                if (user.state == "Active"){
+                    console.log(user);
+                    var login = {email: $scope.user.email, password: $scope.user.password};
+                    securityService.signIn(login).then(function(result){
+                        rankerEventBus.broadcastEvent(rankerEventBus.EVENTS.USER_LOGIN, result.data);
+                        $scope.alerts = [
+                            { type: 'success', msg: "Login successful" }
+                        ];
+                        $window.location.href = '/';
+                    }, function(error){
+                        $scope.alerts = [
+                            { type: 'danger', msg: "Failed to login: " + error.data.error }
+                        ];
+                    });
+                } else {
+                    $scope.registeredSuccess = true;
+                }
             }, function(failedResponse){
                 $scope.alerts = [
                     { type: 'danger', msg: "Failed to register user: " + failedResponse.data.error }
