@@ -26,26 +26,22 @@ userService.resetPassword = function(user){
 };
 
 userService.sendUserPasswordReset = function(user){
-    var email = notificationService.createNewEmail();
+    var email = {subs:{}};
 
-    email.addTo(user.email);
-    email.setSubject("Password change request");
-    email.addSubstitution('-email-', user.email);
-    email.addSubstitution('-passwordLink-', notificationService.siteUrl + "/#/user/passwordReset/" + user.passwordReset.token);
-    email.setText("A request to change the password for your -siteName- account -email- has been received. Please follow the link below to set a new password.\n-passwordLink-\n\n" +
-    "You received this email because you or someone else has requested a password change.\n If you do not wish to change your password you can ignore this email.\n" +
-    "For your security, this link is only valid for 24 hours from the time of your request. Also note that if you requested to change your password multiple times, only the link contained in the most recent email will be valid. If the link does not work, please resubmit your password change request.");
-
+    email.to = user.email;
+    email.subject = "Password change request";
+    email.subs.passwordLink = notificationService.siteUrl + "/#/user/passwordReset/" + user.passwordReset.token;
+    email.template = "passwordReset";
     return notificationService.sendEmail(email).then(function(){
         return user;
     });
 };
 
 userService.sendUserAcceptedEmail = function(user){
-    var email = notificationService.createNewEmail();
-    email.addTo(user.email);
-    email.setSubject("Welcome to the -siteName-");
-    email.setText("Your request to join the -siteName- website has been accepted. You can now login at -siteUrl-/#/login");
+    var email = {subs:{}};
+    email.to = user.email;
+    email.subject = "Welcome to the {{siteName}}";
+    email.template = "registrationAccepted";
     return notificationService.sendEmail(email).then(function(){
         return user;
     });
@@ -103,6 +99,7 @@ userService.checkForInvite = function(user, inviteToken){
     if (inviteToken){
         return mongoService.findOne(Invite, {token: inviteToken, "expiry" : {$gt : new Date()}}).then(function(foundInvite){
             if (foundInvite){
+                user.email = foundInvite.email;
                 user.state = userStates.active;
                 return q(user);
             } else {
