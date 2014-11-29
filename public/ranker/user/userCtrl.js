@@ -111,18 +111,8 @@ angular.module('controllers').controller('userCtrl', function($scope,
         $scope.signUp = function(){
             userService.signUp($scope.signUpUser).then(function(createdUser){
                 if (createdUser.state == "Active"){
-                    var login = {email: $scope.signUpUser.email, password: $scope.signUpUser.password};
-                    securityService.signIn(login).then(function(result){
-                        rankerEventBus.broadcastEvent(rankerEventBus.EVENTS.USER_LOGIN, result.data);
-                        $scope.alerts = [
-                            { type: 'success', msg: "Login successful" }
-                        ];
-                        $window.location.href = '/';
-                    }, function(error){
-                        $scope.alerts = [
-                            { type: 'danger', msg: "Failed to login: " + error.data.error }
-                        ];
-                    });
+                    $location.path('/login');
+                    window.location.reload(true);
                 } else {
                     $scope.registeredSuccess = true;
                 }
