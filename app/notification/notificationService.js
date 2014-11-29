@@ -3,46 +3,113 @@ var notificationService = module.exports = {};
 var _ = require('lodash');
 var q = require('q');
 var logger = require('winston');
-var sendgrid = require('sendgrid')(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
-notificationService.active = process.env.SENDGRID_USERNAME != null &&
-    process.env.SENDGRID_PASSWORD != null &&
-    process.env.NODE_ENV != 'test';
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
+var handlebars = require('handlebars');
+var path = require('path');
+var templatesDir = path.resolve(__dirname, '..', '..', 'emails');
+var emailTemplates = require('email-templates');
+
 notificationService.from = process.env.EMAIL_FROM || 'noreply@localhost';
 notificationService.siteUrl = process.env.SITE_URL || "http://localhost:3000";
 
-notificationService.createNewEmail = function(){
-    return new sendgrid.Email();
+notificationService.getSMTPSettings = function(){
+    var settings = {};
+    if (process.env.SMTP_HOST){
+            settings.host = process.env.SMTP_HOST;
+    }
+    if (process.env.SMTP_PORT){
+            settings.port = process.env.SMTP_PORT;
+    }
+    if (process.env.SMTP_USERNAME || process.env.SMTP_PASSWORD){
+            settings.auth = {};
+            if (process.env.SMTP_USERNAME){
+                    settings.auth.user = process.env.SMTP_USERNAME;
+            }
+            if (process.env.SMTP_PASSWORD){
+                    settings.auth.pass = process.env.SMTP_PASSWORD;
+            }
+    }
+
+    return settings;
 };
 
+notificationService.isActive = function(){
+    return process.env.SMTP_HOST != null && process.env.SMTP_PORT != null  && process.env.NODE_ENV != 'test';
+};
+
+notificationService.smtpTransport = nodemailer.createTransport(smtpTransport(notificationService.getSMTPSettings()));
+
 /**
- * Sends an email using send grid
+ * Sends an email using the configured smtp transport
+ * mailOptions field include
+ * from, to, subject, text, html
  */
 notificationService.sendEmail = function(email){
-    if (notificationService.active){
-        var deferred = q.defer();
-        if (process.env.EMAIL_OVERRIDE){
-            to = process.env.EMAIL_OVERRIDE;
+    if (process.env.EMAIL_OVERRIDE){
+        logger.info("changing email destination was " + email.to + " in now " + process.env.EMAIL_OVERRIDE);
+        email.to = process.env.EMAIL_OVERRIDE;
+    }
+
+    return notificationService.getTemplate(email)
+        .then(notificationService.parseTemplate)
+        .then(notificationService.sendEmailViaSMTP);
+};
+
+notificationService.getTemplate = function(email){
+    var deferred = q.defer();
+    emailTemplates(templatesDir, function(templateReadError, template) {
+        if (templateReadError) {
+            logger.error(new Error("failed to send email due to template error: " + templateReadError));
+            deferred.reject(templateReadError);
+        } else {
+            email.templateService = template;
+            deferred.resolve(email);
         }
+    });
+    return deferred.promise;
+};
 
-        email.addSubstitution('-siteUrl-', notificationService.siteUrl);
-        email.addSubstitution('-siteName-', "AGRA Ranker");
-        email.setText(email.text + "\n\nBest regards,\nThe -siteName- Team\n-siteUrl-");
-        email.setFrom(notificationService.from);
-        email.fromname = "Agra Ranker";
+notificationService.parseTemplate = function(email){
+    var deferred = q.defer();
+    email.subs.siteUrl = notificationService.siteUrl;
+    email.subs.siteName = "AGRA Ranker";
+    email.subs.email = email.to;
+    email.subject = notificationService.parseText(email.subject);
+    email.templateService(email.template, email.subs, function(templateParseError, html, text) {
+        if (templateParseError) {
+            logger.error(new Error("failed to send email due to template parse error: " + templateParseError));
+            deferred.reject(templateParseError);
+        } else {
+            email.html = html;
+            email.text = text;
+            deferred.resolve(email);
+        }
+    });
+    return deferred.promise;
+};
 
-        sendgrid.send(email, function(err, result) {
-            if(err){
-                logger.error("failed to send email due to : " + err);
-                deferred.reject(err);
+notificationService.parseText = function(text, replacers){
+    return handlebars.compile(text)(replacers);
+};
 
+notificationService.sendEmailViaSMTP = function(email){
+    var deferred = q.defer();
+    email.from = process.env.EMAIL_FROM;
+    if (notificationService.isActive()){
+        notificationService.smtpTransport.sendMail(email, function(error, info){
+            if(error){
+                logger.error(error);
+                deferred.reject(error);
             }else{
-                logger.info("successfully sent email to " + to);
-                deferred.resolve(result);
+                deferred.resolve(info);
+                logger.info("successfully sent email to " + email.to);
             }
         });
-        return deferred.promise;
     } else {
-        logger.warn("email was not sent as the email service was not active");
-        return q({"email":"skipped"});
+        logger.warn("skipping email has email service is not active");
+        deferred.resolve({"message":"no mail sent"});
     }
+
+    return deferred.promise;
 };
