@@ -2,6 +2,7 @@ var notificationService = module.exports = {};
 
 var _ = require('lodash');
 var q = require('q');
+var async = require('async');
 var logger = require('winston');
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
@@ -12,6 +13,24 @@ var emailTemplates = require('email-templates');
 
 notificationService.from = process.env.EMAIL_FROM || 'noreply@localhost';
 notificationService.siteUrl = process.env.SITE_URL || "http://localhost:3000";
+
+notificationService.mailQueue = async.queue(function(email, callback){
+    email.from = process.env.EMAIL_FROM;
+    if (notificationService.isActive()){
+        notificationService.smtpTransport.sendMail(email, function(error){
+            if(error){
+                logger.error(error);
+                callback(error);
+            }else{
+                logger.info("successfully sent email to " + email.to);
+                callback();
+            }
+        });
+    } else {
+        logger.warn("skipping email has email service is not active");
+        callback();
+    }
+}, 1);
 
 notificationService.getSMTPSettings = function(){
     var settings = {};
@@ -53,7 +72,7 @@ notificationService.sendEmail = function(email){
 
     return notificationService.getTemplate(email)
         .then(notificationService.parseTemplate)
-        .then(notificationService.sendEmailViaSMTP);
+        .then(notificationService.queueMailForSending);
 };
 
 notificationService.getTemplate = function(email){
@@ -89,27 +108,11 @@ notificationService.parseTemplate = function(email){
     return deferred.promise;
 };
 
-notificationService.parseText = function(text, replacers){
-    return handlebars.compile(text)(replacers);
+notificationService.queueMailForSending = function(email){
+    notificationService.mailQueue.push(email, function (err) {
+    });
 };
 
-notificationService.sendEmailViaSMTP = function(email){
-    var deferred = q.defer();
-    email.from = process.env.EMAIL_FROM;
-    if (notificationService.isActive()){
-        notificationService.smtpTransport.sendMail(email, function(error, info){
-            if(error){
-                logger.error(error);
-                deferred.reject(error);
-            }else{
-                deferred.resolve(info);
-                logger.info("successfully sent email to " + email.to);
-            }
-        });
-    } else {
-        logger.warn("skipping email has email service is not active");
-        deferred.resolve({"message":"no mail sent"});
-    }
-
-    return deferred.promise;
+notificationService.parseText = function(text, replacers){
+    return handlebars.compile(text)(replacers);
 };
