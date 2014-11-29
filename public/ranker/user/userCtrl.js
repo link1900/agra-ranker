@@ -107,12 +107,11 @@ angular.module('controllers').controller('userCtrl', function($scope,
                     ];
                 });
         };
-
+        $scope.signUpUser ={};
         $scope.signUp = function(){
-            userService.signUp($scope.user).then(function(user){
-                if (user.state == "Active"){
-                    console.log(user);
-                    var login = {email: $scope.user.email, password: $scope.user.password};
+            userService.signUp($scope.signUpUser).then(function(createdUser){
+                if (createdUser.state == "Active"){
+                    var login = {email: $scope.signUpUser.email, password: $scope.signUpUser.password};
                     securityService.signIn(login).then(function(result){
                         rankerEventBus.broadcastEvent(rankerEventBus.EVENTS.USER_LOGIN, result.data);
                         $scope.alerts = [
@@ -208,7 +207,7 @@ angular.module('controllers').controller('userCtrl', function($scope,
 
         $scope.signUpPrep = function(){
             if($routeParams.token){
-                $scope.user.inviteToken = $routeParams.token;
+                $scope.signUpUser.inviteToken = $routeParams.token;
             }
 
             userService.isInBootstrap().then(function(data){

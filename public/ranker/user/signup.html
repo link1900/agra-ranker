@@ -6,25 +6,25 @@
         <div class="panel-body">
             <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
             <form ng-hide="registeredSuccess">
-                <div class="form-group" ng-hide="user.inviteToken">
+                <div class="form-group" ng-hide="signUpUser.inviteToken">
                     <label for="emailInput">Email Address</label>
-                    <input id="emailInput" ng-model="user.email" type="email" class="form-control">
+                    <input id="emailInput" ng-model="signUpUser.email" type="email" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="firstNameInput">First Name</label>
-                    <input id="firstNameInput" ng-model="user.firstName" type="text" class="form-control">
+                    <input id="firstNameInput" ng-model="signUpUser.firstName" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="lastNameInput">Last Name</label>
-                    <input id="lastNameInput" ng-model="user.lastName" type="text" class="form-control">
+                    <input id="lastNameInput" ng-model="signUpUser.lastName" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="passwordInput">Password</label>
-                    <input id="passwordInput" ng-model="user.password" type="password" class="form-control">
+                    <input id="passwordInput" ng-model="signUpUser.password" type="password" class="form-control">
                 </div>
                 <div class="form-group" ng-show="showPasscode">
                     <label for="signupCode">Sign up code</label>
-                    <input id="signupCode" ng-model="user.bootstrap" type="password" class="form-control">
+                    <input id="signupCode" ng-model="signUpUser.bootstrap" type="password" class="form-control">
                 </div>
 
                 <button class="btn btn-primary" ng-click="signUp()">Submit</button>
