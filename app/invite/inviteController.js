@@ -51,13 +51,12 @@ inviteController.checkIsNotUser = function(invite){
 };
 
 inviteController.sendInviteEmail = function(invite){
-    var email = notificationService.createNewEmail();
-    email.setSubject("Invitation to join -siteName-");
-    email.addSubstitution('-email-', invite.email);
-    email.addSubstitution('-inviteLink-', notificationService.siteUrl + "/#/signup/" + invite.token);
-    email.setText("Hi -email-,\nYou have been invited to join the -siteName- website. You can create your new account by following the link below and completing your user details.\n-inviteLink-");
-    return q(invite);
-    //return notificationService.sendEmail(invite.email, email).then(function(){
-    //    return invite;
-    //});
+    var email = {subs:{}};
+    email.to = invite.email;
+    email.template = "invite";
+    email.subject = "Invitation to join {{siteName}}";
+    email.subs.inviteLink = notificationService.siteUrl + "/#/signup/" + invite.token;
+    return notificationService.sendEmail(email).then(function(){
+        return invite;
+    });
 };
