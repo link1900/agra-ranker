@@ -6,7 +6,7 @@
         <div class="panel-body">
             <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
             <form ng-hide="registeredSuccess">
-                <div class="form-group">
+                <div class="form-group" ng-hide="user.inviteToken">
                     <label for="emailInput">Email Address</label>
                     <input id="emailInput" ng-model="user.email" type="email" class="form-control">
                 </div>
@@ -27,7 +27,7 @@
                     <input id="signupCode" ng-model="user.bootstrap" type="password" class="form-control">
                 </div>
 
-                <button class="btn btn-primary" ng-click="signUp()">Request Access</button>
+                <button class="btn btn-primary" ng-click="signUp()">Submit</button>
             </form>
             <div ng-show="registeredSuccess">
                 <p>
