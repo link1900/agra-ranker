@@ -21,7 +21,8 @@ rateLimiter.failure = function (req, res, next, nextValidRequestDate) {
 rateLimiter.limitedAccess = new ExpressBrute(rateLimiter.store,{
     freeRetries: 1000,
     proxyDepth: 1,
-    minWait: 5*1000, // 5 seconds
-    maxWait: 60*60*1000, // 1 hour
+    minWait: 500, // 500 mills
+    maxWait: 15*60*1000, // 15 mins
+    lifetime: 60*60, //1 hour
     failCallback: rateLimiter.failure
 });
