@@ -115,6 +115,14 @@ describe("Invite", function() {
                 .expect(200, done);
         });
 
+        it("delete expired is secured", function (done) {
+            testHelper.publicSession
+                .del('/invite/expired')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(401, done);
+        });
+
         it("delete expired", function (done) {
             testHelper.authSession
                 .del('/invite/expired')
