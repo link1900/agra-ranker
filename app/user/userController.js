@@ -39,14 +39,14 @@ userController.destroy = function(req, res) {
 userController.requestAccess = function(req, res){
     var processChain = userService.newUser(req.body, userStates.requested)
         .then(userService.cleanUser)
+        .then(function(user){
+            return userService.checkForInvite(user, req.body.inviteToken);
+        })
         .then(userService.validateUser)
         .then(userService.checkForPassword)
         .then(userService.checkIfUserExists)
         .then(function(user){
             return userService.checkForPasscode(user, req.body.bootstrap)
-        })
-        .then(function(user){
-            return userService.checkForInvite(user, req.body.invite);
         })
         .then(mongoService.savePromise);
     helper.responseFromPromise(res, processChain);
