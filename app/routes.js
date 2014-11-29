@@ -38,8 +38,10 @@ module.exports = function(app) {
     app.del('/user/:userId', securityController.checkAuthentication, userController.destroy);
     app.param('userId', userController.setModel);
 
+    app.get('/invite', securityController.checkAuthentication, inviteController.prepareQuery,  helper.runQuery);
+    app.get('/invite/:inviteId', securityController.checkAuthentication, helper.getOne);
     app.post('/invite', securityController.checkAuthentication, inviteController.createInvite);
-    //app.post('/invite/acceptInvite', securityController.checkToken, userController.acceptInvite);
+    app.param('inviteId', inviteController.setModel);
 
     //greyhound routes
     app.get('/greyhound', greyhoundController.prepareQuery,  helper.runQuery);

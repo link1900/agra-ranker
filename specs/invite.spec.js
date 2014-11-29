@@ -5,7 +5,49 @@ var assert = require('chai').assert;
 
 describe("Invite", function() {
     before(function (done) {
-        testHelper.setup(done);
+        testHelper.setup(function(){
+            testHelper.loadInvites(done)
+        });
+    });
+
+    describe("Get", function(){
+        it ("should return 401 when not logged in", function(done){
+            testHelper.publicSession
+                .get('/invite')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(401, done);
+        });
+
+        it("should get all users", function(done){
+            testHelper.authSession
+                .get('/invite')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+
+        it ("get single is secured", function(done){
+            testHelper.publicSession
+                .get('/invite/5475a85de622166913516271')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(401, done);
+        });
+
+        it("get single", function(done){
+            testHelper.authSession
+                .get('/invite/5475a85de622166913516271')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    assert.property(res.body, "email");
+                    assert.equal(res.body.email, "lilly@gmail.com");
+                    done();
+                });
+        });
     });
 
     describe("Invite user" ,function(){
@@ -57,7 +99,9 @@ describe("Invite", function() {
     });
 
     after(function (done) {
-        testHelper.tearDown(done);
+        testHelper.tearDown(function(){
+            testHelper.dropInvites(done);
+        });
     });
 });
 

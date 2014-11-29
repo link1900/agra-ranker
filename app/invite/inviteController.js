@@ -13,6 +13,29 @@ var notificationService = require('../notification/notificationService');
 var uuid = require('node-uuid');
 var moment = require('moment');
 
+inviteController.setModel = function(req, res, next, id) {
+    Invite.findById(id, function(err, invite) {
+        if (err) return next(err);
+        if (!invite) return next(new Error('Failed to load ' + id));
+        req.model = invite;
+        return next();
+    });
+};
+
+inviteController.prepareQuery = function(req, res, next) {
+    req.searchQuery = {};
+    var like = req.param('like');
+    var email = req.param('email');
+    if (like){
+        req.searchQuery = {'email': {'$regex': email}};
+    }
+    if (email){
+        req.searchQuery = {'email': email};
+    }
+    req.dao = Invite;
+    next();
+};
+
 inviteController.createInvite = function(req, res){
     var invite = new Invite(req.body);
     invite.token =  uuid.v4();
