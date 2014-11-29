@@ -154,8 +154,11 @@ describe("User", function() {
                     assert.equal(res.body.state, "Active");
                     Invite.findOne({"email" : "lilly@gmail.com"}, function(err2, result){
                         if (err2){ throw err2; }
-                        assert.equal(result, null);
-                        done();
+                        if(result != null){
+                            done();
+                        } else {
+                            done(new Error("cant find the new user"));
+                        }
                     });
                 });
         });
