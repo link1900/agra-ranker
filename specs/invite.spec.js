@@ -98,6 +98,32 @@ describe("Invite", function() {
         });
     });
 
+    describe("Delete", function() {
+        it("is secure", function (done) {
+            testHelper.publicSession
+                .del('/invite/5475a85de622166913516271')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(401, done);
+        });
+
+        it("delete invite", function (done) {
+            testHelper.authSession
+                .del('/invite/5475a85de622166913516271')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+
+        it("delete expired", function (done) {
+            testHelper.authSession
+                .del('/invite/expired')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+    });
+
     after(function (done) {
         testHelper.tearDown(function(){
             testHelper.dropInvites(done);

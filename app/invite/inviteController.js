@@ -49,6 +49,14 @@ inviteController.createInvite = function(req, res){
     helper.responseFromPromise(res, result);
 };
 
+inviteController.destroy = function(req, res) {
+    helper.responseFromPromise(res, mongoService.removePromise(req.model));
+};
+
+inviteController.destroyExpired = function(req, res) {
+    helper.responseFromPromise(res, mongoService.removeAll(Invite, {"expiry" : {$lte : new Date()}}));
+};
+
 inviteController.clean = function(invite){
     if (invite.email){
         invite.email = cleaner.normalizeEmail(invite.email);

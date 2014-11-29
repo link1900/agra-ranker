@@ -41,6 +41,8 @@ module.exports = function(app) {
     app.get('/invite', securityController.checkAuthentication, inviteController.prepareQuery,  helper.runQuery);
     app.get('/invite/:inviteId', securityController.checkAuthentication, helper.getOne);
     app.post('/invite', securityController.checkAuthentication, inviteController.createInvite);
+    app.del('/invite/expired', securityController.checkAuthentication, inviteController.destroyExpired);
+    app.del('/invite/:inviteId', securityController.checkAuthentication, inviteController.destroy);
     app.param('inviteId', inviteController.setModel);
 
     //greyhound routes
