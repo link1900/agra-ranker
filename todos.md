@@ -173,12 +173,14 @@
 - (DONE) system bootstrapping mode which is active when no users system has no users and uses preloaded code to take admin
 - (DONE) auto login on active user sign up
 - (DONE) hide passcode if system not in bootstrap
-- Send an email to invited users (with a link to the accept invite and token checker)
-- View all invites
+- (DONE) Send an email to invited users (with a link to the accept invite and token checker)
+- Fix test startup
+- CRUD for invites
 - Add roles [user, admin] (user allows editing, admin allows access to admin api)
 - Send an email when a user request is made (to admins or users that elect to get the email?)
 - On user request send an email to all users with admin role
 - Fix an issue when calling DELETE /user/badid
+- Fix set model in the routes to be json based, done after auth and standardized
 - Investigate what happens with an un matched route
 - Remove white list and have all sign ups require approval
 - Date directive that does both date filter and time ago filter

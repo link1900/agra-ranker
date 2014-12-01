@@ -80,7 +80,7 @@ userService.checkForPasscode = function(user, bootstrap){
     if (bootstrap != null){
         if (bootstrap == process.env.BOOTSTRAP){
             return userService.systemRequiresUsers().then(function(requiresUsers){
-                if (requiresUsers){
+                if (requiresUsers != null && requiresUsers.result != null && requiresUsers.result){
                     user.state = userStates.active;
                     return q(user);
                 } else {
@@ -212,7 +212,7 @@ userService.mergeUpdateRequest = function(updateRequest, existingEntity){
 
 userService.systemRequiresUsers = function(){
     return mongoService.getCollectionCount(User).then(function(count){
-        var result = count == 0;
-        return {"result": result};
+        console.log(count);
+        return {"result": count == 0};
     });
 };

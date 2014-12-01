@@ -3,7 +3,6 @@ var mongoService = module.exports = {};
 var _ = require('lodash');
 var q = require('q');
 var mongoose = require('mongoose');
-var db = mongoose.connection.db;
 
 mongoService.find = function(dao, search){
     var deferred = q.defer();
@@ -286,6 +285,7 @@ mongoService.dropCollection = function(dao){
 
 mongoService.collectionExists = function(collectionName){
     var deferred = q.defer();
+    var db = mongoose.connection.db;
     db.collections(function(err, collections){
         if(err){
             deferred.reject(err);
