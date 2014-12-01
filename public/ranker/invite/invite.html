@@ -1,0 +1,13 @@
+<div id="InviteContent" ng-show="user" ng-controller="inviteCtrl">
+    <div class="page-header">
+        <h2>Invites</h2>
+    </div>
+    <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <a href="#/invite/create" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Invite User</a>
+            <button data-ng-click="deleteAllExpiredInvite()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete all expired</button>
+        </div>
+    </div>
+    <div data-ng-include="'ranker/invite/inviteList.html'"></div>
+</div>

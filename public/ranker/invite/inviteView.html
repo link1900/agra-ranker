@@ -1,0 +1,25 @@
+<div id="inviteView" data-ng-controller="inviteCtrl" data-ng-init="findOne()">
+    <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+    <div class="panel panel-default" data-ng-show="selectedInvite">
+        <div class="panel-heading">
+            <h1 class="panel-title">Invite Details</h1>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Email</dt>
+                <dd>{{selectedInvite.email}}</dd>
+                <dt>Expiry</dt>
+                <dd>{{selectedInvite.expiry | date:'medium'}}</dd>
+                <dt>Created at</dt>
+                <dd>{{selectedInvite.createdAt | date:'medium'}}</dd>
+                <dt>Last updated</dt>
+                <dd>{{selectedInvite.updatedAt | date:'medium'}}</dd>
+            </dl>
+            <div>
+                <h4>Actions</h4>
+                <button data-ng-click="deleteInvite()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+            </div>
+        </div>
+    </div>
+    <a data-ng-href="#/invite">Back to Invites</a>
+</div>

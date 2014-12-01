@@ -9,5 +9,12 @@ angular.module('services').service('inviteSvr',  function($http,$resource) {
             }
         }
     );
+
+    inviteSvr.deleteAllExpired = function(){
+        return $http.delete("/invite/expired").then(function(result){
+            return result.data;
+        });
+    };
+
     return inviteSvr;
 });
