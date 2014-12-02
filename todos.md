@@ -183,10 +183,7 @@
 - (DONE) On user request send an email to all users which have requested to be notified (passcode user is defaulted to yes)
 
 ### 6.0.13 Fix ups
-- Remove white list and have all sign ups require approval
-- Fix set model in the routes to be json based, done after auth and standardized
-- Fix an issue when calling DELETE /user/badid
-- Investigate what happens with an un matched route
+- (DONE) Remove white list and have all sign ups require approval
 - Create default data command for group levels
 - Create default data command for ranking system
 - Date directive that does both date filter and time ago filter
@@ -239,6 +236,9 @@
 - Switch test data loading to fixtures
 
 ## Backlog - Beyond the ranker 6
+- Fix set model in the routes to be json based, done after auth and standardized
+- Fix an issue when calling DELETE /user/badid
+- Investigate what happens with an un matched route
 - auto redirect
 - add material design https://material.angularjs.org
 - add unsubscribe link to email footers (alert emails only)

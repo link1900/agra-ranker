@@ -20,9 +20,23 @@ adminController.dropCollection = function(req, res){
         case 'file' :
             helper.responseFromPromise(res, adminService.removeAllFiles());
             break;
+        case 'groupLevel' :
+            helper.responseFromPromise(res, adminService.removeAllGroupLevels());
+            break;
         default:
             res.jsonp(404, {"error":"collection not found"});
         break;
+    }
+};
+
+adminController.setupCollection = function(req, res){
+    switch(req.collectionName){
+        case 'groupLevel' :
+            helper.responseFromPromise(res, adminService.setupGroupLevel());
+            break;
+        default:
+            res.jsonp(404, {"error":"collection not found"});
+            break;
     }
 };
 

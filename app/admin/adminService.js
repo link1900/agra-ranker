@@ -11,6 +11,7 @@ var GroupLevel = require('../groupLevel/groupLevel').model;
 var Greyhound = require('../greyhound/greyhound').model;
 var BatchJob = require('../batch/batchJob').model;
 var BatchResult = require('../batch/batchResult').model;
+var Invite = require('../invite/invite').model;
 var File = require('../file/file').model;
 var Chunk = require('../file/file').chunkModel;
 var _ = require('lodash');
@@ -37,6 +38,18 @@ adminService.removeAllFiles = function(){
     });
 };
 
+adminService.removeAllGroupLevels = function(){
+    return mongoService.dropCollection(GroupLevel);
+};
+
+adminService.setupGroupLevel = function(){
+    return mongoService.saveAll([
+        new GroupLevel({name:"Group 1"}),
+        new GroupLevel({name:"Group 2"}),
+        new GroupLevel({name:"Group 3"})
+    ]);
+};
+
 adminService.getAllCounts = function(){
     var proms = [
         mongoService.getCollectionCount(User).then(function(count){
@@ -53,6 +66,9 @@ adminService.getAllCounts = function(){
         }),
         mongoService.getCollectionCount(Race).then(function(count){
             return {"race": count};
+        }),
+        mongoService.getCollectionCount(Invite).then(function(count){
+            return {"invite": count};
         }),
         mongoService.getCollectionCount(RankingSystem).then(function(count){
             return {"rankingSystem": count};

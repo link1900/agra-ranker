@@ -1,39 +1,53 @@
-<div class="page-header">
-    <h2>Site Administration</h2>
-</div>
-<div ng-show="user" ng-controller="adminCtrl" class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Data Management</h3>
+<div ng-show="user" ng-controller="adminCtrl">
+    <div class="page-header">
+        <h2>Site Administration</h2>
     </div>
-    <div class="panel-body">
-        <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
-        <h2>Counts</h2>
-        <dl class="dl-horizontal-wide">
-            <dt>Total users</dt>
-            <dd>{{counts.user}}</dd>
-            <dt>Total greyhounds</dt>
-            <dd>{{counts.greyhound}}</dd>
-            <dt>Total placings</dt>
-            <dd>{{counts.placing}}</dd>
-            <dt>Total group levels</dt>
-            <dd>{{counts.groupLevel}}</dd>
-            <dt>Total races</dt>
-            <dd>{{counts.race}}</dd>
-            <dt>Total ranking systems</dt>
-            <dd>{{counts.rankingSystem}}</dd>
-            <dt>Total batch jobs</dt>
-            <dd>{{counts.batchJob}}</dd>
-            <dt>Total batch result</dt>
-            <dd>{{counts.batchResult}}</dd>
-            <dt>Total files stored</dt>
-            <dd>{{counts.file}}</dd>
-            <dt>Total size of files stored</dt>
-            <dd>{{counts.fileSize | bytes}}</dd>
-        </dl>
-        <h2>Deletes</h2>
-        <button ng-show="user" data-ng-click="removeAll('greyhound')" class="btn btn-danger">Remove all greyhounds</button>
-        <button ng-show="user" data-ng-click="removeAll('batch')" class="btn btn-danger">Remove all batch jobs</button>
-        <button ng-show="user" data-ng-click="removeAll('file')" class="btn btn-danger">Remove all files</button>
-        <a href="#/file" class="btn btn-primary">Files</a>
+    <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Setup records</h3>
+        </div>
+        <div class="panel-body">
+            <button data-ng-click="setupDefaults('groupLevel')" class="btn btn-primary">Setup group levels</button>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Remove records</h3>
+        </div>
+        <div class="panel-body">
+            <button ng-repeat="collection in removeCollections" data-ng-click="removeAll(collection)" class="btn btn-danger">Remove all {{collection}}</button>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Record counts</h3>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal-wide">
+                <dt>Total users</dt>
+                <dd>{{counts.user}}</dd>
+                <dt>Total greyhounds</dt>
+                <dd>{{counts.greyhound}}</dd>
+                <dt>Total placings</dt>
+                <dd>{{counts.placing}}</dd>
+                <dt>Total group levels</dt>
+                <dd>{{counts.groupLevel}}</dd>
+                <dt>Total invites</dt>
+                <dd>{{counts.invite}}</dd>
+                <dt>Total races</dt>
+                <dd>{{counts.race}}</dd>
+                <dt>Total ranking systems</dt>
+                <dd>{{counts.rankingSystem}}</dd>
+                <dt>Total batch jobs</dt>
+                <dd>{{counts.batchJob}}</dd>
+                <dt>Total batch result</dt>
+                <dd>{{counts.batchResult}}</dd>
+                <dt>Total files stored</dt>
+                <dd>{{counts.file}}</dd>
+                <dt>Total size of files stored</dt>
+                <dd>{{counts.fileSize | bytes}}</dd>
+            </dl>
+        </div>
     </div>
 </div>

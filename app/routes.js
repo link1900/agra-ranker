@@ -124,6 +124,7 @@ module.exports = function(app) {
 
     //admin
     app.del('/admin/drop/:collectionName', securityController.checkAuthentication, adminController.dropCollection);
+    app.post('/admin/setup/:collectionName', securityController.checkAuthentication, adminController.setupCollection);
     app.get('/admin/count', securityController.checkAuthentication, adminController.getCounts);
     app.param('collectionName', adminController.setCollectionName);
 };
