@@ -11,7 +11,6 @@ var Race = require('../app/race/race').model;
 var Greyhound = require('../app/greyhound/greyhound').model;
 var Placing = require('../app/placing/placing').model;
 var PointAllotment = require('../app/ranking/pointAllotment').model;
-var AllowedUser = require('../app/user/allowedUser').model;
 var Invite = require('../app/invite/invite').model;
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);

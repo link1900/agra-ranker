@@ -179,14 +179,14 @@
 - (DONE) delete invite after it has been used (requires test)
 - (DONE) hide the token field (requires test)
 - (DONE) add delete all expired button for invites
-- Send an email when a user request is made (to users that elect to get the email)
-- On user request send an email to all users which have requested to be notified (passcode user is defaulted to yes)
+- (DONE) Send an email when a user request is made (to users that elect to get the email)
+- (DONE) On user request send an email to all users which have requested to be notified (passcode user is defaulted to yes)
 
 ### 6.0.13 Fix ups
+- Remove white list and have all sign ups require approval
 - Fix set model in the routes to be json based, done after auth and standardized
 - Fix an issue when calling DELETE /user/badid
 - Investigate what happens with an un matched route
-- Remove white list and have all sign ups require approval
 - Create default data command for group levels
 - Create default data command for ranking system
 - Date directive that does both date filter and time ago filter
@@ -239,6 +239,8 @@
 - Switch test data loading to fixtures
 
 ## Backlog - Beyond the ranker 6
+- auto redirect
+- add material design https://material.angularjs.org
 - add unsubscribe link to email footers (alert emails only)
 - Add gravatar link to new window for avatar
 - Default avatar to be svg initals or first two letter of email
