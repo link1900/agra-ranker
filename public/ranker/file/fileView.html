@@ -12,8 +12,8 @@
                 <dd>{{file.contentType}}</dd>
                 <dt>Size</dt>
                 <dd>{{file.length | bytes}}</dd>
-                <dt>Uploaded date</dt>
-                <dd>{{file.uploadDate | date:'medium'}}</dd>
+                <dt>Uploaded</dt>
+                <dd>{{file.uploadDate | fromNow}}</dd>
                 <dd>
                     <a target="_self" class="btn btn-primary" ng-href="{{file.downloadUrl}}" download="{{file.fileName}}"><span class="glyphicon glyphicon-arrow-down"></span> Download File</a>
                     <button data-ng-click="deleteFile()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete File</button>

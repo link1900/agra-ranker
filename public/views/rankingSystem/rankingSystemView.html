@@ -20,12 +20,12 @@
                         <p>{{rankingSystem.equalPositionResolution}}</p>
                     </div>
                     <div class="form-group">
-                        <label>Created at</label>
-                        <p>{{rankingSystem.createdAt | date:'medium'}}</p>
+                        <label>Created</label>
+                        <p>{{rankingSystem.createdAt | fromNow}}</p>
                     </div>
                     <div class="form-group">
                         <label>Last updated</label>
-                        <p>{{rankingSystem.updatedAt | date:'medium'}}</p>
+                        <p>{{rankingSystem.updatedAt | fromNow}}</p>
                     </div>
                 </form>
                 <button ng-show="user" class="btn btn-primary" ng-click="recreateAllocations()"><span class="glyphicon glyphicon-refresh"></span> Re-Create Allocations</button>

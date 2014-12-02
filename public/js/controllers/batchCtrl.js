@@ -59,7 +59,7 @@ angular.module('controllers').controller('BatchCtrl', function($scope, $routePar
         {title: "Status", field:"status", baseLink:"#/batch/view/", linkField: "_id", link:true},
         {title: "File Name", field:"name"},
         {title: "Batch Type", field:"type"},
-        {title: "Created Date", field:"createdAt", filter: "date", filterFormat: 'medium'}
+        {title: "Created", field:"createdAt", filter: "fromNow"}
     ];
 
     $scope.deleteBatch = function(){

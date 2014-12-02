@@ -19,10 +19,10 @@
                     <dd ng-show="batch.totalSuccess">{{batch.totalSuccess}}</dd>
                     <dt ng-show="batch.totalFailure">Total failure</dt>
                     <dd ng-show="batch.totalFailure">{{batch.totalFailure}}</dd>
-                    <dt>Created at</dt>
-                    <dd>{{batch.createdAt | date:'medium'}}</dd>
+                    <dt>Created</dt>
+                    <dd>{{batch.createdAt | fromNow}}</dd>
                     <dt>Last updated</dt>
-                    <dd>{{batch.updatedAt | date:'medium'}}</dd>
+                    <dd>{{batch.updatedAt | fromNow}}</dd>
                     <dt>Actions</dt>
                     <dd>
                         <button class="btn btn-danger"

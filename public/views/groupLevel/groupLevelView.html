@@ -9,10 +9,10 @@
                 <dl class="dl-horizontal">
                     <dt>Name</dt>
                     <dd>{{groupLevel.name}}</dd>
-                    <dt>Created at</dt>
-                    <dd>{{groupLevel.createdAt | date:'medium'}}</dd>
+                    <dt>Created</dt>
+                    <dd>{{groupLevel.createdAt | fromNow}}</dd>
                     <dt>Last updated</dt>
-                    <dd>{{groupLevel.updatedAt | date:'medium'}}</dd>
+                    <dd>{{groupLevel.updatedAt | fromNow}}</dd>
                 </dl>
                 <a ng-show="user" data-ng-href="#/groupLevel/edit/{{groupLevel._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
                 <button ng-show="user" data-ng-click="deleteGroupLevel()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>

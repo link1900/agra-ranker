@@ -15,10 +15,10 @@
                     <dd>{{race.groupLevel.name}}</dd>
                     <dt>Distance Meters</dt>
                     <dd>{{race.distanceMeters}} meters</dd>
-                    <dt>Created at</dt>
-                    <dd>{{race.createdAt | date:'medium'}}</dd>
+                    <dt>Created </dt>
+                    <dd>{{race.createdAt | fromNow}}</dd>
                     <dt>Last updated</dt>
-                    <dd>{{race.updatedAt | date:'medium'}}</dd>
+                    <dd>{{race.updatedAt | fromNow}}</dd>
                 </dl>
                 <div ng-show="race.disqualified" class="panel panel-danger">
                     <div class="panel-heading">

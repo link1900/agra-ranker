@@ -184,8 +184,7 @@
 
 ### 6.0.13 Fix ups
 - (DONE) Remove white list and have all sign ups require approval
-- Create default data command for group levels
-- Create default data command for ranking system
+- (DONE) Create default data command for group levels
 - Date directive that does both date filter and time ago filter
 - Standard fields directive which does created at, updated at and created by and shows dates with the new filter
 
@@ -201,6 +200,7 @@
 - calculate rankings on race creation
 
 ### 6.0.15 Ranking Phase 2
+- Create default data command for ranking system
 - define agra ranking system and test importing it
 - define sire and dam ranking systems test import it
 - dead heat rule - points from matching positions are summed and divided

@@ -8,12 +8,12 @@
             <dl class="dl-horizontal">
                 <dt>Email</dt>
                 <dd>{{selectedInvite.email}}</dd>
-                <dt>Expires on</dt>
-                <dd>{{selectedInvite.expiry | date:'medium'}}</dd>
-                <dt>Created at</dt>
-                <dd>{{selectedInvite.createdAt | date:'medium'}}</dd>
+                <dt>Expires</dt>
+                <dd>{{selectedInvite.expiry | fromNow}}</dd>
+                <dt>Created</dt>
+                <dd>{{selectedInvite.createdAt | fromNow}}</dd>
                 <dt>Last updated</dt>
-                <dd>{{selectedInvite.updatedAt | date:'medium'}}</dd>
+                <dd>{{selectedInvite.updatedAt | fromNow}}</dd>
             </dl>
             <div>
                 <h4>Actions</h4>

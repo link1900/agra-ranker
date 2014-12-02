@@ -212,7 +212,7 @@ angular.module('controllers').controller('userCtrl', function($scope,
             {title: "First Name", field:"firstName"},
             {title: "Last Name", field:"lastName"},
             {title: "Status", field:"state"},
-            {title: "Created Date", field:"createdAt", filter: "date", filterFormat: 'medium'}
+            {title: "Created", field:"createdAt", filter: "fromNow"}
         ];
     }
 );

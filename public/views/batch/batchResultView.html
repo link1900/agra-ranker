@@ -14,10 +14,10 @@
                 <dd>{{batchResult.processingDuration | duration}}</dd>
                 <dt>Raw record</dt>
                 <dd>{{batchResult.raw}}</dd>
-                <dt>Created at</dt>
-                <dd>{{batchResult.createdAt | date:'medium'}}</dd>
+                <dt>Created</dt>
+                <dd>{{batchResult.createdAt | fromNow}}</dd>
                 <dt>Last updated</dt>
-                <dd>{{batchResult.updatedAt | date:'medium'}}</dd>
+                <dd>{{batchResult.updatedAt | fromNow}}</dd>
                 <dt>Details</dt>
                 <dd>
                     <ul>
