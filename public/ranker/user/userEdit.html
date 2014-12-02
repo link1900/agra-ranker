@@ -1,5 +1,5 @@
 <div data-ng-controller="userCtrl" data-ng-init="findOne()">
-    <div class="col-xs-4">
+    <div class="col-xs-6">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h2 class="panel-title">User Edit</h2>
@@ -27,10 +27,12 @@
                         <input id="lastNameInput" ng-model="selectedUser.lastName" type="text" class="form-control" placeholder="Last name">
                     </div>
                     <div ng-show="selectedUser.state == 'Active' || selectedUser.state == 'Inactive'" class="form-group">
-                        <div class="btn-group">
-                            <label class="btn btn-primary" data-ng-model="selectedUser.state" btn-radio="'Active'">Active</label>
-                            <label class="btn btn-primary" data-ng-model="selectedUser.state" btn-radio="'Inactive'">Inactive</label>
-                        </div>
+                        <input id="userStatus" type="checkbox" ng-model="selectedUser.state" ng-true-value="Active" ng-false-value="Inactive">
+                        <label for="userStatus">Account is <span ng-show="selectedUser.state == 'Active'">active</span><span ng-show="selectedUser.state == 'Inactive'">inactive</span></label>
+                    </div>
+                    <div class="form-group">
+                        <input id="newUserRequestStatus" type="checkbox" ng-model="selectedUser.settings.notifications.newUserRequest">
+                        <label for="newUserRequestStatus">{{selectedUser.settings.notifications.newUserRequest | boolean : 'Send' : 'Do not send'}} this account any new user requests by email</label>
                     </div>
                     <div ng-show="selectedUser.state == 'Requested'" class="form-group">
                         <button data-ng-click="makeActive()" class="btn btn-primary">Approve Request</button>

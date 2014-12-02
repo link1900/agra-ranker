@@ -48,7 +48,8 @@ userController.requestAccess = function(req, res){
         .then(function(user){
             return userService.checkForPasscode(user, req.body.bootstrap)
         })
-        .then(mongoService.savePromise);
+        .then(mongoService.savePromise)
+        .then(userService.sendNewUserRequestReceivedEmail);
     helper.responseFromPromise(res, processChain);
 };
 

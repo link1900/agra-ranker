@@ -37,6 +37,24 @@ userService.sendUserPasswordReset = function(user){
     });
 };
 
+userService.sendNewUserRequestReceivedEmail = function(user){
+    var email = {subs:{}};
+
+    return mongoService.find(User, {'settings.notifications.newUserRequest' : true}).then(function(users){
+        if (users.length > 0){
+            email.to = users.map(function(i){return i.email;});
+            email.subject = "New user request received";
+            email.subs.viewUserLink = notificationService.siteUrl + "/#/user/view/" + user._id;
+            email.template = "newUserRequest";
+            return notificationService.sendEmail(email).then(function(){
+                return user;
+            });
+        } else {
+            return q(user);
+        }
+    });
+};
+
 userService.sendUserAcceptedEmail = function(user){
     var email = {subs:{}};
     email.to = user.email;
@@ -82,6 +100,7 @@ userService.checkForPasscode = function(user, bootstrap){
             return userService.systemRequiresUsers().then(function(requiresUsers){
                 if (requiresUsers != null && requiresUsers.result != null && requiresUsers.result){
                     user.state = userStates.active;
+                    user.settings.notifications.newUserRequest = true;
                     return q(user);
                 } else {
                     return q.reject('can only user passcode when the system has no users');
@@ -93,6 +112,11 @@ userService.checkForPasscode = function(user, bootstrap){
     } else {
         return q(user);
     }
+};
+
+userService.sendNewUserEmail = function(user){
+
+    return q(user);
 };
 
 userService.checkForInvite = function(user, inviteToken){

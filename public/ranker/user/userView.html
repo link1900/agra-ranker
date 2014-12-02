@@ -12,12 +12,16 @@
                 <dd>{{selectedUser.firstName}}</dd>
                 <dt>Last Name</dt>
                 <dd>{{selectedUser.lastName}}</dd>
-                <dt>Status</dt>
+                <dt>Account Status</dt>
                 <dd>{{selectedUser.state}}</dd>
                 <dt>Created at</dt>
                 <dd>{{selectedUser.createdAt | date:'medium'}}</dd>
                 <dt>Last updated</dt>
                 <dd>{{selectedUser.updatedAt | date:'medium'}}</dd>
+                <dt>Notifications</dt>
+                <dd>
+                    {{selectedUser.settings.notifications.newUserRequest | boolean : 'Sending' : 'Not sending'}} this account any new user requests
+                </dd>
             </dl>
             <div>
                 <h4>Actions</h4>

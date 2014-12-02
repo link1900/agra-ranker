@@ -10,6 +10,14 @@ user.states = {
     "requested": "Requested Access"
 };
 
+user.notificationsDefintion = {
+    newUserRequest : {type: Boolean, required: true, default: false}
+};
+
+user.settingDefinition = {
+    notifications : {type: user.notificationsDefintion, default: {newUserRequest : false} }
+};
+
 user.definition = {
     email: {
         type: String,
@@ -21,6 +29,7 @@ user.definition = {
     provider: {type: String, required : true, default: 'local'},
     salt: String,
     state: {type: String, required: true, default: user.states.requested},
+    settings : {type: user.settingDefinition, default: {notifications: {newUserRequest : false}} },
     passwordReset : {
         tokenCreated : {type: Date},
         token : {type : String},

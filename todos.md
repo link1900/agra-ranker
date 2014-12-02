@@ -174,26 +174,25 @@
 - (DONE) auto login on active user sign up
 - (DONE) hide passcode if system not in bootstrap
 - (DONE) Send an email to invited users (with a link to the accept invite and token checker)
-- Fix test startup
-- CRUD for invites
-- Add roles [user, admin] (user allows editing, admin allows access to admin api)
-- Send an email when a user request is made (to admins or users that elect to get the email?)
-- On user request send an email to all users with admin role
-- Fix an issue when calling DELETE /user/badid
+- (DONE) Fix test startup
+- (DONE) CRUD for invites
+- (DONE) delete invite after it has been used (requires test)
+- (DONE) hide the token field (requires test)
+- (DONE) add delete all expired button for invites
+- Send an email when a user request is made (to users that elect to get the email)
+- On user request send an email to all users which have requested to be notified (passcode user is defaulted to yes)
+
+### 6.0.13 Fix ups
 - Fix set model in the routes to be json based, done after auth and standardized
+- Fix an issue when calling DELETE /user/badid
 - Investigate what happens with an un matched route
 - Remove white list and have all sign ups require approval
+- Create default data command for group levels
+- Create default data command for ranking system
 - Date directive that does both date filter and time ago filter
-- Add created by which is a flyweight to user?
 - Standard fields directive which does created at, updated at and created by and shows dates with the new filter
-- Add user setting option recieve system emails ecieve email
-- Add user setting timezone and make sure timezones works
-- Add gravatar link to new window for avatar
-- Default avatar to be svg initals or first two letter of email
-- Add a system event register
-- Add activity stream admin page
 
-### 6.0.13 Ranking Phase 1
+### 6.0.14 Ranking Phase 1
 - export greyhound csv
 - export greyhound json
 - allow race search to be done by two dates
@@ -204,7 +203,7 @@
 - unit test point allotment creation
 - calculate rankings on race creation
 
-### 6.0.14 Ranking Phase 2
+### 6.0.15 Ranking Phase 2
 - define agra ranking system and test importing it
 - define sire and dam ranking systems test import it
 - dead heat rule - points from matching positions are summed and divided
@@ -240,8 +239,16 @@
 - Switch test data loading to fixtures
 
 ## Backlog - Beyond the ranker 6
+- add unsubscribe link to email footers (alert emails only)
+- Add gravatar link to new window for avatar
+- Default avatar to be svg initals or first two letter of email
+- Add a system event register
+- Add activity stream admin page
+- Add roles [user, admin] (user allows editing, admin allows access to admin api)
 - add scheduling to batch system
+- Add created by which is a flyweight to user?
 - new batch job to automatic backup database to s3
+- Add user setting timezone and make sure timezones works
 - on the placing screen have the numbers come from a set list of placings (1st -> 1, 2nd -> 2, DNF -> DNF, Dis -> dis, etc.)
 - global search (on a search page)
 - Add a find parents button

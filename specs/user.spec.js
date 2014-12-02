@@ -182,6 +182,8 @@ describe("User", function() {
                     .end(function(err, res){
                         if (err){ throw err; }
                         assert.equal(res.body.state, "Active");
+                        assert.equal(res.body.email, "admin@gmail.com");
+                        assert.equal(res.body.settings.notifications.newUserRequest, true);
                         done();
                     });
             });
@@ -231,6 +233,8 @@ describe("User", function() {
                 .end(function(err, res){
                     if (err){ throw err; }
                     assert.property(res.body, "email");
+                    assert.property(res.body, "settings");
+                    assert.property(res.body.settings, "notifications");
                     assert.property(res.body, "_id");
                     assert.notProperty(res.body, "password");
                     assert.equal(res.body.email, "nbrown99@gmail.com");
