@@ -19,7 +19,7 @@ describe("Invite", function() {
                 .expect(401, done);
         });
 
-        it("should get all users", function(done){
+        it("should get all", function(done){
             testHelper.authSession
                 .get('/invite')
                 .set('Accept', 'application/json')
@@ -44,6 +44,7 @@ describe("Invite", function() {
                 .end(function(err, res){
                     if (err){ throw err; }
                     assert.property(res.body, "email");
+                    assert.notProperty(res.body, "token");
                     assert.equal(res.body.email, "lilly@gmail.com");
                     done();
                 });

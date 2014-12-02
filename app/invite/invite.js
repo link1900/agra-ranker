@@ -11,6 +11,13 @@ invite.definition = {
 
 invite.schema = new Schema(invite.definition);
 
+invite.schema.set('toJSON', {
+    transform: function(doc, ret) {
+        delete ret.token;
+        return ret;
+    }
+});
+
 invite.schema.plugin(timestamps);
 
 invite.model = mongoose.model('Invite', invite.schema);
