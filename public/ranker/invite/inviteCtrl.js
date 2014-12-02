@@ -59,7 +59,7 @@ angular.module('controllers').controller('inviteCtrl', function($scope, $routePa
     $scope.inviteSvr = inviteSvr;
     $scope.columnInfo = [
         {title: "Email", field:"email", baseLink:"#/invite/view/", linkField: "_id", link:true},
-        {title: "Token", field:"token"},
+        {title: "Expires at", field:"expiry", filter: "date", filterFormat: 'medium'},
         {title: "Created Date", field:"createdAt", filter: "date", filterFormat: 'medium'}
     ];
 });
