@@ -101,6 +101,7 @@ userService.checkForInvite = function(user, inviteToken){
             if (foundInvite){
                 user.email = foundInvite.email;
                 user.state = userStates.active;
+                mongoService.removePromise(foundInvite);
                 return q(user);
             } else {
                 return q.reject('invite token is invalid');

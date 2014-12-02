@@ -155,9 +155,9 @@ describe("User", function() {
                     Invite.findOne({"email" : "lilly@gmail.com"}, function(err2, result){
                         if (err2){ throw err2; }
                         if(result != null){
-                            done();
+                            done(new Error("should find the invite after its been used"));
                         } else {
-                            done(new Error("cant find the new user"));
+                            done();
                         }
                     });
                 });
