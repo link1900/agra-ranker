@@ -20,7 +20,7 @@ var pointAllotmentSchema = new Schema({
 rankingSystem.schema = new Schema({
     name: { type: String },
     description: {type: String},
-    equalPositionResolution: {type: String},
+    equalPositionResolution: {type: String, default: 'splitPoints'},
     pointAllotments: {type: [pointAllotmentSchema]}
 });
 

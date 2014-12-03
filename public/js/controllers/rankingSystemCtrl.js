@@ -18,6 +18,18 @@ angular.module('controllers').controller('RankingSystemCtrl',
             {name: "Same Points", value:"samePoints"}
         ];
 
+        $scope.resolutionLabelForValue = function(value){
+            var found = _.find($scope.positionResolutions, function(i){
+                return i.value == value;
+            });
+
+            if (found){
+                return found.name;
+            } else {
+                return "Split Points";
+            }
+        };
+
         $scope.loadRankingSystem = function(model){
             $scope.rankingSystem = model;
             $scope.postProcess($scope.rankingSystem);

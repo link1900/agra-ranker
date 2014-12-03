@@ -6,28 +6,18 @@
         <div class="panel-body">
             <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
             <div data-ng-show="rankingSystem.name">
-                <form role="form">
-                    <div class="form-group">
-                        <label>Name</label>
-                        <p>{{rankingSystem.name}}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <p>{{rankingSystem.description}}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Equal Placing Resolution</label>
-                        <p>{{rankingSystem.equalPositionResolution}}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Created</label>
-                        <p>{{rankingSystem.createdAt | fromNow}}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Last updated</label>
-                        <p>{{rankingSystem.updatedAt | fromNow}}</p>
-                    </div>
-                </form>
+                <dl class="dl-horizontal-wide">
+                    <dt>Name</dt>
+                    <dd>{{rankingSystem.name}}</dd>
+                    <dt ng-show="rankingSystem.description">Description</dt>
+                    <dd ng-show="rankingSystem.description">{{rankingSystem.description}}</dd>
+                    <dt ng-show="rankingSystem.equalPositionResolution">Equal Placing Resolution</dt>
+                    <dd ng-show="rankingSystem.equalPositionResolution">{{resolutionLabelForValue(rankingSystem.equalPositionResolution)}}</dd>
+                    <dt>Created</dt>
+                    <dd>{{rankingSystem.createdAt | fromNow}}</dd>
+                    <dt>Last updated</dt>
+                    <dd>{{rankingSystem.updatedAt | fromNow}}</dd>
+                </dl>
                 <button ng-show="user" class="btn btn-primary" ng-click="recreateAllocations()"><span class="glyphicon glyphicon-refresh"></span> Re-Create Allocations</button>
                 <a ng-show="user" data-ng-href="#/rankingSystem/edit/{{rankingSystem._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
                 <a ng-show="user" ng-click="copy()" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Copy</a>
