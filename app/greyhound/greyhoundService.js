@@ -6,7 +6,6 @@ var Placing = require('../placing/placing').model;
 var BatchResult = require('../batch/batchResult').model;
 var batchService = require('../batch/batchService');
 var fileService = require('../file/fileService');
-var csv = require('csv');
 var _ = require('lodash');
 var helper = require('../helper');
 var q = require('q');
@@ -197,6 +196,57 @@ greyhoundService.checkForExistsImport = function(greyhound) {
     return deferred.promise;
 };
 
+greyhoundService.greyhoundExportTransformer = function(greyhoundRecord, callback){
+    greyhoundService.convertGreyhoundRecordIntoRow(greyhoundRecord).then(function(greyhoundRow){
+        callback(null, greyhoundRow);
+    }, function(error){
+        callback(error);
+    });
+};
+
+greyhoundService.convertGreyhoundRecordIntoRow = function(greyhoundRecord){
+    var greyhoundRow = {name: greyhoundRecord.name};
+    return greyhoundService.addSireName(greyhoundRow).then(greyhoundService.addDamName);
+};
+
+greyhoundService.addSireName = function(greyhoundRow){
+    if (greyhoundRow.sireRef != null){
+        return mongoService.findOneById(Greyhound, greyhoundRow.sireRef).then(function(found){
+            greyhoundRow.sireName = found.name;
+            return greyhoundRow;
+        });
+    } else {
+        greyhoundRow.sireName = "";
+        return q(greyhoundRow);
+    }
+};
+
+greyhoundService.addDamName = function(greyhoundRow){
+    if (greyhoundRow.damRef != null){
+        return mongoService.findOneById(Greyhound, greyhoundRow.damRef).then(function(found){
+            greyhoundRow.damName = found.name;
+            return greyhoundRow;
+        });
+    } else {
+        greyhoundRow.damName = "";
+        return q(greyhoundRow);
+    }
+};
+
+greyhoundService.exportGreyhoundCSV = function(batchJob){
+    return fileService.streamCollectionToFile(Greyhound, batchJob.name, {}, greyhoundService.greyhoundExportTransformer).then(function(result){
+        console.log(result);
+        if (batchJob.metadata == null){
+            batchJob.metadata = {};
+        }
+        if (result != null){
+            batchJob.metadata.fileId = result.fileId;
+        }
+
+        return mongoService.savePromise(batchJob);
+    });
+};
+
 greyhoundService.processGreyhoundCSV = function(batchJob){
     var deferred = q.defer();
     if (batchJob.type != null &&
@@ -252,3 +302,4 @@ greyhoundService.processGreyhoundCSV = function(batchJob){
 };
 
 batchService.loadBatchHandler("importGreyhoundCSV", greyhoundService.processGreyhoundCSV);
+batchService.loadBatchHandler("exportGreyhoundCSV", greyhoundService.exportGreyhoundCSV);

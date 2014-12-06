@@ -1,0 +1,28 @@
+<div ng-show="user" class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Export options</h3>
+    </div>
+    <div class="panel-body" ng-controller="ExportCtrl">
+        <div ng-show="exportStatus == 'ready'">
+            <button data-ng-click="createExportJob('greyhound', 'csv')" class="btn btn-primary">Export greyhounds to .csv</button>
+        </div>
+        <div ng-show="exportStatus == 'success'">
+            <p>
+                Your export has been scheduled and will be available for download shortly.
+                You can check the progress of the export job <a ng-href="#/batch/view/{{exportCreatedId}}">here</a>
+            </p>
+            <button data-ng-click="clear()" class="btn btn-primary">
+                Select another export
+            </button>
+            <a ng-href="#/batch/view/{{exportCreatedId}}" class="btn btn-primary">
+                View Export Progress
+            </a>
+        </div>
+        <div ng-show="exportStatus == 'failed'">
+            <p>Export failed. {{exportError}}</p>
+            <button data-ng-click="clear()" class="btn btn-primary">
+                Try again
+            </button>
+        </div>
+    </div>
+</div>
