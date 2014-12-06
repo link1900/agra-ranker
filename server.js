@@ -6,6 +6,7 @@ var fs = require('fs');
 var path = require('path');
 var passport = require('passport');
 var winston = require('winston');
+var logger = require('winston');
 var dotenv = require('dotenv');
 var mongoose = require('mongoose');
 
@@ -22,7 +23,11 @@ main.start = _.once(function(){
         .then(main.setupDatabaseConnection)
         .then(main.setupSecurity)
         .then(main.setupHTTP)
-        .then(main.setupBatchService);
+        .then(main.setupBatchService).then(function(){
+            logger.info("Started system successfully");
+        }, function(err){
+            logger.log('error', err.message, err.stack);
+        });
 });
 
 main.setupExceptionHandling = function(mainConfig){
@@ -103,6 +108,10 @@ main.setupHTTP = function(mainConfig){
 
     server.on('listening', function(){
         deferred.resolve(mainConfig);
+    });
+
+    server.on('error', function(error){
+        deferred.reject(error);
     });
 
     server.listen(port);
