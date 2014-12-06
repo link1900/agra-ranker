@@ -197,39 +197,39 @@ greyhoundService.checkForExistsImport = function(greyhound) {
 };
 
 greyhoundService.greyhoundExportTransformer = function(greyhoundRecord, callback){
-    greyhoundService.convertGreyhoundRecordIntoRow(greyhoundRecord).then(function(greyhoundRow){
-        callback(null, greyhoundRow);
+    greyhoundService.convertGreyhoundRecordIntoRow(greyhoundRecord).then(function(processing){
+        callback(null, processing.row);
     }, function(error){
         callback(error);
     });
 };
 
 greyhoundService.convertGreyhoundRecordIntoRow = function(greyhoundRecord){
-    var greyhoundRow = {name: greyhoundRecord.name};
-    return greyhoundService.addSireName(greyhoundRow).then(greyhoundService.addDamName);
+    var processing = {record: greyhoundRecord, row: {name: greyhoundRecord.name}};
+    return greyhoundService.addSireName(processing).then(greyhoundService.addDamName);
 };
 
-greyhoundService.addSireName = function(greyhoundRow){
-    if (greyhoundRow.sireRef != null){
-        return mongoService.findOneById(Greyhound, greyhoundRow.sireRef).then(function(found){
-            greyhoundRow.sireName = found.name;
-            return greyhoundRow;
+greyhoundService.addSireName = function(processing){
+    if (processing.record.sireRef != null){
+        return mongoService.findOneById(Greyhound, processing.record.sireRef).then(function(found){
+            processing.row.sireName = found.name;
+            return processing;
         });
     } else {
-        greyhoundRow.sireName = "";
-        return q(greyhoundRow);
+        processing.row.sireName = "";
+        return q(processing);
     }
 };
 
-greyhoundService.addDamName = function(greyhoundRow){
-    if (greyhoundRow.damRef != null){
-        return mongoService.findOneById(Greyhound, greyhoundRow.damRef).then(function(found){
-            greyhoundRow.damName = found.name;
-            return greyhoundRow;
+greyhoundService.addDamName = function(processing){
+    if (processing.record.damRef != null){
+        return mongoService.findOneById(Greyhound, processing.record.damRef).then(function(found){
+            processing.row.damName = found.name;
+            return processing;
         });
     } else {
-        greyhoundRow.damName = "";
-        return q(greyhoundRow);
+        processing.row.damName = "";
+        return q(processing);
     }
 };
 
