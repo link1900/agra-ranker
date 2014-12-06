@@ -76,4 +76,16 @@ angular.module('controllers').controller('BatchCtrl', function($scope, $routePar
             }
         );
     };
+
+    $scope.createExportJob = function(collectionName, exportType){
+        batchService.createExport(collectionName, exportType).then(function(){
+            $scope.alerts = [
+                { type: 'success', msg: "Created new batch job to generate the export file"}
+            ];
+        }, function(failedResult){
+            $scope.alerts = [
+                { type: 'danger', msg: "Failed create the export batch job. " + failedResult.error}
+            ];
+        });
+    };
 });

@@ -1,0 +1,10 @@
+<div ng-show="user" class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Export options</h3>
+    </div>
+    <div class="panel-body">
+        <div ng-controller="BatchCtrl">
+            <button data-ng-click="createExportJob('greyhound', 'csv')" class="btn btn-primary">Export greyhounds to .csv</button>
+        </div>
+    </div>
+</div>

@@ -12,6 +12,7 @@ var rankingController = require('./ranking/rankingController');
 var adminController = require('./admin/adminController');
 var fileController = require('./file/fileController');
 var inviteController = require('./invite/inviteController');
+var exportController = require('./export/exportController');
 var helper = require('./helper');
 var rateLimiter = require('./rateLimiter');
 
@@ -121,6 +122,10 @@ module.exports = function(app) {
     app.post('/file/:uploadType',securityController.checkAuthentication, fileController.uploadFile);
     app.param('uploadType',securityController.checkAuthentication, fileController.setUploadType);
     app.param('fileId', fileController.setModel);
+
+    app.post('/export/:exportCollection/:exportType',securityController.checkAuthentication, exportController.exportCollection);
+    app.param('exportCollection', exportController.setExportCollection);
+    app.param('exportType', exportController.setExportType);
 
     //admin
     app.del('/admin/drop/:collectionName', securityController.checkAuthentication, adminController.dropCollection);

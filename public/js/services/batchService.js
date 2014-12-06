@@ -17,6 +17,12 @@ angular.module('services').factory('batchService',
             });
         };
 
+        batchService.createExport = function(collectionType, exportType){
+            return $http.post("/export/" + collectionType + "/" + exportType).then(function(result){
+                return result.data;
+            });
+        };
+
 
         return batchService;
     }
