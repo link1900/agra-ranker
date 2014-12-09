@@ -1,51 +1,38 @@
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">{{tableTitle}}</h3>
+    <div class="panel-heading clearfix">
+        <h3 class="panel-title pull-left">{{tableTitle}}</h3>
+        <form ng-hide="noRecords || hideSearch" class="pull-right">
+            <label class="sr-only" for="table-search">Search:</label>
+            <span class="glyphicon glyphicon-search" ng-click="updateSearch()"></span>
+            <input id="table-search" type="text" data-ng-model="searchParams.like" data-ng-change="updateSearch()" autocomplete="off"/>
+            <span class="glyphicon glyphicon-filter"></span>
+        </form>
     </div>
-    <div ng-show="messageEmpty && models.length == 0">{{messageEmpty}}</div>
-    <div ng-hide="(messageEmpty && models.length == 0) || hideSearch" class="panel-body">
-        <div>
-            <form>
-                <div class="form-group col-sm-3">
-                    <label class="sr-only">Search:</label>
-                    <div ng-if="searchFieldType == 'text'">
-                        <input type="text" data-ng-model="searchParams.like" placeholder="Search Text" class="form-control" />
+    <div ng-show="noRecords">{{messageEmpty}}</div>
+    <div ng-show="noSearchRecords">Search did not find any results</div>
+    <table ng-hide="noRecords || noSearchRecords" border="0" class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th data-ng-repeat="column in columnInfo">{{column.title}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="model in models">
+            <td data-ng-repeat="column in columnInfo">
+                <div ng-switch data-on="column.link">
+                    <div ng-switch-when="true">
+                        <a data-ng-href="{{column.baseLink}}{{getValueFromModel(model, column.linkField)}}">{{getFieldValue(model,column)}}</a>
                     </div>
-                    <div ng-if="searchFieldType == 'greyhound'">
-                        <div sb-greyhound-name-field data-sb-model="searchParams.like"></div>
-                    </div>
-                    <div ng-if="searchFieldType == 'race'">
-                        <div sb-race-name-field data-sb-model="searchParams.like"></div>
-                    </div>
+                    <div ng-switch-default>{{getFieldValue(model,column)}}</div>
                 </div>
-                <div class="col-md-2">
-                    <button data-ng-click="updateSearch()" class="btn btn-primary btn-sm">Search</button>
-                    <button data-ng-click="clearSearch()" class="btn btn-default btn-sm">Clear</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div data-ng-show="models.length > 0">
-        <table border="0" class="table table-striped table-bordered">
-            <thead>
-            <tr>
-                <th data-ng-repeat="column in columnInfo">{{column.title}}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr data-ng-repeat="model in models">
-                <td data-ng-repeat="column in columnInfo">
-                    <div ng-switch data-on="column.link">
-                        <div ng-switch-when="true">
-                            <a data-ng-href="{{column.baseLink}}{{getValueFromModel(model, column.linkField)}}">{{getFieldValue(model,column)}}</a>
-                        </div>
-                        <div ng-switch-default>{{getFieldValue(model,column)}}</div>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div ng-hide="noRecords || noSearchRecords" class="panel-footer clearfix">
+        <div class="pull-left">Displaying {{calculatePageRange(searchParams.page,searchParams.per_page, totalItems)}} of {{totalItems}} items</div>
         <div data-pagination
+             class="pull-right pagination-no-margin"
              data-on-select-page="changePage(page)"
              data-direction-links="true"
              data-boundary-links="true"
@@ -55,6 +42,5 @@
              data-max-size="5">
         </div>
     </div>
-    <div data-ng-show="!messageEmpty && models.length == 0">No records</div>
 </div>
 

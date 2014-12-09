@@ -2,6 +2,9 @@ angular.module('directives')
     .directive('sbTable', function(headerHelperService, $filter, rankerEventBus) {
         function linkBody(scope, element, attrs) {
 
+            scope.noRecords = true;
+            scope.noSearchRecords = false;
+
             scope.searchParams = {
                 page : 1,
                 per_page : 10,
@@ -26,16 +29,14 @@ angular.module('directives')
                 _.extend(scope.searchParams, scope.searchFields);
             }
 
+            if (scope.messageEmpty){
+                scope.messageEmpty = "No records";
+            }
+
             if (scope.updateOnEvent){
                 scope.$on(scope.updateOnEvent,function() {
                     scope.loadModels();
                 });
-            }
-
-            scope.searchFieldType = 'text';
-
-            if (scope.searchType){
-                scope.searchFieldType = scope.searchType;
             }
 
             scope.updateSearch = function(){
@@ -50,6 +51,19 @@ angular.module('directives')
             scope.changePage = function(page){
                 scope.searchParams.page = page;
                 scope.loadModels();
+            };
+
+            scope.calculatePageRange = function(page, pageSize, total){
+                if (total == 0){
+                    return 0;
+                } else {
+                    var start = (page-1) * pageSize;
+                    start = start <= 0 ? 1 : start;
+                    var end = page * pageSize;
+                    end = end > total ? total : end;
+                    return start + "-" + end;
+                }
+
             };
 
             scope.getValueFromModel = function(model, field){
@@ -92,6 +106,8 @@ angular.module('directives')
             scope.loadModels = function() {
                 scope.modelService.query(scope.searchParams, function(resultModels, headers) {
                     scope.models = resultModels;
+                    scope.noRecords = scope.models.length == 0 && scope.searchParams.like == '';
+                    scope.noSearchRecords = scope.models.length == 0 && scope.searchParams.like != '';
                     if (scope.postProcess){
                         scope.postProcess(resultModels);
                     }
@@ -111,7 +127,6 @@ angular.module('directives')
                 sortDirection: '@',
                 updateOnEvent: '@',
                 messageEmpty: '@',
-                searchType: '@',
                 modelService: '=',
                 columnInfo: '=',
                 postProcess: '=',
