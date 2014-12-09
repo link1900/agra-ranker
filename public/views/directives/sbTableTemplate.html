@@ -5,7 +5,7 @@
             <label class="sr-only" for="table-search">Search:</label>
             <span class="glyphicon glyphicon-search" ng-click="updateSearch()"></span>
             <input id="table-search" type="text" data-ng-model="searchParams.like" data-ng-change="updateSearch()" autocomplete="off"/>
-            <span class="glyphicon glyphicon-filter"></span>
+            <span ng-show="searchInfo" class="glyphicon glyphicon-cog"></span>
         </form>
     </div>
     <div ng-show="noRecords">{{messageEmpty}}</div>

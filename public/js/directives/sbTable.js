@@ -129,6 +129,7 @@ angular.module('directives')
                 messageEmpty: '@',
                 modelService: '=',
                 columnInfo: '=',
+                searchInfo: '=',
                 postProcess: '=',
                 searchFields: '=',
                 hideSearch: '='
