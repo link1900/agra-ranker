@@ -18,8 +18,8 @@
                 <dd>{{batchResult.createdAt | fromNow}}</dd>
                 <dt>Last updated</dt>
                 <dd>{{batchResult.updatedAt | fromNow}}</dd>
-                <dt>Details</dt>
-                <dd>
+                <dt ng-show="batchResult.stepResults">Details</dt>
+                <dd ng-show="batchResult.stepResults">
                     <ul>
                         <li data-ng-repeat="stepResult in batchResult.stepResults">
                             {{stepResult}}
