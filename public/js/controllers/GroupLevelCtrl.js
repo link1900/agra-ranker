@@ -21,7 +21,7 @@ angular.module('controllers').controller('GroupLevelCtrl', ['$scope', '$routePar
 
         $scope.columnInfo = [
             {title: "Name", field:"name", baseLink:"#/groupLevel/view/", linkField: "_id", link:true},
-            {title: "Last updated", field:"updateedAt", filter: "fromNow"}
+            {title: "Last updated", field:"updatedAt", filter: "fromNow"}
         ];
 
         $scope.create = function(){
