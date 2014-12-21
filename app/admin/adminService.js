@@ -26,6 +26,12 @@ adminService.removeAllGreyhounds = function(){
     });
 };
 
+adminService.removeAllRaces = function(){
+    return mongoService.dropCollection(Placing).then(function(){
+        return mongoService.dropCollection(Race);
+    });
+};
+
 adminService.removeAllBatchJobs = function(){
     return mongoService.dropCollection(BatchResult).then(function(){
         return mongoService.dropCollection(BatchJob);

@@ -14,6 +14,9 @@ adminController.dropCollection = function(req, res){
         case 'greyhound' :
             helper.responseFromPromise(res, adminService.removeAllGreyhounds());
         break;
+        case 'race' :
+            helper.responseFromPromise(res, adminService.removeAllRaces());
+            break;
         case 'batch' :
             helper.responseFromPromise(res, adminService.removeAllBatchJobs());
             break;
