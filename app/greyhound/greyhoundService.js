@@ -10,6 +10,7 @@ var _ = require('lodash');
 var helper = require('../helper');
 var q = require('q');
 var mongoService = require('../mongoService');
+var csv = require('csv');
 
 greyhoundService.rawCsvArrayToGreyhound = function(rawRow){
     var greyhound = {
