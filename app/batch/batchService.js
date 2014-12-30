@@ -1,14 +1,16 @@
 var batchService = module.exports = {};
 
 var _ = require('lodash');
+var q = require('q');
+var logger = require('winston');
 var uuid = require('node-uuid');
+var csv = require('csv');
 var mongoose = require('mongoose');
 var BatchJob = require('./batchJob').model;
 var BatchResult = require('./batchResult').model;
 var helper = require('../helper');
 var mongoService = require('../mongoService');
 var fileService = require('../file/fileService');
-var q = require('q');
 
 batchService.states = {
     standby : 'Sleeping',
@@ -38,11 +40,11 @@ batchService.batchStatuses = {
 
 batchService.startBatchProcessors = function(){
     batchService.processes.forEach(function(process){
-        console.log("["+process.name+"]" + " has been started");
+        logger.log("info","["+process.name+"]" + " has been started");
         setInterval(batchService.processorTick, 5000, process);
     });
 
-    console.log("[failed batch job checker]" + " has been started");
+    logger.log("info","[failed batch job checker]" + " has been started");
     setInterval(batchService.failedBatchJobChecker, 10000);
 };
 
@@ -66,14 +68,14 @@ batchService.failedBatchJobChecker = function(){
                     //batch in progress that is not in a processor. mark it as failed
                     batchInProgress.status = batchService.batchStatuses.failed;
                     return mongoService.savePromise(batchInProgress).then(function(result){
-                        console.log("[failed batch job checker] has marked batch job " +
+                        logger.log("info","[failed batch job checker] has marked batch job " +
                             " id: " + batchInProgress._id +
                             " name: " + batchInProgress.name +
                             " as Failed because nothing is processing it");
                         return result;
                     }, function(updateFailure){
                         batchService.failedCheckerState = batchService.states.standby;
-                        console.log("[failed batch job checker] had an error trying to update a batch job to failed", updateFailure);
+                        logger.log("info","[failed batch job checker] had an error trying to update a batch job to failed", updateFailure);
                     });
                 } else {
                     return q(true);
@@ -83,15 +85,15 @@ batchService.failedBatchJobChecker = function(){
                 batchService.failedCheckerState = batchService.states.standby;
                 //make debug console.log("[failed batch job checker] finished looking for stuck batch jobs");
             }, function(someError){
-                console.log("[failed batch job checker] has had an error", someError);
+                logger.log("info","[failed batch job checker] has had an error", someError);
                 batchService.failedCheckerState = batchService.states.standby;
             });
         }, function(err){
-            console.log("[failed batch job checker] has had an error", err);
+            logger.log("info","[failed batch job checker] has had an error", err);
             batchService.failedCheckerState = batchService.states.standby;
         });
     } else {
-        console.log("[failed batch job checker] is busy did not fire at this time");
+        logger.log("info","[failed batch job checker] is busy did not fire at this time");
     }
 };
 
@@ -111,7 +113,7 @@ batchService.processorTick = function(processor){
     if (processor.state == batchService.states.standby){
         batchService.executeProcessor(processor);
     } else {
-        console.log(processor.name + " is busy");
+        logger.log("info",processor.name + " is busy");
     }
 };
 
@@ -123,10 +125,10 @@ batchService.executeProcessor = function(processor){
     var options = {sort : {createdAt : 1}};
     BatchJob.findOneAndUpdate(query, update, options, function(err, batchToProcess) {
         if (err) {
-            console.log(processor.name + " had an error reading batch", err);
+            logger.log("info",processor.name + " had an error reading batch", err);
             batchService.clearProcessor(processor);
         } else if (batchToProcess != null) {
-            console.log(processor.name + " started processing batch job " + batchToProcess.name);
+            logger.log("info",processor.name + " started processing batch job " + batchToProcess.name);
             processor.state = batchService.states.processing;
             processor.processingBatch = batchToProcess;
             batchService.processBatch(processor.processingBatch).then(function(){
@@ -139,12 +141,12 @@ batchService.executeProcessor = function(processor){
                     batchService.clearProcessor(processor);
                 });
             }, function(batchProcessError){
-                console.log(processor.name + " had an error processing batch job ", batchProcessError);
+                logger.log("info", processor.name + " had an error processing batch job:" + batchProcessError);
                 batchToProcess.status = batchService.batchStatuses.failed;
                 mongoService.savePromise(batchToProcess).then(function(){
                     batchService.clearProcessor(processor);
                 }, function(){
-                    console.log(processor.name + " had an error updating batch", err);
+                    logger.log("info", processor.name + " had an error updating batch", err);
                     batchService.clearProcessor(processor);
                 });
             });
@@ -233,9 +235,60 @@ batchService.createBatchHandler = function(req, file){
     return batchService.createBatch(req.headers.uploadfilename, req.param('batchType'), {fileId : file._id}).then(function(batch){
         return q(batch);
     }, function(batchCreationError){
-        console.log("batch creation error");
+        logger.log("error","batch creation error");
         return q.reject({'error':batchCreationError});
     });
+};
+
+batchService.processBatchJobFile = function(batchJob, rowProcessor){
+    var deferred = q.defer();
+    if (batchJob.metadata != null && batchJob.metadata.fileId != null){
+        //find the file and stream it in
+        var fileReadStream =  fileService.getFileReadStream(batchJob.metadata.fileId);
+        var recordCount = 0;
+        fileReadStream.on('error', function(fileReadError){
+            logger.log("error","error streaming from gridfs", fileReadError);
+            deferred.reject(fileReadError);
+        });
+
+        var parser = csv.parse();
+
+        parser.on('data', function(record){
+            parser.pause();
+            recordCount += 1;
+            var index = recordCount;
+            var recordStart = new Date();
+            return rowProcessor(record).then(function(resultInfo) {
+                var resultType = batchService.getBatchResultFromBoolean(resultInfo.isSuccessful);
+                var batchResult = new BatchResult({
+                    batchRef: batchJob._id,
+                    recordNumber: index,
+                    status: resultType,
+                    startDate: recordStart,
+                    endDate: new Date(),
+                    raw: record,
+                    stepResults: resultInfo.stepResults
+                });
+                return mongoService.savePromise(batchResult).then(function(){
+                    parser.resume();
+                });
+            });
+        });
+
+        parser.on('finish', function(){
+            deferred.resolve({results: true});
+        });
+
+        parser.on('error', function(parserError){
+            logger.log("error","error parsing csv", parserError);
+            deferred.reject(parserError);
+        });
+
+        fileReadStream.pipe(parser);
+    } else {
+        deferred.reject({error: "batch job does not contain enough data to process"});
+    }
+    return deferred.promise;
 };
 
 fileService.createPostUploadHandler('batch', batchService.createBatchHandler);

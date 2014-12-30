@@ -5,11 +5,14 @@ var q = require('q');
 var Placing = require('./placing').model;
 var Race = require('../race/race').model;
 var Greyhound = require('../greyhound/greyhound').model;
+var greyhoundService = require('../greyhound/greyhoundService');
 var helper = require('../helper');
 var mongoService = require('../mongoService');
 
 placingService.createPlacing = function(placingObject){
-    return placingService.preProcessModel(new Placing(placingObject))
+    return placingService.preProcessPlacingObject(placingObject)
+        .then(placingService.makePlacingModel)
+        .then(placingService.preProcessModel)
         .then(placingService.validatePlacing)
         .then(mongoService.savePromise);
 };
@@ -25,17 +28,24 @@ placingService.mergeWithExisting = function(existingModel, updatedBody){
     return q(_.extend(existingModel, updatedBody));
 };
 
+placingService.makePlacingModel = function(placingObject){
+    return q(new Placing(placingObject));
+};
+
 placingService.preProcessModel = function(placing){
-    return placingService.convertGreyhoundNameToRef(placing)
-        .then(placingService.setRaceFlyweight)
+    return placingService.setRaceFlyweight(placing)
         .then(placingService.setGreyhoundFlyweight);
+};
+
+placingService.preProcessPlacingObject = function(placing){
+    return placingService.convertGreyhoundNameToRef(placing);
 };
 
 placingService.convertGreyhoundNameToRef = function(placing){
     if (placing != null && placing.greyhoundName != null){
-        return mongoService.findOne(Greyhound, {name: placing.greyhoundName}).then(function(model){
-            if (model != null){
-                placing.greyhoundRef = model._id;
+        return greyhoundService.createGreyhoundByName(placing.greyhoundName).then(function(result){
+            if (result != null && result.model != null){
+                placing.greyhoundRef = result.model._id;
             }
             delete placing.greyhoundName;
             return q(placing);
@@ -86,7 +96,7 @@ placingService.validatePlacing = function(placing){
 
     var validPlacings = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","DNF","disqualified"];
     if (!_.contains(validPlacings,placing.placing)){
-        return q.reject("placing must be between 1 and 30");
+        return q.reject("placing was " +placing.placing + " and must be one of " + validPlacings);
     }
 
     if (placing.raceRef == null){

@@ -182,24 +182,31 @@
 - (DONE) Send an email when a user request is made (to users that elect to get the email)
 - (DONE) On user request send an email to all users which have requested to be notified (passcode user is defaulted to yes)
 
-### 6.0.13 Fix ups
+### 6.0.13 Racing, export and search
 - (DONE) Remove white list and have all sign ups require approval
 - (DONE) Create default data command for group levels
-- Date directive that does both date filter and time ago filter
-- Standard fields directive which does created at, updated at and created by and shows dates with the new filter
-
-### 6.0.14 Ranking Phase 1
-- export greyhound csv
-- export greyhound json
-- allow race search to be done by two dates
-- update placing flyweight in point allotment when placing is updated
+- (DONE) Add a from now from filter and change dates over to that filter
+- (DONE) rename ranking system equal points to dead heat distribution
+- (DONE) export greyhound csv
+- (DONE) Upgrade the grid to have total count and display of record
 - Add race importing
+- order placing listing by placing number
 - export races csv
-- export races json
+- Upgrade grid to have good search controls for races
+- Hide extra search options if none are defined
+- Save the advanced search options on a grid (in the panel is open or closed and the details)
+- Advanced search options have a clear button which clears all settings
+- Switch basic like search to use mongo full text search
+- allow race search to be done by two dates
+- fix an issue in the race batch import results are outside the panel
+- improve when a batch is uploaded
+- have the ability confirm a races data / deal with conflicts and merge it
+
+### 6.0.14 Ranking Phase 2
+- investigate speed of ranking calculation without using pointAllotments
+- update placing flyweight in point allotment when placing is updated
 - unit test point allotment creation
 - calculate rankings on race creation
-
-### 6.0.15 Ranking Phase 2
 - Create default data command for ranking system
 - define agra ranking system and test importing it
 - define sire and dam ranking systems test import it
@@ -211,7 +218,7 @@
 - update when greyhound is deleted
 - update when race is deleted
 - update when rule set is deleted
-- delete ranking when system is deleted
+- delete rankings when ranking system is deleted
 
 ### 6.1 Ranking UI
 - list all rankings on the home screen
@@ -236,6 +243,9 @@
 - Switch test data loading to fixtures
 
 ## Backlog - Beyond the ranker 6
+- export greyhound json
+- export races json
+- siblings feature which display both full and half siblings
 - Fix set model in the routes to be json based, done after auth and standardized
 - Fix an issue when calling DELETE /user/badid
 - Investigate what happens with an un matched route

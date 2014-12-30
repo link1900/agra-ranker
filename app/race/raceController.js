@@ -8,6 +8,7 @@ var GroupLevel = require('../groupLevel/groupLevel').model;
 var Placing = require('../placing/placing').model;
 var _ = require('lodash');
 var helper = require('../helper');
+var raceService = require('./raceService');
 var mongoService = require('../mongoService');
 var q = require('q');
 
@@ -121,21 +122,9 @@ raceController.validate = function(entityRequest){
     }
 
     return raceController.checkGroupRefExists(model.groupLevelRef).then(function(){
-        return raceController.checkNameAndDateDoNotExist(model).then(function(){
+        return raceService.checkNameAndDateDoNotExist(model).then(function(){
             return q(entityRequest);
         });
-    });
-};
-
-raceController.checkNameAndDateDoNotExist = function(model){
-    return mongoService.find(Race, {name: model.name, date: model.date}).then(function(results){
-        if (results.length == 0){
-            return q(true);
-        } else if (results.length == 1 && _.isEqual(results[0]._id,model._id)) {
-            return q(true);
-        } else {
-            return q.reject("cannot have the same name and date as an existing race");
-        }
     });
 };
 
