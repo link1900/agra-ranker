@@ -237,6 +237,7 @@ describe("Point Allotments", function(){
             });
         });
     });
+
     afterEach(function(done){
         testHelper.clearPointAllotments(done);
     });
