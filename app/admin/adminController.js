@@ -37,6 +37,9 @@ adminController.setupCollection = function(req, res){
         case 'groupLevel' :
             helper.responseFromPromise(res, adminService.setupGroupLevel());
             break;
+        case 'rankingSystem' :
+            helper.responseFromPromise(res, adminService.setupRankingSystemDefaults());
+            break;
         default:
             res.jsonp(404, {"error":"collection not found"});
             break;

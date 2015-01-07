@@ -56,6 +56,49 @@ adminService.setupGroupLevel = function(){
     ]);
 };
 
+adminService.setupRankingSystemDefaults = function(){
+    var agraRanker = {
+        name: "AGRA Ranking",
+        description: "The main ranking system for agra",
+        equalPositionResolution: "splitPoints",
+        pointAllotments:[]
+    };
+
+    //sprint group
+    var base = [{field: "disqualified", "comparator": "=", "value": false}];
+    var baseSprint = [{field: "distanceMeters", "comparator": "<", "value": "595"}].concat(base);
+    var group1Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1"}].concat(baseSprint);
+    var group2Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2"}].concat(baseSprint);
+    var group3Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"}].concat(baseSprint);
+    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([70, 35, 20, 15, 10, 8, 7, 6], group1Sprint));
+    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sprint));
+    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([25, 16, 12, 8, 6, 5, 4, 3], group3Sprint));
+
+    //stay groups
+    var baseStay = [{field: "distanceMeters", "comparator": ">=", "value": "595"}].concat(base);
+    var group1Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1"}].concat(baseStay);
+    var group2Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2"}].concat(baseStay);
+    var group3Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"}].concat(baseStay);
+    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([50, 25, 16, 12, 8, 6, 4, 2], group1Stay));
+    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([30, 20, 12, 8, 6, 4, 2, 1], group2Stay));
+    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([20, 14, 10, 6, 4, 3, 2, 1], group3Stay));
+
+    return mongoService.saveAll([
+        new RankingSystem(agraRanker)
+    ]);
+};
+
+adminService.generateAllotmentSet = function(pointArray, defaultCriteria){
+    return pointArray.map(function(pointValue, index){
+        var newCriteria = defaultCriteria.slice();
+        newCriteria.push({field: "placing", "comparator": "=", "value": (index+1).toString()});
+        return {
+            points: pointValue,
+            criteria:newCriteria
+        };
+    })
+};
+
 adminService.getAllCounts = function(){
     var proms = [
         mongoService.getCollectionCount(User).then(function(count){
