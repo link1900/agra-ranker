@@ -19,7 +19,7 @@ rateLimiter.failure = function (req, res, next, nextValidRequestDate) {
 };
 
 rateLimiter.limitedAccess = new ExpressBrute(rateLimiter.store,{
-    freeRetries: 1000,
+    freeRetries: 10000,
     proxyDepth: 1,
     minWait: 500, // 500 mills
     maxWait: 15*60*1000, // 15 mins
