@@ -109,10 +109,7 @@ module.exports = function(app) {
     app.param('pointAllotmentId', pointAllotmentController.setModel);
 
     //rankings
-    app.get('/ranking', rankingController.prepareQuery, helper.runQuery);
-    app.get('/ranking/:rankingId', helper.getOne);
-    app.post('/ranking', securityController.checkAuthentication, rankingController.createRankings);
-    app.param('rankingId', rankingController.setModel);
+    app.get('/ranking', rankingController.getRankings);
 
     //file routes
     app.get('/file', securityController.checkAuthentication, fileController.prepareQuery, helper.runQuery);

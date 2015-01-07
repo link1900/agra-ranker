@@ -71,14 +71,9 @@ rankingService.sumPlacingsIntoRankings = function(placingPoints){
 
     return _.keys(grouped).map(function(greyhoundRef){
         var placingPointsForGreyhound = grouped[greyhoundRef];
-        var greyhoundName = _.first(placingPointsForGreyhound).placing.greyhound.name;
+        var greyhoundName = rankingService.getGreyhoundNameFromPlacingSet(placingPointsForGreyhound);
         placingPointsForGreyhound = placingPointsForGreyhound.map(function(placingPoint){
-            return {
-                points: placingPoint.points,
-                placingRef: placingPoint.placing._id.toString(),
-                position: placingPoint.placing.placing,
-                race:{name: placingPoint.placing.race.name}
-            };
+            return rankingService.getPlacingReferenceFromPlacingPoint(placingPoint);
         });
         var totalPoints = placingPointsForGreyhound.reduce(function(sum, placingPoint){
             return sum + placingPoint.points;
@@ -91,6 +86,46 @@ rankingService.sumPlacingsIntoRankings = function(placingPoints){
             totalPoints: totalPoints
         };
     });
+};
+
+rankingService.getGreyhoundNameFromPlacingSet = function(placingPointSet){
+    var foundPlacingPoint = _.first(placingPointSet);
+    if (foundPlacingPoint != null && foundPlacingPoint.placing && foundPlacingPoint.placing.greyhound &&
+        foundPlacingPoint.placing.greyhound.name){
+        return foundPlacingPoint.placing.greyhound.name;
+    } else {
+        return "";
+    }
+};
+
+rankingService.getPlacingReferenceFromPlacingPoint = function(placingPoint){
+    var points = 0;
+    var placingRef = "";
+    var position = "";
+    var race = {name:""};
+
+    if (placingPoint && placingPoint.points){
+        points = placingPoint.points
+    }
+
+    if (placingPoint && placingPoint.placing && placingPoint.placing._id){
+        placingRef = placingPoint.placing._id.toString()
+    }
+
+    if (placingPoint && placingPoint.placing && placingPoint.placing.placing){
+        position = placingPoint.placing.placing;
+    }
+
+    if (placingPoint && placingPoint.placing && placingPoint.placing.race && placingPoint.placing.race.name){
+        race.name = placingPoint.placing.race.name;
+    }
+
+    return {
+        points: points,
+        placingRef: placingRef,
+        position: position,
+        race: race
+    };
 };
 
 rankingService.addRankingPosition = function(rankings){

@@ -11,27 +11,28 @@ describe("Ranking", function(){
         testHelper.setup(done);
     });
 
-    beforeEach(function(done){
-        testHelper.loadPointAllotments(done);
-    });
-
     describe("Get", function(){
+
+        before(function(done){
+            testHelper.setupRankingTestData(done);
+        });
+
+        after(function (done) {
+            testHelper.removeRankingData(done);
+        });
+
         it("Rankings", function(done){
             testHelper.publicSession
-                .get('/ranking?rankingSystemRef=53412feb5c4ac1fdcd4781ff')
+                .get('/ranking?rankingSystemRef=54ac8b031ee51022d545c8fc')
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end(function(err, res){
-                    if (err){console.log(res); throw err; }
-                    console.log(res.body);
+                    if (err){console.log(res.body); throw err; }
+                    assert.lengthOf(res.body, 4);
                     done();
                 });
         });
-    });
-
-    afterEach(function(done){
-        testHelper.clearPointAllotments(done);
     });
 
     after(function (done) {

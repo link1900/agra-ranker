@@ -399,231 +399,18 @@ describe("rankingService", function(){
     });
 
     describe("#calculateRankings", function() {
-
-        var rankingSystem1 = {
-            _id: "54ac8b031ee51022d545c8fc",
-            "name": "Test ranking system",
-            "description": "Test ranking system",
-            equalPositionResolution: "splitPoints",
-            pointAllotments: [{
-                criteria: [
-                    {field: "placing", "comparator": "=", "value": "1"},
-                    {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
-                    {field: "race.distanceMeters", "comparator": "<", "value": 715},
-                    {field: "race.disqualified", "comparator": "=", "value": false}
-                ],
-                points: 20
-            },{
-                criteria: [
-                    {field: "placing", "comparator": "=", "value": "2"},
-                    {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
-                    {field: "race.distanceMeters", "comparator": "<", "value": 715},
-                    {field: "race.disqualified", "comparator": "=", "value": false}
-                ],
-                points: 10
-            },{
-                criteria: [
-                    {field: "placing", "comparator": "=", "value": "3"},
-                    {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
-                    {field: "race.distanceMeters", "comparator": "<", "value": 715},
-                    {field: "race.disqualified", "comparator": "=", "value": false}
-                ],
-                points: 5
-            }]
-        };
-
-        var john = {
-            _id: '54ac8d5e1ee51022d545c8fe',
-            name: "john"
-        };
-        var sally = {
-            _id: '54ac8da71ee51022d545c900',
-            name: "sally"
-        };
-        var molly = {
-            _id: '54ac8dac1ee51022d545c901',
-            name: "molly"
-        };
-        var jane = {
-            _id: '54ac8db01ee51022d545c902',
-            name: "jane"
-        };
-
-        var rankingRace1 = {
-            "_id": "54ac8e011ee51022d545c904",
-            "distanceMeters": 500,
-            "groupLevel": {
-                "name": "Group 3",
-                "_id": "54ac8dce1ee51022d545c903"
-            },
-            "groupLevelRef": "54ac8dce1ee51022d545c903",
-            "name": "rankingRace1",
-            date: new Date(2014,8,8),
-            "disqualified": false
-        };
-        var rankingRace2 = {
-            "_id": "54ac8e1a1ee51022d545c905",
-            "distanceMeters": 500,
-            "groupLevel": {
-                "name": "Group 3",
-                "_id": "54ac8dce1ee51022d545c903"
-            },
-            "groupLevelRef": "54ac8dce1ee51022d545c903",
-            "name": "rankingRace1",
-            date: new Date(2014,8,8),
-            "disqualified": false
-        };
-        var rankingRace3 = {
-            "_id": "54ac8e221ee51022d545c906",
-            "distanceMeters": 500,
-            "groupLevel": {
-                "name": "Group 3",
-                "_id": "54ac8dce1ee51022d545c903"
-            },
-            "groupLevelRef": "54ac8dce1ee51022d545c903",
-            "name": "rankingRace1",
-            date: new Date(2012,8,8),
-            "disqualified": false
-        };
-
-        var johnRankingRace1 = {
-            "greyhound": john,
-            "race": rankingRace1,
-            "placing": "1",
-            _id:"54aca1da1ee51022d545c909",
-            "raceRef": rankingRace1._id,
-            "greyhoundRef": john._id
-        };
-
-        var johnRankingRace1Ref = {
-            "placingRef": "54aca1da1ee51022d545c909",
-            "points": 20,
-            "position": "1",
-            "race": {
-                "name": rankingRace1.name
-            }
-        };
-
-        var sallyRankingRace1 = {
-            "greyhound": sally,
-            "race": rankingRace1,
-            "placing": "2",
-            _id:"54aca2661ee51022d545c90a",
-            "raceRef": rankingRace1._id,
-            "greyhoundRef": sally._id
-        };
-
-        var sallyRankingRace1Ref = {
-            "placingRef": "54aca2661ee51022d545c90a",
-            "points": 10,
-            "position": "2",
-            "race": {
-                "name": rankingRace1.name
-            }
-        };
-
-        var mollyRankingRace1 = {
-            "greyhound": molly,
-            "race": rankingRace1,
-            _id:"54aca2721ee51022d545c90b",
-            "placing": "3",
-            "raceRef": rankingRace1._id,
-            "greyhoundRef": molly._id
-        };
-
-        var mollyRankingRace1Ref = {
-            "placingRef": "54aca2721ee51022d545c90b",
-            "points": 5,
-            "position": "3",
-            "race": {
-                "name": rankingRace1.name
-            }
-        };
-
-        var johnRankingRace2 = {
-            "greyhound": john,
-            "race": rankingRace2,
-            _id:"54aca27e1ee51022d545c90c",
-            "placing": "1",
-            "raceRef": rankingRace2._id,
-            "greyhoundRef": john._id
-        };
-
-        var johnRankingRace2Ref = {
-            "placingRef": "54aca27e1ee51022d545c90c",
-            "points": 20,
-            "position": "1",
-            "race": {
-                "name": rankingRace2.name
-            }
-        };
-
-        var janeRankingRace2 = {
-            "greyhound": jane,
-            "race": rankingRace2,
-            _id:"54aca28f1ee51022d545c90d",
-            "placing": "2",
-            "raceRef": rankingRace2._id,
-            "greyhoundRef": jane._id
-        };
-
-        var janeRankingRace2Ref = {
-            "placingRef": "54aca28f1ee51022d545c90d",
-            "points": 10,
-            "position": "2",
-            "race": {
-                "name": rankingRace2.name
-            }
-        };
-
-        var johnRankingRace3 = {
-            "greyhound": john,
-            "race": rankingRace3,
-            _id:"54aca29d1ee51022d545c90e",
-            "placing": "1",
-            "raceRef": rankingRace3._id,
-            "greyhoundRef": john._id
-        };
-
-        var johnRankingRace3Ref = {
-            "placingRef": "54aca29d1ee51022d545c90e",
-            "points": 20,
-            "position": "1",
-            "race": {
-                "name": rankingRace3.name
-            }
-        };
-
         before(function(done){
-            new Placing(johnRankingRace1).save(function(){
-                new Placing(sallyRankingRace1).save(function(){
-                    new Placing(mollyRankingRace1).save(function(){
-                        new Placing(janeRankingRace2).save(function(){
-                            new Placing(johnRankingRace2).save(function(){
-                                new Placing(johnRankingRace3).save(function(){
-                                    new RankingSystem(rankingSystem1).save(function(){
-                                        done();
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
+            testHelper.setupRankingTestData(done);
         });
 
         after(function (done) {
-            RankingSystem.remove({}, function(){
-                Placing.remove({}, function(){
-                    done();
-                });
-            })
+            testHelper.removeRankingData(done);
         });
 
         it("calculates the correct rankings", function (done) {
             rankingService.calculateRankings("54ac8b031ee51022d545c8fc").then(function(results){
                 assert.lengthOf(results, 4);
-                assert.equal(results[0].greyhoundName, john.name);
+                assert.equal(results[0].greyhoundName, "john");
                 assert.equal(results[0].rank, 1);
                 assert.equal(results[0].totalPoints, 60);
                 assert.equal(results[1].rank, 2);
@@ -641,7 +428,7 @@ describe("rankingService", function(){
         it("calculates with limit", function (done) {
             rankingService.calculateRankings("54ac8b031ee51022d545c8fc", new Date(2013, 1,1) ,null, 1).then(function(results){
                 assert.lengthOf(results, 1);
-                assert.equal(results[0].greyhoundName, john.name);
+                assert.equal(results[0].greyhoundName, "john");
                 assert.equal(results[0].rank, 1);
                 assert.equal(results[0].totalPoints, 40);
                 done();
@@ -653,7 +440,7 @@ describe("rankingService", function(){
         it("calculates with limit", function (done) {
             rankingService.calculateRankings("54ac8b031ee51022d545c8fc", new Date(2013,1,1), null, 1).then(function(results){
                 assert.lengthOf(results, 1);
-                assert.equal(results[0].greyhoundName, john.name);
+                assert.equal(results[0].greyhoundName, "john");
                 assert.equal(results[0].rank, 1);
                 assert.equal(results[0].totalPoints, 40);
                 done();
