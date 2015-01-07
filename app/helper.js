@@ -61,9 +61,15 @@ helper.promiseToResponse = function(promise, res){
 helper.responseFromPromise = function(res, promise){
     promise.then(function(result){
         res.jsonp(200, result);
-    })
-    .fail(function(error){
-        res.jsonp(400, {"error": error});
+    },function(error){
+        if (error instanceof Error && error.message != null){
+            res.jsonp(400, {"error": error.message});
+        } else {
+            res.jsonp(400, {"error": error});
+        }
+
+    }).catch(function(ex){
+        res.jsonp(400, {"error": ex});
     });
 };
 
