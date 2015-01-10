@@ -11,21 +11,36 @@ var helper = require('../helper');
 var mongoService = require('../mongoService');
 var RankingSystem = require('./rankingSystem').model;
 
-rankingService.calculateRankings = function(rankingSystemRef, fromDate, toDate, limit){
-    if (limit == null || limit > 100) limit = 100;
+rankingService.calculateRankings = function(rankingSystemRef, fromDate, toDate){
 
-    return mongoService.findOneById(RankingSystem, rankingSystemRef).then(function(rankingSystem){
-        if (rankingSystem != null){
-            rankingService.insertDatesIntoPointAllotments(rankingSystem, fromDate, toDate);
-            return rankingService.convertPointAllotmentsToPlacingsPoints(rankingSystem.pointAllotments)
-                .then(function(pointPlacings){
-                    var rankings = rankingService.sumPlacingsIntoRankings(pointPlacings);
-                    return rankingService.addRankingPosition(rankings).slice(0, limit);
-                });
-        } else {
-            return q.reject("must be a valid ranking system ref");
-        }
+    return rankingService.getRankingSystem(rankingSystemRef).then(function(rankingSystem){
+        rankingService.insertDatesIntoPointAllotments(rankingSystem, fromDate, toDate);
+        return rankingService.convertPointAllotmentsToPlacingsPoints(rankingSystem.pointAllotments)
+            .then(function(pointPlacings){
+                var rankings = rankingService.sumPlacingsIntoRankings(pointPlacings, false);
+                return rankingService.addRankingPosition(rankings);
+            });
     });
+};
+
+rankingService.getRankingSystem = function(rankingSystemRef){
+    if (rankingSystemRef != null){
+        return mongoService.findOneById(RankingSystem, rankingSystemRef).then(function(rankingSystem){
+            if (rankingSystem != null){
+                return q(rankingSystem);
+            } else {
+                return q.reject("must be a valid ranking system ref");
+            }
+        });
+    } else {
+        return mongoService.findOne(RankingSystem, {'defaultRanking': true}).then(function(rankingSystem){
+            if (rankingSystem != null){
+                return q(rankingSystem);
+            } else {
+                return q.reject("cannot find any default ranking systems");
+            }
+        });
+    }
 };
 
 rankingService.insertDatesIntoPointAllotments = function(rankingSystem, fromDate, toDate){
@@ -47,7 +62,7 @@ rankingService.convertPointAllotmentsToPlacingsPoints = function(pointAllotments
             return item.state == 'fulfilled';
         }).map(function(i){return i.value;});
     }).then(function(arrayOfPointPlacings){
-        return _.flatten(arrayOfPointPlacings)
+        return _.flatten(arrayOfPointPlacings);
     });
 };
 
@@ -64,7 +79,7 @@ rankingService.convertPointAllotmentToPlacingsPoints = function(pointAllotment){
     });
 };
 
-rankingService.sumPlacingsIntoRankings = function(placingPoints){
+rankingService.sumPlacingsIntoRankings = function(placingPoints, includePlacings){
     var grouped = _.groupBy(placingPoints, function(placingPoint){
         return placingPoint.placing.greyhoundRef;
     });
@@ -72,19 +87,27 @@ rankingService.sumPlacingsIntoRankings = function(placingPoints){
     return _.keys(grouped).map(function(greyhoundRef){
         var placingPointsForGreyhound = grouped[greyhoundRef];
         var greyhoundName = rankingService.getGreyhoundNameFromPlacingSet(placingPointsForGreyhound);
-        placingPointsForGreyhound = placingPointsForGreyhound.map(function(placingPoint){
-            return rankingService.getPlacingReferenceFromPlacingPoint(placingPoint);
-        });
+        if (includePlacings){
+            placingPointsForGreyhound = placingPointsForGreyhound.map(function(placingPoint){
+                return rankingService.getPlacingReferenceFromPlacingPoint(placingPoint);
+            });
+        }
+
         var totalPoints = placingPointsForGreyhound.reduce(function(sum, placingPoint){
             return sum + placingPoint.points;
         }, 0);
 
-        return {
+        var rankingResult = {
             greyhoundRef : greyhoundRef,
             greyhoundName : greyhoundName,
-            placingPoints : placingPointsForGreyhound,
             totalPoints: totalPoints
         };
+
+        if (includePlacings){
+            rankingResult.placingPoints =  placingPointsForGreyhound;
+        }
+
+        return rankingResult;
     });
 };
 
