@@ -21,28 +21,10 @@ rankingSystem.schema = new Schema({
     name: { type: String },
     description: {type: String},
     equalPositionResolution: {type: String, default: 'splitPoints'},
+    defaultRanking: {type: Boolean, default: false},
     pointAllotments: {type: [pointAllotmentSchema]}
 });
 
 rankingSystem.schema.plugin(timestamps);
 
 rankingSystem.model = mongoose.model('RankingSystem', rankingSystem.schema);
-
-//var a = {
-//    "name": "Agra Rankings",
-//    "description": "The main ranking system for agra",
-//      equalPositionResolution: "splitPoints",
-//    pointAllotments:[
-//        {
-//            criteria: [
-//                {field: "placing", "comparator": "=", "value": "1"},
-//                {field: "race.date", "comparator": ">=", "value": "##currentFinancialYear.start"},
-//                {field: "race.date", "comparator": "<=", "value": "##currentFinancialYear.end"},
-//                {field: "race.groupLevel.name", "comparator": "=", "value": "Group 1"},
-//                {field: "distanceMeters", "comparator": "<", "value": "715"},
-//                {field: "disqualified", "comparator": "=", "value": false}
-//            ],
-//            points: 70
-//        }
-//    ]
-//};
