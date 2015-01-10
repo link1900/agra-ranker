@@ -61,12 +61,13 @@ adminService.setupRankingSystemDefaults = function(){
         name: "AGRA Ranking",
         description: "The main ranking system for agra",
         equalPositionResolution: "splitPoints",
+        defaultRanking: true,
         pointAllotments:[]
     };
 
     //sprint group
-    var base = [{field: "disqualified", "comparator": "=", "value": false}];
-    var baseSprint = [{field: "distanceMeters", "comparator": "<", "value": "595"}].concat(base);
+    var base = [{field: "race.disqualified", "comparator": "=", "value": false}];
+    var baseSprint = [{field: "race.distanceMeters", "comparator": "<", "value": 595}].concat(base);
     var group1Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1"}].concat(baseSprint);
     var group2Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2"}].concat(baseSprint);
     var group3Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"}].concat(baseSprint);
@@ -75,7 +76,7 @@ adminService.setupRankingSystemDefaults = function(){
     agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([25, 16, 12, 8, 6, 5, 4, 3], group3Sprint));
 
     //stay groups
-    var baseStay = [{field: "distanceMeters", "comparator": ">=", "value": "595"}].concat(base);
+    var baseStay = [{field: "race.distanceMeters", "comparator": ">=", "value": 595}].concat(base);
     var group1Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1"}].concat(baseStay);
     var group2Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2"}].concat(baseStay);
     var group3Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"}].concat(baseStay);
