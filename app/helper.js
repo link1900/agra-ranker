@@ -62,15 +62,18 @@ helper.responseFromPromise = function(res, promise){
     promise.then(function(result){
         res.jsonp(200, result);
     },function(error){
-        if (error instanceof Error && error.message != null){
-            res.jsonp(400, {"error": error.message});
-        } else {
-            res.jsonp(400, {"error": error});
-        }
-
+        helper.errorResponse(res, error);
     }).catch(function(ex){
-        res.jsonp(400, {"error": ex});
+        helper.errorResponse(res, error);
     });
+};
+
+helper.errorResponse = function(res, error){
+    if (error instanceof Error && error.message != null){
+        res.jsonp(400, {"error": error.message});
+    } else {
+        res.jsonp(400, {"error": error});
+    }
 };
 
 helper.mergeEntityRequest = function(entityRequest) {
