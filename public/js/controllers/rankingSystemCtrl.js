@@ -179,9 +179,10 @@ angular.module('controllers').controller('RankingSystemCtrl',
         ];
 
         $scope.criteriaTypes = [
-            {name: "Text", value:"text"},
-            {name: "Number", value:"number"},
-            {name: "Date", value:"date"}
+            {name: "Text", value:"Text"},
+            {name: "Number", value:"Number"},
+            {name: "Date", value:"Date"},
+            {name: "Boolean", value:"Boolean"}
         ];
 
         $scope.recalculateRankings = function(){
