@@ -116,7 +116,7 @@ describe("rankingService", function(){
                 placingPoints: [placingRef2, placingRef2],
                 totalPoints : 20
             }];
-            var results = rankingService.sumPlacingsIntoRankings(placingPoints);
+            var results = rankingService.sumPlacingsIntoRankings(placingPoints, true);
             assert.deepEqual(results,expectedRankings);
         });
 
@@ -419,30 +419,6 @@ describe("rankingService", function(){
                 assert.equal(results[2].totalPoints, 10);
                 assert.equal(results[3].rank, 3);
                 assert.equal(results[3].totalPoints, 5);
-                done();
-            },done).catch(function(err){
-                done(err);
-            });
-        });
-
-        it("calculates with limit", function (done) {
-            rankingService.calculateRankings("54ac8b031ee51022d545c8fc", new Date(2013, 1,1) ,null, 1).then(function(results){
-                assert.lengthOf(results, 1);
-                assert.equal(results[0].greyhoundName, "john");
-                assert.equal(results[0].rank, 1);
-                assert.equal(results[0].totalPoints, 40);
-                done();
-            },done).catch(function(err){
-                done(err);
-            });
-        });
-
-        it("calculates with limit", function (done) {
-            rankingService.calculateRankings("54ac8b031ee51022d545c8fc", new Date(2013,1,1), null, 1).then(function(results){
-                assert.lengthOf(results, 1);
-                assert.equal(results[0].greyhoundName, "john");
-                assert.equal(results[0].rank, 1);
-                assert.equal(results[0].totalPoints, 40);
                 done();
             },done).catch(function(err){
                 done(err);
