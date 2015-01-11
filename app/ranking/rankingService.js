@@ -15,6 +15,7 @@ rankingService.calculateRankings = function(rankingSystemRef, fromDate, toDate){
 
     return rankingService.getRankingSystem(rankingSystemRef).then(function(rankingSystem){
         rankingService.insertDatesIntoPointAllotments(rankingSystem, fromDate, toDate);
+        rankingService.insertCommonCriteria(rankingSystem);
         return rankingService.convertPointAllotmentsToPlacingsPoints(rankingSystem.pointAllotments)
             .then(function(pointPlacings){
                 var rankings = rankingService.sumPlacingsIntoRankings(pointPlacings, false);
@@ -53,6 +54,14 @@ rankingService.insertDatesIntoPointAllotments = function(rankingSystem, fromDate
             pointAllotment.criteria.push({field: "race.date", "comparator": "<=", "value": toDate});
         }
     })
+};
+
+rankingService.insertCommonCriteria = function(rankingSystem){
+    rankingSystem.pointAllotments.forEach(function(pointAllotment){
+        if (rankingSystem.commonCriteria != null && rankingSystem.commonCriteria.length > 0){
+            pointAllotment.criteria.concat(rankingSystem.commonCriteria);
+        }
+    });
 };
 
 rankingService.convertPointAllotmentsToPlacingsPoints = function(pointAllotments){

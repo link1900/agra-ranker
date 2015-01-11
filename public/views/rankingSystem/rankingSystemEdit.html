@@ -44,6 +44,72 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
+            <h3 class="panel-title">Common Criteria</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-3">
+                <button data-ng-show="!editCommonCriteriaEnabled" data-ng-click="editCommonCriteria(true)" class="btn btn-primary">Edit Common Criteria</button>
+                <button data-ng-show="editCommonCriteriaEnabled" data-ng-click="addCommonCriteria()" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Add Criteria</button>
+            </div>
+            <table data-ng-show="!editCommonCriteriaEnabled" class="table table-striped table-bordered">
+                <tbody>
+                <tr>
+                    <td>
+                        <div data-ng-repeat="criteria in rankingSystem.commonCriteria">{{criteria.field}} {{criteria.comparator}} {{criteria.value}}</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <table data-ng-show="editCommonCriteriaEnabled" class="table">
+                    <thead><tr>
+                        <th>Type</th>
+                        <th>Field</th>
+                        <th>Comparator</th>
+                        <th>Value</th>
+                        <th>Options</th>
+                    </tr></thead>
+                    <tbody>
+                    <tr data-ng-repeat="criteria in rankingSystem.commonCriteria">
+                        <td>
+                            <label class="sr-only" for="typeFieldCommonCritera"></label>
+                            <select id="typeFieldCommonCritera" class="form-control" data-ng-model="criteria.type" ng-options="criteriaType.value as criteriaType.name for criteriaType in criteriaTypes"></select>
+                        </td>
+                        <td>
+                            <label class="sr-only" for="commonCriteriaField"></label>
+                            <input id="commonCriteriaField"
+                                   type="text"
+                                   class="form-control"
+                                   data-ng-model="criteria.field"
+                                   autocomplete="off" />
+                        </td>
+                        <td>
+                            <label class="sr-only" for="rankingSystemCommonCriteriaComparator"></label>
+                            <select id="rankingSystemCommonCriteriaComparator" class="form-control" data-ng-model="criteria.comparator" ng-options="criteriaCompare.value as criteriaCompare.name for criteriaCompare in criteriaCompare"></select>
+                        </td>
+                        <td>
+                            <label class="sr-only" for="commonCriteriavalueField"></label>
+                            <input id="commonCriteriavalueField"
+                                   type="{{criteria.type}}"
+                                   class="form-control"
+                                   data-ng-model="criteria.value"
+                                   autocomplete="off" />
+                        </td>
+                        <td>
+                            <button data-ng-click="removeCommonCriteria($index)" class="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                    <button data-ng-show="editCommonCriteriaEnabled" data-ng-click="editCommonCriteria(false);save()" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
             <h3 class="panel-title">Point Definitions</h3>
         </div>
         <div class="panel-body">

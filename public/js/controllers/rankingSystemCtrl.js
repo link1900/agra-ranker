@@ -282,6 +282,31 @@ angular.module('controllers').controller('RankingSystemCtrl',
             });
         };
 
+        $scope.addCommonCriteria = function(){
+            if (!$scope.rankingSystem){
+                $scope.rankingSystem = {};
+            }
+
+            if (!$scope.rankingSystem.commonCriteria){
+                $scope.rankingSystem.commonCriteria = [];
+            }
+
+            $scope.rankingSystem.commonCriteria.push({});
+            $scope.editCommonCriteria($scope.rankingSystem.commonCriteria.length-1);
+        };
+        $scope.editCommonCriteriaEnabled = false;
+        $scope.editCommonCriteria = function(change){
+            $scope.editCommonCriteriaEnabled = change;
+        };
+
+        $scope.removeCommonCriteria = function(index){
+            if ($scope.rankingSystem != null &&
+                $scope.rankingSystem.commonCriteria != null &&
+                $scope.rankingSystem.commonCriteria[index] != null){
+                $scope.rankingSystem.commonCriteria.splice(index,1);
+            }
+        };
+
         $scope.loadForm();
     }
 );

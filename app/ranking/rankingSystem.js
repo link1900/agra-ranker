@@ -22,7 +22,8 @@ rankingSystem.schema = new Schema({
     description: {type: String},
     equalPositionResolution: {type: String, default: 'splitPoints'},
     defaultRanking: {type: Boolean, default: false},
-    pointAllotments: {type: [pointAllotmentSchema]}
+    pointAllotments: {type: [pointAllotmentSchema]},
+    commonCriteria : {type:[allotmentCriteriaSchema]}
 });
 
 rankingSystem.schema.plugin(timestamps);
