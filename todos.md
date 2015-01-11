@@ -189,23 +189,14 @@
 - (DONE) rename ranking system equal points to dead heat distribution
 - (DONE) export greyhound csv
 - (DONE) Upgrade the grid to have total count and display of record
-- Add race importing
-- order placing listing by placing number
-- export races csv
-- Upgrade grid to have good search controls for races
-- Hide extra search options if none are defined
-- Save the advanced search options on a grid (in the panel is open or closed and the details)
-- Advanced search options have a clear button which clears all settings
-- Switch basic like search to use mongo full text search
-- allow race search to be done by two dates
-- fix an issue in the race batch import results are outside the panel
-- improve when a batch is uploaded
-- have the ability confirm a races data / deal with conflicts and merge it
+- (DONE) Add race importing
+- (DONE) order placing listing by placing number by default
 
 ### 6.0.14 Ranking Phase 2
-- investigate speed of ranking calculation without using pointAllotments
-- update placing flyweight in point allotment when placing is updated
-- unit test point allotment creation
+- (DONE) investigate speed of ranking calculation without using pointAllotments - can be done but slower then it being stored.
+- read rankings from database and not calculated on the fly
+- remove point allotment it is not required for storage
+- update
 - calculate rankings on race creation
 - Create default data command for ranking system
 - define agra ranking system and test importing it
@@ -220,6 +211,14 @@
 - update when rule set is deleted
 - delete rankings when ranking system is deleted
 
+### 6.0.15 Advanced search
+- Upgrade grid to have good search controls for races
+- Hide extra search options if none are defined
+- Save the advanced search options on a grid (in the panel is open or closed and the details)
+- Advanced search options have a clear button which clears all settings
+- Switch basic like search to use mongo full text search
+- allow race search to be done by two dates
+
 ### 6.1 Ranking UI
 - list all rankings on the home screen
 
@@ -228,6 +227,8 @@
 - save the history log to the database
 - change npm test to constant
 - Move upload to a directive
+- have the ability confirm a races data / deal with conflicts and merge it
+- export races csv
 - race upload section
 - placing upload section
 - table pick the page size
