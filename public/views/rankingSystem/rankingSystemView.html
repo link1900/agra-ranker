@@ -18,7 +18,6 @@
                     <dt>Last updated</dt>
                     <dd>{{rankingSystem.updatedAt | fromNow}}</dd>
                 </dl>
-                <button ng-show="user" class="btn btn-primary" ng-click="recreateAllocations()"><span class="glyphicon glyphicon-refresh"></span> Re-Create Allocations</button>
                 <a ng-show="user" data-ng-href="#/rankingSystem/edit/{{rankingSystem._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
                 <a ng-show="user" ng-click="copy()" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Copy</a>
                 <button ng-show="user" data-ng-click="deleteEntity()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
@@ -46,17 +45,6 @@
                 </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-    <div id="pointAllotmentList" data-ng-controller="PointAllotmentCtrl">
-        <div data-sb-table
-             data-table-title="Point Allocations"
-             data-model-service="pointAllotmentService"
-             data-column-info="columnInfo"
-             data-per-page="15"
-             data-sort-field="date"
-             data-sort-direction="desc"
-             data-update-on-event="ENTITY_POINT_UPDATED">
         </div>
     </div>
     <a data-ng-href="#/rankingSystem">Back to Ranking Systems</a>

@@ -3,7 +3,6 @@ var rankingController = module.exports = {};
 var _ = require('lodash');
 var q = require('q');
 var mongoose = require('mongoose');
-var PointAllotment = require('./pointAllotment').model;
 var Ranking = require('./ranking').model;
 var Placing = require('../placing/placing').model;
 var helper = require('../helper');

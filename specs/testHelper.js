@@ -10,7 +10,6 @@ var RankingSystem = require('../app/ranking/rankingSystem').model;
 var Race = require('../app/race/race').model;
 var Greyhound = require('../app/greyhound/greyhound').model;
 var Placing = require('../app/placing/placing').model;
-var PointAllotment = require('../app/ranking/pointAllotment').model;
 var Invite = require('../app/invite/invite').model;
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
@@ -173,35 +172,6 @@ testHelper.loadGroupLevels = function(done){
             });
     });
 };
-
-testHelper.loadPointAllotments = function(done){
-    testHelper.loadPlacings(function(){
-        testHelper.loadRankingSystem(function(){
-            PointAllotment.remove({}, function () {
-                new PointAllotment({
-                    "_id": "540198de8bbd09f6ab7f49da",
-                    "points": 70,
-                    "placingRef": "531d1f82e407586c21476eb9",
-                    "placing": {"greyhoundRef": "531d1f74e407586c2147737b"},
-                    "rankingSystemRef" : "53412feb5c4ac1fdcd4781ff"
-                }).save(function(){
-                        new PointAllotment({
-                            "_id": "540198de8bbd09f6ab7f49db",
-                            "points": 50,
-                            "placing": {"greyhoundRef": "53407b9d5c4ac1fdcd47816a"},
-                            "placingRef": "531d1f82e407586c21476dc9",
-                            "rankingSystemRef" : "53412feb5c4ac1fdcd4781ff"
-                        }).save(done);
-                    });
-            });
-        });
-    });
-};
-
-testHelper.clearPointAllotments = function(done){
-    PointAllotment.remove({}, done);
-};
-
 
 testHelper.loadRankingSystem = function(done){
     RankingSystem.remove({}, function(){

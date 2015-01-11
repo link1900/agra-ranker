@@ -7,7 +7,6 @@ var raceController = require('./race/raceController');
 var groupLevelController = require('./groupLevel/groupLevelController');
 var placingController = require('./placing/placingController');
 var rankingSystemController = require('./ranking/rankingSystemController');
-var pointAllotmentController = require('./ranking/pointAllotmentController');
 var rankingController = require('./ranking/rankingController');
 var adminController = require('./admin/adminController');
 var fileController = require('./file/fileController');
@@ -101,12 +100,6 @@ module.exports = function(app) {
     app.put('/rankingSystem/:rankingSystemId', securityController.checkAuthentication, rankingSystemController.update);
     app.del('/rankingSystem/:rankingSystemId',securityController.checkAuthentication, rankingSystemController.destroy);
     app.param('rankingSystemId', rankingSystemController.setModel);
-
-    //point allotment
-    app.get('/pointAllotment', pointAllotmentController.prepareQuery, helper.runQuery);
-    app.get('/pointAllotment/:pointAllotmentId', helper.getOne);
-    app.post('/pointAllotment', securityController.checkAuthentication, pointAllotmentController.createMany);
-    app.param('pointAllotmentId', pointAllotmentController.setModel);
 
     //rankings
     app.get('/ranking', rankingController.getRankings);
