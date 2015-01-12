@@ -26,6 +26,9 @@ adminController.dropCollection = function(req, res){
         case 'groupLevel' :
             helper.responseFromPromise(res, adminService.removeAllGroupLevels());
             break;
+        case 'rankingSystem' :
+            helper.responseFromPromise(res, adminService.removeAllRankingSystems());
+            break;
         default:
             res.jsonp(404, {"error":"collection not found"});
         break;

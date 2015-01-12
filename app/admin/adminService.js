@@ -37,6 +37,12 @@ adminService.removeAllBatchJobs = function(){
     });
 };
 
+adminService.removeAllRankingSystems = function(){
+    return mongoService.dropCollection(Ranking).then(function(){
+        return mongoService.dropCollection(RankingSystem);
+    });
+};
+
 adminService.removeAllFiles = function(){
     return mongoService.dropCollection(Chunk).then(function(){
         return mongoService.dropCollection(File);
@@ -56,7 +62,7 @@ adminService.setupGroupLevel = function(){
 };
 
 adminService.setupRankingSystemDefaults = function(){
-    var agraRanker = {
+    var agraRankerFiscal = {
         name: "AGRA Ranking (Fiscal year)",
         description: "The main ranking system for agra",
         equalPositionResolution: "splitPoints",
@@ -74,21 +80,30 @@ adminService.setupRankingSystemDefaults = function(){
     var group1Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}].concat(baseSprint);
     var group2Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}].concat(baseSprint);
     var group3Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}].concat(baseSprint);
-    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([70, 35, 20, 15, 10, 8, 7, 6], group1Sprint));
-    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sprint));
-    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([25, 16, 12, 8, 6, 5, 4, 3], group3Sprint));
+    agraRankerFiscal.pointAllotments = agraRankerFiscal.pointAllotments.concat(adminService.generateAllotmentSet([70, 35, 20, 15, 10, 8, 7, 6], group1Sprint));
+    agraRankerFiscal.pointAllotments = agraRankerFiscal.pointAllotments.concat(adminService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sprint));
+    agraRankerFiscal.pointAllotments = agraRankerFiscal.pointAllotments.concat(adminService.generateAllotmentSet([25, 16, 12, 8, 6, 5, 4, 3], group3Sprint));
 
     //stay groups
     var baseStay = [{field: "race.distanceMeters", "comparator": ">=", "value": 595, type: "Number"}];
     var group1Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}].concat(baseStay);
     var group2Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}].concat(baseStay);
     var group3Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}].concat(baseStay);
-    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([50, 25, 16, 12, 8, 6, 4, 2], group1Stay));
-    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([30, 20, 12, 8, 6, 4, 2, 1], group2Stay));
-    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([20, 14, 10, 6, 4, 3, 2, 1], group3Stay));
+    agraRankerFiscal.pointAllotments = agraRankerFiscal.pointAllotments.concat(adminService.generateAllotmentSet([50, 25, 16, 12, 8, 6, 4, 2], group1Stay));
+    agraRankerFiscal.pointAllotments = agraRankerFiscal.pointAllotments.concat(adminService.generateAllotmentSet([30, 20, 12, 8, 6, 4, 2, 1], group2Stay));
+    agraRankerFiscal.pointAllotments = agraRankerFiscal.pointAllotments.concat(adminService.generateAllotmentSet([20, 14, 10, 6, 4, 3, 2, 1], group3Stay));
+
+    var agraRankerCalendar = _.cloneDeep(agraRankerFiscal);
+    agraRankerCalendar.name ="AGRA Ranking (Calendar year)";
+    agraRankerCalendar.commonCriteria = [
+        {field: "race.disqualified", "comparator": "=", "value": false, type: "Boolean"},
+        {field: "race.date", "comparator": ">=", "value": "currentCalendarYearStart", type: "Date"},
+        {field: "race.date", "comparator": "<=", "value": "currentCalendarYearEnd", type: "Date"}
+    ];
 
     return mongoService.saveAll([
-        new RankingSystem(agraRanker)
+        new RankingSystem(agraRankerFiscal),
+        new RankingSystem(agraRankerCalendar)
     ]);
 };
 

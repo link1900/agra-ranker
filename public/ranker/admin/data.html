@@ -17,7 +17,13 @@
             <h3 class="panel-title">Remove records</h3>
         </div>
         <div class="panel-body">
-            <button ng-repeat="collection in removeCollections" data-ng-click="removeAll(collection)" class="btn btn-danger">Remove all {{collection}}</button>
+            <table>
+                <tr ng-repeat="collection in removeCollections">
+                    <td>
+                        <button data-ng-click="removeAll(collection)" class="btn btn-danger">Remove all {{collection}}</button>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
     <div class="panel panel-default">

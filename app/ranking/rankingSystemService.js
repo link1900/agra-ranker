@@ -211,6 +211,12 @@ rankingSystemService.getFinancialYearForDate = function(now){
     }
 };
 
+rankingSystemService.getYearForDate = function(now){
+    var startYear = moment(now).set('month', 1).set('date', 1).startOf('day');
+    var endYear = moment(now).set('month', 12).set('date', 31).endOf('day');
+    return {start: startYear, end: endYear};
+};
+
 rankingSystemService.presetCriteriaFields = {
     "currentFinancialYearStart":{
         label:"Current Financial Year Start",
@@ -219,5 +225,13 @@ rankingSystemService.presetCriteriaFields = {
     "currentFinancialYearEnd":{
         label:"Current Financial Year End",
         value: rankingSystemService.getFinancialYearForDate(new Date()).end
+    },
+    "currentCalendarYearStart":{
+        label:"Current Calendar Year Start",
+        value: rankingSystemService.getYearForDate(new Date()).start
+    },
+    "currentCalendarYearEnd":{
+        label:"Current Calendar Year End",
+        value: rankingSystemService.getYearForDate(new Date()).end
     }
 };
