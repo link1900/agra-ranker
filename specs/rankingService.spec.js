@@ -69,18 +69,14 @@ describe("rankingService", function(){
             "placingRef": "54a32fc7e39b345cff5857d3",
             "points": 10,
             "position": "7",
-            "race": {
-                "name": "SHOOT OUT"
-            }
+            "raceName": "SHOOT OUT"
         };
 
         var placingRef2 = {
             "placingRef": "54a32fc7e39b345cff5857d4",
             "points": 10,
             "position": "5",
-            "race": {
-                "name": "SHOOT OUT"
-            }
+            "raceName": "SHOOT OUT"
         };
 
         var placingPointTwo = {

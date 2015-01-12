@@ -21,18 +21,18 @@ describe("Ranking", function(){
             testHelper.removeRankingData(done);
         });
 
-        it("Rankings", function(done){
-            testHelper.publicSession
-                .get('/ranking?rankingSystemRef=54ac8b031ee51022d545c8fc')
-                .set('Accept', 'application/json')
-                .expect('Content-Type', /json/)
-                .expect(200)
-                .end(function(err, res){
-                    if (err){console.log(res.body); throw err; }
-                    assert.lengthOf(res.body, 4);
-                    done();
-                });
-        });
+        //it("Rankings", function(done){
+        //    testHelper.publicSession
+        //        .get('/ranking?rankingSystemRef=54ac8b031ee51022d545c8fc')
+        //        .set('Accept', 'application/json')
+        //        .expect('Content-Type', /json/)
+        //        .expect(200)
+        //        .end(function(err, res){
+        //            if (err){console.log(res.body); throw err; }
+        //            assert.lengthOf(res.body, 4);
+        //            done();
+        //        });
+        //});
     });
 
     after(function (done) {
