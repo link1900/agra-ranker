@@ -47,19 +47,25 @@
             <h3 class="panel-title">Common Criteria</h3>
         </div>
         <div class="panel-body">
-            <div class="col-md-3">
-                <button data-ng-show="!editCommonCriteriaEnabled" data-ng-click="editCommonCriteria(true)" class="btn btn-primary">Edit Common Criteria</button>
-                <button data-ng-show="editCommonCriteriaEnabled" data-ng-click="addCommonCriteria()" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Add Criteria</button>
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <button data-ng-show="!editCommonCriteriaEnabled" data-ng-click="editCommonCriteria(true)" class="btn btn-primary">Edit Common Criteria</button>
+                    <button data-ng-show="editCommonCriteriaEnabled" data-ng-click="addCommonCriteria()" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Add Criteria</button>
+                </div>
             </div>
-            <table data-ng-show="!editCommonCriteriaEnabled" class="table table-striped table-bordered">
-                <tbody>
-                <tr>
-                    <td>
-                        <div data-ng-repeat="criteria in rankingSystem.commonCriteria">{{criteria.field}} {{criteria.comparator}} {{criteria.value}}</div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <table data-ng-show="!editCommonCriteriaEnabled" class="table table-striped table-bordered">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div data-ng-repeat="criteria in rankingSystem.commonCriteria">{{criteria.field}} {{criteria.comparator}} {{criteria.value}}</div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="form-group row">
                 <div class="col-md-12">
                     <table data-ng-show="editCommonCriteriaEnabled" class="table">
@@ -136,7 +142,7 @@
                         </td>
                     </tr>
                     </tbody>
-                </table>
+                    </table>
                     <button data-ng-show="editCommonCriteriaEnabled" data-ng-click="editCommonCriteria(false);save()" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Save</button>
                 </div>
             </div>
@@ -149,10 +155,12 @@
         </div>
         <div class="panel-body">
             <div class="form-group row" ng-show="currentPointAllotmentPosition == null">
+                <div class="col-md-12">
                     <button data-ng-click="addPointDefinition()" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Add Point Definition</button>
                     <button data-ng-click="openFileSelect()" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Import Point Definitions</button>
                     <input id="hiddenFileOpen" type="file" style="display:none" data-ng-hide="uploadingFile" ng-file-select="onFileSelect($files)">
                     <a class="btn btn-primary" download="template.json" ng-href="/template/pointDefinitionTemplate.json"><span class="glyphicon glyphicon-arrow-down"></span> Download Import Template</a>
+                </div>
             </div>
             <form ng-show="currentPointAllotmentPosition != null">
                 <div class="form-group row">
