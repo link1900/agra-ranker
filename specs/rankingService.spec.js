@@ -135,51 +135,6 @@ describe("rankingService", function(){
         });
     });
 
-    describe("#insertDatesIntoPointAllotments", function() {
-        var someRankingSystem = {
-            "name": "Test ranking system",
-            "description": "Test ranking system",
-            equalPositionResolution: "splitPoints",
-            pointAllotments: [{
-                criteria: [
-                    {field: "placing", "comparator": "=", "value": "1"},
-                    {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
-                    {field: "race.distanceMeters", "comparator": "<", "value": 715},
-                    {field: "race.disqualified", "comparator": "=", "value": false}
-                ],
-                points: 20
-            },{
-                criteria: [
-                    {field: "placing", "comparator": "=", "value": "2"},
-                    {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
-                    {field: "race.distanceMeters", "comparator": "<", "value": 715},
-                    {field: "race.disqualified", "comparator": "=", "value": false}
-                ],
-                points: 10
-            },{
-                criteria: [
-                    {field: "placing", "comparator": "=", "value": "3"},
-                    {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
-                    {field: "race.distanceMeters", "comparator": "<", "value": 715},
-                    {field: "race.disqualified", "comparator": "=", "value": false}
-                ],
-                points: 5
-            }]
-        };
-
-        it("inserts two dates", function(done){
-            var startDate = new Date(2011, 1,1);
-            rankingService.insertDatesIntoPointAllotments(someRankingSystem, startDate, new Date(2013, 1,1));
-            assert.lengthOf(someRankingSystem.pointAllotments[0].criteria, 6);
-            assert.deepEqual(someRankingSystem.pointAllotments[0].criteria[4], {
-                "field": "race.date",
-                "comparator": ">=",
-                "value": startDate
-            });
-            done();
-        });
-    });
-
     describe("converting ranking system into placings", function() {
         var placing1 = {
             "placing" : "5",

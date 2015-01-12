@@ -57,12 +57,16 @@ adminService.setupGroupLevel = function(){
 
 adminService.setupRankingSystemDefaults = function(){
     var agraRanker = {
-        name: "AGRA Ranking",
+        name: "AGRA Ranking (Fiscal year)",
         description: "The main ranking system for agra",
         equalPositionResolution: "splitPoints",
         defaultRanking: true,
         pointAllotments:[],
-        commonCriteria: [{field: "race.disqualified", "comparator": "=", "value": false, type: "Boolean"}]
+        commonCriteria: [
+            {field: "race.disqualified", "comparator": "=", "value": false, type: "Boolean"},
+            {field: "race.date", "comparator": ">=", "value": "currentFinancialYearStart", type: "Date"},
+            {field: "race.date", "comparator": "<=", "value": "currentFinancialYearEnd", type: "Date"}
+        ]
     };
 
     //sprint group

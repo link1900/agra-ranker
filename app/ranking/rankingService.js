@@ -12,10 +12,8 @@ var mongoService = require('../mongoService');
 var RankingSystem = require('./rankingSystem').model;
 var rankingSystemService = require('./rankingSystemService');
 
-rankingService.calculateRankings = function(rankingSystemRef, fromDate, toDate){
-
+rankingService.calculateRankings = function(rankingSystemRef){
     return rankingService.getRankingSystem(rankingSystemRef).then(function(rankingSystem){
-        rankingService.insertDatesIntoPointAllotments(rankingSystem, fromDate, toDate);
         rankingService.insertCommonCriteria(rankingSystem);
         return rankingService.convertPointAllotmentsToPlacingsPoints(rankingSystem.pointAllotments)
             .then(function(pointPlacings){
@@ -43,18 +41,6 @@ rankingService.getRankingSystem = function(rankingSystemRef){
             }
         });
     }
-};
-
-rankingService.insertDatesIntoPointAllotments = function(rankingSystem, fromDate, toDate){
-    rankingSystem.pointAllotments.forEach(function(pointAllotment){
-        if (fromDate != null && _.isDate(fromDate)){
-            pointAllotment.criteria.push({field: "race.date", "comparator": ">=", "value": fromDate});
-        }
-
-        if (toDate != null && _.isDate(toDate)){
-            pointAllotment.criteria.push({field: "race.date", "comparator": "<=", "value": toDate});
-        }
-    })
 };
 
 rankingService.insertCommonCriteria = function(rankingSystem){
