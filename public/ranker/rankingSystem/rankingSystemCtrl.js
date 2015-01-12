@@ -186,6 +186,14 @@ angular.module('controllers').controller('RankingSystemCtrl',
             {name: "Preset", value:"Preset"}
         ];
 
+        $scope.presetTypes = [];
+
+        //$scope.loadPresetTypes = function(){
+        //    rankingSystemService.getPresetTypes().then(function(presets){
+        //        $scope.presetTypes = presets;
+        //    });
+        //};
+
         $scope.recalculateRankings = function(){
             //rankingService.createAll().then(function(response){
             //    console.log(response);

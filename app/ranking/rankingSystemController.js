@@ -62,3 +62,9 @@ rankingSystemController.make = function(entityRequest) {
     entityRequest.newEntity = new RankingSystem(entityRequest.newEntity);
     return q(entityRequest);
 };
+
+rankingSystemController.getPresetFields = function(req, res) {
+    res.jsonp(rankingSystemService.presetCriteriaFields.map(function(preset){
+        return preset.label;
+    }));
+};

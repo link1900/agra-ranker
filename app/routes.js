@@ -96,6 +96,7 @@ module.exports = function(app) {
     //ranking system
     app.get('/rankingSystem', rankingSystemController.prepareQuery, helper.runQuery);
     app.get('/rankingSystem/:rankingSystemId', helper.getOne);
+    app.get('/rankingSystemPreset', rankingSystemController.getPresetFields);
     app.post('/rankingSystem', securityController.checkAuthentication, rankingSystemController.create);
     app.put('/rankingSystem/:rankingSystemId', securityController.checkAuthentication, rankingSystemController.update);
     app.del('/rankingSystem/:rankingSystemId',securityController.checkAuthentication, rankingSystemController.destroy);

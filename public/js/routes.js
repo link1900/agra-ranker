@@ -30,16 +30,16 @@ angular.module('core').config(function($routeProvider) {
             templateUrl : '/views/race/race.html'
         })
         .when('/rankingSystem/create', {
-            templateUrl : '/views/rankingSystem/rankingSystemCreate.html'
+            templateUrl : '/ranker/rankingSystem/rankingSystemCreate.html'
         })
         .when('/rankingSystem/edit/:id', {
-            templateUrl : '/views/rankingSystem/rankingSystemEdit.html'
+            templateUrl : '/ranker/rankingSystem/rankingSystemEdit.html'
         })
         .when('/rankingSystem/view/:id', {
-            templateUrl : '/views/rankingSystem/rankingSystemView.html'
+            templateUrl : '/ranker/rankingSystem/rankingSystemView.html'
         })
         .when('/rankingSystem', {
-            templateUrl : '/views/rankingSystem/rankingSystem.html'
+            templateUrl : '/ranker/rankingSystem/rankingSystem.html'
         })
         .when('/groupLevel/create', {
             templateUrl : '/views/groupLevel/groupLevelCreate.html'
