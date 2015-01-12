@@ -54,13 +54,13 @@ angular.module('core').config(function($routeProvider) {
             templateUrl : '/views/groupLevel/groupLevel.html'
         })
         .when('/batch', {
-            templateUrl : '/views/batch/batch.html'
+            templateUrl : '/ranker/batch/batch.html'
         })
         .when('/batch/view/:id', {
-            templateUrl : '/views/batch/batchView.html'
+            templateUrl : '/ranker/batch/batchView.html'
         })
         .when('/batchResult/view/:id', {
-            templateUrl : '/views/batch/batchResultView.html'
+            templateUrl : '/ranker/batch/batchResultView.html'
         })
         .when('/file', {
             templateUrl : '/ranker/file/file.html'
