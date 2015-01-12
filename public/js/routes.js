@@ -42,16 +42,16 @@ angular.module('core').config(function($routeProvider) {
             templateUrl : '/ranker/rankingSystem/rankingSystem.html'
         })
         .when('/groupLevel/create', {
-            templateUrl : '/views/groupLevel/groupLevelCreate.html'
+            templateUrl : '/ranker/groupLevel/groupLevelCreate.html'
         })
         .when('/groupLevel/edit/:id', {
-            templateUrl : '/views/groupLevel/groupLevelEdit.html'
+            templateUrl : '/ranker/groupLevel/groupLevelEdit.html'
         })
         .when('/groupLevel/view/:id', {
-            templateUrl : '/views/groupLevel/groupLevelView.html'
+            templateUrl : '/ranker/groupLevel/groupLevelView.html'
         })
         .when('/groupLevel', {
-            templateUrl : '/views/groupLevel/groupLevel.html'
+            templateUrl : '/ranker/groupLevel/groupLevel.html'
         })
         .when('/batch', {
             templateUrl : '/ranker/batch/batch.html'
