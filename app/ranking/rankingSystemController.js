@@ -64,7 +64,10 @@ rankingSystemController.make = function(entityRequest) {
 };
 
 rankingSystemController.getPresetFields = function(req, res) {
-    res.jsonp(rankingSystemService.presetCriteriaFields.map(function(preset){
-        return preset.label;
+    res.jsonp(_.keys(rankingSystemService.presetCriteriaFields).map(function(key){
+        return {
+            "label": rankingSystemService.presetCriteriaFields[key].label,
+            "value": key
+        };
     }));
 };

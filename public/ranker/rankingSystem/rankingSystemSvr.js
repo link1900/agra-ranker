@@ -11,6 +11,10 @@ angular.module('services').factory('rankingSystemSvr', ['$resource', '$http',
             }
         );
 
+        service.getPresets = function(){
+            return $http.get('/rankingSystemPreset');
+        };
+
         return service;
     }
 ]);
