@@ -88,14 +88,14 @@ describe("rankingService", function(){
     });
 
     describe("#convertPlaceHolder", function() {
-        it("get correct date for place holder ##currentFinancialYear.start", function(done){
-            var result = rankingSystemService.convertPlaceHolder('##currentFinancialYear.start');
+        it("get correct date for place holder currentFinancialYearStart", function(done){
+            var result = rankingSystemService.convertPlaceHolder('currentFinancialYearStart');
             assert(_.isDate(result));
             done();
         });
 
-        it("get correct date for place holder ##currentFinancialYear.end", function(done){
-            var result = rankingSystemService.convertPlaceHolder('##currentFinancialYear.end');
+        it("get correct date for place holder currentFinancialYearEnd", function(done){
+            var result = rankingSystemService.convertPlaceHolder('currentFinancialYearEnd');
             assert(_.isDate(result));
             done();
         });

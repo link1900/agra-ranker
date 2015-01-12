@@ -195,16 +195,10 @@ rankingSystemService.getQueryForPointAllotment = function(pointAllotment){
 };
 
 rankingSystemService.convertPlaceHolder = function(placeholder){
-    switch (placeholder){
-        case "##currentFinancialYear.start":
-            return rankingSystemService.getFinancialYearForDate(new Date()).start;
-            break;
-        case "##currentFinancialYear.end":
-            return rankingSystemService.getFinancialYearForDate(new Date()).end;
-            break;
-        default:
-            return placeholder;
-            break;
+    if (_.contains(_.keys(rankingSystemService.presetCriteriaFields), placeholder)){
+        return rankingSystemService.presetCriteriaFields[placeholder].value;
+    } else {
+        return placeholder;
     }
 };
 
@@ -214,5 +208,16 @@ rankingSystemService.getFinancialYearForDate = function(now){
         return { start: midYear.clone().subtract(12, 'months').toDate(), end : midYear.subtract(1, 'days').endOf('day').toDate()};
     } else {
         return { start: midYear.toDate(), end : midYear.clone().add(12, 'months').subtract(1, 'days').endOf('day').toDate()};
+    }
+};
+
+rankingSystemService.presetCriteriaFields = {
+    "currentFinancialYearStart":{
+        label:"Current Financial Year Start",
+        value: rankingSystemService.getFinancialYearForDate(new Date()).start
+    },
+    "currentFinancialYearEnd":{
+        label:"Current Financial Year End",
+        value: rankingSystemService.getFinancialYearForDate(new Date()).end
     }
 };

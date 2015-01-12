@@ -66,8 +66,8 @@ describe("Ranking System", function(){
                         points: 70,
                         criteria: [
                             {field: "placing", "comparator": "=", "value": "1", type: "Text"},
-                            {field: "race.date", "comparator": ">=", "value": "##currentFinancialYear.start", type: "Preset"},
-                            {field: "race.date", "comparator": "<=", "value": "##currentFinancialYear.end", type: "Preset"},
+                            {field: "race.date", "comparator": ">=", "value": "currentFinancialYearStart", type: "Preset"},
+                            {field: "race.date", "comparator": "<=", "value": "currentFinancialYearEnd", type: "Preset"},
                             {field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"},
                             {field: "distanceMeters", "comparator": "<", "value": 715, type: "Number"},
                             {field: "disqualified", "comparator": "=", "value": false, type: "Boolean"}
