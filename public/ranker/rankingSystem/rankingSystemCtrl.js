@@ -172,10 +172,16 @@ angular.module('controllers').controller('RankingSystemCtrl',
 
         $scope.criteriaCompare = [
             {name: "Equals", value:"="},
+            {name: "Not Equals", value:"!="},
             {name: "Greater then", value:">"},
             {name: "Less then", value:"<"},
             {name: "Less then or equal to", value:"<="},
             {name: "Greater then or equal to", value:">="}
+        ];
+
+        $scope.criteriaCompareBoolean = [
+            {name: "Equals", value:"="},
+            {name: "Not Equals", value:"!="}
         ];
 
         $scope.criteriaTypes = [
@@ -186,13 +192,21 @@ angular.module('controllers').controller('RankingSystemCtrl',
             {name: "Preset", value:"Preset"}
         ];
 
-        $scope.presetTypes = [];
+        $scope.presetTypes = [
+            {"name": "Current Financial Year Start", "value": "currentFinancialYearStart"},
+            {"name": "Current Financial Year End", "value": "currentFinancialYearEnd"}
+        ];
 
-        //$scope.loadPresetTypes = function(){
-        //    rankingSystemSvr.getPresetTypes().then(function(presets){
-        //        $scope.presetTypes = presets;
-        //    });
-        //};
+        $scope.datePickerOptions = {
+            'show-weeks': false
+        };
+
+        $scope.openCalendar = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            $scope.opened = true;
+        };
 
         $scope.recalculateRankings = function(){
             //rankingService.createAll().then(function(response){

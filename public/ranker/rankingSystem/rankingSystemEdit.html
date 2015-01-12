@@ -73,31 +73,66 @@
                     <tbody>
                     <tr data-ng-repeat="criteria in rankingSystem.commonCriteria">
                         <td>
-                            <label class="sr-only" for="typeFieldCommonCritera"></label>
-                            <select id="typeFieldCommonCritera" class="form-control" data-ng-model="criteria.type" ng-options="criteriaType.value as criteriaType.name for criteriaType in criteriaTypes"></select>
+                            <label class="sr-only" for="typeFieldCommon"></label>
+                            <select id="typeFieldCommon" class="form-control" data-ng-model="criteria.type" ng-options="criteriaType.value as criteriaType.name for criteriaType in criteriaTypes"></select>
                         </td>
                         <td>
-                            <label class="sr-only" for="commonCriteriaField"></label>
-                            <input id="commonCriteriaField"
+                            <label class="sr-only" for="criteriaFieldCommon"></label>
+                            <input id="criteriaFieldCommon"
                                    type="text"
                                    class="form-control"
                                    data-ng-model="criteria.field"
                                    autocomplete="off" />
                         </td>
-                        <td>
-                            <label class="sr-only" for="rankingSystemCommonCriteriaComparator"></label>
-                            <select id="rankingSystemCommonCriteriaComparator" class="form-control" data-ng-model="criteria.comparator" ng-options="criteriaCompare.value as criteriaCompare.name for criteriaCompare in criteriaCompare"></select>
+                        <td ng-switch="criteria.type">
+                            <div ng-switch-when="Boolean">
+                                <label class="sr-only" for="rankingSystemCriteriaComparatorBooleanCommon"></label>
+                                <select id="rankingSystemCriteriaComparatorBooleanCommon" class="form-control" data-ng-model="criteria.comparator" ng-options="criteriaCompare.value as criteriaCompare.name for criteriaCompare in criteriaCompareBoolean"></select>
+                            </div>
+                            <div ng-switch-default>
+                                <label class="sr-only" for="rankingSystemCriteriaComparatorCommon"></label>
+                                <select id="rankingSystemCriteriaComparatorCommon" class="form-control" data-ng-model="criteria.comparator" ng-options="criteriaCompare.value as criteriaCompare.name for criteriaCompare in criteriaCompare"></select>
+                            </div>
+                        </td>
+                        <td ng-switch="criteria.type">
+                            <div ng-switch-when="Text">
+                                <label class="sr-only" for="textValueFieldCommon"></label>
+                                <input id="textValueFieldCommon"
+                                       type="text"
+                                       class="form-control"
+                                       data-ng-model="criteria.value"
+                                       autocomplete="off" />
+                            </div>
+                            <div ng-switch-when="Number">
+                                <label class="sr-only" for="numberValueFieldCommon"></label>
+                                <input id="numberValueFieldCommon"
+                                       type="number"
+                                       class="form-control"
+                                       data-ng-model="criteria.value"
+                                       autocomplete="off" />
+                            </div>
+                            <div ng-switch-when="Date">
+                                <label class="sr-only" for="dateValueFieldCommon"></label>
+                                <input id="dateValueFieldCommon" class="form-control" type="text" ng-model="criteria.value" datepicker-popup="dd MMMM yyyy" data-datepicker-options="datePickerOptions" data-is-open="opened" ng-required="true" />
+                            </div>
+                            <div ng-switch-when="Boolean">
+                                <label class="sr-only" for="booleanValueFieldCommon"></label>
+                                <input id="booleanValueFieldCommon"
+                                       type="checkbox"
+                                       class="form-control"
+                                       data-ng-model="criteria.value"
+                                       autocomplete="off" />
+                            </div>
+                            <div ng-switch-when="Preset">
+                                <label class="sr-only" for="presetValueFieldCommon"></label>
+                                <select id="presetValueFieldCommon" class="form-control" data-ng-model="criteria.comparator" ng-options="presetType.value as presetType.name for presetType in presetTypes"></select>
+                            </div>
+                            <div ng-switch-default>
+                                Select a type
+                            </div>
                         </td>
                         <td>
-                            <label class="sr-only" for="commonCriteriavalueField"></label>
-                            <input id="commonCriteriavalueField"
-                                   type="{{criteria.type}}"
-                                   class="form-control"
-                                   data-ng-model="criteria.value"
-                                   autocomplete="off" />
-                        </td>
-                        <td>
-                            <button data-ng-click="removeCommonCriteria($index)" class="btn btn-danger">Delete</button>
+                            <button data-ng-click="removeCriteria(currentPointAllotmentPosition,$index)" class="btn btn-danger">Delete</button>
                         </td>
                     </tr>
                     </tbody>
@@ -169,17 +204,52 @@
                                                data-ng-model="criteria.field"
                                                autocomplete="off" />
                                     </td>
-                                    <td>
-                                        <label class="sr-only" for="rankingSystemCriteriaComparator"></label>
-                                        <select id="rankingSystemCriteriaComparator" class="form-control" data-ng-model="criteria.comparator" ng-options="criteriaCompare.value as criteriaCompare.name for criteriaCompare in criteriaCompare"></select>
+                                    <td ng-switch="criteria.type">
+                                        <div ng-switch-when="Boolean">
+                                            <label class="sr-only" for="rankingSystemCriteriaComparatorBoolean"></label>
+                                            <select id="rankingSystemCriteriaComparatorBoolean" class="form-control" data-ng-model="criteria.comparator" ng-options="criteriaCompare.value as criteriaCompare.name for criteriaCompare in criteriaCompareBoolean"></select>
+                                        </div>
+                                        <div ng-switch-default>
+                                            <label class="sr-only" for="rankingSystemCriteriaComparator"></label>
+                                            <select id="rankingSystemCriteriaComparator" class="form-control" data-ng-model="criteria.comparator" ng-options="criteriaCompare.value as criteriaCompare.name for criteriaCompare in criteriaCompare"></select>
+                                        </div>
                                     </td>
-                                    <td>
-                                        <label class="sr-only" for="valueField"></label>
-                                        <input id="valueField"
-                                               type="{{criteria.type}}"
-                                               class="form-control"
-                                               data-ng-model="criteria.value"
-                                               autocomplete="off" />
+                                    <td ng-switch="criteria.type">
+                                        <div ng-switch-when="Text">
+                                            <label class="sr-only" for="textValueField"></label>
+                                            <input id="textValueField"
+                                                   type="text"
+                                                   class="form-control"
+                                                   data-ng-model="criteria.value"
+                                                   autocomplete="off" />
+                                        </div>
+                                        <div ng-switch-when="Number">
+                                            <label class="sr-only" for="numberValueField"></label>
+                                            <input id="numberValueField"
+                                                   type="number"
+                                                   class="form-control"
+                                                   data-ng-model="criteria.value"
+                                                   autocomplete="off" />
+                                        </div>
+                                        <div ng-switch-when="Date">
+                                            <label class="sr-only" for="dateValueField"></label>
+                                            <input id="dateValueField" class="form-control" type="text" ng-model="criteria.value" datepicker-popup="dd MMMM yyyy" data-datepicker-options="datePickerOptions" data-is-open="opened" ng-required="true" />
+                                        </div>
+                                        <div ng-switch-when="Boolean">
+                                            <label class="sr-only" for="booleanValueField"></label>
+                                            <input id="booleanValueField"
+                                                   type="checkbox"
+                                                   class="form-control"
+                                                   data-ng-model="criteria.value"
+                                                   autocomplete="off" />
+                                        </div>
+                                        <div ng-switch-when="Preset">
+                                            <label class="sr-only" for="presetValueField"></label>
+                                            <select id="presetValueField" class="form-control" data-ng-model="criteria.comparator" ng-options="presetType.value as presetType.name for presetType in presetTypes"></select>
+                                        </div>
+                                        <div ng-switch-default>
+                                            Select a type
+                                        </div>
                                     </td>
                                     <td>
                                         <button data-ng-click="removeCriteria(currentPointAllotmentPosition,$index)" class="btn btn-danger">Delete</button>
