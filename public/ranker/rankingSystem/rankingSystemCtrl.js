@@ -1,8 +1,8 @@
 angular.module('controllers').controller('RankingSystemCtrl',
-    function($scope, $routeParams, headerHelperService, rankingSystemService, $location, rankingSvr) {
+    function($scope, $routeParams, headerHelperService, rankingSystemSvr, $location, rankingSvr) {
 
         $scope.findOne = function() {
-            rankingSystemService.get({
+            rankingSystemSvr.get({
                 rankingSystemId: $routeParams.id
             }, function(model) {
                 $scope.loadRankingSystem(model);
@@ -189,7 +189,7 @@ angular.module('controllers').controller('RankingSystemCtrl',
         $scope.presetTypes = [];
 
         //$scope.loadPresetTypes = function(){
-        //    rankingSystemService.getPresetTypes().then(function(presets){
+        //    rankingSystemSvr.getPresetTypes().then(function(presets){
         //        $scope.presetTypes = presets;
         //    });
         //};
@@ -222,7 +222,7 @@ angular.module('controllers').controller('RankingSystemCtrl',
             });
         };
 
-        $scope.rankingSystemService = rankingSystemService;
+        $scope.rankingSystemSvr = rankingSystemSvr;
 
         $scope.columnInfo = [
             {title: "Name", field:"name", baseLink:"#/rankingSystem/view/", linkField: "_id", link:true}
@@ -233,7 +233,7 @@ angular.module('controllers').controller('RankingSystemCtrl',
         };
 
         $scope.createRankingSystem = function(rankingSystem){
-            rankingSystemService.save({}, rankingSystem, function(response){
+            rankingSystemSvr.save({}, rankingSystem, function(response){
                     $location.path('rankingSystem/view/'+ response._id);
                 },
                 function(error){

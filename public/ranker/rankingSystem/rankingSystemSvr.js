@@ -1,4 +1,4 @@
-angular.module('services').factory('rankingSystemService', ['$resource', '$http',
+angular.module('services').factory('rankingSystemSvr', ['$resource', '$http',
     function($resource, $http){
         var service = $resource(
             'rankingSystem/:rankingSystemId',
