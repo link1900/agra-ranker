@@ -10,6 +10,7 @@ var greyhoundService = require('../greyhound/greyhoundService');
 var helper = require('../helper');
 var mongoService = require('../mongoService');
 var RankingSystem = require('./rankingSystem').model;
+var Ranking = require('./ranking').model;
 var rankingSystemService = require('./rankingSystemService');
 
 rankingService.calculateRankings = function(rankingSystemRef){
@@ -17,9 +18,23 @@ rankingService.calculateRankings = function(rankingSystemRef){
         rankingService.insertCommonCriteria(rankingSystem);
         return rankingService.convertPointAllotmentsToPlacingsPoints(rankingSystem.pointAllotments)
             .then(function(pointPlacings){
-                var rankings = rankingService.sumPlacingsIntoRankings(pointPlacings, false);
+                var rankings = rankingService.sumPlacingsIntoRankings(pointPlacings, true);
+                rankings = rankings.map(function(ranking){
+                    ranking.rankingSystemRef = rankingSystem._id.toString();
+                    return ranking;
+                });
                 return rankingService.addRankingPosition(rankings);
             });
+    });
+};
+
+rankingService.calculateAndStoreRankings = function(rankingSystemRef){
+    return rankingService.calculateRankings(rankingSystemRef).then(function(rankings){
+        return mongoService.removeAll(Ranking, {'rankingSystemRef' : rankingSystemRef}).then(function(){
+            return mongoService.saveAll(rankings.map(function(ranking){
+                return new Ranking(ranking);
+            }));
+        });
     });
 };
 
@@ -121,7 +136,7 @@ rankingService.getPlacingReferenceFromPlacingPoint = function(placingPoint){
     var points = 0;
     var placingRef = "";
     var position = "";
-    var race = {name:""};
+    var raceName = "";
 
     if (placingPoint && placingPoint.points){
         points = placingPoint.points
@@ -136,14 +151,14 @@ rankingService.getPlacingReferenceFromPlacingPoint = function(placingPoint){
     }
 
     if (placingPoint && placingPoint.placing && placingPoint.placing.race && placingPoint.placing.race.name){
-        race.name = placingPoint.placing.race.name;
+        raceName = placingPoint.placing.race.name;
     }
 
     return {
         points: points,
         placingRef: placingRef,
         position: position,
-        race: race
+        raceName: raceName
     };
 };
 

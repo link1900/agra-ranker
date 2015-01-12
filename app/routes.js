@@ -103,7 +103,11 @@ module.exports = function(app) {
     app.param('rankingSystemId', rankingSystemController.setModel);
 
     //rankings
-    app.get('/ranking', rankingController.getRankings);
+    app.get('/rankingCalculated', rankingController.getRankingsFromCalculation);
+    app.get('/ranking', rankingController.prepareQuery, helper.runQuery);
+    app.get('/ranking/:rankingId', helper.getOne);
+    app.post('/ranking', securityController.checkAuthentication, rankingController.createRankings);
+    app.param('rankingId', rankingController.setModel);
 
     //file routes
     app.get('/file', securityController.checkAuthentication, fileController.prepareQuery, helper.runQuery);

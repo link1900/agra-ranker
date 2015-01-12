@@ -4,11 +4,20 @@ var mongoose = require('mongoose');
 var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 
+ranking.placingPointSchema = {
+    points: {type: Number},
+    placingRef: {type: String},
+    position: {type: String},
+    raceName: {type: String}
+};
+
 ranking.definition = {
+    rank: {type: Number},
     rankingSystemRef : { type: String },
     greyhoundRef: { type: String },
     greyhoundName: { type: String },
-    totalPoints : { type: Number }
+    totalPoints : { type: Number },
+    placingPoints : {type: [ranking.placingPointSchema]}
 };
 
 ranking.schema = new Schema(ranking.definition);

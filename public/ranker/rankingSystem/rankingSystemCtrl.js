@@ -209,16 +209,16 @@ angular.module('controllers').controller('RankingSystemCtrl',
         };
 
         $scope.recalculateRankings = function(){
-            //rankingService.createAll().then(function(response){
-            //    console.log(response);
-            //    $scope.alerts = [
-            //        { type: 'success', msg: "Recalculation complete."}
-            //    ];
-            //}, function(error){
-            //    $scope.alerts = [
-            //        { type: 'danger', msg: error.data.error }
-            //    ];
-            //});
+            rankingSvr.createForRankingSystem($scope.rankingSystem._id).then(function(response){
+                console.log(response);
+                $scope.alerts = [
+                    { type: 'success', msg: "Recalculation complete."}
+                ];
+            }, function(error){
+                $scope.alerts = [
+                    { type: 'danger', msg: error.data.error }
+                ];
+            });
         };
 
         /**
