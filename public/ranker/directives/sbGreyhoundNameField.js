@@ -30,7 +30,7 @@ angular.module('directives')
                 sbModel: '='
             },
             link: linkBody,
-            templateUrl: '/views/directives/sbGreyhoundNameField.html'
+            templateUrl: '/ranker/directives/sbGreyhoundNameField.html'
         };
     });
 

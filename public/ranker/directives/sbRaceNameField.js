@@ -30,7 +30,7 @@ angular.module('directives')
                 sbModel: '='
             },
             link: linkBody,
-            templateUrl: '/views/directives/sbRaceNameField.html'
+            templateUrl: '/ranker/directives/sbRaceNameField.html'
         };
     });
 
