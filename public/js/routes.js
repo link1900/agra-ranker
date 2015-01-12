@@ -3,19 +3,19 @@ angular.module('core').config(function($routeProvider) {
         templateUrl : '/views/rankings.html'
         })
         .when('/greyhound/edit/:id', {
-            templateUrl : '/views/greyhound/greyhoundEditForm.html'
+            templateUrl : '/ranker/greyhound/greyhoundEditForm.html'
         })
         .when('/greyhound/view/:id', {
-            templateUrl : '/views/greyhound/greyhoundView.html'
+            templateUrl : '/ranker/greyhound/greyhoundView.html'
         })
         .when('/greyhound/create', {
-            templateUrl : '/views/greyhound/greyhoundCreateForm.html'
+            templateUrl : '/ranker/greyhound/greyhoundCreateForm.html'
         })
         .when('/greyhound', {
-            templateUrl : '/views/greyhound/greyhound.html'
+            templateUrl : '/ranker/greyhound/greyhound.html'
         })
         .when('/greyhound/import', {
-            templateUrl : '/views/greyhound/greyhoundUpload.html'
+            templateUrl : '/ranker/greyhound/greyhoundUpload.html'
         })
         .when('/race/create', {
             templateUrl : '/views/race/raceCreate.html'
