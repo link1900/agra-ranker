@@ -194,9 +194,16 @@
 
 ### 6.0.14 Ranking Phase 2
 - (DONE) investigate speed of ranking calculation without using pointAllotments - can be done but slower then it being stored.
-- read rankings from database and not calculated on the fly
-- remove point allotment it is not required for storage
-- update
+- (DONE) add common criteria to ranking system
+- (DONE) fix the button alignment in the ranking system edit
+- (DONE) fix the criteria fields and types
+- (DONE) add a boolean type to rankingSystem criteria
+- (DONE) add validation to criteria
+- (DONE) read rankings from database and not calculated on the fly
+- (DONE) remove point allotment it is not required for storage
+- Refactor front end to be via the main groups
+- Add ranking system criteria field value replacement for calendar start and end dates
+- Add Agra Ranking System (for calendar year)
 - calculate rankings on race creation
 - Create default data command for ranking system
 - define agra ranking system and test importing it

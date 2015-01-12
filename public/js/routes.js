@@ -18,16 +18,16 @@ angular.module('core').config(function($routeProvider) {
             templateUrl : '/ranker/greyhound/greyhoundUpload.html'
         })
         .when('/race/create', {
-            templateUrl : '/views/race/raceCreate.html'
+            templateUrl : '/ranker/race/raceCreate.html'
         })
         .when('/race/edit/:id', {
-            templateUrl : '/views/race/raceEdit.html'
+            templateUrl : '/ranker/race/raceEdit.html'
         })
         .when('/race/view/:id', {
-            templateUrl : '/views/race/raceView.html'
+            templateUrl : '/ranker/race/raceView.html'
         })
         .when('/race', {
-            templateUrl : '/views/race/race.html'
+            templateUrl : '/ranker/race/race.html'
         })
         .when('/rankingSystem/create', {
             templateUrl : '/ranker/rankingSystem/rankingSystemCreate.html'
