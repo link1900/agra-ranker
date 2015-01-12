@@ -10,6 +10,7 @@ var greyhoundService = require('../greyhound/greyhoundService');
 var helper = require('../helper');
 var mongoService = require('../mongoService');
 var RankingSystem = require('./rankingSystem').model;
+var rankingSystemService = require('./rankingSystemService');
 
 rankingService.calculateRankings = function(rankingSystemRef, fromDate, toDate){
 
@@ -76,7 +77,7 @@ rankingService.convertPointAllotmentsToPlacingsPoints = function(pointAllotments
 };
 
 rankingService.convertPointAllotmentToPlacingsPoints = function(pointAllotment){
-    var query = rankingService.getQueryForPointAllotment(pointAllotment);
+    var query = rankingSystemService.getQueryForPointAllotment(pointAllotment);
     return mongoService.find(Placing, query).then(function(placings){
         //map placing results into placings with points
         return placings.map(function(placing){
@@ -176,64 +177,4 @@ rankingService.addRankingPosition = function(rankings){
     }
 
     return rankings;
-};
-
-rankingService.getQueryForPointAllotment = function(pointAllotment){
-    var query = {};
-    pointAllotment.criteria.forEach(function(criteria){
-        //replace placeholders
-        if (criteria.value != null && _.isString(criteria.value) &&  criteria.value.indexOf('##') == 0){
-            criteria.value = rankingService.convertPlaceHolder(criteria.value);
-        }
-    });
-
-    pointAllotment.criteria.forEach(function(criteria){
-        switch (criteria.comparator){
-            case "=":
-                query[criteria.field] = criteria.value;
-                break;
-            case ">":
-                helper.addField(query, criteria.field, {"$gt": criteria.value});
-                break;
-            case "<":
-                helper.addField(query, criteria.field, {"$lt": criteria.value});
-                break;
-            case ">=":
-                helper.addField(query, criteria.field, {"$gte": criteria.value});
-                break;
-            case "<=":
-                helper.addField(query, criteria.field, {"$lte": criteria.value});
-                break;
-            case "!=":
-                helper.addField(query, criteria.field, {"$ne": criteria.value});
-                break;
-            default:
-                query[criteria.field] = criteria.value;
-                break;
-        }
-    });
-    return query;
-};
-
-rankingService.convertPlaceHolder = function(placeholder){
-    switch (placeholder){
-        case "##currentFinancialYear.start":
-            return rankingService.getFinancialYearForDate(new Date()).start;
-            break;
-        case "##currentFinancialYear.end":
-            return rankingService.getFinancialYearForDate(new Date()).end;
-            break;
-        default:
-            return placeholder;
-            break;
-    }
-};
-
-rankingService.getFinancialYearForDate = function(now){
-    var midYear = moment(now).set('month', 7).set('date', 1).startOf('day');
-    if (midYear.isAfter(now)){
-        return { start: midYear.clone().subtract(12, 'months').toDate(), end : midYear.subtract(1, 'days').endOf('day').toDate()};
-    } else {
-        return { start: midYear.toDate(), end : midYear.clone().add(12, 'months').subtract(1, 'days').endOf('day').toDate()};
-    }
 };

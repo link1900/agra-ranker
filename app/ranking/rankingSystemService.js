@@ -60,6 +60,41 @@ rankingSystemService.validateAllotmentCriteria = function(criteria){
         return q.reject("criteria must have a valid value");
     }
 
+    if (criteria.type == null){
+        return q.reject("criteria must have a type");
+    }
+
+    if (criteria.type != null){
+        var validTypeSet = ["Text","Number","Date","Boolean","Preset"];
+        if (!_.contains(validTypeSet,criteria.type)){
+            return q.reject("criteria type must be one of the following: " + validTypeSet.join(","));
+        }
+
+        if (criteria.type == "Text"){
+            if (!_.isString(criteria.value)) {
+                return q.reject("if criteria type is text the value must be a text");
+            }
+        }
+
+        if (criteria.type == "Number"){
+            if (!_.isNumber(criteria.value)) {
+                return q.reject("if criteria type is number the value must be a number");
+            }
+        }
+
+        if (criteria.type == "Date"){
+            if (!_.isDate(criteria.value)) {
+                return q.reject("if criteria type is date the value must be a date");
+            }
+        }
+
+        if (criteria.type == "Boolean"){
+            if (!_.isBoolean(criteria.value)) {
+                return q.reject("if criteria type is boolean the value must be a boolean");
+            }
+        }
+    }
+
     return q(true);
 };
 
@@ -120,4 +155,64 @@ rankingSystemService.checkNameDoesNotExist = function(model){
             return q.reject("cannot have the same name as an existing ranking system");
         }
     });
+};
+
+rankingSystemService.getQueryForPointAllotment = function(pointAllotment){
+    var query = {};
+    pointAllotment.criteria.forEach(function(criteria){
+        //replace placeholders
+        if (criteria.value != null && _.isString(criteria.value) &&  criteria.value.indexOf('##') == 0){
+            criteria.value = rankingSystemService.convertPlaceHolder(criteria.value);
+        }
+    });
+
+    pointAllotment.criteria.forEach(function(criteria){
+        switch (criteria.comparator){
+            case "=":
+                query[criteria.field] = criteria.value;
+                break;
+            case ">":
+                helper.addField(query, criteria.field, {"$gt": criteria.value});
+                break;
+            case "<":
+                helper.addField(query, criteria.field, {"$lt": criteria.value});
+                break;
+            case ">=":
+                helper.addField(query, criteria.field, {"$gte": criteria.value});
+                break;
+            case "<=":
+                helper.addField(query, criteria.field, {"$lte": criteria.value});
+                break;
+            case "!=":
+                helper.addField(query, criteria.field, {"$ne": criteria.value});
+                break;
+            default:
+                query[criteria.field] = criteria.value;
+                break;
+        }
+    });
+    return query;
+};
+
+rankingSystemService.convertPlaceHolder = function(placeholder){
+    switch (placeholder){
+        case "##currentFinancialYear.start":
+            return rankingSystemService.getFinancialYearForDate(new Date()).start;
+            break;
+        case "##currentFinancialYear.end":
+            return rankingSystemService.getFinancialYearForDate(new Date()).end;
+            break;
+        default:
+            return placeholder;
+            break;
+    }
+};
+
+rankingSystemService.getFinancialYearForDate = function(now){
+    var midYear = moment(now).set('month', 7).set('date', 1).startOf('day');
+    if (midYear.isAfter(now)){
+        return { start: midYear.clone().subtract(12, 'months').toDate(), end : midYear.subtract(1, 'days').endOf('day').toDate()};
+    } else {
+        return { start: midYear.toDate(), end : midYear.clone().add(12, 'months').subtract(1, 'days').endOf('day').toDate()};
+    }
 };
