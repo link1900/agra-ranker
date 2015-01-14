@@ -2,7 +2,6 @@ var greyhoundService = module.exports = {};
 
 var mongoose = require('mongoose');
 var Greyhound = require('./greyhound').model;
-var Placing = require('../placing/placing').model;
 var BatchResult = require('../batch/batchResult').model;
 var batchService = require('../batch/batchService');
 var fileService = require('../file/fileService');
