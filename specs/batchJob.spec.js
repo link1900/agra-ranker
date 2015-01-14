@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var BatchJob = require('../app/batch/batchJob').model;
 var BatchResult = require('../app/batch/batchResult').model;
 var testHelper = require('./testHelper');
+var assert = require('chai').assert;
 
 describe("BatchJob", function() {
     before(function (done) {
@@ -53,6 +54,32 @@ describe("BatchJob", function() {
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(401, done);
+        });
+
+        it("allows you to cancel a batch", function(done){
+            var body = {status:'Cancelled'};
+            testHelper.authSession
+                .put('/batch/531d1f67e407586c21474b34')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res){
+                    if (err){ throw err; }
+                    console.log(res.body);
+                    assert.equal(res.body.status, 'Cancelled');
+                    done();
+                });
+        });
+
+        it("cannot cancel a batch that is complete", function(done){
+            var body = {status:'Cancelled'};
+            testHelper.authSession
+                .put('/batch/531d1f67e407586c21474b33')
+                .send(body)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(400, done);
         });
     });
 
