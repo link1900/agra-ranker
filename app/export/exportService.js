@@ -12,8 +12,8 @@ var helper = require('../helper');
 exportService.createExportJob = function(exportCollectionName, exportType){
     var upperCollectionName = exportService.capitaliseFirstLetter (exportCollectionName);
     var batchType = "export" +  upperCollectionName + exportType.toUpperCase();
-    var batchName = exportCollectionName + "_export_" + moment().format('YYYYMMDDHHmmss').toString() + "." + exportType;
-    return batchService.createBatch(batchName, batchType);
+    var fileName = exportCollectionName + "_export_" + moment().format('YYYYMMDDHHmmss').toString() + "." + exportType;
+    return batchService.createBatch(batchType, {fileName: fileName});
 };
 
 exportService.capitaliseFirstLetter = function(string){

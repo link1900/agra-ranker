@@ -234,7 +234,7 @@ greyhoundService.addDamName = function(processing){
 };
 
 greyhoundService.exportGreyhoundCSV = function(batchJob){
-    return fileService.streamCollectionToFile(Greyhound, batchJob.name, {}, greyhoundService.greyhoundExportTransformer).then(function(result){
+    return fileService.streamCollectionToFile(Greyhound, batchJob.metadata.fileName, {}, greyhoundService.greyhoundExportTransformer).then(function(result){
         if (batchJob.metadata == null){
             batchJob.metadata = {};
         }

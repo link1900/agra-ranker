@@ -57,7 +57,6 @@ angular.module('controllers').controller('BatchCtrl', function($scope, $routePar
 
     $scope.columnInfo = [
         {title: "Status", field:"status", baseLink:"#/batch/view/", linkField: "_id", link:true},
-        {title: "File Name", field:"name"},
         {title: "Batch Type", field:"type"},
         {title: "Created", field:"createdAt", filter: "fromNow"}
     ];
@@ -66,7 +65,7 @@ angular.module('controllers').controller('BatchCtrl', function($scope, $routePar
         $scope.batch.$delete(function(data){
                 delete $scope.batch;
                 $scope.alerts = [
-                    { type: 'success', msg: "Deleted " + data.name.toUpperCase() }
+                    { type: 'success', msg: "Deleted " + data.type.toUpperCase() }
                 ];
             },
             function(error){

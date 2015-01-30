@@ -5,7 +5,6 @@ var Schema = mongoose.Schema;
 
 
 batchJob.schema = new Schema({
-    name: { type: String },
     type: { type: String },
     status: { type: String},
     metadata : { type: Schema.Types.Mixed }

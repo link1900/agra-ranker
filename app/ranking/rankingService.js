@@ -205,8 +205,7 @@ rankingService.addRankingPosition = function(rankings){
 
 rankingService.createRankingCalculateBatchJob = function(rankingSystemRef){
     var batchType = "Calculate Rankings";
-    var batchName = "Rankings at " + moment().format('YYYYMMDDHHmmss').toString();
-    return batchService.createBatch(batchName, batchType, {rankingSystemRef: rankingSystemRef});
+    return batchService.createBatch(batchType, {rankingSystemRef: rankingSystemRef});
 };
 
 rankingService.calculateRankingsBatchJob = function(batchJob){

@@ -187,10 +187,9 @@ batchService.getBatchInfo = function(){
     return batchService.processes[0];
 };
 
-batchService.createBatch = function(name, type, metadata) {
+batchService.createBatch = function(type, metadata) {
     //generate the batch model
     var batch = new BatchJob({
-        name:name,
         type:type,
         metadata: metadata,
         status: batchService.batchStatuses.awaitingProcessing
@@ -206,16 +205,7 @@ batchService.createBatch = function(name, type, metadata) {
 
 batchService.hasError = function(batch){
     var error;
-    var nameValid = batch.name && batch.name.length > 0;
     var typeValid = batch.type && batch.type.length > 0;
-    if (!nameValid){
-        if (!error){
-            error = {errors:[]};
-        }
-        error.message = 'invalid field';
-        error.errors.push('name is required');
-    }
-
     if (!typeValid){
         if (!error){
             error = {errors:[]};
@@ -232,7 +222,7 @@ batchService.hasError = function(batch){
 };
 
 batchService.createBatchHandler = function(req, file){
-    return batchService.createBatch(req.headers.uploadfilename, req.param('batchType'), {fileId : file._id}).then(function(batch){
+    return batchService.createBatch(req.param('batchType'), {fileName: req.headers.uploadfilename, fileId : file._id}).then(function(batch){
         return q(batch);
     }, function(batchCreationError){
         logger.log("error","batch creation error");

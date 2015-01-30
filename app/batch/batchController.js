@@ -35,12 +35,12 @@ batchController.setBatchResult = function(req, res, next, id) {
 batchController.prepareBatchQuery = function(req, res, next) {
     req.searchQuery = {};
     var like = req.param('like');
-    var name = req.param('name');
+    var type = req.param('name');
     if (like){
-        req.searchQuery = {'name': {'$regex': like.toLowerCase()}};
+        req.searchQuery = {'type': {'$regex': like.toLowerCase()}};
     }
-    if (name){
-        req.searchQuery = {'name': name.toLowerCase()};
+    if (type){
+        req.searchQuery = {'type': type.toLowerCase()};
     }
     req.dao = BatchJob;
     next();
