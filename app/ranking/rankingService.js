@@ -12,6 +12,8 @@ var mongoService = require('../mongoService');
 var RankingSystem = require('./rankingSystem').model;
 var Ranking = require('./ranking').model;
 var rankingSystemService = require('./rankingSystemService');
+var eventService = require('../event/eventService');
+var batchService = require('../batch/batchService');
 
 rankingService.calculateRankings = function(rankingSystemRef){
     return rankingService.getRankingSystem(rankingSystemRef).then(function(rankingSystem){
@@ -33,7 +35,24 @@ rankingService.calculateAndStoreRankings = function(rankingSystemRef){
         return mongoService.removeAll(Ranking, {'rankingSystemRef' : rankingSystemRef}).then(function(){
             return mongoService.saveAll(rankings.map(function(ranking){
                 return new Ranking(ranking);
-            }));
+            })).then(function(result){
+                eventService.logEvent({type:"RANKINGS_CALCULATED", data: rankingSystemRef});
+                return q(result);
+            });
+        });
+    });
+};
+
+rankingService.calculateAndStoreAllRankings = function(){
+    return mongoService.find(RankingSystem, {}).then(function(rankingSystems){
+        var proms = rankingSystems.map(function(rankingSystem){
+            return rankingSystem._id;
+        }).forEach(function(rankingSystemRef){
+            rankingService.calculateAndStoreRankings(rankingSystemRef);
+        });
+
+        return q.allSettled(proms).then(function(results){
+            return results;
         });
     });
 };
@@ -179,3 +198,23 @@ rankingService.addRankingPosition = function(rankings){
 
     return rankings;
 };
+
+//eventService.addListener(/PLACING_/, function(){
+//    rankingService.calculateAndStoreAllRankings();
+//});
+
+rankingService.createRankingCalculateBatchJob = function(rankingSystemRef){
+    var batchType = "Calculate Rankings";
+    var batchName = "Rankings at " + moment().format('YYYYMMDDHHmmss').toString();
+    return batchService.createBatch(batchName, batchType, {rankingSystemRef: rankingSystemRef});
+};
+
+rankingService.calculateRankingsBatchJob = function(batchJob){
+    if (batchJob.metadata != null && batchJob.metadata.rankingSystemRef != null){
+        return rankingService.calculateAndStoreRankings(batchJob.metadata.rankingSystemRef);
+    } else {
+        return q.reject({"error": "missing metadata"});
+    }
+};
+
+batchService.loadBatchHandler("Calculate Rankings", rankingService.calculateRankingsBatchJob);

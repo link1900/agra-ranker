@@ -30,7 +30,7 @@ rankingController.prepareQuery = function(req, res, next) {
 
 rankingController.createRankings = function(req, res) {
     var rankingSystemRef = req.param('rankingSystemRef');
-    helper.responseFromPromise(res, rankingService.calculateAndStoreRankings(rankingSystemRef));
+    helper.responseFromPromise(res, rankingService.createRankingCalculateBatchJob(rankingSystemRef));
 };
 
 rankingController.getRankingsFromCalculation = function(req, res) {

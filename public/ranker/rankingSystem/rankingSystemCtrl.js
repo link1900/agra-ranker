@@ -210,9 +210,8 @@ angular.module('controllers').controller('RankingSystemCtrl',
 
         $scope.recalculateRankings = function(){
             rankingSvr.createForRankingSystem($scope.rankingSystem._id).then(function(response){
-                console.log(response);
                 $scope.alerts = [
-                    { type: 'success', msg: "Recalculation complete."}
+                    { type: 'success', msg: "Recalculation scheduled, see batch jobs for details."}
                 ];
             }, function(error){
                 $scope.alerts = [
