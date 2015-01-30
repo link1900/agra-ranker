@@ -72,7 +72,7 @@ fileService.streamCollectionToFile = function(dao, fileName, query, transformFun
     });
 
     fileWriteStream.on('close', function (err) {
-        deferred.resolve({fileId: fileId});
+        deferred.resolve({fileId: fileId.toString()});
     });
 
     dbStream.pipe(transformer).pipe(stringifier).pipe(fileWriteStream);

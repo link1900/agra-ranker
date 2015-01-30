@@ -235,13 +235,13 @@ greyhoundService.addDamName = function(processing){
 
 greyhoundService.exportGreyhoundCSV = function(batchJob){
     return fileService.streamCollectionToFile(Greyhound, batchJob.metadata.fileName, {}, greyhoundService.greyhoundExportTransformer).then(function(result){
-        if (batchJob.metadata == null){
-            batchJob.metadata = {};
-        }
         if (result != null){
+            if (batchJob.metadata == null){
+                batchJob.metadata = {};
+            }
             batchJob.metadata.fileId = result.fileId;
+            batchJob.markModified('metadata');
         }
-
         return mongoService.savePromise(batchJob);
     });
 };

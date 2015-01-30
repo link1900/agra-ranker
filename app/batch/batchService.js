@@ -70,7 +70,7 @@ batchService.failedBatchJobChecker = function(){
                     return mongoService.savePromise(batchInProgress).then(function(result){
                         logger.log("info","[failed batch job checker] has marked batch job " +
                             " id: " + batchInProgress._id +
-                            " name: " + batchInProgress.name +
+                            " name: " + batchInProgress.type +
                             " as Failed because nothing is processing it");
                         return result;
                     }, function(updateFailure){
@@ -128,11 +128,11 @@ batchService.executeProcessor = function(processor){
             logger.log("info",processor.name + " had an error reading batch", err);
             batchService.clearProcessor(processor);
         } else if (batchToProcess != null) {
-            logger.log("info",processor.name + " started processing batch job " + batchToProcess.name);
+            logger.log("info",processor.name + " started processing batch job " + batchToProcess.type);
             processor.state = batchService.states.processing;
             processor.processingBatch = batchToProcess;
             batchService.processBatch(processor.processingBatch).then(function(){
-                console.log(processor.name + " finished processing batch job " + batchToProcess.name);
+                console.log(processor.name + " finished processing batch job " + batchToProcess.type);
                 batchToProcess.status = batchService.batchStatuses.completed;
                 mongoService.savePromise(batchToProcess).then(function(){
                     batchService.clearProcessor(processor);
