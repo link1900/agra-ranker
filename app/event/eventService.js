@@ -39,8 +39,8 @@ eventService.persistEvent = function(event){
     return mongoService.savePromise(new EventModel(event));
 };
 
-eventService.addListener = function(typeRegex, onEvent){
-    eventService.listeners.push({typeRegex:typeRegex, onEvent : onEvent});
+eventService.addListener = function(eventTypeRegex, listeningFunction){
+    eventService.listeners.push({typeRegex:eventTypeRegex, onEvent : listeningFunction});
 };
 
 eventService.addListener(/.*/,eventService.persistEvent);
