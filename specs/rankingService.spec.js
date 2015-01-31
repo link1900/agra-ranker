@@ -241,6 +241,21 @@ describe("rankingService", function(){
         });
     });
 
+    describe("Check that rankings is updated when a placing is created", function(){
+        //it("with complete placing", function(done){
+        //    var body = {"placing" : "5", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c214773df"};
+        //    eventService.addListener('RANKINGS_CALCULATED', function(){
+        //        done();
+        //    });
+        //    testHelper.authSession
+        //        .post('/placing')
+        //        .send(body)
+        //        .set('Accept', 'application/json')
+        //        .expect('Content-Type', /json/)
+        //        .expect(200);
+        //});
+    });
+
     describe("#calculateRankings", function() {
         before(function(done){
             testHelper.setupRankingTestData(done);
