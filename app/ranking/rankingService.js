@@ -3,6 +3,7 @@ var rankingService = module.exports = {};
 var _ = require('lodash');
 var q = require('q');
 var moment = require('moment');
+
 var Placing = require('../placing/placing').model;
 var Race = require('../race/race').model;
 var Greyhound = require('../greyhound/greyhound').model;
@@ -209,8 +210,16 @@ rankingService.createRankingCalculateBatchJob = function(rankingSystemRef){
 };
 
 rankingService.calculateRankingsBatchJob = function(batchJob){
+    var startDate = new Date();
     if (batchJob.metadata != null && batchJob.metadata.rankingSystemRef != null){
-        return rankingService.calculateAndStoreRankings(batchJob.metadata.rankingSystemRef);
+        return rankingService.calculateAndStoreRankings(batchJob.metadata.rankingSystemRef).then(function(){
+            return batchService.createBatchResult(batchJob._id,
+                1,
+                batchService.getBatchResultFromBoolean(true),
+                startDate,
+                "Calculated rankings for ranking system ref " +batchJob.metadata.rankingSystemRef,
+                []);
+        });
     } else {
         return q.reject({"error": "missing metadata"});
     }

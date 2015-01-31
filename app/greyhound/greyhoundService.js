@@ -1,15 +1,16 @@
 var greyhoundService = module.exports = {};
 
+var csv = require('csv');
+var q = require('q');
+var _ = require('lodash');
 var mongoose = require('mongoose');
+
 var Greyhound = require('./greyhound').model;
-var BatchResult = require('../batch/batchResult').model;
 var batchService = require('../batch/batchService');
 var fileService = require('../file/fileService');
-var _ = require('lodash');
 var helper = require('../helper');
-var q = require('q');
 var mongoService = require('../mongoService');
-var csv = require('csv');
+
 
 greyhoundService.rawCsvArrayToGreyhound = function(rawRow){
     var greyhound = {
@@ -234,6 +235,7 @@ greyhoundService.addDamName = function(processing){
 };
 
 greyhoundService.exportGreyhoundCSV = function(batchJob){
+    var startedAt = new Date();
     return fileService.streamCollectionToFile(Greyhound, batchJob.metadata.fileName, {}, greyhoundService.greyhoundExportTransformer).then(function(result){
         if (result != null){
             if (batchJob.metadata == null){
@@ -242,7 +244,15 @@ greyhoundService.exportGreyhoundCSV = function(batchJob){
             batchJob.metadata.fileId = result.fileId;
             batchJob.markModified('metadata');
         }
-        return mongoService.savePromise(batchJob);
+        return batchService.updateBatchJob(batchJob).then(function(){
+            return batchService.createBatchResult(batchJob._id,
+                1,
+                batchService.getBatchResultFromBoolean(true),
+                startedAt,
+                "Created file " + batchJob.metadata.fileName + " successfully",
+                []
+            );
+        });
     });
 };
 
@@ -269,16 +279,13 @@ greyhoundService.processGreyhoundCSV = function(batchJob){
             var recordStart = new Date();
             return greyhoundService.processGreyhoundRow(record).then(function(resultInfo) {
                 var resultType = batchService.getBatchResultFromBoolean(resultInfo.isSuccessful);
-                var batchResult = new BatchResult({
-                    batchRef: batchJob._id,
-                    recordNumber: index,
-                    status: resultType,
-                    startDate: recordStart,
-                    endDate: new Date(),
-                    raw: record,
-                    stepResults: resultInfo.stepResults
-                });
-                return mongoService.savePromise(batchResult).then(function(){
+                return batchService.createBatchResult(batchJob._id,
+                    index,
+                    resultType,
+                    recordStart,
+                    record,
+                    resultInfo.stepResults
+                ).then(function(){
                     parser.resume();
                 });
             });

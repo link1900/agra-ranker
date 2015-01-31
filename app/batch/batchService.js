@@ -203,6 +203,10 @@ batchService.createBatch = function(type, metadata) {
     }
 };
 
+batchService.updateBatchJob = function(batchJob){
+    return mongoService.savePromise(batchJob);
+};
+
 batchService.hasError = function(batch){
     var error;
     var typeValid = batch.type && batch.type.length > 0;
@@ -228,6 +232,19 @@ batchService.createBatchHandler = function(req, file){
         logger.log("error","batch creation error");
         return q.reject({'error':batchCreationError});
     });
+};
+
+batchService.createBatchResult = function(batchRef, recordNumber, status, startDate, raw, stepResults){
+    var batchResult = new BatchResult({
+        batchRef: batchRef,
+        recordNumber: recordNumber,
+        status: status,
+        startDate: startDate,
+        endDate: new Date(),
+        raw: raw,
+        stepResults: stepResults
+    });
+    return mongoService.savePromise(batchResult)
 };
 
 batchService.processBatchJobFile = function(batchJob, rowProcessor){
