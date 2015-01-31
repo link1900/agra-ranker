@@ -229,6 +229,13 @@ mongoService.saveAll = function(entities){
     );
 };
 
+mongoService.saveAllAtOnce = function(entities){
+    var proms = entities.map(function(entity){
+        return mongoService.savePromise(entity);
+    });
+    return q.allSettled(proms);
+};
+
 mongoService.getCollectionCount = function(dao){
     var deferred = q.defer();
     mongoService.collectionExists(dao.collection.name).then(function(collectionExists){

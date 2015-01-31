@@ -34,7 +34,7 @@ rankingService.calculateRankings = function(rankingSystemRef){
 rankingService.calculateAndStoreRankings = function(rankingSystemRef){
     return rankingService.calculateRankings(rankingSystemRef).then(function(rankings){
         return mongoService.removeAll(Ranking, {'rankingSystemRef' : rankingSystemRef}).then(function(){
-            return mongoService.saveAll(rankings.map(function(ranking){
+            return mongoService.saveAllAtOnce(rankings.map(function(ranking){
                 return new Ranking(ranking);
             })).then(function(result){
                 eventService.logEvent({type:"RANKINGS_CALCULATED", data: rankingSystemRef});
@@ -46,14 +46,16 @@ rankingService.calculateAndStoreRankings = function(rankingSystemRef){
 
 rankingService.calculateAndStoreAllRankings = function(){
     return mongoService.find(RankingSystem, {}).then(function(rankingSystems){
-        var proms = rankingSystems.map(function(rankingSystem){
-            return rankingSystem._id;
-        }).forEach(function(rankingSystemRef){
-            rankingService.calculateAndStoreRankings(rankingSystemRef);
+        var rankingSystemRefs = rankingSystems.map(function(rankingSystem){
+            return rankingSystem._id.toString();
+        });
+
+        var proms = rankingSystemRefs.map(function(rankingSystemRef){
+            return rankingService.calculateAndStoreRankings(rankingSystemRef);
         });
 
         return q.allSettled(proms).then(function(results){
-            return results;
+            return q(results);
         });
     });
 };
@@ -200,13 +202,12 @@ rankingService.addRankingPosition = function(rankings){
     return rankings;
 };
 
-//eventService.addListener(/PLACING_/, function(){
-//    rankingService.calculateAndStoreAllRankings();
-//});
+eventService.addListener(/.*_Placing/, function(){
+    return batchService.createBatch("Calculate All Rankings", {});
+});
 
 rankingService.createRankingCalculateBatchJob = function(rankingSystemRef){
-    var batchType = "Calculate Rankings";
-    return batchService.createBatch(batchType, {rankingSystemRef: rankingSystemRef});
+    return batchService.createBatch("Calculate Rankings", {rankingSystemRef: rankingSystemRef});
 };
 
 rankingService.calculateRankingsBatchJob = function(batchJob){
@@ -225,4 +226,17 @@ rankingService.calculateRankingsBatchJob = function(batchJob){
     }
 };
 
+rankingService.calculateAllRankingsBatchJob = function(batchJob){
+    var startDate = new Date();
+    return rankingService.calculateAndStoreAllRankings().then(function(){
+        return batchService.createBatchResult(batchJob._id,
+            1,
+            batchService.getBatchResultFromBoolean(true),
+            startDate,
+            "Calculated rankings for all ranking systems",
+            []);
+    });
+};
+
 batchService.loadBatchHandler("Calculate Rankings", rankingService.calculateRankingsBatchJob);
+batchService.loadBatchHandler("Calculate All Rankings", rankingService.calculateAllRankingsBatchJob);
