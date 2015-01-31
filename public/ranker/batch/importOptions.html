@@ -4,8 +4,8 @@
     </div>
     <div class="panel-body">
         <div ng-controller="UploadCtrl">
-            <button data-ng-hide="uploadingFile" data-ng-click="openFileSelect('greyhound')" class="btn btn-primary">Import greyhound .csv file</button>
-            <button data-ng-hide="uploadingFile" data-ng-click="openFileSelect('race')" class="btn btn-primary">Import race .csv file</button>
+            <button data-ng-hide="uploadingFile" data-ng-click="openFileSelect('greyhound')" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up"></span> Import greyhound .csv file</button>
+            <button data-ng-hide="uploadingFile" data-ng-click="openFileSelect('race')" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up"></span> Import race .csv file</button>
             <input id="hiddenFileOpen" type="file" style="display:none" ng-file-select="onFileSelect($files)">
             <div data-ng-show="isUploading">
                 Uploading file...

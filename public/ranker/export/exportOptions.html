@@ -4,7 +4,7 @@
     </div>
     <div class="panel-body" ng-controller="ExportCtrl">
         <div ng-show="exportStatus == 'ready'">
-            <button data-ng-click="createExportJob('greyhound', 'csv')" class="btn btn-primary">Export greyhounds to .csv</button>
+            <button data-ng-click="createExportJob('greyhound', 'csv')" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down"></span> Export greyhounds to .csv</button>
         </div>
         <div ng-show="exportStatus == 'success'">
             <p>
