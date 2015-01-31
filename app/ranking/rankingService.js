@@ -201,8 +201,8 @@ rankingService.addRankingPosition = function(rankings){
 
     return rankings;
 };
-
-eventService.addListener(/.*_Placing/, function(){
+rankingService.placingEventRegex = "Placing";
+eventService.addListener(rankingService.placingEventRegex, function(){
     return batchService.createBatch("Calculate All Rankings", {});
 });
 

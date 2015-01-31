@@ -3,6 +3,7 @@ var eventService = module.exports = {};
 var _ = require('lodash');
 var q = require('q');
 var mongoose = require('mongoose');
+var logger = require('winston');
 var mongoService = require('../mongoService');
 var EventModel = require('./event').model;
 
@@ -10,7 +11,7 @@ eventService.listeners = [];
 
 eventService.logEvent = function(event){
     eventService.listeners.forEach(function(listener){
-        if (event.type != null && event.type.match(listener.typeRegex) && listener.onEvent != null){
+        if (event.type != null && event.type.match(listener.regexString) && listener.onEvent != null){
             listener.onEvent(event);
         }
     });
@@ -35,12 +36,21 @@ eventService.logDeleteEntity = function(entity){
     return eventService.logEntity("Delete", entity);
 };
 
-eventService.persistEvent = function(event){
+eventService.persistEventListener = function(event){
     return mongoService.savePromise(new EventModel(event));
 };
 
-eventService.addListener = function(eventTypeRegex, listeningFunction){
-    eventService.listeners.push({typeRegex:eventTypeRegex, onEvent : listeningFunction});
+eventService.logEventListener = function(event){
+    logger.log('info', event.type);
 };
 
-eventService.addListener(/.*/,eventService.persistEvent);
+eventService.addListener = function(eventNameRegexString, listeningFunction){
+    eventService.listeners.push({regexString:eventNameRegexString, onEvent : listeningFunction});
+};
+
+eventService.clearListeners = function(){
+    eventService.listeners = [];
+};
+
+eventService.addListener(".*",eventService.persistEventListener);
+eventService.addListener(".*",eventService.logEventListener);

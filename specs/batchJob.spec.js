@@ -66,7 +66,6 @@ describe("BatchJob", function() {
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    console.log(res.body);
                     assert.equal(res.body.status, 'Cancelled');
                     done();
                 });

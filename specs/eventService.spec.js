@@ -11,13 +11,14 @@ describe("eventService", function(){
     before(function (done) {
         testHelper.setup(function(){
             eventService = require('../app/event/eventService');
+            eventService.clearListeners();
             done();
         });
     });
 
     describe("#logEvent", function() {
         it("gets to a listener", function(done){
-            eventService.addListener(/test/, function(){
+            eventService.addListener("test", function(){
                 done();
             });
             eventService.logEvent({"type":"test_event"});
@@ -26,6 +27,7 @@ describe("eventService", function(){
     });
 
     after(function (done) {
+        eventService.clearListeners();
         testHelper.tearDown(done);
     });
 });
