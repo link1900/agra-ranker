@@ -2,6 +2,7 @@ var fileController = module.exports = {};
 
 var q = require('q');
 var _ = require('lodash');
+var logger = require('winston');
 var File = require('./file').model;
 var fileService = require('./fileService');
 var helper = require('../helper');
@@ -55,7 +56,7 @@ fileController.uploadFile = function(req, res){
         });
 
         fileWriteStream.on('error', function(gridfsError){
-            console.log("error saving file to gridfs", gridfsError);
+            logger.log('error',"error saving file to gridfs", gridfsError);
             res.jsonp(400, {'error':err});
         });
 

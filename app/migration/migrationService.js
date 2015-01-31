@@ -1,20 +1,22 @@
 var migrationService = module.exports = {};
 
-var mongoose = require('mongoose');
-var Migration = require('./migration').model;
-var _ = require('lodash');
-var helper = require('../helper');
-var mongoService = require('../mongoService');
 var q = require('q');
 var path = require('path');
 var fs = require('fs');
+var mongoose = require('mongoose');
+var _ = require('lodash');
+var logger = require('winston');
+
+var Migration = require('./migration').model;
+var helper = require('../helper');
+var mongoService = require('../mongoService');
 var migrationIndex = require('../migrations/migrationIndex');
 
 migrationService.applyMigrations = function(migrationDir) {
     var migrations = migrationIndex.index;
-    console.log("Checking for migrations");
+    logger.log('info',"Checking for migrations");
     if (migrations.length <= 0){
-        console.log("No outstanding migrations");
+        logger.log('info',"No outstanding migrations");
         return q(true);
     }
 
@@ -73,22 +75,22 @@ migrationService.validateMigrations = function(migrations, migrationDir){
     //check that each entry is valid (it has a sequence number and file name and it exists)
     _.each(migrations, function(migration){
         if (!migration.sequence){
-            console.log("migration index entry:\n " + JSON.stringify(migration, null, 2) + "\n Is invalid because it does not contain a sequence value");
+            logger.log('info', "migration index entry:\n " + JSON.stringify(migration, null, 2) + "\n Is invalid because it does not contain a sequence value");
             process.exit(1);
         }
 
         if (typeof migration.sequence !== 'number'){
-            console.log("migration index entry:\n " + JSON.stringify(migration, null, 2) + "\n Is invalid because the sequence value is not a number");
+            logger.log('info', "migration index entry:\n " + JSON.stringify(migration, null, 2) + "\n Is invalid because the sequence value is not a number");
             process.exit(1);
         }
 
         if (!migration.file){
-            console.log("migration index entry: \n" + JSON.stringify(migration, null, 2) + "\n Is invalid because it does not contain a file value");
+            logger.log('info', "migration index entry: \n" + JSON.stringify(migration, null, 2) + "\n Is invalid because it does not contain a file value");
             process.exit(1);
         }
         var migrationRefPath = path.join(migrationDir, migration.file);
         if (!fs.existsSync(migrationRefPath)){
-            console.log("migration index entry:\n " + JSON.stringify(migration, null, 2) + "\n Is invalid because the the file " + migration.file + " cannot be found");
+            logger.log('info', "migration index entry:\n " + JSON.stringify(migration, null, 2) + "\n Is invalid because the the file " + migration.file + " cannot be found");
             process.exit(1);
         }
     });
@@ -97,8 +99,8 @@ migrationService.validateMigrations = function(migrations, migrationDir){
     var lastSeq = 0;
     _.each(migrations, function(migration){
         if (migration.sequence <= lastSeq){
-            console.log("migration index contains invalid sequence:");
-            console.log("entry: \n" + JSON.stringify(migration, null, 2) + "\n has a sequence of " + migration.sequence + " and previous entry has a sequence of " + lastSeq);
+            logger.log('info', "migration index contains invalid sequence:");
+            logger.log('info', "entry: \n" + JSON.stringify(migration, null, 2) + "\n has a sequence of " + migration.sequence + " and previous entry has a sequence of " + lastSeq);
             process.exit(1);
         }
         lastSeq = migration.sequence;

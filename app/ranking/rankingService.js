@@ -37,7 +37,7 @@ rankingService.calculateAndStoreRankings = function(rankingSystemRef){
             return mongoService.saveAllAtOnce(rankings.map(function(ranking){
                 return new Ranking(ranking);
             })).then(function(result){
-                eventService.logEvent({type:"RANKINGS_CALCULATED", data: rankingSystemRef});
+                eventService.logEvent({type:"Rankings Calculated", data: rankingSystemRef});
                 return q(result);
             });
         });

@@ -4,6 +4,7 @@ var csv = require('csv');
 var q = require('q');
 var _ = require('lodash');
 var mongoose = require('mongoose');
+var logger = require('winston');
 
 var Greyhound = require('./greyhound').model;
 var batchService = require('../batch/batchService');
@@ -66,7 +67,7 @@ greyhoundService.createStep = function(batchRecord){
         batchRecord.stepResults.push(greyhoundImportResult.details);
         return batchRecord;
     },function(creationFailure){
-        console.log(creationFailure);
+        logger.log('error',creationFailure);
         batchRecord.stepResults.push("Failed to create greyhound \"" + batchRecord.greyhoundRecord.name + "\" error:" + creationFailure);
         return q.reject(batchRecord);
     });
@@ -79,7 +80,7 @@ greyhoundService.createSireStep = function(batchRecord){
             batchRecord.stepResults.push(sireImportResult.details);
             return batchRecord;
         }, function(creationFailure){
-            console.log(creationFailure);
+            logger.log('error', creationFailure);
             batchRecord.stepResults.push("Failed to create sire greyhound \"" + batchRecord.greyhoundRecord.name + "\" error:" + creationFailure);
             return q.reject(batchRecord);
         });
@@ -96,7 +97,7 @@ greyhoundService.setSireStep = function(batchRecord){
             batchRecord.stepResults.push("Updated \"" + updatedGreyhound.name + "\" to have sire \"" + batchRecord.createdSire.name + "\"");
             return batchRecord;
         }, function(updateSireError){
-            console.log(updateSireError);
+            logger.log('error',updateSireError);
             batchRecord.stepResults.push("Failed to update sire for \"" + batchRecord.createdGreyhound.name + "\" error:" + updateSireError);
             return q.reject(batchRecord);
         });
@@ -112,7 +113,7 @@ greyhoundService.createDamStep = function(batchRecord){
             batchRecord.stepResults.push(damImportResult.details);
             return batchRecord;
         }, function(creationFailure){
-            console.log(creationFailure);
+            logger.log('error',creationFailure);
             batchRecord.stepResults.push("Failed to create dam greyhound \"" + batchRecord.greyhoundRecord.name + "\" error:" + creationFailure);
             return q.reject(batchRecord);
         });
@@ -129,7 +130,7 @@ greyhoundService.setDamStep = function(batchRecord){
             batchRecord.stepResults.push("Updated \"" + updatedGreyhound.name + "\" to have dam \"" + batchRecord.createdDam.name + "\"");
             return batchRecord;
         }, function(updateSireError){
-            console.log(updateSireError);
+            logger.log('error',updateSireError);
             batchRecord.stepResults.push("Failed to update dam for \"" + batchRecord.createdGreyhound.name + "\" error:" + updateSireError);
             return q.reject(batchRecord);
         });
@@ -148,7 +149,7 @@ greyhoundService.processGreyhoundRow = function(record){
         .then(function(finalBatchRecord){
             return {isSuccessful : true, stepResults: finalBatchRecord.stepResults};
         }).fail(function(importError){
-            console.log("error importing greyhound csv", importError);
+            logger.log('error',"error importing greyhound csv", importError);
             return q({isSuccessful : false, stepResults: [JSON.stringify(importError)]});
         });
 };
@@ -266,7 +267,7 @@ greyhoundService.processGreyhoundCSV = function(batchJob){
         var fileReadStream =  fileService.getFileReadStream(batchJob.metadata.fileId);
         var recordCount = 0;
         fileReadStream.on('error', function(fileReadError){
-            console.log("error streaming from gridfs", fileReadError);
+            logger.log('error', "error streaming from gridfs", fileReadError);
             deferred.reject(fileReadError);
         });
 
@@ -296,7 +297,7 @@ greyhoundService.processGreyhoundCSV = function(batchJob){
         });
 
         parser.on('error', function(parserError){
-            console.log("error parsing csv", parserError);
+            logger.log('error',"error parsing csv", parserError);
             deferred.reject(parserError);
         });
 

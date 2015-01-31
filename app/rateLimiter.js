@@ -12,8 +12,6 @@ rateLimiter.store = new MongoStore(function (ready) {
 });
 
 rateLimiter.failure = function (req, res, next, nextValidRequestDate) {
-    console.log(nextValidRequestDate);
-    console.log(moment(nextValidRequestDate).fromNow());
     res.jsonp(429, {error: "You've made too many attempts in a short period of time, please try again "+moment(nextValidRequestDate).fromNow(),
         nextValidRequestDate: nextValidRequestDate});
 };

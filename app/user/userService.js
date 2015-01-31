@@ -237,7 +237,6 @@ userService.mergeUpdateRequest = function(updateRequest, existingEntity){
 
 userService.systemRequiresUsers = function(){
     return mongoService.getCollectionCount(User).then(function(count){
-        console.log(count);
         return {"result": count == 0};
     });
 };

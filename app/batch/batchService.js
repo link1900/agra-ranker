@@ -61,7 +61,7 @@ batchService.failedCheckerState = batchService.states.standby;
 batchService.failedBatchJobChecker = function(){
     if (batchService.failedCheckerState == batchService.states.standby){
         batchService.failedCheckerState = batchService.states.processing;
-        //make debug console.log("[failed batch job checker] started looking for stuck batch jobs");
+        logger.log('debug',"[failed batch job checker] started looking for stuck batch jobs");
         mongoService.find(BatchJob, {status: batchService.batchStatuses.inProgress}).then(function(batchesInProgress){
             var proms = batchesInProgress.map(function(batchInProgress){
                 if(!batchService.doesAnyProcessContainBatch(batchInProgress)){
@@ -83,7 +83,7 @@ batchService.failedBatchJobChecker = function(){
             });
             q.all(proms).then(function(){
                 batchService.failedCheckerState = batchService.states.standby;
-                //make debug console.log("[failed batch job checker] finished looking for stuck batch jobs");
+                logger.log('debug',"[failed batch job checker] finished looking for stuck batch jobs");
             }, function(someError){
                 logger.log("info","[failed batch job checker] has had an error", someError);
                 batchService.failedCheckerState = batchService.states.standby;
@@ -132,12 +132,12 @@ batchService.executeProcessor = function(processor){
             processor.state = batchService.states.processing;
             processor.processingBatch = batchToProcess;
             batchService.processBatch(processor.processingBatch).then(function(){
-                console.log(processor.name + " finished processing batch job " + batchToProcess.type);
+                logger.log('info',processor.name + " finished processing batch job " + batchToProcess.type);
                 batchToProcess.status = batchService.batchStatuses.completed;
                 mongoService.savePromise(batchToProcess).then(function(){
                     batchService.clearProcessor(processor);
                 }, function(){
-                    console.log(processor.name + " had an error updating batch", err);
+                    logger.log('info',processor.name + " had an error updating batch", err);
                     batchService.clearProcessor(processor);
                 });
             }, function(batchProcessError){
@@ -151,7 +151,7 @@ batchService.executeProcessor = function(processor){
                 });
             });
         } else {
-            //make debug console.log(processor.name + " found no batch jobs to process");
+            logger.log('debug',processor.name + " found no batch jobs to process");
             batchService.clearProcessor(processor);
         }
     });
