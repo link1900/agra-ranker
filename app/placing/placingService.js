@@ -27,6 +27,17 @@ placingService.updatePlacing = function(existingModel, updatedBody){
         .then(eventService.logUpdateEntity);
 };
 
+placingService.deletePlacing = function(placing){
+    return mongoService.removePromise(placing)
+        .then(eventService.logDeleteEntity);
+};
+
+mongoService.addStandardServiceMethods(placingService, Placing);
+
+placingService.find = function(query){
+    return mongoService.find(Placing, query);
+};
+
 placingService.mergeWithExisting = function(existingModel, updatedBody){
     return q(_.extend(existingModel, updatedBody));
 };

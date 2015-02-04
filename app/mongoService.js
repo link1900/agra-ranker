@@ -4,9 +4,9 @@ var _ = require('lodash');
 var q = require('q');
 var mongoose = require('mongoose');
 
-mongoService.find = function(dao, search){
+mongoService.find = function(dao, search, limit, offset, sort){
     var deferred = q.defer();
-    dao.find(search).exec(function(err, results){
+    dao.find(search).limit(limit).skip(limit * offset).sort(sort).exec(function(err, results){
         if(err){
             deferred.reject(err);
         } else {
@@ -307,3 +307,14 @@ mongoService.collectionExists = function(collectionName){
     return deferred.promise;
 };
 
+mongoService.addStandardServiceMethods = function(service, dao){
+    service.count = function(){
+        return mongoService.getCollectionCount(dao).then(function(count){
+            return {"placing": count};
+        });
+    };
+
+    service.findById = function(id){
+        return mongoService.findOneById(dao, id);
+    };
+};

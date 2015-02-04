@@ -8,7 +8,6 @@ var logger = require('winston');
 var validator = require('validator');
 var Race = require('./race').model;
 var GroupLevel = require('../groupLevel/groupLevel').model;
-var Placing = require('../placing/placing').model;
 var helper = require('../helper');
 var mongoService = require('../mongoService');
 var BatchJob = require('../batch/batchJob').model;

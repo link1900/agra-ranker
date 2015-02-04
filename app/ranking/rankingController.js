@@ -4,7 +4,6 @@ var _ = require('lodash');
 var q = require('q');
 var mongoose = require('mongoose');
 var Ranking = require('./ranking').model;
-var Placing = require('../placing/placing').model;
 var helper = require('../helper');
 var mongoService = require('../mongoService');
 var rankingService = require('./rankingService');

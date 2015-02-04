@@ -42,5 +42,5 @@ placingController.update = function(req, res) {
 };
 
 placingController.destroy = function(req, res) {
-    helper.responseFromPromise(res, mongoService.removePromise(req.model));
+    helper.responseFromPromise(res, placingService.deletePlacing(req.model));
 };
