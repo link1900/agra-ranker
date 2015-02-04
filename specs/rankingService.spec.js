@@ -5,8 +5,12 @@ var chai = require('chai');
 var assert = chai.assert;
 var testHelper = require('./testHelper');
 var Placing = require('../app/placing/placing').model;
+var Greyhound = require('../app/greyhound/greyhound').model;
+var BatchJob = require('../app/batch/batchJob').model;
+var Race = require('../app/race/race').model;
 var RankingSystem = require('../app/ranking/rankingSystem').model;
 var rankingService = null;
+var eventService = require('../app/event/eventService');
 
 describe("rankingService", function(){
 
@@ -265,6 +269,22 @@ describe("rankingService", function(){
                 done();
             },done).catch(function(err){
                 done(err);
+            });
+        });
+    });
+
+    describe("Ranking Service is listening to placing events", function(){
+
+        before(function(done){
+            BatchJob.remove({}, function(){done();});
+        });
+
+        it("when placing event is fired that a ranking batch is created", function(done){
+            eventService.logEvent({type:"Placing"}, true).then(function(){
+                BatchJob.find({}, function(err, res){
+                    assert.equal(res.length, 1);
+                    done();
+                });
             });
         });
     });

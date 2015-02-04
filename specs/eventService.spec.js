@@ -17,7 +17,7 @@ describe("eventService", function(){
     });
 
     it("gets to a listener", function(done){
-        eventService.addListener("test1", function(){
+        eventService.addListener("eventTest1","test1", function(){
             done();
         });
         eventService.logEvent({"type":"test1"});
@@ -25,7 +25,7 @@ describe("eventService", function(){
 
     it("will return a promise when requiring confirmation", function(done){
         var reached = false;
-        eventService.addListener("test2", function(){
+        eventService.addListener("eventTest2","test2", function(){
             reached = true;
             return q(true);
         });
@@ -40,8 +40,8 @@ describe("eventService", function(){
     });
 
     after(function (done) {
-        eventService.removeListener("test1");
-        eventService.removeListener("test2");
+        eventService.removeListenerByName("eventTest1");
+        eventService.removeListenerByName("eventTest2");
         testHelper.tearDown(done);
     });
 });
