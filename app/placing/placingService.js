@@ -106,7 +106,7 @@ placingService.validatePlacing = function(placing){
         return q.reject("raceRef field is required");
     }
 
-    if (placing.raceRef != placing.race._id){
+    if (placing.race != null && placing.raceRef != placing.race._id){
         return q.reject("race flyweight does not match raceRef");
     }
 
@@ -114,7 +114,7 @@ placingService.validatePlacing = function(placing){
         return q.reject("greyhoundRef field is required");
     }
 
-    if (placing.greyhoundRef != placing.greyhound._id){
+    if (placing.greyhound != null && placing.greyhoundRef != placing.greyhound._id){
         return q.reject("greyhound flyweight does not match greyhoundRef");
     }
 
