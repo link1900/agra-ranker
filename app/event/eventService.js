@@ -9,12 +9,25 @@ var EventModel = require('./event').model;
 
 eventService.listeners = [];
 
-eventService.logEvent = function(event){
-    eventService.listeners.forEach(function(listener){
-        if (event.type != null && event.type.match(listener.regexString) && listener.onEvent != null){
-            listener.onEvent(event);
-        }
-    });
+eventService.logEvent = function(event, requireConfirmation){
+    if (requireConfirmation === true){
+        var proms = eventService.listeners.map(function(listener){
+            if (event.type != null && event.type.match(listener.regexString) && listener.onEvent != null){
+                return q(listener.onEvent(event));
+            } else {
+                return q(true);
+            }
+        });
+
+        return q.allSettled(proms);
+    } else {
+        eventService.listeners.forEach(function(listener){
+            if (event.type != null && event.type.match(listener.regexString) && listener.onEvent != null){
+                listener.onEvent(event);
+            }
+        });
+        return q(true);
+    }
 };
 
 eventService.logEntity = function(opType, entity){
@@ -25,15 +38,15 @@ eventService.logEntity = function(opType, entity){
 };
 
 eventService.logCreateEntity = function(entity){
-    return eventService.logEntity("Create", entity);
+    return eventService.logEntity("Created", entity);
 };
 
 eventService.logUpdateEntity = function(entity){
-    return eventService.logEntity("Update", entity);
+    return eventService.logEntity("Updated", entity);
 };
 
 eventService.logDeleteEntity = function(entity){
-    return eventService.logEntity("Delete", entity);
+    return eventService.logEntity("Deleted", entity);
 };
 
 eventService.persistEventListener = function(event){
@@ -50,6 +63,12 @@ eventService.addListener = function(eventNameRegexString, listeningFunction){
 
 eventService.clearListeners = function(){
     eventService.listeners = [];
+};
+
+eventService.removeListener = function(eventNameRegexString){
+    eventService.listeners = eventService.listeners.filter(function(listener){
+        return listener.regexString != eventNameRegexString;
+    });
 };
 
 eventService.addListener(".*",eventService.persistEventListener);
