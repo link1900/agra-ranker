@@ -57,19 +57,25 @@ eventService.logEventListener = function(event){
     logger.log('info', event.type);
 };
 
-eventService.addListener = function(eventNameRegexString, listeningFunction){
-    eventService.listeners.push({regexString:eventNameRegexString, onEvent : listeningFunction});
+eventService.addListener = function(name, eventNameRegexString, listeningFunction){
+    eventService.listeners.push({name: name,regexString:eventNameRegexString, onEvent : listeningFunction});
 };
 
 eventService.clearListeners = function(){
     eventService.listeners = [];
 };
 
-eventService.removeListener = function(eventNameRegexString){
+eventService.removeListenerByName = function(name){
+    eventService.listeners = eventService.listeners.filter(function(listener){
+        return listener.name != name;
+    });
+};
+
+eventService.removeListenerByRegex = function(eventNameRegexString){
     eventService.listeners = eventService.listeners.filter(function(listener){
         return listener.regexString != eventNameRegexString;
     });
 };
 
-eventService.addListener(".*",eventService.persistEventListener);
-eventService.addListener(".*",eventService.logEventListener);
+eventService.addListener("persistence listener",".*",eventService.persistEventListener);
+eventService.addListener("log listener",".*",eventService.logEventListener);
