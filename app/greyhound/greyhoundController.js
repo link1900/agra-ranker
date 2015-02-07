@@ -231,18 +231,7 @@ greyhoundController.processDamField = function(updateRequest) {
     return deferred.promise;
 };
 
-/**
- * Delete an greyhound
- */
 greyhoundController.destroy = function(req, res) {
-    helper.responseFromPromise(res,
-        mongoService.cleanFk(Greyhound, 'sireRef', req.model)
-        .then(function(){
-            return mongoService.cleanFk(Greyhound, 'damRef', req.model);
-        })
-        .then(function(){
-            return mongoService.cleanFk(Placing, 'greyhoundRef', req.model);
-        })
-        .then(mongoService.removePromise)
-    );
+    helper.responseFromPromise(res, greyhoundService.deleteGreyhound(req.model));
 };
+

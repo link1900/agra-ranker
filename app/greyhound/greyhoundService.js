@@ -12,6 +12,7 @@ var fileService = require('../file/fileService');
 var helper = require('../helper');
 var mongoService = require('../mongoService');
 
+mongoService.addStandardServiceMethods(greyhoundService, Greyhound);
 
 greyhoundService.rawCsvArrayToGreyhound = function(rawRow){
     var greyhound = {
@@ -306,6 +307,17 @@ greyhoundService.processGreyhoundCSV = function(batchJob){
         deferred.reject({error: "batch job does not contain enough data to process"});
     }
     return deferred.promise;
+};
+var Placing = require('../placing/placing').model;
+greyhoundService.deleteGreyhound = function(model){
+    return mongoService.cleanFk(Greyhound, 'sireRef', model)
+        .then(function(){
+            return mongoService.cleanFk(Greyhound, 'damRef', model);
+        })
+        .then(function(){
+            return mongoService.cleanFk(Placing, 'greyhoundRef', model);
+        })
+        .then(mongoService.removePromise);
 };
 
 batchService.loadBatchHandler("importGreyhoundCSV", greyhoundService.processGreyhoundCSV);
