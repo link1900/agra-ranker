@@ -34,8 +34,8 @@ placingService.deletePlacing = function(placing){
 
 mongoService.addStandardServiceMethods(placingService, Placing);
 
-placingService.find = function(query){
-    return mongoService.find(Placing, query);
+placingService.find = function(query, limit, offset, sort){
+    return mongoService.find(Placing, query, limit, offset, sort);
 };
 
 placingService.mergeWithExisting = function(existingModel, updatedBody){

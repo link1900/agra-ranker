@@ -8,6 +8,7 @@ var Race = require('../race/race').model;
 var Greyhound = require('../greyhound/greyhound').model;
 var helper = require('../helper');
 var mongoService = require('../mongoService');
+var expressService = require('../expressService');
 
 placingController.setModel = function(req, res, next, id) {
     Placing.findById(id, function(err, model) {
@@ -31,6 +32,15 @@ placingController.prepareQuery = function(req, res, next) {
     }
     req.dao = Placing;
     next();
+};
+
+placingController.find = function(req, res){
+    var query = expressService.buildQuery(req, ['greyhoundRef', 'raceRef']);
+    var searchParams = expressService.parseSearchParams(req);
+
+    return expressService.setTotalHeader(res, placingService).then(function(){
+        return helper.responseFromPromise(res, placingService.find(query, searchParams.limit, searchParams.offset, searchParams.sort));
+    });
 };
 
 placingController.create = function(req, res) {

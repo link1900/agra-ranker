@@ -86,7 +86,7 @@ module.exports = function(app) {
     app.param('groupLevelId', groupLevelController.setModel);
 
     //placing routes
-    app.get('/placing', placingController.prepareQuery, helper.runQuery);
+    app.get('/placing', placingController.find);
     app.get('/placing/:placingId', helper.getOne);
     app.post('/placing', securityController.checkAuthentication, placingController.create);
     app.put('/placing/:placingId', securityController.checkAuthentication, placingController.update);
