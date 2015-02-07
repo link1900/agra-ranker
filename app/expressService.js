@@ -39,3 +39,15 @@ expressService.buildQuery = function(req, fields){
     });
     return query;
 };
+
+expressService.addStandardMethods = function(controller, service){
+    controller.setModel = function(req, res, next, id) {
+        service.findById(id).then(function(model){
+            if (!model) return next(new Error('Failed to load ' + id));
+            req.model = model;
+            return next();
+        }, function(error){
+            return next(error);
+        });
+    };
+};

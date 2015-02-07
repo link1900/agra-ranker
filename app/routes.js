@@ -51,7 +51,7 @@ module.exports = function(app) {
     app.post('/greyhound', securityController.checkAuthentication,greyhoundController.create);
     app.put('/greyhound/:greyhoundId', securityController.checkAuthentication, greyhoundController.update);
     app.del('/greyhound/:greyhoundId',securityController.checkAuthentication, greyhoundController.destroy);
-    app.param('greyhoundId', greyhoundController.setGreyhound);
+    app.param('greyhoundId', greyhoundController.setModel);
 
     //batch routes
     app.get('/batch',securityController.checkAuthentication, batchController.prepareBatchQuery, helper.runQuery);

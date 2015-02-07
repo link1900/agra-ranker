@@ -6,20 +6,11 @@ var Placing = require('../placing/placing').model;
 var _ = require('lodash');
 var helper = require('../helper');
 var mongoService = require('../mongoService');
+var expressService = require('../expressService');
 var greyhoundService = require('./greyhoundService');
 var q = require('q');
 
-/**
- * Find greyhound by id
- */
-greyhoundController.setGreyhound = function(req, res, next, id) {
-    Greyhound.findById(id, function(err, greyhound) {
-        if (err) return next(err);
-        if (!greyhound) return next(new Error('Failed to load greyhound ' + id));
-        req.model = greyhound;
-        return next();
-    });
-};
+expressService.addStandardMethods(greyhoundController, greyhoundService);
 
 greyhoundController.prepareQuery = function(req, res, next) {
     req.searchQuery = {};
