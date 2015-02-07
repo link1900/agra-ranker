@@ -12,19 +12,19 @@ var q = require('q');
 
 expressService.addStandardMethods(greyhoundController, greyhoundService);
 
-greyhoundController.prepareQuery = function(req, res, next) {
-    req.searchQuery = {};
+greyhoundController.find = function(req, res){
+    var query = {};
     var like = req.param('like');
     var name = req.param('name');
     var parentRef = req.param('parentRef');
     if (like){
-        req.searchQuery = {'name': {'$regex': "^"+like.toLowerCase()}};
+        query = {'name': {'$regex': "^"+like.toLowerCase()}};
     }
     if (name){
-        req.searchQuery = {'name': name.toLowerCase()};
+        query = {'name': name.toLowerCase()};
     }
     if (parentRef){
-        req.searchQuery =
+        query =
         {'$or':
             [
                 {'sireRef' : parentRef},
@@ -32,8 +32,11 @@ greyhoundController.prepareQuery = function(req, res, next) {
             ]
         };
     }
-    req.dao = Greyhound;
-    next();
+    var searchParams = expressService.parseSearchParams(req);
+
+    return expressService.setTotalHeader(res, greyhoundService).then(function(){
+        return helper.responseFromPromise(res, greyhoundService.find(query, searchParams.limit, searchParams.offset, searchParams.sort));
+    });
 };
 
 greyhoundController.create = function(req, res) {

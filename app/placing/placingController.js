@@ -10,29 +10,7 @@ var helper = require('../helper');
 var mongoService = require('../mongoService');
 var expressService = require('../expressService');
 
-placingController.setModel = function(req, res, next, id) {
-    Placing.findById(id, function(err, model) {
-        if (err) return next(err);
-        if (!model) return next(new Error('Failed to load ' + id));
-        req.model = model;
-        return next();
-    });
-};
-
-placingController.prepareQuery = function(req, res, next) {
-    req.searchQuery = {};
-    var raceRef = req.param('raceRef');
-    var greyhoundRef = req.param('greyhoundRef');
-
-    if (raceRef){
-        req.searchQuery.raceRef = raceRef;
-    }
-    if (greyhoundRef){
-        req.searchQuery.greyhoundRef = greyhoundRef;
-    }
-    req.dao = Placing;
-    next();
-};
+expressService.addStandardMethods(placingController, placingService);
 
 placingController.find = function(req, res){
     var query = expressService.buildQuery(req, ['greyhoundRef', 'raceRef']);

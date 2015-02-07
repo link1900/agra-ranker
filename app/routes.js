@@ -46,7 +46,7 @@ module.exports = function(app) {
     app.param('inviteId', inviteController.setModel);
 
     //greyhound routes
-    app.get('/greyhound', greyhoundController.prepareQuery,  helper.runQuery);
+    app.get('/greyhound', greyhoundController.find);
     app.get('/greyhound/:greyhoundId', helper.getOne);
     app.post('/greyhound', securityController.checkAuthentication,greyhoundController.create);
     app.put('/greyhound/:greyhoundId', securityController.checkAuthentication, greyhoundController.update);

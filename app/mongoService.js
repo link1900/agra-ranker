@@ -317,4 +317,8 @@ mongoService.addStandardServiceMethods = function(service, dao){
     service.findById = function(id){
         return mongoService.findOneById(dao, id);
     };
+
+    service.find = function(query, limit, offset, sort){
+        return mongoService.find(dao, query, limit, offset, sort);
+    };
 };
