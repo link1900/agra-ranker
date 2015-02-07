@@ -50,4 +50,8 @@ expressService.addStandardMethods = function(controller, service){
             return next(error);
         });
     };
+
+    controller.getOne = function(req, res){
+        res.jsonp(req.model);
+    };
 };

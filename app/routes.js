@@ -47,7 +47,7 @@ module.exports = function(app) {
 
     //greyhound routes
     app.get('/greyhound', greyhoundController.find);
-    app.get('/greyhound/:greyhoundId', helper.getOne);
+    app.get('/greyhound/:greyhoundId', greyhoundController.getOne);
     app.post('/greyhound', securityController.checkAuthentication,greyhoundController.create);
     app.put('/greyhound/:greyhoundId', securityController.checkAuthentication, greyhoundController.update);
     app.del('/greyhound/:greyhoundId',securityController.checkAuthentication, greyhoundController.destroy);
@@ -87,7 +87,7 @@ module.exports = function(app) {
 
     //placing routes
     app.get('/placing', placingController.find);
-    app.get('/placing/:placingId', helper.getOne);
+    app.get('/placing/:placingId', placingController.getOne);
     app.post('/placing', securityController.checkAuthentication, placingController.create);
     app.put('/placing/:placingId', securityController.checkAuthentication, placingController.update);
     app.del('/placing/:placingId',securityController.checkAuthentication, placingController.destroy);
