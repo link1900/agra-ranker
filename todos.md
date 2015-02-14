@@ -201,16 +201,36 @@
 - (DONE) add validation to criteria
 - (DONE) read rankings from database and not calculated on the fly
 - (DONE) remove point allotment it is not required for storage
-- Refactor front end to be via the main groups
-- Add ranking system criteria field value replacement for calendar start and end dates
-- Add Agra Ranking System (for calendar year)
-- calculate rankings on race creation
-- Create default data command for ranking system
+- (DONE) Refactor front end to be via the main groups
+- (DONE) Add ranking system criteria field value replacement for calendar start and end dates
+- (DONE) Add Agra Ranking System (for calendar year)
+- calculate rankings on placing creation
+- calculate rankings on placing edit
+- calculate rankings on placing delete
+- on greyhound delete, remove all placings for that greyhound
+- on race delete, remove all placings for that race
+- validate that placings must have a race and greyhound reference
+- test that rankings are update on placing creation
+- test that rankings are update on placing update
+- add event stream ui
+- add event for greyhound crud and imports
+- add event for race curd and imports
+- split the testing and move them into the app break up test helper
+- refactor the admin service to import the models once and do all operations of that list
+- refactor the hardcoded template creation to the specific area
+- allow logged in users to save there ui settigs
+- allow admin to configure the global ui settings
+- add a news section
+- update ranking display to show placings (lazyload?)
+- update ranking display to show cards
+- update the read me with the .example_env and what each config does
+- add protactor tests for the major flows like greyhound crud, race crud placing crud, rankings and score check
+- (DONE) create default data command for ranking system
 - define agra ranking system and test importing it
 - define sire and dam ranking systems test import it
 - dead heat rule - points from matching positions are summed and divided
-- List rankings api
-- calculate rankings based on a ranking system
+- (DONE) List rankings api
+- (DONE) calculate rankings based on a ranking system
 - update rankings when race is changed
 - update rankings when ranking system (or its sub entities is changed) is changed
 - update when greyhound is deleted
@@ -226,10 +246,8 @@
 - Switch basic like search to use mongo full text search
 - allow race search to be done by two dates
 
-### 6.1 Ranking UI
-- list all rankings on the home screen
-
-## 6.1.1 - Getting to Ranker 6 Level
+## 6.1.0 - Getting to Ranker 6 Level
+- (DONE) list all rankings on the home screen
 - put in proper action logging
 - save the history log to the database
 - change npm test to constant
@@ -249,6 +267,9 @@
 - search on keydown for tables search box
 - race & placing csv import api
 - Switch test data loading to fixtures
+- deploy and perform PVT online
+
+## 6.1.1 - Beyond the ranker 6 first steps
 
 ## Backlog - Beyond the ranker 6
 - export greyhound json
