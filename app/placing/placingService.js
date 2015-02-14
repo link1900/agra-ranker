@@ -18,16 +18,14 @@ placingService.createPlacing = function(placingObject){
         .then(placingService.makePlacingModel)
         .then(placingService.preProcessModel)
         .then(placingService.validatePlacing)
-        .then(mongoService.savePromise)
-        .then(eventService.logCreateEntity);
+        .then(placingService.create);
 };
 
 placingService.updatePlacing = function(existingModel, updatedBody){
     return placingService.mergeWithExisting(existingModel, updatedBody)
         .then(placingService.preProcessModel)
         .then(placingService.validatePlacing)
-        .then(mongoService.savePromise)
-        .then(eventService.logUpdateEntity);
+        .then(placingService.update);
 };
 
 placingService.mergeWithExisting = function(existingModel, updatedBody){
@@ -156,3 +154,17 @@ placingService.checkGreyhoundRefNotAlreadyUsed = function(placing){
         }
     });
 };
+
+eventService.addListener("placing greyhound flyweight updater","Updated Greyhound", function(event){
+    if (event != null && event.data != null && event.data.entity != null && event.data.entity._id != null){
+        return placingService.find({greyhoundRef: event.data.entity._id}).then(function(results){
+            var proms = results.map(function(placingToUpdate){
+                placingToUpdate.greyhound = event.data.entity;
+                return placingService.update(placingToUpdate);
+            });
+            return q.all(proms);
+        });
+    } else {
+        return q();
+    }
+});
