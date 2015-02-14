@@ -65,7 +65,6 @@ greyhoundController.update = function(req, res) {
         .then(greyhoundController.processDamField)
         .then(helper.mergeEntityRequest)
         .then(helper.saveEntityRequest)
-        .then(greyhoundController.updateFlyweights)
         .then(greyhoundController.issueUpdateEvent);
 
     helper.promiseToResponse(processChain, res);
@@ -80,12 +79,6 @@ greyhoundController.issueCreatedEvent = function(entityRequest){
 
 greyhoundController.issueUpdateEvent = function(entityRequest){
     return eventService.logUpdateEntity(entityRequest.savedEntity).then(function(){
-        return entityRequest;
-    });
-};
-
-greyhoundController.updateFlyweights = function(entityRequest){
-    return mongoService.updateFlyweight(Placing, 'greyhoundRef', 'greyhound', entityRequest.savedEntity).then(function(){
         return entityRequest;
     });
 };
