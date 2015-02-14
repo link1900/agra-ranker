@@ -309,16 +309,13 @@ greyhoundService.processGreyhoundCSV = function(batchJob){
     }
     return deferred.promise;
 };
-var Placing = require('../placing/placing').model;
+
 greyhoundService.deleteGreyhound = function(model){
     return mongoService.cleanFk(Greyhound, 'sireRef', model)
         .then(function(){
             return mongoService.cleanFk(Greyhound, 'damRef', model);
         })
-        .then(function(){
-            return mongoService.cleanFk(Placing, 'greyhoundRef', model);
-        })
-        .then(mongoService.removePromise);
+        .then(greyhoundService.remove);
 };
 
 batchService.loadBatchHandler("importGreyhoundCSV", greyhoundService.processGreyhoundCSV);
