@@ -37,10 +37,10 @@ batchController.prepareBatchQuery = function(req, res, next) {
     var like = req.param('like');
     var type = req.param('name');
     if (like){
-        req.searchQuery = {'type': {'$regex': like.toLowerCase()}};
+        req.searchQuery = {'type': {'$regex': like, '$options' : 'i'}};
     }
     if (type){
-        req.searchQuery = {'type': type.toLowerCase()};
+        req.searchQuery = {'type': type};
     }
     req.dao = BatchJob;
     next();

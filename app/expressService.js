@@ -38,7 +38,7 @@ expressService.buildQuery = function(req, fields){
             if (field.match("~")){
                 var fieldParts = field.split("~");
                 if (fieldParts.length == 2){
-                    query[fieldParts[0]] = {'$regex': "^"+req.param(fieldParts[1])};
+                    query[fieldParts[0]] = {'$regex': req.param(fieldParts[1]), '$options' : 'i'};
                 }
             }
         } else {

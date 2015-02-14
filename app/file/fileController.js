@@ -26,10 +26,10 @@ fileController.prepareQuery = function(req, res, next) {
     var like = req.param('like');
     var name = req.param('name');
     if (like){
-        req.searchQuery = {'filename': {'$regex': like.toLowerCase()}};
+        req.searchQuery = {'filename': {'$regex': like, '$options' : 'i'}};
     }
     if (name){
-        req.searchQuery = {'filename': name.toLowerCase()};
+        req.searchQuery = {'filename': name};
     }
     req.dao = File;
     next();
