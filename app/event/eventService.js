@@ -9,6 +9,14 @@ var EventModel = require('./event').model;
 
 eventService.listeners = [];
 
+eventService.count = function(){
+    return mongoService.getCollectionCount(EventModel);
+};
+
+eventService.find = function(query, limit, offset, sort){
+    return mongoService.find(EventModel, query, limit, offset, sort);
+};
+
 eventService.logEvent = function(event, requireConfirmation){
     if (requireConfirmation === true){
         var proms = eventService.listeners.map(function(listener){
