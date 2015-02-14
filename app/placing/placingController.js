@@ -2,7 +2,6 @@ var placingController = module.exports = {};
 
 var _ = require('lodash');
 var q = require('q');
-var Placing = require('./placing').model;
 var placingService = require('./placingService');
 var Race = require('../race/race').model;
 var Greyhound = require('../greyhound/greyhound').model;

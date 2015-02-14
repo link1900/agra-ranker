@@ -4,7 +4,7 @@ var _ = require('lodash');
 var q = require('q');
 var moment = require('moment');
 
-var Placing = require('../placing/placing').model;
+var placingService = require('../placing/placingService');
 var Race = require('../race/race').model;
 var Greyhound = require('../greyhound/greyhound').model;
 var greyhoundService = require('../greyhound/greyhoundService');
@@ -101,7 +101,7 @@ rankingService.convertPointAllotmentsToPlacingsPoints = function(pointAllotments
 
 rankingService.convertPointAllotmentToPlacingsPoints = function(pointAllotment){
     var query = rankingSystemService.getQueryForPointAllotment(pointAllotment);
-    return mongoService.find(Placing, query).then(function(placings){
+    return placingService.find(query).then(function(placings){
         //map placing results into placings with points
         return placings.map(function(placing){
             return {
@@ -201,8 +201,8 @@ rankingService.addRankingPosition = function(rankings){
 
     return rankings;
 };
-rankingService.placingEventRegex = "Placing";
-eventService.addListener("ranking recalculate listener",rankingService.placingEventRegex, function(){
+
+eventService.addListener("ranking recalculate listener","Placing", function(){
     return batchService.createBatch("Calculate All Rankings", {});
 });
 
