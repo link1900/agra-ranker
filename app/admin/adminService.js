@@ -1,7 +1,6 @@
 var adminService = module.exports = {};
 
 var mongoose = require('mongoose');
-var Placing = require('../placing/placing').model;
 var placingService = require('../placing/placingService');
 var Ranking = mongoose.model('Ranking');
 var User = require('../user/user').model;
