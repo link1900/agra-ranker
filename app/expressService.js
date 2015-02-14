@@ -54,4 +54,26 @@ expressService.addStandardMethods = function(controller, service){
     controller.getOne = function(req, res){
         res.jsonp(req.model);
     };
+
+    controller.create = function(req, res) {
+        expressService.promToRes(res, service.createPlacing(req.body),res);
+    };
+
+    controller.update = function(req, res) {
+        expressService.promToRes(service.updatePlacing(req.model, req.body),res);
+    };
+
+    controller.destroy = function(req, res) {
+        expressService.promToRes(res, service.remove(req.model),res);
+    };
+};
+
+expressService.promToRes = function(promise, res){
+    promise.then(function(result){
+        res.jsonp(200, result);
+    },function(error){
+        helper.errorResponse(res, error);
+    }).catch(function(ex){
+        helper.errorResponse(res, ex);
+    });
 };
