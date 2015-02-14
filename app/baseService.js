@@ -23,4 +23,14 @@ baseService.addStandardServiceMethods = function(service, dao){
     service.removeAll = function(query){
         return mongoService.removeAll(dao,query);
     };
+
+    service.update = function(entity){
+        return mongoService.savePromise(entity)
+            .then(eventService.logUpdateEntity);
+    };
+
+    service.create = function(entity){
+        return mongoService.savePromise(entity)
+            .then(eventService.logCreateEntity);
+    }
 };
