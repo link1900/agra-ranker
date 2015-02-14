@@ -30,24 +30,79 @@ expressService.parseSearchParams = function(req){
     return parsed;
 };
 
-expressService.buildQuery = function(req, fields){
-    var query = {};
-    var specialChar = /~/;
-    fields.map(function(field){
-        if (field.match(specialChar)){
-            if (field.match("~")){
-                var fieldParts = field.split("~");
-                if (fieldParts.length == 2){
-                    query[fieldParts[0]] = {'$regex': req.param(fieldParts[1]), '$options' : 'i'};
-                }
-            }
+expressService.buildQueryFromRequest = function(req, fieldDefinitions){
+    return expressService.buildQuery(fieldDefinitions, req.query);
+};
+
+/**
+ * Takes a list of fields and converts it to mongo query
+ */
+expressService.buildQuery = function(fieldDefinitions, valuesMap){
+    var specialChar = /[~=]|(\|\|)/;
+    var queryFields = fieldDefinitions.map(function(fieldDefinition){
+        if (fieldDefinition.match(specialChar)){
+            return expressService.buildQueryForField(fieldDefinition, valuesMap);
         } else {
-            if (req.param(field) != null){
-                query[field] = req.param(field);
-            }
+            return null;
         }
     });
-    return query;
+    return queryFields.reduce(function(previousValue, currentValue){
+        if (currentValue != null){
+            return _.merge(previousValue, currentValue);
+        } else {
+            return previousValue;
+        }
+    }, {});
+};
+
+expressService.buildQueryForField = function(fieldDefinition, values){
+    if (fieldDefinition.match(/(\|\|)/)){
+        return expressService.buildQueryForOr(fieldDefinition,values);
+    }
+    if (fieldDefinition.match("=")){
+        return expressService.buildQueryForEqual(fieldDefinition, values);
+    }
+    if (fieldDefinition.match("~")){
+        return expressService.buildQueryForLike(fieldDefinition, values);
+    }
+    return null;
+};
+
+expressService.buildQueryForEqual = function(fieldDefinition, values){
+    var query = {};
+    var definition = fieldDefinition.split("=");
+    if (values[definition[1]] != null){
+        query[definition[0]] = values[definition[1]];
+        return query;
+    } else {
+        return null;
+    }
+};
+
+expressService.buildQueryForLike = function(fieldDefinition, values){
+    var query = {};
+    var definition = fieldDefinition.split("~");
+    if (values[definition[1]] != null){
+        query[definition[0]] = {'$regex': "^"+values[definition[1]], '$options' : 'i'};
+        return query;
+    } else {
+        return null;
+    }
+};
+
+expressService.buildQueryForOr = function(fieldDefinition, values){
+    var fieldSets = fieldDefinition.split("||");
+    var queryFields = fieldSets.map(function(fieldSet){
+        return expressService.buildQueryForField(fieldSet, values);
+    }).filter(function(queryField){
+        return queryField != null;
+    });
+
+    if (queryFields.length > 1){
+        return {"$or" : queryFields};
+    } else {
+        return null;
+    }
 };
 
 expressService.addStandardMethods = function(controller, service){
