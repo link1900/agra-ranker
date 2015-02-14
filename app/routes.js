@@ -127,4 +127,10 @@ module.exports = function(app) {
     app.post('/admin/setup/:collectionName', securityController.checkAuthentication, adminController.setupCollection);
     app.get('/admin/count', securityController.checkAuthentication, adminController.getCounts);
     app.param('collectionName', adminController.setCollectionName);
+
+    //event
+    var eventController = require("./event/eventController");
+    app.get('/event', eventController.find);
+    app.get('/event/:eventId', eventController.getOne);
+    app.param('eventId', eventController.setModel);
 };
