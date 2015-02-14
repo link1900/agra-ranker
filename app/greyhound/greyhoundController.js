@@ -48,7 +48,8 @@ greyhoundController.create = function(req, res) {
         .then(greyhoundController.processSireField)
         .then(greyhoundController.processDamField)
         .then(greyhoundController.makeGreyhound)
-        .then(helper.saveEntityRequest);
+        .then(helper.saveEntityRequest)
+        .then(greyhoundController.issueCreatedEvent);
 
     helper.promiseToResponse(processChain, res);
 
@@ -231,8 +232,3 @@ greyhoundController.processDamField = function(updateRequest) {
     }
     return deferred.promise;
 };
-
-greyhoundController.destroy = function(req, res) {
-    helper.responseFromPromise(res, greyhoundService.deleteGreyhound(req.model));
-};
-
