@@ -5,7 +5,7 @@ angular.module('controllers').controller('eventCtrl', function($scope,
 
         $scope.columnInfo = [
             {title: "Type", field:"type"},
-            {title: "Created", field:"createdAt", filter: "fromNow"}
+            {title: "Event time", field:"createdAt", filter: "fromNow", filterFormat: "bothMed"}
         ];
     }
 );
