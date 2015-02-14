@@ -40,7 +40,7 @@ eventService.logEvent = function(event, requireConfirmation){
 
 eventService.logEntity = function(opType, entity){
     if (entity != null && entity.constructor != null){
-        eventService.logEvent({type:opType+"_"+entity.constructor.modelName, data: entity._id});
+        eventService.logEvent({type:opType+" "+entity.constructor.modelName, data: {entity:entity}});
     }
     return q(entity);
 };
