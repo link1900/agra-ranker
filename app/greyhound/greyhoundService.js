@@ -11,8 +11,9 @@ var batchService = require('../batch/batchService');
 var fileService = require('../file/fileService');
 var helper = require('../helper');
 var mongoService = require('../mongoService');
+var baseService = require('../baseService');
 
-mongoService.addStandardServiceMethods(greyhoundService, Greyhound);
+baseService.addStandardServiceMethods(greyhoundService, Greyhound);
 
 greyhoundService.rawCsvArrayToGreyhound = function(rawRow){
     var greyhound = {

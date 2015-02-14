@@ -9,6 +9,9 @@ var greyhoundService = require('../greyhound/greyhoundService');
 var helper = require('../helper');
 var mongoService = require('../mongoService');
 var eventService = require('../event/eventService');
+var baseService = require('../baseService');
+
+baseService.addStandardServiceMethods(placingService, Placing);
 
 placingService.createPlacing = function(placingObject){
     return placingService.preProcessPlacingObject(placingObject)
@@ -26,13 +29,6 @@ placingService.updatePlacing = function(existingModel, updatedBody){
         .then(mongoService.savePromise)
         .then(eventService.logUpdateEntity);
 };
-
-placingService.deletePlacing = function(placing){
-    return mongoService.removePromise(placing)
-        .then(eventService.logDeleteEntity);
-};
-
-mongoService.addStandardServiceMethods(placingService, Placing);
 
 placingService.mergeWithExisting = function(existingModel, updatedBody){
     return q(_.extend(existingModel, updatedBody));

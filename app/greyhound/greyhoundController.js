@@ -1,14 +1,16 @@
 var greyhoundController = module.exports = {};
 
 var mongoose = require('mongoose');
+var q = require('q');
+var _ = require('lodash');
 var Greyhound = require('./greyhound').model;
 var Placing = require('../placing/placing').model;
-var _ = require('lodash');
 var helper = require('../helper');
 var mongoService = require('../mongoService');
 var expressService = require('../expressService');
 var greyhoundService = require('./greyhoundService');
-var q = require('q');
+var eventService = require('../event/eventService');
+
 
 expressService.addStandardMethods(greyhoundController, greyhoundService);
 
@@ -63,10 +65,23 @@ greyhoundController.update = function(req, res) {
         .then(greyhoundController.processDamField)
         .then(helper.mergeEntityRequest)
         .then(helper.saveEntityRequest)
-        .then(greyhoundController.updateFlyweights);
+        .then(greyhoundController.updateFlyweights)
+        .then(greyhoundController.issueUpdateEvent);
 
     helper.promiseToResponse(processChain, res);
 
+};
+
+greyhoundController.issueCreatedEvent = function(entityRequest){
+    return eventService.logCreateEntity(entityRequest.savedEntity).then(function(){
+        return entityRequest;
+    });
+};
+
+greyhoundController.issueUpdateEvent = function(entityRequest){
+    return eventService.logUpdateEntity(entityRequest.savedEntity).then(function(){
+        return entityRequest;
+    });
 };
 
 greyhoundController.updateFlyweights = function(entityRequest){
