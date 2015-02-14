@@ -32,9 +32,19 @@ expressService.parseSearchParams = function(req){
 
 expressService.buildQuery = function(req, fields){
     var query = {};
+    var specialChar = /~/;
     fields.map(function(field){
-        if (req.param(field) != null){
-            query[field] = req.param(field);
+        if (field.match(specialChar)){
+            if (field.match("~")){
+                var fieldParts = field.split("~");
+                if (fieldParts.length == 2){
+                    query[fieldParts[0]] = {'$regex': "^"+req.param(fieldParts[1])};
+                }
+            }
+        } else {
+            if (req.param(field) != null){
+                query[field] = req.param(field);
+            }
         }
     });
     return query;

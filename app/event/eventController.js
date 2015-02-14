@@ -11,7 +11,7 @@ var expressService = require('../expressService');
 expressService.addStandardMethods(eventController, eventService);
 
 eventController.find = function(req, res){
-    var query = expressService.buildQuery(req, ['type']);
+    var query = expressService.buildQuery(req, ["type","type~like"]);
     var searchParams = expressService.parseSearchParams(req);
 
     return expressService.setTotalHeader(res, eventService).then(function(){
