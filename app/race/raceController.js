@@ -29,7 +29,7 @@ raceController.prepareQuery = function(req, res, next) {
         req.searchQuery = {'name': {'$regex': like, '$options' : 'i'}};
     }
     if (name){
-        req.searchQuery = {'name': name.toLowerCase()};
+        req.searchQuery = {'name': name};
     }
     req.dao = Race;
     next();
