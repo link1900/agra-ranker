@@ -66,15 +66,15 @@ expressService.addStandardMethods = function(controller, service){
     };
 
     controller.create = function(req, res) {
-        expressService.promToRes(res, service.createPlacing(req.body),res);
+        expressService.promToRes(service.createPlacing(req.body), res);
     };
 
     controller.update = function(req, res) {
-        expressService.promToRes(service.updatePlacing(req.model, req.body),res);
+        expressService.promToRes(service.updatePlacing(req.model, req.body), res);
     };
 
     controller.destroy = function(req, res) {
-        expressService.promToRes(res, service.remove(req.model),res);
+        expressService.promToRes(service.remove(req.model), res);
     };
 };
 
