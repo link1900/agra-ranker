@@ -72,14 +72,6 @@ userController.createActiveUser = function(req, res){
     helper.responseFromPromise(res, processChain);
 };
 
-/**
- * Takes on the admin role. Can only be used if there are no admins in the system. Requires
- * code to take control.
- */
-userController.assumeAdmin = function(req, res){
-
-};
-
 userController.updateUser = function(req, res){
     var processChain = userService.mergeUpdateRequest(req.body, req.model)
         .then(userService.cleanUser)
