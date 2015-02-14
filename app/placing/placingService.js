@@ -168,3 +168,16 @@ eventService.addListener("placing greyhound flyweight updater","Updated Greyhoun
         return q();
     }
 });
+
+eventService.addListener("placing greyhound deleted listener","Deleted Greyhound", function(event){
+    if (event != null && event.data != null && event.data.entity != null && event.data.entity._id != null){
+        return placingService.find({greyhoundRef: event.data.entity._id}).then(function(results){
+            var proms = results.map(function(placingToDelete){
+                return placingService.remove(placingToDelete);
+            });
+            return q.all(proms);
+        });
+    } else {
+        return q();
+    }
+});
