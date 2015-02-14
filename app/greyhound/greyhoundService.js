@@ -12,6 +12,7 @@ var fileService = require('../file/fileService');
 var helper = require('../helper');
 var mongoService = require('../mongoService');
 var baseService = require('../baseService');
+var eventService = require('../event/eventService');
 
 baseService.addStandardServiceMethods(greyhoundService, Greyhound);
 
@@ -310,13 +311,25 @@ greyhoundService.processGreyhoundCSV = function(batchJob){
     return deferred.promise;
 };
 
-greyhoundService.deleteGreyhound = function(model){
-    return mongoService.cleanFk(Greyhound, 'sireRef', model)
-        .then(function(){
-            return mongoService.cleanFk(Greyhound, 'damRef', model);
-        })
-        .then(greyhoundService.remove);
-};
+eventService.addListener("greyhound deleted listener","Deleted Greyhound", function(event){
+    if (event != null && event.data != null && event.data.entity != null && event.data.entity._id != null){
+        return greyhoundService.find({ $or: [{sireRef: event.data.entity._id}, {damRef: event.data.entity._id}]}).then(function(results){
+            var proms = results.map(function(greyhoundToUpdate){
+                if (greyhoundToUpdate.sireRef == event.data.entity._id.toString()){
+                    greyhoundToUpdate.sireRef = null;
+                }
+                if (greyhoundToUpdate.damRef == event.data.entity._id.toString()){
+                    greyhoundToUpdate.damRef = null;
+                }
+
+                return greyhoundService.update(greyhoundToUpdate);
+            });
+            return q.all(proms);
+        });
+    } else {
+        return q();
+    }
+});
 
 batchService.loadBatchHandler("importGreyhoundCSV", greyhoundService.processGreyhoundCSV);
 batchService.loadBatchHandler("exportGreyhoundCSV", greyhoundService.exportGreyhoundCSV);
