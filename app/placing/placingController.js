@@ -12,7 +12,7 @@ var expressService = require('../expressService');
 expressService.addStandardMethods(placingController, placingService);
 
 placingController.find = function(req, res){
-    var query = expressService.buildQuery(req, ['greyhoundRef', 'raceRef']);
+    var query = expressService.buildQueryFromRequest(req, ['greyhoundRef=greyhoundRef', 'raceRef=raceRef']);
     var searchParams = expressService.parseSearchParams(req);
 
     return expressService.setTotalHeader(res, placingService).then(function(){
