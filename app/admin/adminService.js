@@ -2,6 +2,7 @@ var adminService = module.exports = {};
 
 var mongoose = require('mongoose');
 var Placing = require('../placing/placing').model;
+var placingService = require('../placing/placingService');
 var Ranking = mongoose.model('Ranking');
 var User = require('../user/user').model;
 var RankingSystem = mongoose.model('RankingSystem');
@@ -20,13 +21,13 @@ var Schema = mongoose.Schema;
 var q = require('q');
 
 adminService.removeAllGreyhounds = function(){
-    return mongoService.dropCollection(Placing).then(function(){
+    return placingService.removeAll({}).then(function(){
         return mongoService.dropCollection(Greyhound);
     });
 };
 
 adminService.removeAllRaces = function(){
-    return mongoService.dropCollection(Placing).then(function(){
+    return placingService.removeAll({}).then(function(){
         return mongoService.dropCollection(Race);
     });
 };
@@ -126,7 +127,7 @@ adminService.getAllCounts = function(){
         mongoService.getCollectionCount(Greyhound).then(function(count){
             return {"greyhound": count};
         }),
-        mongoService.getCollectionCount(Placing).then(function(count){
+        placingService.count().then(function(count){
             return {"placing": count};
         }),
         mongoService.getCollectionCount(GroupLevel).then(function(count){

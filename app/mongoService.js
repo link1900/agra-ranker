@@ -3,6 +3,7 @@ var mongoService = module.exports = {};
 var _ = require('lodash');
 var q = require('q');
 var mongoose = require('mongoose');
+var eventService = require('./event/eventService');
 
 mongoService.find = function(dao, search, limit, offset, sort){
     var deferred = q.defer();
@@ -309,9 +310,7 @@ mongoService.collectionExists = function(collectionName){
 
 mongoService.addStandardServiceMethods = function(service, dao){
     service.count = function(){
-        return mongoService.getCollectionCount(dao).then(function(count){
-            return {"placing": count};
-        });
+        return mongoService.getCollectionCount(dao);
     };
 
     service.findById = function(id){
@@ -320,5 +319,14 @@ mongoService.addStandardServiceMethods = function(service, dao){
 
     service.find = function(query, limit, offset, sort){
         return mongoService.find(dao, query, limit, offset, sort);
+    };
+
+    service.remove = function(entity){
+        return mongoService.removePromise(entity)
+            .then(eventService.logDeleteEntity);
+    };
+
+    service.removeAll = function(query){
+        return mongoService.removeAll(dao,query);
     };
 };
