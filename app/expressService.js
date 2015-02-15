@@ -137,8 +137,16 @@ expressService.promToRes = function(promise, res){
     promise.then(function(result){
         res.jsonp(200, result);
     },function(error){
-        helper.errorResponse(res, error);
+        expressService.errorResponse(res, error);
     }).catch(function(ex){
-        helper.errorResponse(res, ex);
+        expressService.errorResponse(res, ex);
     });
+};
+
+expressService.errorResponse = function(res, error){
+    if (error instanceof Error && error.message != null){
+        res.jsonp(400, {"error": error.message});
+    } else {
+        res.jsonp(400, {"error": error});
+    }
 };
