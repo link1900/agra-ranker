@@ -1,0 +1,21 @@
+<span ng-controller="UploadCtrl">
+    <button data-ng-hide="uploadingFile" data-ng-click="openFileSelect('greyhound')" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up"></span> Import greyhound .csv file</button>
+    <input id="hiddenFileOpen" type="file" style="display:none" ng-file-select="onFileSelect($files)">
+    <span data-ng-show="isUploading">
+        Uploading file...
+    </span>
+    <span data-ng-show="uploadResult">
+        Upload complete and batch job has been created. You can view the details of the batch job <a data-ng-href="#/batch/view/{{uploadResult._id}}">here</a>
+        <br><br>
+        <button data-ng-click="clearSelectedFiles()" class="btn btn-primary">
+            Upload another file
+        </button>
+    </span>
+    <span data-ng-show="errorResult">
+        Upload failed unexpectedly. {{errorResult.error}}
+        <br><br>
+        <button data-ng-click="clearSelectedFiles()" class="btn btn-primary">
+            Try again
+        </button>
+    </span>
+</span>
