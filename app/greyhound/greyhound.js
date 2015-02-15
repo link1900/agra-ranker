@@ -5,8 +5,8 @@ var Schema = mongoose.Schema;
 
 greyhound.definition = {
     name: { type: String },
-    sireRef: { type: Schema.Types.ObjectId },
-    damRef: { type: Schema.Types.ObjectId }
+    sireRef: { type: String },
+    damRef: { type: String }
 };
 
 greyhound.schema = new Schema(greyhound.definition);
