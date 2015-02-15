@@ -46,15 +46,19 @@ greyhoundService.rawCsvArrayToGreyhound = function(rawRow){
     return greyhound;
 };
 
+greyhoundService.findGreyhoundByName = function(name){
+    return mongoService.findOne(Greyhound, {name: {$regex : "^"+name+"$", $options: "i"}});
+};
+
 greyhoundService.createGreyhoundByName = function(greyhoundName){
-    return mongoService.findOne(Greyhound, {name: greyhoundName}).then(function(possibleGreyhound){
+    return greyhoundService.findGreyhoundByName(greyhoundName).then(function(possibleGreyhound){
         if (possibleGreyhound != null){
             return {
                 model : possibleGreyhound,
                 details: "Found existing greyhound \"" + possibleGreyhound.name + "\" skipping greyhound creation"
             };
         } else {
-            return mongoService.savePromise(new Greyhound({name: greyhoundName})).then(function(saveResult){
+            return greyhoundService.create(new Greyhound({name: greyhoundName})).then(function(saveResult){
                 return {
                     model : saveResult,
                     details: "Created greyhound \"" + saveResult.name + "\""
@@ -95,7 +99,7 @@ greyhoundService.createSireStep = function(batchRecord){
 greyhoundService.setSireStep = function(batchRecord){
     if (batchRecord.createdSire != null && batchRecord.createdGreyhound != null){
         batchRecord.createdGreyhound.sireRef = batchRecord.createdSire._id;
-        return mongoService.savePromise(batchRecord.createdGreyhound).then(function(updatedGreyhound){
+        return greyhoundService.update(batchRecord.createdGreyhound).then(function(updatedGreyhound){
             batchRecord.createdGreyhound = updatedGreyhound;
             batchRecord.stepResults.push("Updated \"" + updatedGreyhound.name + "\" to have sire \"" + batchRecord.createdSire.name + "\"");
             return batchRecord;
@@ -128,7 +132,7 @@ greyhoundService.createDamStep = function(batchRecord){
 greyhoundService.setDamStep = function(batchRecord){
     if (batchRecord.createdDam != null && batchRecord.createdGreyhound != null){
         batchRecord.createdGreyhound.damRef = batchRecord.createdDam._id;
-        return mongoService.savePromise(batchRecord.createdGreyhound).then(function(updatedGreyhound){
+        return greyhoundService.update(batchRecord.createdGreyhound).then(function(updatedGreyhound){
             batchRecord.createdGreyhound = updatedGreyhound;
             batchRecord.stepResults.push("Updated \"" + updatedGreyhound.name + "\" to have dam \"" + batchRecord.createdDam.name + "\"");
             return batchRecord;
@@ -174,26 +178,6 @@ greyhoundService.findExisting = function(greyhound) {
         }
         if (existingGreyhound) {
             deferred.resolve(existingGreyhound);
-        }
-        deferred.resolve(greyhound);
-
-    });
-    return deferred.promise;
-};
-
-greyhoundService.saveGreyhoundImportObject = function(greyhound){
-    greyhound = greyhoundService.newGreyhound(greyhound);
-    return greyhoundService.checkForExistsImport(greyhound).then(mongoService.savePromise);
-};
-
-greyhoundService.checkForExistsImport = function(greyhound) {
-    var deferred = q.defer();
-    Greyhound.findOne({"name":greyhound.name}, function(err, existingGreyhound) {
-        if (err) {
-            deferred.reject('error checking greyhound name ' + greyhound.name);
-        }
-        if (existingGreyhound) {
-            deferred.reject('greyhound already exist with the name ' + existingGreyhound.name);
         }
         deferred.resolve(greyhound);
 
