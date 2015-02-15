@@ -5,7 +5,6 @@ var q = require('q');
 var _ = require('lodash');
 var Greyhound = require('./greyhound').model;
 var helper = require('../helper');
-var mongoService = require('../mongoService');
 var expressService = require('../expressService');
 var greyhoundService = require('./greyhoundService');
 var eventService = require('../event/eventService');
@@ -14,25 +13,7 @@ var eventService = require('../event/eventService');
 expressService.addStandardMethods(greyhoundController, greyhoundService);
 
 greyhoundController.find = function(req, res){
-    var query = {};
-    var like = req.param('like');
-    var name = req.param('name');
-    var parentRef = req.param('parentRef');
-    if (like){
-        query = {'name': {'$regex': "^"+like.toLowerCase()}};
-    }
-    if (name){
-        query = {'name': name.toLowerCase()};
-    }
-    if (parentRef){
-        query =
-        {'$or':
-            [
-                {'sireRef' : parentRef},
-                {'damRef' : parentRef}
-            ]
-        };
-    }
+    var query = expressService.buildQueryFromRequest(req, ['name=name','name~like','sireRef=parentRef||damRef=parentRef']);
     var searchParams = expressService.parseSearchParams(req);
 
     return expressService.setTotalHeader(res, greyhoundService).then(function(){
