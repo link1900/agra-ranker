@@ -16,6 +16,137 @@ var eventService = require('../event/eventService');
 
 baseService.addStandardServiceMethods(greyhoundService, Greyhound);
 
+greyhoundService.createGreyhoundFromJson = function(greyhoundJson){
+    return greyhoundService.greyhoundJsonToModel(greyhoundJson)
+        .then(greyhoundService.preProcessGreyhound)
+        .then(greyhoundService.validateGreyhound)
+        .then(greyhoundService.validateGreyhoundIsNew)
+        .then(greyhoundService.validateSireRef)
+        .then(greyhoundService.validateDamRef)
+        .then(greyhoundService.create);
+};
+
+greyhoundService.updateGreyhoundFromJson = function(existingModel, updatedGreyhoundJson){
+    return greyhoundService.mergeWithExisting(existingModel,updatedGreyhoundJson)
+        .then(greyhoundService.preProcessGreyhound)
+        .then(greyhoundService.validateGreyhound)
+        .then(greyhoundService.validateIfNameIsUsed)
+        .then(greyhoundService.validateSireRef)
+        .then(greyhoundService.validateDamRef)
+        .then(greyhoundService.update);
+};
+
+greyhoundService.mergeWithExisting = function(existingModel, updatedBody){
+    return q(_.extend(existingModel, updatedBody));
+};
+
+greyhoundService.greyhoundJsonToModel = function(json){
+    return q(new Greyhound(json));
+};
+
+greyhoundService.preProcessGreyhound = function(greyhound){
+    if (greyhound == null){
+        return q.reject("greyhound requires a body");
+    } else {
+        if (greyhound.name != null){
+            greyhound.name = greyhound.name.toLowerCase().trim();
+        }
+
+        return q(greyhound);
+    }
+};
+
+greyhoundService.validateGreyhound = function(greyhound){
+    if (greyhound.name == null){
+        return q.reject("name field is required");
+    }
+
+    if (greyhound.name.length == 0){
+        return q.reject("name cannot be blank");
+    }
+
+    return q(greyhound);
+};
+
+greyhoundService.validateGreyhoundIsNew = function(greyhound){
+    return greyhoundService.findById(greyhound._id).then(function(result){
+        if (result != null){
+            return q.reject("greyhound with this id already exists");
+        } else {
+            return greyhoundService.validateIfNameIsUsed(greyhound);
+        }
+    });
+};
+
+greyhoundService.validateIfNameIsUsed = function(greyhound){
+    return greyhoundService.findGreyhoundByName(greyhound.name).then(function(result){
+        if (result != null &&
+            result._id != null &&
+            greyhound._id != null &&
+            result._id.toString() != greyhound._id.toString()){
+            return q.reject("greyhound already exists with this name");
+        } else {
+            return q(greyhound);
+        }
+    });
+};
+
+greyhoundService.validateSireRef = function(greyhound){
+    if (greyhound.sireRef != null){
+        return greyhoundService.findById(greyhound.sireRef).then(function(sire){
+            if (sire == null){
+                return q.reject("could not find sire for sire ref");
+            } else {
+                if (sire._id.toString == greyhound._id.toString()){
+                    return q.reject("cannot be own parent");
+                } else {
+                    if (greyhound.damRef != null){
+                        return greyhoundService.findById(greyhound.damRef).then(function(dam){
+                            if (sire._id.toString() == dam._id.toString()){
+                                return q.reject("cannot have the same sire and dam");
+                            } else {
+                                return q(greyhound);
+                            }
+                        });
+                    } else {
+                        return q(greyhound);
+                    }
+                }
+            }
+        });
+    } else {
+        return q(greyhound);
+    }
+};
+
+greyhoundService.validateDamRef = function(greyhound){
+    if (greyhound.damRef != null){
+        return greyhoundService.findById(greyhound.damRef).then(function(dam){
+            if (dam == null){
+                return q.reject("could not find dam for dam ref");
+            } else {
+                if (dam._id.toString == greyhound._id.toString()){
+                    return q.reject("cannot be own parent");
+                } else {
+                    if (greyhound.sireRef != null){
+                        return greyhoundService.findById(greyhound.sireRef).then(function(sire){
+                            if (sire._id.toString() == dam._id.toString()){
+                                return q.reject("cannot have the same sire and dam");
+                            } else {
+                                return q(greyhound);
+                            }
+                        });
+                    } else {
+                        return q(greyhound);
+                    }
+                }
+            }
+        });
+    } else {
+        return q(greyhound);
+    }
+};
+
 greyhoundService.rawCsvArrayToGreyhound = function(rawRow){
     var greyhound = {
         name : rawRow[0],
@@ -167,10 +298,10 @@ greyhoundService.newGreyhound = function(json){
 
 greyhoundService.saveOrFindGreyhoundImportObject = function(greyhound){
     greyhound = greyhoundService.newGreyhound(greyhound);
-    return greyhoundService.findExisting(greyhound).then(mongoService.savePromise);
+    return greyhoundService.findExistingOld(greyhound).then(mongoService.savePromise);
 };
 
-greyhoundService.findExisting = function(greyhound) {
+greyhoundService.findExistingOld = function(greyhound) {
     var deferred = q.defer();
     Greyhound.findOne({"name":greyhound.name}, function(err, existingGreyhound) {
         if (err) {
