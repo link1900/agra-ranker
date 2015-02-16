@@ -1,6 +1,7 @@
 var core = angular.module('core',
         ['ngRoute',
          'ngResource',
+         'ngSanitize',
          'ui.bootstrap',
          'angulartics', 'angulartics.google.analytics',
          'ui.select2',
@@ -13,7 +14,7 @@ var core = angular.module('core',
          'controllers',
          'services',
          'directives',
-         'filters']);
+         'filters','ui.select']);
 
 angular.module('controllers', []);
 angular.module('services', []);
