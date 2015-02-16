@@ -121,5 +121,35 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
                 }
             );
         };
+
+        $scope.searchGreyhounds = [];
+
+        $scope.refreshGreyhoundSearch = function(val){
+            var searchParams = {
+                page : 1,
+                per_page : 10,
+                sort_field: 'name',
+                sort_direction: 'asc',
+                like : val
+            };
+
+            $scope.greyhoundService.query(searchParams, function(resultModels, headers) {
+                $scope.searchGreyhounds = resultModels;
+            });
+        };
+
+        $scope.clearSire = function(){
+            if ($scope.greyhound != null && $scope.greyhound.sireRef != null){
+                $scope.greyhound.sireRef = null;
+                $scope.greyhound.sire = null;
+            }
+        };
+
+        $scope.clearDam = function(){
+            if ($scope.greyhound != null && $scope.greyhound.damRef != null){
+                $scope.greyhound.damRef = null;
+                $scope.greyhound.dam = null;
+            }
+        };
     }
 ]);
