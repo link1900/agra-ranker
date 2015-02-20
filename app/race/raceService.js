@@ -14,7 +14,86 @@ var BatchJob = require('../batch/batchJob').model;
 var BatchResult = require('../batch/batchResult').model;
 var batchService = require('../batch/batchService');
 var placingService = require('../placing/placingService');
+var baseService = require('../baseService');
+var eventService = require('../event/eventService');
+var groupLevelService = require('../groupLevel/groupLevelService');
 
+baseService.addStandardServiceMethods(raceService, Race);
+
+raceService.createRaceFromJson = function(raceJson){
+    return raceService.jsonToModel(raceJson)
+        .then(raceService.setGroupLevelFlyweight)
+        .then(raceService.validateRace)
+        .then(raceService.checkNameAndDateDoNotExist)
+        .then(raceService.validateGroupRefExists)
+        .then(raceService.create);
+};
+
+raceService.updateRaceFromJson = function(existingModel, raceJson){
+    return raceService.mergeWithExisting(existingModel,raceJson)
+        .then(raceService.setGroupLevelFlyweight)
+        .then(raceService.validateRace)
+        .then(raceService.checkNameAndDateDoNotExist)
+        .then(raceService.validateGroupRefExists)
+        .then(raceService.update);
+};
+
+raceService.setGroupLevelFlyweight = function(race){
+    if (race.groupLevelRef != null){
+        return groupLevelService.findById(race.groupLevelRef).then(function(groupLevel){
+            if (groupLevel != null){
+                race.groupLevel = groupLevel;
+                return q(race);
+            } else {
+                return q.reject("group level must exists");
+            }
+        });
+    } else {
+        return q.reject("must have a group level");
+    }
+};
+
+raceService.validateRace = function(race){
+    if (!race.name){
+        return q.reject("name field is required");
+    }
+
+    if (race.name.length == 0){
+        return q.reject("name cannot be blank");
+    }
+
+    if (!race.date){
+        return q.reject("must have a date");
+    }
+
+    if (!race.groupLevelRef){
+        return q.reject("must have a group level");
+    }
+
+    if (!race.distanceMeters){
+        return q.reject("must have a distance meters");
+    }
+
+    if (race.disqualified == undefined || race.disqualified == null){
+        return q.reject("must have a disqualified");
+    }
+
+    return q(race);
+};
+
+raceService.validateGroupRefExists = function(race){
+    if (race.groupLevelRef != null){
+        return groupLevelService.findById(race.groupLevelRef).then(function(result){
+            if (result != null){
+                return q(race);
+            } else {
+                return q.reject("group level ref does not exists");
+            }
+        });
+    } else {
+        return q.reject("must have a group level");
+    }
+};
 
 raceService.processRaceCsvRow = function(record){
     var batchRecord = {stepResults: [], record: raceService.rawCsvArrayToRaceText(record)};
@@ -198,7 +277,7 @@ raceService.rawCsvArrayToRaceText = function(rawRow){
 };
 
 raceService.checkNameAndDateDoNotExist = function(model){
-    return mongoService.find(Race, {name: model.name, date: model.date}).then(function(results){
+    return raceService.find({name: model.name, date: model.date}).then(function(results){
         if (results.length == 0){
             return q(model);
         } else if (results.length == 1 && _.isEqual(results[0]._id,model._id)) {

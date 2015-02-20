@@ -1,10 +1,13 @@
 var request = require('supertest');
 var mongoose = require('mongoose');
 var chai = require('chai');
-var assert = chai.assert;
+var assert = require('assert');
 var testHelper = require('./testHelper');
+var Race = require('../app/race/race').model;
 var raceService = null;
 
+
+var race5;
 describe("raceService", function(){
     before(function (done) {
         testHelper.setup(function(){
@@ -15,7 +18,48 @@ describe("raceService", function(){
 
     beforeEach(function(done){
         testHelper.loadRaces(function(){
-            testHelper.loadGreyhounds(done);
+            testHelper.loadGreyhounds(function(){
+                race5 = new Race({"_id" : "54e7beb64751d30120fe63b5",
+                    "name" : "race5",
+                    "date": new Date(),
+                    "groupLevelRef":"531f1f72e407586c21476ef7",
+                    "groupLevel" : {"name" : "Group 1", "level":1},
+                    "distanceMeters": 515,
+                    "disqualified":false});
+                race5.save(function(){
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('#createRaceFromJson', function(){
+        it("should create a race", function(done){
+            var body = {name:"raceCreated",
+                date: new Date(),
+                "groupLevelRef": "531d1f72e407586c21476ef7",
+                "distanceMeters": 515,
+                "disqualified":false};
+            raceService.createRaceFromJson(body).then(function(result){
+                assert.notEqual(result, null);
+                assert.equal(result.name,"raceCreated");
+                done();
+            }).then(function(){}, done);
+        });
+    });
+
+    describe('#updateRaceFromJson', function(){
+        it("should update a race", function(done){
+            var body = {name:"raceUpdated",
+                date: new Date(),
+                "groupLevelRef": "531d1f72e407586c21476ef7",
+                "distanceMeters": 515,
+                "disqualified":false};
+            raceService.updateRaceFromJson(race5, body).then(function(result){
+                assert.notEqual(result, null);
+                assert.equal(result.name,"raceUpdated");
+                done();
+            }).then(function(){}, done);
         });
     });
 
