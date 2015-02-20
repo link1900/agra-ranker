@@ -1,4 +1,6 @@
 var baseService = module.exports = {};
+var q = require('q');
+var _ = require('lodash');
 var eventService = require('./event/eventService');
 var mongoService = require('./mongoService');
 
@@ -32,5 +34,13 @@ baseService.addStandardServiceMethods = function(service, dao){
 
     service.removeAll = function(query){
         return mongoService.removeAll(dao,query);
+    };
+
+    service.jsonToModel = function(json){
+        return q(new dao(json));
+    };
+
+    service.mergeWithExisting = function(existingModel, updatedBody){
+        return q(_.extend(existingModel, updatedBody));
     };
 };
