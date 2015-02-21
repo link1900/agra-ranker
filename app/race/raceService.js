@@ -102,7 +102,7 @@ raceService.processRaceCsvRow = function(record){
         .then(raceService.setRaceDate)
         .then(raceService.checkForDuplicateRace)
         .then(raceService.setRaceLength)
-        .then(raceService.createRace)
+        .then(raceService.createRaceForBatch)
         .then(raceService.createPlacingsForBatch)
         .then(function(finalBatchRecord){
             return {isSuccessful : true, stepResults: finalBatchRecord.stepResults};
@@ -199,8 +199,8 @@ raceService.setRaceLength = function(batchRecord){
     }
 };
 
-raceService.createRace = function(batchRecord){
-    return mongoService.savePromise(batchRecord.race).then(function(){
+raceService.createRaceForBatch = function(batchRecord){
+    return raceService.create(batchRecord.race).then(function(){
         return q(batchRecord);
     });
 };
