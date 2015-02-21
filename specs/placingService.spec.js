@@ -9,6 +9,7 @@ var placingService = null;
 var testHelper = require('./testHelper');
 var eventService = require('../app/event/eventService');
 
+var placingOne;
 describe("placingService", function(){
     before(function (done) {
         testHelper.setup(function(){
@@ -23,6 +24,11 @@ describe("placingService", function(){
             "name": "allen deed"
         };
 
+        var greyhoundBob = {
+            "_id": "54e905574751d30120fe63b7",
+            "name": "bob"
+        };
+
         var raceShootOut = {
             "_id": "54a32fc7e39b345cff5857d1",
             "distanceMeters": 500,
@@ -34,8 +40,16 @@ describe("placingService", function(){
             "name": "SHOOT OUT",
             "disqualified": false
         };
+
+        placingOne = new Placing({_id: "54e905804751d30120fe63b9", "placing" : "5", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"54e905574751d30120fe63b7"});
         new Race(raceShootOut).save(function(){
-            new Greyhound(greyhoundAllen).save(done);
+            new Greyhound(greyhoundAllen).save(function(){
+                new Greyhound(greyhoundBob).save(function() {
+                    placingOne.save(function () {
+                        done();
+                    });
+                });
+            });
         });
     });
 
@@ -46,6 +60,33 @@ describe("placingService", function(){
                 done();
             });
             placingService.createPlacing(body);
+        });
+
+        after(function(){
+            eventService.removeListenerByName("testPlacing");
+        })
+    });
+
+    describe("#updatePlacing", function(done){
+        it("should generate an event", function(){
+            var body = {"placing" : "6"};
+            eventService.addListener("testPlacing","Placing", function(){
+                done();
+            });
+            placingService.updatePlacing(placingOne, body);
+        });
+
+        after(function(){
+            eventService.removeListenerByName("testPlacing");
+        })
+    });
+
+    describe("#remove", function(done){
+        it("should generate an event", function(){
+            eventService.addListener("testPlacing","Placing", function(){
+                done();
+            });
+            placingService.remove(placingOne);
         });
 
         after(function(){
