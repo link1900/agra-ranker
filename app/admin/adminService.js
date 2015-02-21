@@ -16,8 +16,6 @@ var BatchResult = require('../batch/batchResult').model;
 var Invite = require('../invite/invite').model;
 var File = require('../file/file').model;
 var Chunk = require('../file/file').chunkModel;
-
-var helper = require('../helper');
 var mongoService = require('../mongoService');
 var Schema = mongoose.Schema;
 

@@ -8,7 +8,6 @@ var csv = require('csv');
 var mongoose = require('mongoose');
 var BatchJob = require('./batchJob').model;
 var BatchResult = require('./batchResult').model;
-var helper = require('../helper');
 var mongoService = require('../mongoService');
 var fileService = require('../file/fileService');
 

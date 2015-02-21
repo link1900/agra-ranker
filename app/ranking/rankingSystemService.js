@@ -5,7 +5,6 @@ var q = require('q');
 var moment = require('moment');
 
 var greyhoundService = require('../greyhound/greyhoundService');
-var helper = require('../helper');
 var mongoService = require('../mongoService');
 var RankingSystem = require('./rankingSystem').model;
 
@@ -170,19 +169,19 @@ rankingSystemService.getQueryForPointAllotment = function(pointAllotment){
                 query[criteria.field] = criteria.value;
                 break;
             case ">":
-                helper.addField(query, criteria.field, {"$gt": criteria.value});
+                rankingSystemService.addField(query, criteria.field, {"$gt": criteria.value});
                 break;
             case "<":
-                helper.addField(query, criteria.field, {"$lt": criteria.value});
+                rankingSystemService.addField(query, criteria.field, {"$lt": criteria.value});
                 break;
             case ">=":
-                helper.addField(query, criteria.field, {"$gte": criteria.value});
+                rankingSystemService.addField(query, criteria.field, {"$gte": criteria.value});
                 break;
             case "<=":
-                helper.addField(query, criteria.field, {"$lte": criteria.value});
+                rankingSystemService.addField(query, criteria.field, {"$lte": criteria.value});
                 break;
             case "!=":
-                helper.addField(query, criteria.field, {"$ne": criteria.value});
+                rankingSystemService.addField(query, criteria.field, {"$ne": criteria.value});
                 break;
             default:
                 query[criteria.field] = criteria.value;
@@ -190,6 +189,14 @@ rankingSystemService.getQueryForPointAllotment = function(pointAllotment){
         }
     });
     return query;
+};
+
+rankingSystemService.addField = function(query, field, statement){
+    if (query[field]){
+        query[field] = _.extend(query[field], statement);
+    } else {
+        query[field] = statement;
+    }
 };
 
 rankingSystemService.convertPlaceHolder = function(placeholder){

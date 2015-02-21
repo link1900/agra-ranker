@@ -10,7 +10,6 @@ var Invite = require('../invite/invite').model;
 var userStates = require('./user').states;
 var notificationService = require('../notification/notificationService');
 var mongoService = require('../mongoService');
-var helper = require('../helper');
 var validator = require('validator');
 var cleaner = require('validator');
 

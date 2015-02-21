@@ -8,7 +8,6 @@ var _ = require('lodash');
 var logger = require('winston');
 
 var Migration = require('./migration').model;
-var helper = require('../helper');
 var mongoService = require('../mongoService');
 var migrationIndex = require('../migrations/migrationIndex');
 

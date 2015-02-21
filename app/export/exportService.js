@@ -7,7 +7,6 @@ var moment = require('moment');
 var mongoService = require('../mongoService');
 var batchService = require('../batch/batchService');
 var create = require('../mongoService');
-var helper = require('../helper');
 
 exportService.createExportJob = function(exportCollectionName, exportType){
     var upperCollectionName = exportService.capitaliseFirstLetter (exportCollectionName);

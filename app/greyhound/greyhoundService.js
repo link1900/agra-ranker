@@ -9,7 +9,6 @@ var logger = require('winston');
 var Greyhound = require('./greyhound').model;
 var batchService = require('../batch/batchService');
 var fileService = require('../file/fileService');
-var helper = require('../helper');
 var mongoService = require('../mongoService');
 var baseService = require('../baseService');
 var eventService = require('../event/eventService');

@@ -2,7 +2,6 @@ var fileService = module.exports = {};
 
 var q = require('q');
 var _ = require('lodash');
-var helper = require('../helper');
 var mongoService = require('../mongoService');
 var File = require('./file').model;
 var mongoose = require('mongoose');
