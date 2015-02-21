@@ -43,4 +43,8 @@ baseService.addStandardServiceMethods = function(service, dao){
     service.mergeWithExisting = function(existingModel, updatedBody){
         return q(_.extend(existingModel, updatedBody));
     };
+
+    service.distinctField = function(field){
+        return mongoService.findDistinctByField(dao, field);
+    };
 };

@@ -22,14 +22,12 @@ raceController.find = function(req, res){
     var searchParams = expressService.parseSearchParams(req);
 
     return expressService.setTotalHeader(res, raceService).then(function(){
-        return helper.responseFromPromise(res, raceService.find(query, searchParams.limit, searchParams.offset, searchParams.sort));
+        return expressService.promToRes(raceService.find(query, searchParams.limit, searchParams.offset, searchParams.sort), res);
     });
 };
 
-raceController.prepareDistanceQuery = function(req,res,next){
-    req.distinctField = 'distanceMeters';
-    req.dao = Race;
-    next();
+raceController.getDistinctForDistance = function(req, res){
+    return expressService.promToRes(raceService.distinctField('distanceMeters'), res);
 };
 
 raceController.create = function(req, res) {

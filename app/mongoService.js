@@ -308,3 +308,15 @@ mongoService.collectionExists = function(collectionName){
     return deferred.promise;
 };
 
+mongoService.findDistinctByField = function(dao, field){
+    var deferred = q.defer();
+    dao.distinct(field, function(err, results){
+        if (err) {
+            deferred.reject(err);
+        } else {
+            deferred.resolve(results);
+        }
+    });
+    return deferred.promise;
+};
+

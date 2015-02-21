@@ -75,7 +75,7 @@ module.exports = function(app) {
     app.param('raceId', raceController.setModel);
 
     //distance routes
-    app.get('/distance', raceController.prepareDistanceQuery, helper.runDistinctQuery);
+    app.get('/distance', raceController.getDistinctForDistance);
 
     // group level routes
     app.get('/groupLevel', groupLevelController.prepareQuery, helper.runQuery);

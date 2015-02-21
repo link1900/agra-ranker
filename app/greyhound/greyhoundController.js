@@ -17,7 +17,7 @@ greyhoundController.find = function(req, res){
     var searchParams = expressService.parseSearchParams(req);
 
     return expressService.setTotalHeader(res, greyhoundService).then(function(){
-        return helper.responseFromPromise(res, greyhoundService.find(query, searchParams.limit, searchParams.offset, searchParams.sort));
+        return expressService.promToRes(greyhoundService.find(query, searchParams.limit, searchParams.offset, searchParams.sort), res);
     });
 };
 
