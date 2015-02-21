@@ -2,11 +2,11 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
                                                                  $routeParams,
                                                                  headerHelperService,
                                                                  $location,
-                                                                 placingService,
+                                                                 placingSvr,
                                                                  greyhoundSvr,
                                                                  raceSvr) {
 
-    $scope.placingService = placingService;
+    $scope.placingSvr = placingSvr;
 
     $scope.placings = [];
     $scope.placingAlerts = [];
@@ -102,7 +102,7 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
     };
 
     $scope.savePlacingModel = function(placingModel){
-        return placingService.savePlacing(placingModel).then(function(savedPlacing){
+        return placingSvr.savePlacing(placingModel).then(function(savedPlacing){
             return savedPlacing._id;
         }, function(err){
             $scope.placingAlerts.push({ type: 'danger', msg: "Failed to save placing."});
@@ -111,7 +111,7 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
     };
 
     $scope.loadPlacingsForRace = function(){
-        placingService.query({raceRef: $routeParams.id}, function(resultModels) {
+        placingSvr.query({raceRef: $routeParams.id}, function(resultModels) {
             $scope.placings = $scope.convertPlacingModelsToDisplayArray(resultModels);
             $scope.displayModelPostProcessing();
         });
@@ -175,7 +175,7 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
     $scope.removePlacing = function(placingSetIndex, greyhoundIndex){
         var placingToRemove = $scope.placings[placingSetIndex][greyhoundIndex];
 
-        placingService.deletePlacing(placingToRemove).then(function(result){
+        placingSvr.deletePlacing(placingToRemove).then(function(result){
             $scope.placings[placingSetIndex].splice(greyhoundIndex, 1);
         },function(error){
             $scope.placingAlerts = [

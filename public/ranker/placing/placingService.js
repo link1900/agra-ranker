@@ -1,4 +1,4 @@
-angular.module('services').factory('placingService', ['$resource', '$http',
+angular.module('services').factory('placingSvr', ['$resource', '$http',
     function($resource, $http){
         var service = $resource(
             'placing/:placingId',
