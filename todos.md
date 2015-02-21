@@ -220,7 +220,6 @@
 - refactor the hardcoded template creation to the specific area
 - allow logged in users to save there ui settigs
 - allow admin to configure the global ui settings
-- add a news section
 - update ranking display to show placings (lazyload?)
 - update ranking display to show cards
 - update the read me with the .example_env and what each config does
@@ -229,6 +228,7 @@
 - define agra ranking system and test importing it
 - define sire and dam ranking systems test import it
 - dead heat rule - points from matching positions are summed and divided
+- auto retieve sire and dam for a greyhound from authority site (with confirm prompt)
 - (DONE) List rankings api
 - (DONE) calculate rankings based on a ranking system
 - update rankings when race is changed
@@ -260,7 +260,8 @@
 - table sort
 - table export to csv
 - rankings export to special csv
-- Sire and racer edit should be a select2 / text input directive
+- Sire and dam edit should be a select2 with new option
+- Placing new greyhound should be a select 2 with new option
 - Add prompts for delete actions
 - inline create form on greyhound
 - inline edit form on greyhound
@@ -274,6 +275,7 @@
 ## Backlog - Beyond the ranker 6
 - export greyhound json
 - export races json
+- add a news section
 - siblings feature which display both full and half siblings
 - Fix set model in the routes to be json based, done after auth and standardized
 - Fix an issue when calling DELETE /user/badid

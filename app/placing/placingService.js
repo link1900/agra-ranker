@@ -169,6 +169,21 @@ eventService.addListener("placing greyhound flyweight updater","Updated Greyhoun
     }
 });
 
+eventService.addListener("placing race flyweight updater","Updated Race", function(event){
+    if (event != null && event.data != null && event.data.entity != null && event.data.entity._id != null){
+        return placingService.find({raceRef: event.data.entity._id}).then(function(results){
+            var proms = results.map(function(placingToUpdate){
+                placingToUpdate.race = event.data.entity;
+                return placingService.update(placingToUpdate);
+            });
+            return q.all(proms);
+        });
+    } else {
+        return q();
+    }
+});
+
+
 eventService.addListener("placing greyhound deleted listener","Deleted Greyhound", function(event){
     if (event != null && event.data != null && event.data.entity != null && event.data.entity._id != null){
         return placingService.find({greyhoundRef: event.data.entity._id}).then(function(results){
