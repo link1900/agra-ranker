@@ -187,7 +187,7 @@ batchService.getBatchInfo = function(){
     return batchService.processes[0];
 };
 
-batchService.createBatch = function(type, metadata) {
+batchService.createBatch = function(type, metadata, createIfNotAwaiting) {
     //generate the batch model
     var batch = new BatchJob({
         type:type,
@@ -199,7 +199,17 @@ batchService.createBatch = function(type, metadata) {
     if (error){
         return q.reject(error);
     } else {
-        return mongoService.savePromise(batch);
+        if (createIfNotAwaiting === true){
+            return mongoService.findOne(BatchJob, {type:type, status: batchService.batchStatuses.awaitingProcessing}).then(function(result){
+                if (result != null){
+                    return result;
+                } else {
+                    return mongoService.savePromise(batch);
+                }
+            });
+        } else {
+            return mongoService.savePromise(batch);
+        }
     }
 };
 

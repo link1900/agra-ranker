@@ -37,7 +37,10 @@ rankingService.calculateAndStoreRankings = function(rankingSystemRef){
             return mongoService.saveAllAtOnce(rankings.map(function(ranking){
                 return new Ranking(ranking);
             })).then(function(result){
-                eventService.logEvent({type:"Rankings Calculated", data: rankingSystemRef});
+                var eventData = {};
+                eventData.rankingsCalculated = rankings.length;
+                eventData.rankingSystemRef = rankingSystemRef;
+                eventService.logEvent({type:"Rankings Calculated", data: eventData});
                 return q(result);
             });
         });
@@ -203,7 +206,7 @@ rankingService.addRankingPosition = function(rankings){
 };
 
 eventService.addListener("ranking recalculate listener","Placing", function(){
-    return batchService.createBatch("Calculate All Rankings", {});
+    return batchService.createBatch("Calculate All Rankings", {}, true);
 });
 
 rankingService.createRankingCalculateBatchJob = function(rankingSystemRef){
