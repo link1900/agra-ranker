@@ -9,7 +9,6 @@ var expressService = require('../expressService');
 var greyhoundService = require('./greyhoundService');
 var eventService = require('../event/eventService');
 
-
 expressService.addStandardMethods(greyhoundController, greyhoundService);
 
 greyhoundController.find = function(req, res){

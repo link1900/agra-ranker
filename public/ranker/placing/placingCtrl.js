@@ -1,5 +1,5 @@
-angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams', 'headerHelperService', '$location', 'placingService', 'greyhoundService', 'raceService',
-    function($scope, $routeParams, headerHelperService, $location, placingService, greyhoundService, raceService) {
+angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams', 'headerHelperService', '$location', 'placingService', 'greyhoundService', 'raceSvr',
+    function($scope, $routeParams, headerHelperService, $location, placingService, greyhoundService, raceSvr) {
 
         $scope.placingService = placingService;
 
@@ -124,7 +124,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         };
 
         $scope.loadRace = function(placing){
-            raceService.get({
+            raceSvr.get({
                 raceId: placing.raceRef
             }, function(model) {
                 placing.race = model;

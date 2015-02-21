@@ -1,4 +1,4 @@
-angular.module('services').factory('raceService', ['$resource', '$http',
+angular.module('services').factory('raceSvr', ['$resource', '$http',
     function($resource, $http){
         var service = $resource(
             'race/:raceId',

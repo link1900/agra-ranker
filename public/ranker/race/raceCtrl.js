@@ -1,10 +1,10 @@
-angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 'headerHelperService', 'raceService', '$location', 'groupLevelService', 'generalService',
-    function($scope, $routeParams, headerHelperService, raceService, $location, groupLevelService, generalService) {
+angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 'headerHelperService', 'raceSvr', '$location', 'groupLevelService', 'generalService',
+    function($scope, $routeParams, headerHelperService, raceSvr, $location, groupLevelService, generalService) {
 
         $scope.showNoRaceInfo = false;
 
         $scope.findOne = function() {
-            raceService.get({
+            raceSvr.get({
                 raceId: $routeParams.id
             }, function(model) {
                 $scope.loadRace(model);
@@ -75,7 +75,7 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
             });
         };
 
-        $scope.raceService = raceService;
+        $scope.raceSvr = raceSvr;
 
         $scope.dateOptions = {
             'show-weeks': false
@@ -99,7 +99,7 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
             if ($scope.race.disqualified == undefined){
                 $scope.race.disqualified = false;
             }
-            raceService.save({}, $scope.race, function(response){
+            raceSvr.save({}, $scope.race, function(response){
                     $location.path('race/edit/'+ response._id);
                 },
                 function(error){

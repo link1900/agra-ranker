@@ -1,5 +1,5 @@
 angular.module('directives')
-    .directive('sbRaceNameField', function(headerHelperService, raceService) {
+    .directive('sbRaceNameField', function(headerHelperService, raceSvr) {
         function linkBody(scope) {
 
             scope.select2Options = {
@@ -16,7 +16,7 @@ angular.module('directives')
 
             scope.search = function(val) {
                 scope.searchParamsRaceField.like = val;
-                return raceService.query(scope.searchParamsRaceField).$promise.then(function(result){
+                return raceSvr.query(scope.searchParamsRaceField).$promise.then(function(result){
                     return _.map(result, function(r){
                         return r.name;
                     });
