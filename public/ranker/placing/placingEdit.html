@@ -13,9 +13,21 @@
                 <div ng-show="formMode == 'edit'" class="col-md-1">
                     <button data-ng-click="finishEditing()" class="btn btn-primary">Done Editing</button>
                 </div>
-                <div ng-show="formMode == 'add'" class="col-md-3"><div sb-greyhound-name-field data-sb-model="newGreyhoundName"></div></div>
-                <div ng-show="formMode == 'add'" class="col-md-2">
-                    <button data-ng-click="addGreyhound(newGreyhoundName)" class="btn btn-success">Add</button>
+                <div ng-show="formMode == 'add'" class="col-md-6">
+                    <ui-select ng-model="selection.greyhound"
+                               theme="select2"
+                               ng-disabled="disabled"
+                               reset-search-input="false" style="width: 300px;">
+                        <ui-select-match placeholder="Select a greyhound">
+                            {{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices repeat="greyhound in searchGreyhounds track by $index"
+                                           refresh="refreshGreyhoundSearch($select.search)"
+                                           refresh-delay="0">
+                            <div ng-bind-html="greyhound.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                    <button data-ng-click="addGreyhound()" class="btn btn-success">Add</button>
                     <button data-ng-click="showView()" class="btn btn-default">Cancel</button>
                 </div>
             </div>
