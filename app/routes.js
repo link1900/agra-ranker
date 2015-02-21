@@ -45,14 +45,6 @@ module.exports = function(app) {
     app.del('/invite/:inviteId', securityController.checkAuthentication, inviteController.destroy);
     app.param('inviteId', inviteController.setModel);
 
-    //greyhound routes
-    app.get('/greyhound', greyhoundController.find);
-    app.get('/greyhound/:greyhoundId', greyhoundController.getOne);
-    app.post('/greyhound', securityController.checkAuthentication,greyhoundController.create);
-    app.put('/greyhound/:greyhoundId', securityController.checkAuthentication, greyhoundController.update);
-    app.del('/greyhound/:greyhoundId',securityController.checkAuthentication, greyhoundController.destroy);
-    app.param('greyhoundId', greyhoundController.setModel);
-
     //batch routes
     app.get('/batch',securityController.checkAuthentication, batchController.prepareBatchQuery, helper.runQuery);
     app.get('/batch/:batchId',securityController.checkAuthentication, helper.getOne);
@@ -66,6 +58,22 @@ module.exports = function(app) {
     app.get('/batchResult/:batchResultId',securityController.checkAuthentication, helper.getOne);
     app.param('batchResultId',securityController.checkAuthentication, batchController.setBatchResult);
 
+    //greyhound routes
+    app.get('/greyhound', greyhoundController.find);
+    app.get('/greyhound/:greyhoundId', greyhoundController.getOne);
+    app.post('/greyhound', securityController.checkAuthentication,greyhoundController.create);
+    app.put('/greyhound/:greyhoundId', securityController.checkAuthentication, greyhoundController.update);
+    app.del('/greyhound/:greyhoundId',securityController.checkAuthentication, greyhoundController.destroy);
+    app.param('greyhoundId', greyhoundController.setModel);
+
+    // group level routes
+    app.get('/groupLevel', groupLevelController.find);
+    app.get('/groupLevel/:groupLevelId', groupLevelController.getOne);
+    app.post('/groupLevel', securityController.checkAuthentication, groupLevelController.create);
+    app.put('/groupLevel/:groupLevelId', securityController.checkAuthentication, groupLevelController.update);
+    app.del('/groupLevel/:groupLevelId',securityController.checkAuthentication, groupLevelController.destroy);
+    app.param('groupLevelId', groupLevelController.setModel);
+
     //race routes
     app.get('/race', raceController.find);
     app.get('/race/:raceId', raceController.getOne);
@@ -76,14 +84,6 @@ module.exports = function(app) {
 
     //distance routes
     app.get('/distance', raceController.getDistinctForDistance);
-
-    // group level routes
-    app.get('/groupLevel', groupLevelController.prepareQuery, helper.runQuery);
-    app.get('/groupLevel/:groupLevelId', helper.getOne);
-    app.post('/groupLevel', securityController.checkAuthentication, groupLevelController.create);
-    app.put('/groupLevel/:groupLevelId', securityController.checkAuthentication, groupLevelController.update);
-    app.del('/groupLevel/:groupLevelId',securityController.checkAuthentication, groupLevelController.destroy);
-    app.param('groupLevelId', groupLevelController.setModel);
 
     //placing routes
     app.get('/placing', placingController.find);

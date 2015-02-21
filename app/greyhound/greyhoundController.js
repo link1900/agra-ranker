@@ -12,12 +12,7 @@ var eventService = require('../event/eventService');
 expressService.addStandardMethods(greyhoundController, greyhoundService);
 
 greyhoundController.find = function(req, res){
-    var query = expressService.buildQueryFromRequest(req, ['name=name','name~like','sireRef=parentRef||damRef=parentRef']);
-    var searchParams = expressService.parseSearchParams(req);
-
-    return expressService.setTotalHeader(res, greyhoundService).then(function(){
-        return expressService.promToRes(greyhoundService.find(query, searchParams.limit, searchParams.offset, searchParams.sort), res);
-    });
+    expressService.standardSearch(req, res, greyhoundService, ['name=name','name~like','sireRef=parentRef||damRef=parentRef']);
 };
 
 greyhoundController.create = function(req, res) {

@@ -13,27 +13,10 @@ var eventService = require('../event/eventService');
 var groupLevelService = require('../groupLevel/groupLevelService');
 var expressService = require('../expressService');
 
-groupLevelController.setModel = function(req, res, next, id) {
-    GroupLevel.findById(id, function(err, model) {
-        if (err) return next(err);
-        if (!model) return next(new Error('Failed to load ' + id));
-        req.model = model;
-        return next();
-    });
-};
+expressService.addStandardMethods(groupLevelController, groupLevelService);
 
-groupLevelController.prepareQuery = function(req, res, next) {
-    req.searchQuery = {};
-    var like = req.param('like');
-    var name = req.param('name');
-    if (like){
-        req.searchQuery = {'name': {'$regex': like, '$options' : 'i'}};
-    }
-    if (name){
-        req.searchQuery = {'name': name};
-    }
-    req.dao = GroupLevel;
-    next();
+groupLevelController.find = function(req, res){
+    expressService.standardSearch(req, res, groupLevelService, ['name=name','name~like']);
 };
 
 groupLevelController.create = function(req, res) {

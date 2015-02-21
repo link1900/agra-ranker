@@ -17,12 +17,7 @@ var eventService = require('../event/eventService');
 expressService.addStandardMethods(raceController, raceService);
 
 raceController.find = function(req, res){
-    var query = expressService.buildQueryFromRequest(req, ['name=name','name~like']);
-    var searchParams = expressService.parseSearchParams(req);
-
-    return expressService.setTotalHeader(res, raceService).then(function(){
-        return expressService.promToRes(raceService.find(query, searchParams.limit, searchParams.offset, searchParams.sort), res);
-    });
+    expressService.standardSearch(req, res, raceService, ['name=name','name~like']);
 };
 
 raceController.getDistinctForDistance = function(req, res){

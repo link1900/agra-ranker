@@ -151,3 +151,12 @@ expressService.errorResponse = function(res, error){
         res.jsonp(400, {"error": error});
     }
 };
+
+expressService.standardSearch = function(req, res, service, fields){
+    var query = expressService.buildQueryFromRequest(req, fields);
+    var searchParams = expressService.parseSearchParams(req);
+
+    return expressService.setTotalHeader(res, service).then(function(){
+        return expressService.promToRes(service.find(query, searchParams.limit, searchParams.offset, searchParams.sort), res);
+    });
+};
