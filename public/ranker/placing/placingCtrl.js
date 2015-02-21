@@ -1,5 +1,5 @@
-angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams', 'headerHelperService', '$location', 'placingService', 'greyhoundService', 'raceSvr',
-    function($scope, $routeParams, headerHelperService, $location, placingService, greyhoundService, raceSvr) {
+angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams', 'headerHelperService', '$location', 'placingService', 'greyhoundSvr', 'raceSvr',
+    function($scope, $routeParams, headerHelperService, $location, placingService, greyhoundSvr, raceSvr) {
 
         $scope.placingService = placingService;
 
@@ -76,7 +76,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             _.forEach($scope.placings, function(placingSet){
                 _.forEach(placingSet, function(placingDisplay){
                     if(!placingDisplay.name){
-                        greyhoundService.get({
+                        greyhoundSvr.get({
                             greyhoundId: placingDisplay.greyhoundRef
                         }, function(model) {
                             placingDisplay.name = model.name.toUpperCase();
@@ -136,7 +136,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
         };
 
         $scope.loadGreyhound = function(placing){
-            greyhoundService.get({
+            greyhoundSvr.get({
                 greyhoundId: placing.greyhoundRef
             }, function(model) {
                 placing.greyhound = model;
@@ -224,7 +224,7 @@ angular.module('controllers').controller('PlacingCtrl', ['$scope', '$routeParams
             }
 
             var greyhoundObject = {"name":greyhoundName};
-            greyhoundService.findOrCreateGreyhound(greyhoundObject).then(function(newGreyhound){
+            greyhoundSvr.findOrCreateGreyhound(greyhoundObject).then(function(newGreyhound){
                 //now that we have the greyhound convert to a placing
                 var newPlacing = {
                     name: newGreyhound.name.toUpperCase(),

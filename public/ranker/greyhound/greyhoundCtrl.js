@@ -1,11 +1,11 @@
-angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routeParams', 'headerHelperService', 'greyhoundService', '$location',
-    function($scope, $routeParams, headerHelperService, greyhoundService, $location) {
+angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routeParams', 'headerHelperService', 'greyhoundSvr', '$location',
+    function($scope, $routeParams, headerHelperService, greyhoundSvr, $location) {
 
         $scope.select2Options = {
             allowClear:true
         };
 
-        $scope.greyhoundService = greyhoundService;
+        $scope.greyhoundSvr = greyhoundSvr;
 
         $scope.offspringColumnInfo = [
             {title: "Name", field:"name", baseLink:"#/greyhound/view/", linkField: "_id", link:true, filter: "uppercase"}
@@ -22,7 +22,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         ];
 
         $scope.findOne = function() {
-            greyhoundService.get({
+            greyhoundSvr.get({
                 greyhoundId: $routeParams.id
             }, function(greyhound) {
                 $scope.loadGreyhound(greyhound);
@@ -47,7 +47,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
 
         $scope.loadSire = function(greyhound){
             if (greyhound.sireRef){
-                greyhoundService.get({
+                greyhoundSvr.get({
                     greyhoundId: greyhound.sireRef
                 }, function(foundGreyhound) {
                     greyhound.sire = foundGreyhound;
@@ -57,7 +57,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
 
         $scope.loadDam = function(greyhound){
             if (greyhound.damRef){
-                greyhoundService.get({
+                greyhoundSvr.get({
                     greyhoundId: greyhound.damRef
                 }, function(foundGreyhound) {
                     greyhound.dam = foundGreyhound;
@@ -71,7 +71,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         };
 
         $scope.create = function(){
-            greyhoundService.save({}, $scope.greyhound).$promise.then(function(result){
+            greyhoundSvr.save({}, $scope.greyhound).$promise.then(function(result){
                 $location.path('greyhound/edit/'+ result._id);
             }, function(error){
                 $scope.alerts = [
@@ -133,7 +133,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
                 like : val
             };
 
-            $scope.greyhoundService.query(searchParams, function(resultModels, headers) {
+            $scope.greyhoundSvr.query(searchParams, function(resultModels, headers) {
                 $scope.searchGreyhounds = resultModels;
             });
         };

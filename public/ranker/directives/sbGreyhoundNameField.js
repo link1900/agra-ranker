@@ -1,5 +1,5 @@
 angular.module('directives')
-    .directive('sbGreyhoundNameField', function(headerHelperService, greyhoundService) {
+    .directive('sbGreyhoundNameField', function(headerHelperService, greyhoundSvr) {
         function linkBody(scope) {
 
             scope.select2Options = {
@@ -16,7 +16,7 @@ angular.module('directives')
 
             scope.greyhoundSearch = function(val) {
                 scope.searchParamsGreyhoundField.like = val;
-                return greyhoundService.query(scope.searchParamsGreyhoundField).$promise.then(function(result){
+                return greyhoundSvr.query(scope.searchParamsGreyhoundField).$promise.then(function(result){
                     return _.map(result, function(r){
                         return r.name.toUpperCase();
                     });

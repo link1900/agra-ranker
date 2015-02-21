@@ -1,4 +1,4 @@
-angular.module('services').factory('greyhoundService', ['$resource', '$http',
+angular.module('services').factory('greyhoundSvr', ['$resource', '$http',
     function($resource, $http){
         var service = $resource(
             'greyhound/:greyhoundId',
