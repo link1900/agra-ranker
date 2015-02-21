@@ -293,3 +293,17 @@ raceService.importRaceCSV = function(batchJob){
 };
 
 batchService.loadBatchHandler("importRaceCSV", raceService.importRaceCSV);
+
+eventService.addListener("race grouplevel flyweight updater","Updated GroupLevel", function(event){
+    if (event != null && event.data != null && event.data.entity != null && event.data.entity._id != null){
+        return raceService.find({groupLevelRef: event.data.entity._id}).then(function(results){
+            var proms = results.map(function(race){
+                race.groupLevel = event.data.entity;
+                return raceService.update(race);
+            });
+            return q.all(proms);
+        });
+    } else {
+        return q();
+    }
+});

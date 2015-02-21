@@ -1,13 +1,17 @@
 var groupLevelController = module.exports = {};
 
+var _ = require('lodash');
+var q = require('q');
 var mongoose = require('mongoose');
+
 var GroupLevel = require('./groupLevel').model;
 var Race = mongoose.model('Race');
-var _ = require('lodash');
 var helper = require('../helper');
 var mongoService = require('../mongoService');
-var q = require('q');
 
+var eventService = require('../event/eventService');
+var groupLevelService = require('../groupLevel/groupLevelService');
+var expressService = require('../expressService');
 
 groupLevelController.setModel = function(req, res, next, id) {
     GroupLevel.findById(id, function(err, model) {
@@ -33,68 +37,16 @@ groupLevelController.prepareQuery = function(req, res, next) {
 };
 
 groupLevelController.create = function(req, res) {
-    var entityRequest = {};
-    entityRequest.rawEntity = req.body;
-    var processChain = groupLevelController.preProcessRaw(entityRequest)
-        .then(groupLevelController.make)
-        .then(groupLevelController.validate)
-        .then(helper.saveEntityRequest);
-
-    helper.promiseToResponse(processChain, res);
+    expressService.promToRes(groupLevelService.createGroupLevelFromJson(req.body), res);
 };
 
 groupLevelController.update = function(req, res) {
-    var entityRequest = {};
-    entityRequest.rawEntity = req.body;
-    entityRequest.existingEntity = req.model;
-    var processChain = groupLevelController.preProcessRaw(entityRequest)
-        .then(helper.mergeEntityRequest)
-        .then(groupLevelController.validate)
-        .then(helper.saveEntityRequest)
-        .then(groupLevelController.updateFlyweights);
-
-    helper.promiseToResponse(processChain, res);
+    expressService.promToRes(groupLevelService.updateGroupLevelFromJson(req.model, req.body), res);
 };
-
-groupLevelController.updateFlyweights = function(entityRequest){
-    return mongoService.updateFlyweight(Race, 'groupLevelRef', 'groupLevel', entityRequest.savedEntity).then(function(){
-        return entityRequest;
-    });
-};
-
 
 groupLevelController.destroy = function(req, res) {
     helper.responseFromPromise(res,
         mongoService.cleanFk(Race, 'groupLevelRef', req.model)
         .then(mongoService.removePromise)
     );
-};
-
-groupLevelController.make = function(entityRequest) {
-    entityRequest.newEntity = new GroupLevel(entityRequest.newEntity);
-    return q(entityRequest);
-};
-
-groupLevelController.validate = function(entityRequest){
-    var model = entityRequest.newEntity;
-    if (!model.name){
-        return q.reject("name field is required");
-    }
-
-    if (model.name.length == 0){
-        return q.reject("name cannot be blank");
-    }
-
-    return helper.checkExisting(GroupLevel, "name", entityRequest);
-};
-
-groupLevelController.preProcessRaw = function(entityRequest){
-    var model = entityRequest.rawEntity;
-
-    if (!model){
-        return q.reject("must have a body");
-    }
-
-    entityRequest.newEntity = model;
-    return q(entityRequest);
 };
