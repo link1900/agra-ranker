@@ -15,27 +15,15 @@ var mongoService = require('../mongoService');
 var expressService = require('../expressService');
 var eventService = require('../event/eventService');
 
-raceController.setRace = function(req, res, next, id) {
-    Race.findById(id, function(err, race) {
-        if (err) return next(err);
-        if (!race) return next(new Error('Failed to load race ' + id));
-        req.model = race;
-        return next();
-    });
-};
+expressService.addStandardMethods(raceController, raceService);
 
-raceController.prepareQuery = function(req, res, next) {
-    req.searchQuery = {};
-    var like = req.param('like');
-    var name = req.param('name');
-    if (like){
-        req.searchQuery = {'name': {'$regex': like, '$options' : 'i'}};
-    }
-    if (name){
-        req.searchQuery = {'name': name};
-    }
-    req.dao = Race;
-    next();
+raceController.find = function(req, res){
+    var query = expressService.buildQueryFromRequest(req, ['name=name','name~like']);
+    var searchParams = expressService.parseSearchParams(req);
+
+    return expressService.setTotalHeader(res, raceService).then(function(){
+        return helper.responseFromPromise(res, raceService.find(query, searchParams.limit, searchParams.offset, searchParams.sort));
+    });
 };
 
 raceController.prepareDistanceQuery = function(req,res,next){

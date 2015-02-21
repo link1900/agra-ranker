@@ -67,12 +67,12 @@ module.exports = function(app) {
     app.param('batchResultId',securityController.checkAuthentication, batchController.setBatchResult);
 
     //race routes
-    app.get('/race', raceController.prepareQuery, helper.runQuery);
-    app.get('/race/:raceId', helper.getOne);
+    app.get('/race', raceController.find);
+    app.get('/race/:raceId', raceController.getOne);
     app.post('/race', securityController.checkAuthentication, raceController.create);
     app.put('/race/:raceId', securityController.checkAuthentication, raceController.update);
     app.del('/race/:raceId',securityController.checkAuthentication, raceController.destroy);
-    app.param('raceId', raceController.setRace);
+    app.param('raceId', raceController.setModel);
 
     //distance routes
     app.get('/distance', raceController.prepareDistanceQuery, helper.runDistinctQuery);
