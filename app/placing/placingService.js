@@ -168,7 +168,7 @@ eventService.addListener("placing race flyweight updater","Updated Race", functi
     }
 });
 
-eventService.addListener("placing race flyweight deleter","Delete Race", function(event){
+eventService.addListener("placing race flyweight deleter","Deleted Race", function(event){
     if (event != null && event.data != null && event.data.entity != null && event.data.entity._id != null){
         return placingService.find({raceRef: event.data.entity._id}).then(function(results){
             var proms = results.map(function(placing){

@@ -18,7 +18,7 @@ describe("placingService", function(){
         });
     });
 
-    before(function(done){
+    beforeEach(function(done){
         var greyhoundAllen = {
             "_id": "54a32fbee39b345cff5841b5",
             "name": "allen deed"
@@ -41,7 +41,7 @@ describe("placingService", function(){
             "disqualified": false
         };
 
-        placingOne = new Placing({_id: "54e905804751d30120fe63b9", "placing" : "5", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"54e905574751d30120fe63b7"});
+        placingOne = new Placing({_id: "54e905804751d30120fe63b9", "placing" : "5", "raceRef": "54a32fc7e39b345cff5857d1", "greyhoundRef":"54e905574751d30120fe63b7"});
         new Race(raceShootOut).save(function(){
             new Greyhound(greyhoundAllen).save(function(){
                 new Greyhound(greyhoundBob).save(function() {
@@ -53,45 +53,87 @@ describe("placingService", function(){
         });
     });
 
-    describe("#createPlacing", function(done){
-        it("new placing should generate an event", function(){
-            var body = {"placing" : "2", "raceRef": "531d1f72e407586c21476ea8", "greyhoundRef":"531d1f74e407586c2147737b"};
-            eventService.addListener("testPlacing","Placing", function(){
+    describe("#createPlacing", function(){
+        it("should fail if missing greyhound ref", function(done){
+            var body = {"placing" : "2", "raceRef": "531d1f72e407586c21476ea8"};
+            placingService.createPlacing(body).then(function(){
+                done(new Error("I should not be called"));
+            }, function(){done()});
+        });
+
+        it("should fail if missing greyhound ref", function(done){
+            var body = {"placing" : "2", "greyhoundRef":"54a32fbee39b345cff5841b5"};
+            placingService.createPlacing(body).then(function(){
+                done(new Error("I should not be called"));
+            }, function(){done()});
+        });
+
+        it("new placing should generate an event", function(done){
+            var body = {"placing" : "2", "raceRef": "54a32fc7e39b345cff5857d1", "greyhoundRef":"54a32fbee39b345cff5841b5"};
+            eventService.addListener("testCreatePlacing","Created Placing", function(){
                 done();
             });
-            placingService.createPlacing(body);
+            placingService.createPlacing(body).then(function(){}, done);
         });
 
         after(function(){
-            eventService.removeListenerByName("testPlacing");
-        })
+            eventService.removeListenerByName("testCreatePlacing");
+        });
     });
 
-    describe("#updatePlacing", function(done){
-        it("should generate an event", function(){
+    describe("#updatePlacing", function(){
+        it("should generate an event", function(done){
             var body = {"placing" : "6"};
-            eventService.addListener("testPlacing","Placing", function(){
+            eventService.addListener("testUpdatePlacing","Updated Placing", function(){
                 done();
             });
-            placingService.updatePlacing(placingOne, body);
+            placingService.updatePlacing(placingOne, body).then(function(){}, done);
         });
 
         after(function(){
-            eventService.removeListenerByName("testPlacing");
-        })
+            eventService.removeListenerByName("testUpdatePlacing");
+        });
     });
 
-    describe("#remove", function(done){
-        it("should generate an event", function(){
-            eventService.addListener("testPlacing","Placing", function(){
+    describe("#remove", function(){
+        it("should generate an event", function(done){
+            eventService.addListener("testDeletePlacing","Deleted Placing", function(){
                 done();
             });
-            placingService.remove(placingOne);
+            placingService.remove(placingOne).then(function(){}, done);
         });
 
         after(function(){
-            eventService.removeListenerByName("testPlacing");
-        })
+            eventService.removeListenerByName("testDeletePlacing");
+        });
+    });
+
+    describe("listeners", function(){
+        it("should delete placing on greyhound delete", function(done){
+            var event = {type: "Deleted Greyhound", data: {entity: {"_id": "54e905574751d30120fe63b7"}}};
+            eventService.logEvent(event, true).then(function(){
+                Placing.find({_id: placingOne._id}, function(err, res){
+                    if (res.length > 0){
+                        done(new Error("found placings when I should not have"));
+                    } else {
+                        done();
+                    }
+                });
+            });
+        });
+
+        it("should delete placing on race delete", function(done){
+            var event = {type: "Deleted Race", data: {entity: {"_id": "54a32fc7e39b345cff5857d1"}}};
+            eventService.logEvent(event, true).then(function(){
+                Placing.find({_id: placingOne._id}, function(err, res){
+                    if (res.length > 0){
+                        done(new Error("found placings when I should not have"));
+                    } else {
+                        done();
+                    }
+                });
+            });
+        });
     });
 
     afterEach(function(done){
