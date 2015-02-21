@@ -2,10 +2,9 @@ var placingService = module.exports = {};
 
 var _ = require('lodash');
 var q = require('q');
+
 var Placing = require('./placing').model;
-var Greyhound = require('../greyhound/greyhound').model;
 var greyhoundService = require('../greyhound/greyhoundService');
-var helper = require('../helper');
 var raceService = require('../race/raceService');
 var mongoService = require('../mongoService');
 var eventService = require('../event/eventService');
@@ -76,7 +75,7 @@ placingService.setRaceFlyweight = function(placing){
 
 placingService.setGreyhoundFlyweight = function(placing){
     if (placing != null && placing.greyhoundRef != null){
-        return mongoService.findOneById(Greyhound, placing.greyhoundRef).then(function(model){
+        return greyhoundService.findById(placing.greyhoundRef).then(function(model){
             if (model != null){
                 placing.greyhound = model;
                 return q(placing);
@@ -135,7 +134,7 @@ placingService.checkRaceRefExists = function(placing){
 };
 
 placingService.checkGreyhoundRefExists = function(placing){
-    return mongoService.findOneById(Greyhound, placing.greyhoundRef).then(function(found){
+    return greyhoundService.findById(placing.greyhoundRef).then(function(found){
         if (found != null){
             return q(placing);
         } else {

@@ -5,12 +5,12 @@ var q = require('q');
 var mongoose = require('mongoose');
 
 var raceService = require('../race/raceService');
+var greyhoundService = require('../greyhound/greyhoundService');
 var placingService = require('../placing/placingService');
 var Ranking = mongoose.model('Ranking');
 var User = require('../user/user').model;
 var RankingSystem = mongoose.model('RankingSystem');
 var GroupLevel = require('../groupLevel/groupLevel').model;
-var Greyhound = require('../greyhound/greyhound').model;
 var BatchJob = require('../batch/batchJob').model;
 var BatchResult = require('../batch/batchResult').model;
 var Invite = require('../invite/invite').model;
@@ -24,7 +24,7 @@ var Schema = mongoose.Schema;
 
 adminService.removeAllGreyhounds = function(){
     return placingService.removeAll({}).then(function(){
-        return mongoService.dropCollection(Greyhound);
+        return greyhoundService.removeAll({});
     });
 };
 
@@ -126,7 +126,7 @@ adminService.getAllCounts = function(){
         mongoService.getCollectionCount(User).then(function(count){
             return {"user": count};
         }),
-        mongoService.getCollectionCount(Greyhound).then(function(count){
+        greyhoundService.count().then(function(count){
             return {"greyhound": count};
         }),
         placingService.count().then(function(count){

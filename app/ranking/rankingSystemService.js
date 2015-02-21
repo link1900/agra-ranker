@@ -3,7 +3,7 @@ var rankingSystemService = module.exports = {};
 var _ = require('lodash');
 var q = require('q');
 var moment = require('moment');
-var Greyhound = require('../greyhound/greyhound').model;
+
 var greyhoundService = require('../greyhound/greyhoundService');
 var helper = require('../helper');
 var mongoService = require('../mongoService');
