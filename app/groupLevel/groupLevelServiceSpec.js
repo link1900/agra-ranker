@@ -1,20 +1,22 @@
 var mongoose = require('mongoose');
 var assert = require('assert');
-var testHelper = require('./testHelper');
-var GroupLevel = require('../app/groupLevel/groupLevel').model;
-var groupLevelService = null;
-
+var GroupLevel = require('./groupLevel').model;
+groupLevelService = require('./groupLevelService');
 
 describe("groupLevelService", function(){
-    before(function (done) {
-        testHelper.setup(function(){
-            groupLevelService = require('../app/groupLevel/groupLevelService');
-            done();
-        });
+
+    before(function(done){
+        if (mongoose.connection.db) {
+            return done();
+        } else {
+            mongoose.connect('mongodb://localhost/ranker_test', done);
+        }
     });
 
-    beforeEach(function(done){
-        done();
+    before(function(done){
+        GroupLevel.remove({}, function(){
+            done();
+        });
     });
 
     describe('#createGroupLevelFromJson', function(){
@@ -31,10 +33,7 @@ describe("groupLevelService", function(){
     afterEach(function(done){
         GroupLevel.remove({}, function(){
             done();
-        })
+        });
     });
 
-    after(function (done) {
-        testHelper.tearDown(done);
-    });
 });

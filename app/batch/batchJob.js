@@ -19,4 +19,8 @@ batchJob.schema = new Schema({
 
 batchJob.schema.plugin(timestamps);
 
-batchJob.model = mongoose.model('BatchJob', batchJob.schema);
+if (mongoose.models.BatchJob) {
+    batchJob.model = mongoose.model('BatchJob');
+} else {
+    batchJob.model = mongoose.model('BatchJob', batchJob.schema);
+}

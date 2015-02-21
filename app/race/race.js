@@ -17,4 +17,8 @@ race.schema = new Schema(race.definition);
 
 race.schema.plugin(timestamps);
 
-race.model = mongoose.model('Race', race.schema);
+if (mongoose.models.Race) {
+    race.model = mongoose.model('Race');
+} else {
+    race.model = mongoose.model('Race', race.schema);
+}

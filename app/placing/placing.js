@@ -18,4 +18,8 @@ placing.schema = new Schema(placing.definition);
 
 placing.schema.plugin(timestamps);
 
-placing.model = mongoose.model('Placing', placing.schema);
+if (mongoose.models.Placing) {
+    placing.model = mongoose.model('Placing');
+} else {
+    placing.model = mongoose.model('Placing', placing.schema);
+}

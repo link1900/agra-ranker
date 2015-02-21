@@ -14,6 +14,14 @@ file.definition = {
 
 file.schema = new Schema(file.definition);
 
-file.model = mongoose.model('fs.file', file.schema);
+if (mongoose.models['fs.file']) {
+    file.model = mongoose.model('fs.file');
+} else {
+    file.model = mongoose.model('fs.file', file.schema);
+}
 
-file.chunkModel = mongoose.model('fs.chunk', new Schema({}));
+if (mongoose.models['fs.chunk']) {
+    file.chunkModel = mongoose.model('fs.chunk');
+} else {
+    file.chunkModel = mongoose.model('fs.chunk', new Schema({}));
+}

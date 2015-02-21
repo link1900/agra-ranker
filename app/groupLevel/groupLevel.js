@@ -7,8 +7,12 @@ groupLevel.definition = {
     name: {type: String}
 };
 
-groupLevel.schema = new Schema(groupLevel.definition );
+groupLevel.schema = new Schema(groupLevel.definition);
 
 groupLevel.schema.plugin(timestamps);
 
-groupLevel.model = mongoose.model('GroupLevel', groupLevel.schema);
+if (mongoose.models.GroupLevel) {
+    groupLevel.model = mongoose.model('GroupLevel');
+} else {
+    groupLevel.model = mongoose.model('GroupLevel', groupLevel.schema);
+}

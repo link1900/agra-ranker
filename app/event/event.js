@@ -13,4 +13,8 @@ event.schema = new Schema(event.definition);
 
 event.schema.plugin(timestamps);
 
-event.model = mongoose.model('Event', event.schema);
+if (mongoose.models.Event) {
+    event.model = mongoose.model('Event');
+} else {
+    event.model = mongoose.model('Event', event.schema);
+}

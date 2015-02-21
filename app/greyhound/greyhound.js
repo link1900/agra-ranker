@@ -13,4 +13,8 @@ greyhound.schema = new Schema(greyhound.definition);
 
 greyhound.schema.plugin(timestamps);
 
-greyhound.model = mongoose.model('Greyhound', greyhound.schema);
+if (mongoose.models.Greyhound) {
+    greyhound.model = mongoose.model('Greyhound');
+} else {
+    greyhound.model = mongoose.model('Greyhound', greyhound.schema);
+}

@@ -2,12 +2,14 @@ var fileService = module.exports = {};
 
 var q = require('q');
 var _ = require('lodash');
+var csv = require('csv');
+
 var mongoService = require('../mongoService');
 var File = require('./file').model;
 var mongoose = require('mongoose');
 var grid = require('gridfs-stream');
 var gfs = grid(mongoose.connection.db);
-var csv = require('csv');
+
 
 fileService.postUploadHandlers = {};
 

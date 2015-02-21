@@ -20,4 +20,8 @@ batchResult.schema = new Schema({
 
 batchResult.schema.plugin(timestamps);
 
-batchResult.model = mongoose.model('BatchResult', batchResult.schema);
+if (mongoose.models.BatchResult) {
+    batchResult.model = mongoose.model('BatchResult');
+} else {
+    batchResult.model = mongoose.model('BatchResult', batchResult.schema);
+}
