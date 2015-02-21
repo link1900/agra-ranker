@@ -53,7 +53,5 @@ raceController.update = function(req, res) {
 };
 
 raceController.destroy = function(req, res) {
-    helper.responseFromPromise(res,
-        mongoService.clearAwayChildren(Placing, 'raceRef', req.model)
-    .then(mongoService.removePromise));
+    expressService.promToRes(raceService.remove(req.model), res);
 };
