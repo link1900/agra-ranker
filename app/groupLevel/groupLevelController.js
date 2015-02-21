@@ -4,12 +4,6 @@ var _ = require('lodash');
 var q = require('q');
 var mongoose = require('mongoose');
 
-var GroupLevel = require('./groupLevel').model;
-var Race = mongoose.model('Race');
-var helper = require('../helper');
-var mongoService = require('../mongoService');
-
-var eventService = require('../event/eventService');
 var groupLevelService = require('../groupLevel/groupLevelService');
 var expressService = require('../expressService');
 

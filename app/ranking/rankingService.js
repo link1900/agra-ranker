@@ -5,7 +5,6 @@ var q = require('q');
 var moment = require('moment');
 
 var placingService = require('../placing/placingService');
-var Race = require('../race/race').model;
 var Greyhound = require('../greyhound/greyhound').model;
 var greyhoundService = require('../greyhound/greyhoundService');
 var helper = require('../helper');
