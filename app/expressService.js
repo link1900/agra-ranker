@@ -108,16 +108,25 @@ expressService.buildQueryForOr = function(fieldDefinition, values){
 expressService.addStandardMethods = function(controller, service){
     controller.setModel = function(req, res, next, id) {
         service.findById(id).then(function(model){
-            if (!model) return next(new Error('Failed to load ' + id));
-            req.model = model;
-            return next();
+            if (model == null) {
+                res.jsonp(404, {"error": "entity not found"});
+            } else {
+                req.model = model;
+                return next();
+            }
+
         }, function(error){
-            return next(error);
+            expressService.errorResponse(res, error);
         });
     };
 
     controller.getOne = function(req, res){
-        res.jsonp(req.model);
+        if (req.model != null){
+            res.jsonp(req.model);
+        } else {
+            res.jsonp(404, {"error": "entity not found"});
+        }
+
     };
 
     controller.destroy = function(req, res) {

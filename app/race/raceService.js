@@ -307,3 +307,16 @@ eventService.addListener("race grouplevel flyweight updater","Updated GroupLevel
         return q();
     }
 });
+
+eventService.addListener("race group level delete","Deleted GroupLevel", function(event){
+    if (event != null && event.data != null && event.data.entity != null && event.data.entity._id != null){
+        return raceService.find({groupLevelRef: event.data.entity._id}).then(function(results){
+            var proms = results.map(function(race){
+                return raceService.remove(race);
+            });
+            return q.all(proms);
+        });
+    } else {
+        return q();
+    }
+});

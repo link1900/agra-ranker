@@ -45,8 +45,5 @@ groupLevelController.update = function(req, res) {
 };
 
 groupLevelController.destroy = function(req, res) {
-    helper.responseFromPromise(res,
-        mongoService.cleanFk(Race, 'groupLevelRef', req.model)
-        .then(mongoService.removePromise)
-    );
+    expressService.promToRes(groupLevelService.remove(req.model), res);
 };

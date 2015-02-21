@@ -2,8 +2,8 @@ var request = require('supertest');
 var mongoose = require('mongoose');
 var chai = require('chai');
 chai.should();
+var assert = require('assert');
 var expect = chai.expect;
-var assert = chai.assert;
 var Race = mongoose.model('Race');
 var testHelper = require('./testHelper');
 
@@ -27,9 +27,9 @@ describe("Race", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    assert.isArray(res.body);
-                    assert.include(res.body, 515);
-                    assert.include(res.body, 715);
+                    assert(res.body.length > 0);
+                    assert(res.body.indexOf(515) != -1);
+                    assert(res.body.indexOf(715) != -1);
                     done();
                 });
         });
@@ -357,7 +357,7 @@ describe("Race", function(){
                 .expect(200, done);
         });
 
-        it("delete group1 should remove its ref", function (done) {
+        it("delete group1 should delete race", function (done) {
             testHelper.authSession
                 .del('/groupLevel/531d1f72e407586c21476ef7')
                 .set('Accept', 'application/json')
@@ -369,15 +369,7 @@ describe("Race", function(){
                         .get('/race/531d1f72e407586c21476ea8')
                         .set('Accept', 'application/json')
                         .expect('Content-Type', /json/)
-                        .expect(200)
-                        .end(function(err, res){
-                            if (err){ throw err; }
-                            res.body.should.have.property("name");
-                            res.body.name.should.equal("race1");
-                            res.body.should.have.property("groupLevelRef");
-                            expect(res.body.groupLevelRef).equal(null);
-                            done();
-                        });
+                        .expect(404,done);
                 });
         });
     });
