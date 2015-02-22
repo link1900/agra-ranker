@@ -1,11 +1,23 @@
 <div id="rankingsList" data-ng-controller="rankingCtrl">
-    <div data-sb-table
-         data-table-title="Rankings"
-         data-model-service="rankingService"
-         data-message-empty="There are no rankings"
-         data-column-info="columnInfo"
-         data-per-page="100"
-         data-sort-field="rank"
-         data-sort-direction="asc">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <select id="rankingSystemSelector" class="form-control" data-ng-model="selected.rankingSystemRef" ng-options="rankingSystem._id as rankingSystem.name for rankingSystem in rankingSystems"></select>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="row">
+        <div data-sb-table
+             data-model-service="rankingService"
+             data-hide-search="true"
+             data-message-empty="There are no rankings"
+             data-column-info="columnInfo"
+             data-per-page="100"
+             data-sort-field="rank"
+             data-sort-direction="asc">
+        </div>
+    </div>
+
 </div>
