@@ -55,7 +55,7 @@ module.exports = function(grunt) {
                 options: {
                     reporter: 'spec'
                 },
-                src: ['specs/**/*.spec.js']
+                src: ['specs/**/*.spec.js', 'app/**/*Spec.js']
             }
         },
         'string-replace': {

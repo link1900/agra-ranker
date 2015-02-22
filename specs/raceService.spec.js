@@ -169,6 +169,33 @@ describe("raceService", function(){
             raceService.processRaceCsvRow(record).then(function(){}, done);
         });
 
+        it("should delete race if group level is deleted", function(done){
+            var event = {type: "Deleted GroupLevel", data: {entity: {"_id": "531f1f72e407586c21476ef7"}}};
+            eventService.logEvent(event, true).then(function(){
+                Race.find({_id: "54e7beb64751d30120fe63b5"}, function(err, res){
+                    if (res.length > 0){
+                        done(new Error("found races when I should not have"));
+                    } else {
+                        done();
+                    }
+                });
+            });
+        });
+
+        it("should update group level flyweight of race if group level is updated", function(done){
+            var event = {type: "Updated GroupLevel", data: {entity: {"_id": "531f1f72e407586c21476ef7", name: "Group 5"}}};
+            eventService.logEvent(event, true).then(function(){
+                Race.find({_id: "54e7beb64751d30120fe63b5"}, function(err, res){
+                    if (res.length > 0){
+                        assert.equal(res[0].groupLevel.name, "Group 5");
+                        done();
+                    } else {
+                        done(new Error("no race found"));
+                    }
+                });
+            });
+        });
+
         afterEach(function(){
             eventService.removeListenerByName("testCreate");
             eventService.removeListenerByName("testUpdate");

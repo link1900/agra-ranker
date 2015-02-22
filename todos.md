@@ -204,39 +204,46 @@
 - (DONE) Refactor front end to be via the main groups
 - (DONE) Add ranking system criteria field value replacement for calendar start and end dates
 - (DONE) Add Agra Ranking System (for calendar year)
-- calculate rankings on placing creation
-- calculate rankings on placing edit
-- calculate rankings on placing delete
-- on greyhound delete, remove all placings for that greyhound
-- on race delete, remove all placings for that race
-- validate that placings must have a race and greyhound reference
-- test that rankings are update on placing creation
-- test that rankings are update on placing update
-- add event stream ui
-- add event for greyhound crud and imports
-- add event for race curd and imports
-- split the testing and move them into the app break up test helper
-- refactor the admin service to import the models once and do all operations of that list
-- refactor the hardcoded template creation to the specific area
+- (DONE) calculate rankings on placing creation
+- (DONE) calculate rankings on placing edit
+- (DONE) calculate rankings on placing delete
+- (DONE) on greyhound delete, remove all placings for that greyhound
+- (DONE) on race delete, remove all placings for that race
+- (DONE) validate that placings must have a race and greyhound reference
+- (DONE) test that create greyhound issues event
+- (DONE) test that update greyhound issues event
+- (DONE) test that delete greyhound issues event
+- (DONE) test that batch greyhound  issues event
+- (DONE) test that create race issues event
+- (DONE) test that update race issues event
+- (DONE) test that delete race issues event
+- (DONE) test that batch race issues event
+- (DONE) test that create group level issues event
+- (DONE) test that update group level issues event
+- (DONE) test that delete group level issues event
+- (DONE) test that race listens to group level changes
+- (DONE) test that rankings listens to placing changes
+- (DONE) add event stream ui
+- (DONE) create default data command for ranking system
+- (DONE) List rankings api
+- (DONE) calculate rankings based on a ranking system
 - allow logged in users to save there ui settigs
 - allow admin to configure the global ui settings
 - update ranking display to show placings (lazyload?)
 - update ranking display to show cards
 - update the read me with the .example_env and what each config does
-- add protactor tests for the major flows like greyhound crud, race crud placing crud, rankings and score check
-- (DONE) create default data command for ranking system
 - define agra ranking system and test importing it
 - define sire and dam ranking systems test import it
 - dead heat rule - points from matching positions are summed and divided
 - auto retieve sire and dam for a greyhound from authority site (with confirm prompt)
-- (DONE) List rankings api
-- (DONE) calculate rankings based on a ranking system
 - update rankings when race is changed
 - update rankings when ranking system (or its sub entities is changed) is changed
 - update when greyhound is deleted
 - update when race is deleted
 - update when rule set is deleted
 - delete rankings when ranking system is deleted
+- refactor the admin service to import the models once and do all operations of that list
+- add protactor tests for the major flows like greyhound crud, race crud placing crud, rankings and score check
 
 ### 6.0.15 Advanced search
 - Upgrade grid to have good search controls for races

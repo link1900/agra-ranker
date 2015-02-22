@@ -407,8 +407,6 @@ describe("Ranking System", function(){
                 .expect('Content-Type', /json/)
                 .expect(200, done);
         });
-
-        it("removed the rankings");
     });
 
     afterEach(function(done){
