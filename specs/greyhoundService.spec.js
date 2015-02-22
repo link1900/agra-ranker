@@ -227,6 +227,43 @@ describe("greyhoundService", function(){
         });
     });
 
+    describe("events", function() {
+        it("should issue create event on creation", function(done){
+            eventService.addListener("testCreate","Created Greyhound", function(){
+                done();
+            });
+            greyhoundService.createGreyhoundFromJson({"name": "event new"}).then(function(){}, done);
+        });
+
+        it("should issue update event on update", function(done){
+            eventService.addListener("testUpdate","Updated Greyhound", function(){
+                done();
+            });
+            greyhoundService.updateGreyhoundFromJson(changeModel, {"name": "event update"}).then(function(){}, done);
+        });
+
+        it("should issue delete event on delete", function(done){
+            eventService.addListener("testDelete","Deleted Greyhound", function(){
+                done();
+            });
+            greyhoundService.remove(changeModel).then(function(){}, done);
+        });
+
+        it("should issue create event on batch import", function(done){
+            eventService.addListener("testBatch","Created Greyhound", function(){
+                done();
+            });
+            greyhoundService.processGreyhoundRow(["batchImportGrey","",""]).then(function(){}, done);
+        });
+
+        afterEach(function(){
+            eventService.removeListenerByName("testCreate");
+            eventService.removeListenerByName("testUpdate");
+            eventService.removeListenerByName("testDelete");
+            eventService.removeListenerByName("testBatch");
+        });
+    });
+
 
     after(function (done) {
         Greyhound.remove({}, function(res) {

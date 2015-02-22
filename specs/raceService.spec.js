@@ -4,8 +4,8 @@ var chai = require('chai');
 var assert = require('assert');
 var testHelper = require('./testHelper');
 var Race = require('../app/race/race').model;
+var eventService = require('../app/event/eventService');
 var raceService = null;
-
 
 var race5;
 describe("raceService", function(){
@@ -112,6 +112,68 @@ describe("raceService", function(){
             }, function(error){
                 done(error);
             });
+        });
+    });
+
+    describe("events", function() {
+        it("should issue create event on creation", function(done){
+            eventService.addListener("testCreate","Created Race", function(){
+                done();
+            });
+            var body = {name:"raceCreated",
+                date: new Date(),
+                "groupLevelRef": "531d1f72e407586c21476ef7",
+                "distanceMeters": 515,
+                "disqualified":false};
+            raceService.createRaceFromJson(body).then(function(){}, done);
+        });
+
+        it("should issue update event on update", function(done){
+            eventService.addListener("testUpdate","Updated Race", function(){
+                done();
+            });
+            var body = {name:"raceUpdated",
+                date: new Date(),
+                "groupLevelRef": "531d1f72e407586c21476ef7",
+                "distanceMeters": 515,
+                "disqualified":false};
+            raceService.updateRaceFromJson(race5, body).then(function(){}, done);
+        });
+
+        it("should issue delete event on delete", function(done){
+            eventService.addListener("testDelete","Deleted Race", function(){
+                done();
+            });
+            raceService.remove(race5).then(function(){}, done);
+        });
+
+        it("should issue create event on batch import", function(done){
+            eventService.addListener("testBatch","Created Race", function(){
+                done();
+            });
+
+            var record =
+                ["VIC PETERS CLASSIC",
+                    "1/11/2014 12:00:00 AM",
+                    "Group 1",
+                    "Sprint",
+                    "LUCY LOBSTER", "1",
+                    "JEWEL ACTION", "2",
+                    "ANYTHING LESS", "3",
+                    "XTREME KNOCKA",  "4",
+                    "COSMIC ANGEL", "5",
+                    "ALL STRUNG OUT","6",
+                    "LA GRAND LOGIE","7",
+                    "FRATTINI","8"
+                ];
+            raceService.processRaceCsvRow(record).then(function(){}, done);
+        });
+
+        afterEach(function(){
+            eventService.removeListenerByName("testCreate");
+            eventService.removeListenerByName("testUpdate");
+            eventService.removeListenerByName("testDelete");
+            eventService.removeListenerByName("testBatch");
         });
     });
 
