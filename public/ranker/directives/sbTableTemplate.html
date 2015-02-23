@@ -4,7 +4,7 @@
         <form ng-hide="noRecords || hideSearch" class="pull-right">
             <label class="sr-only" for="table-search">Search:</label>
             <span class="glyphicon glyphicon-search" ng-click="updateSearch()"></span>
-            <input id="table-search" type="text" data-ng-model="searchParams.like" data-ng-change="updateSearch()" autocomplete="off"/>
+            <input id="table-search" type="text" data-ng-model="searchParams.like" autocomplete="off"/>
             <span ng-show="searchInfo" class="glyphicon glyphicon-cog"></span>
         </form>
     </div>

@@ -39,18 +39,12 @@ angular.module('directives')
                 });
             }
 
-            scope.updateSearch = function(){
-                scope.loadModels();
-            };
-
             scope.clearSearch = function(){
                 scope.searchParams.like = '';
-                scope.loadModels();
             };
 
             scope.changePage = function(page){
                 scope.searchParams.page = page;
-                scope.loadModels();
             };
 
             scope.calculatePageRange = function(page, pageSize, total){
@@ -115,7 +109,11 @@ angular.module('directives')
                 });
             };
 
-            scope.loadModels();
+            scope.$watch('searchParams', function(oldVal, newVal){
+                if (newVal){
+                    scope.loadModels();
+                }
+            }, true);
         }
 
         return {
