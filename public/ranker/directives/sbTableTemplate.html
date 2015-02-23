@@ -1,12 +1,18 @@
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h3 class="panel-title pull-left">{{tableTitle}}</h3>
-        <form ng-hide="noRecords || hideSearch" class="pull-right">
-            <label class="sr-only" for="table-search">Search:</label>
-            <span class="glyphicon glyphicon-search" ng-click="updateSearch()"></span>
-            <input id="table-search" type="text" data-ng-model="searchParams.like" autocomplete="off"/>
-            <span ng-show="searchInfo" class="glyphicon glyphicon-cog"></span>
-        </form>
+        <div class="row">
+            <div class="col-md-6">
+                Show <label><select id="perPageCountSelection" class="form-control input-sm" data-ng-model="searchParams.per_page" ng-options="perPageOption.value as perPageOption.name for perPageOption in perPageOptions"></select></label> items
+            </div>
+            <div class="col-md-6 pull-right">
+                <div ng-hide="noRecords || hideSearch" class="pull-right">
+                    <label class="sr-only" for="table-search">Search:</label>
+                    <span class="glyphicon glyphicon-search"></span>
+                    <input id="table-search" type="text" data-ng-model="searchParams.like" autocomplete="off"/>
+                    <span ng-show="searchInfo" class="glyphicon glyphicon-cog"></span>
+                </div>
+            </div>
+        </div>
     </div>
     <div ng-show="noRecords">{{messageEmpty}}</div>
     <div ng-show="noSearchRecords">Search did not find any results</div>
@@ -30,17 +36,26 @@
         </tbody>
     </table>
     <div ng-hide="noRecords || noSearchRecords" class="panel-footer clearfix">
-        <div class="pull-left">Displaying {{calculatePageRange(searchParams.page,searchParams.per_page, totalItems)}} of {{totalItems}} items</div>
-        <div data-pagination
-             class="pull-right pagination-no-margin"
-             data-on-select-page="changePage(page)"
-             data-direction-links="true"
-             data-boundary-links="true"
-             data-total-items="totalItems"
-             data-items-per-page="searchParams.per_page"
-             data-page="searchParams.page"
-             data-max-size="5">
+        <div class="row">
+            <div class="col-md-3">
+                Displaying {{calculatePageRange(searchParams.page,searchParams.per_page, totalItems)}} of {{totalItems}} items
+            </div>
+            <div class="col-md-6 pull-right">
+                <div data-pagination
+                     class="pull-right pagination-no-margin"
+                     data-on-select-page="changePage(page)"
+                     data-direction-links="true"
+                     data-boundary-links="true"
+                     data-total-items="totalItems"
+                     data-items-per-page="searchParams.per_page"
+                     data-page="searchParams.page"
+                     data-max-size="5">
+                </div>
+            </div>
         </div>
+
+
+
     </div>
 </div>
 

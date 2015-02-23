@@ -227,23 +227,27 @@
 - (DONE) create default data command for ranking system
 - (DONE) List rankings api
 - (DONE) calculate rankings based on a ranking system
-- allow logged in users to save there ui settigs
-- allow admin to configure the global ui settings
-- update ranking display to show placings (lazyload?)
-- update ranking display to show cards
-- update the read me with the .example_env and what each config does
+- update sb table to be based on watch changes to the parameters
+- update sb table to allow for page limit changes
+- update sb table to allow for ctrl to customise search options (advanced search)
+- update sb table to allow for custom column expands
+- change greyhound view to make clear the offspring and places
+- change the race view to make clear the placing (BUG: paging and totals)
+- change how ranking queries work so that they are calculated based on parameters of a period
+- cache ranking queries
+- allow users to select which ranking system they wish to view
+- allow users to select which ranking system type they wish to view
+- update ranking display to show placing points on a card(lazyload?)
 - define agra ranking system and test importing it
 - define sire and dam ranking systems test import it
 - dead heat rule - points from matching positions are summed and divided
-- auto retieve sire and dam for a greyhound from authority site (with confirm prompt)
-- update rankings when race is changed
+- (DONE) update rankings when race is changed
 - update rankings when ranking system (or its sub entities is changed) is changed
 - update when greyhound is deleted
 - update when race is deleted
 - update when rule set is deleted
 - delete rankings when ranking system is deleted
-- refactor the admin service to import the models once and do all operations of that list
-- add protactor tests for the major flows like greyhound crud, race crud placing crud, rankings and score check
+
 
 ### 6.0.15 Advanced search
 - Upgrade grid to have good search controls for races
@@ -254,6 +258,10 @@
 - allow race search to be done by two dates
 
 ## 6.1.0 - Getting to Ranker 6 Level
+- auto retrieve sire and dam for a greyhound from authority site (with confirm prompt)
+- update the read me with the .example_env and what each config does
+- refactor the admin service to import the models once and do all operations of that list
+- add protactor tests for the major flows like greyhound crud, race crud placing crud, rankings and score check
 - (DONE) list all rankings on the home screen
 - put in proper action logging
 - save the history log to the database

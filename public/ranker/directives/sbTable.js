@@ -4,6 +4,11 @@ angular.module('directives')
 
             scope.noRecords = true;
             scope.noSearchRecords = false;
+            scope.perPageOptions = [{"name":"10","value":10},
+                {"name":"15","value":15},
+                {"name":"25","value":25},
+                {"name":"50","value":50},
+                {"name":"100","value":100}];
 
             scope.searchParams = {
                 page : 1,
@@ -22,7 +27,7 @@ angular.module('directives')
             }
 
             if (scope.perPage){
-                scope.searchParams.per_page = scope.perPage;
+                scope.searchParams.per_page = parseInt(scope.perPage);
             }
 
             if (scope.searchFields){
