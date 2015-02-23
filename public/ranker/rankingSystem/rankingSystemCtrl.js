@@ -208,18 +208,6 @@ angular.module('controllers').controller('RankingSystemCtrl',
             $scope.opened = true;
         };
 
-        $scope.recalculateRankings = function(){
-            rankingSvr.createForRankingSystem($scope.rankingSystem._id).then(function(response){
-                $scope.alerts = [
-                    { type: 'success', msg: "Recalculation scheduled, see batch jobs for details."}
-                ];
-            }, function(error){
-                $scope.alerts = [
-                    { type: 'danger', msg: error.data.error }
-                ];
-            });
-        };
-
         /**
          * Loads default form fields
          */

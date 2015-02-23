@@ -8,9 +8,5 @@ angular.module('services').factory('rankingSvr',
         }
     );
 
-    service.createForRankingSystem = function(rankingSystemRef){
-        return $http.post('/ranking?rankingSystemRef=' +rankingSystemRef);
-    };
-
     return service;
 });

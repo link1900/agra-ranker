@@ -18,7 +18,6 @@
                     <dt>Last updated</dt>
                     <dd>{{rankingSystem.updatedAt | fromNow}}</dd>
                 </dl>
-                <button ng-click="recalculateRankings()" class="btn btn-primary"><span class="glyphicon glyphicon-refresh"></span> Recalculate Rankings</button>
                 <a ng-show="user" data-ng-href="#/rankingSystem/edit/{{rankingSystem._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
                 <a ng-show="user" ng-click="copy()" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Copy</a>
                 <button ng-show="user" data-ng-click="deleteEntity()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
