@@ -11,10 +11,5 @@ var expressService = require('../expressService');
 expressService.addStandardMethods(eventController, eventService);
 
 eventController.find = function(req, res){
-    var query = expressService.buildQueryFromRequest(req, ["type=type","type~like"]);
-    var searchParams = expressService.parseSearchParams(req);
-
-    return expressService.setTotalHeader(res, eventService).then(function(){
-        return expressService.promToRes(eventService.find(query, searchParams.limit, searchParams.offset, searchParams.sort),res);
-    });
+    expressService.standardSearch(req, res, eventService, ["type=type","type~like"]);
 };

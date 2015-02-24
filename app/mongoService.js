@@ -17,6 +17,18 @@ mongoService.find = function(dao, search, limit, offset, sort){
     return deferred.promise;
 };
 
+mongoService.count = function(dao, search){
+    var deferred = q.defer();
+    dao.count(search).exec(function(err, result){
+        if(err){
+            deferred.reject(err);
+        } else {
+            deferred.resolve(result);
+        }
+    });
+    return deferred.promise;
+};
+
 mongoService.oneExists = function(dao, search){
   return mongoService.findOne(dao, search).then(function(result){
       return result != null;

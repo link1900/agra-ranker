@@ -3,8 +3,8 @@ var expressService = module.exports = {};
 var _ = require('lodash');
 var q = require('q');
 
-expressService.setTotalHeader = function(res, service){
-    return service.count().then(function(count){
+expressService.setTotalHeader = function(res, service, query){
+    return service.count(query).then(function(count){
         res.set('total', count);
     });
 };
@@ -156,7 +156,7 @@ expressService.standardSearch = function(req, res, service, fields){
     var query = expressService.buildQueryFromRequest(req, fields);
     var searchParams = expressService.parseSearchParams(req);
 
-    return expressService.setTotalHeader(res, service).then(function(){
+    return expressService.setTotalHeader(res, service, query).then(function(){
         return expressService.promToRes(service.find(query, searchParams.limit, searchParams.offset, searchParams.sort), res);
     });
 };
