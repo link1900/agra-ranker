@@ -15,25 +15,24 @@ angular.module('controllers').controller('rankingCtrl', function($scope, ranking
         sort_direction: 'asc'
     };
 
-    $scope.searchFields = {
-        'rankingSystemRef': $scope.selected.rankingSystemRef
-    };
-
-    $
+    $scope.searchInfo = [
+        {"name":"Type", field:"rankingSystemRef", type:"select", options: [], selected: ""},
+        {"name":"Year", fieldComplex:[{"queryName":"startDate", "selectedValue":"start", "dataType": "date"},{"queryName":"endDate", "selectedValue":"end", "dataType": "date"}], type:"select", options: [], selected: ""}
+    ];
 
     $scope.buildPeriodList = function(){
         var startYear = 2010;
         var endYear = new Date().getFullYear();
-        $scope.periods = $scope.generateYearPeriods(startYear, endYear);
-        if ($scope.periods.length > 0){
-            $scope.selected.period = $scope.periods[0].period;
+        $scope.searchInfo[1].options = $scope.generateYearPeriods(startYear, endYear);
+        if ($scope.searchInfo[1].options.length > 0){
+            $scope.searchInfo[1].selected = $scope.searchInfo[1].options[0]._id;
         }
     };
 
     $scope.generateYearPeriods = function(startYear, inclusiveEndYear){
         var periods = [];
         for (var i=inclusiveEndYear; i>=startYear;i--){
-            periods.push({name: i+"", period: $scope.getYearDates(i)});
+            periods.push({name: i+"", _id: $scope.getYearDates(i)});
             //periods.push({name: i+"-"+(i+1), period: $scope.getFYearDates(i)});
         }
         return periods;
@@ -52,10 +51,11 @@ angular.module('controllers').controller('rankingCtrl', function($scope, ranking
 
     $scope.loadRankingSystems = function(){
         rankingSystemSvr.query($scope.rankingSystemSearch, function(resultModels) {
-            $scope.rankingSystems = resultModels;
-            $scope.selected.rankingSystemRef = $scope.rankingSystems[0]._id;
+            $scope.searchInfo[0].options = resultModels;
+            $scope.searchInfo[0].selected = $scope.searchInfo[0].options[0]._id;
         });
     };
+
     $scope.buildPeriodList();
     $scope.loadRankingSystems();
 
