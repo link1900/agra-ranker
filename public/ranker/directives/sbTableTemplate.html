@@ -1,15 +1,27 @@
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
         <div class="row">
-            <div class="col-md-6">
-                Show <label><select id="perPageCountSelection" class="form-control input-sm" data-ng-model="searchParams.per_page" ng-options="perPageOption.value as perPageOption.name for perPageOption in perPageOptions"></select></label> items
-            </div>
-            <div class="col-md-6 pull-right">
-                <div ng-hide="noRecords || hideSearch" class="pull-right">
+            <div class="col-md-10">
+                <div ng-hide="noRecords || hideSearch">
                     <label class="sr-only" for="table-search">Search:</label>
                     <span class="glyphicon glyphicon-search"></span>
                     <input id="table-search" type="text" data-ng-model="searchParams.like" autocomplete="off"/>
-                    <span ng-show="searchInfo" class="glyphicon glyphicon-cog"></span>
+                    <button class="btn btn-primary btn-xs" ng-class="{active: showAdvancedSearch}" ng-show="searchFields" ng-click="toggleAdvancedSearch()">Options</button>
+                </div>
+            </div>
+            <div class="col-md-2 pull-right">
+                Show <label><select id="perPageCountSelection" class="form-control input-sm" data-ng-model="searchParams.per_page" ng-options="perPageOption.value as perPageOption.name for perPageOption in perPageOptions"></select></label> items
+            </div>
+        </div>
+        <div ng-show="showAdvancedSearch">
+            <div class="row" ng-repeat="searchField in searchFields">
+                <div ng-switch data-on="searchField.type">
+                    <div ng-switch-when="select">
+                        <div class="col-md-3">
+                            <label class="control-label" for="SearchField{{searchField.name}}">{{searchField.name}}</label>
+                            <select id="SearchField{{searchField.name}}" class="form-control" data-ng-model="searchField.selected" ng-options="searchFieldOption._id as searchFieldOption.name for searchFieldOption in searchField.options"></select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
