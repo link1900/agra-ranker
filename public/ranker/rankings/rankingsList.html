@@ -1,18 +1,4 @@
 <div id="rankingsList" data-ng-controller="rankingCtrl">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-2">
-                    <label class="control-label" for="rankingSystemSelector">Type</label>
-                    <select id="rankingSystemSelector" class="form-control" data-ng-model="selected.rankingSystemRef" ng-options="rankingSystem._id as rankingSystem.name for rankingSystem in rankingSystems"></select>
-                </div>
-                <div class="col-md-2">
-                    <label class="control-label" for="yearSelector">Year</label>
-                    <select id="yearSelector" class="form-control" data-ng-model="selected.period" ng-options="period.period as period.name for period in periods"></select>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="row">
         <div data-sb-table
              data-model-service="rankingService"
