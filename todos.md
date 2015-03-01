@@ -227,14 +227,18 @@
 - (DONE) create default data command for ranking system
 - (DONE) List rankings api
 - (DONE) calculate rankings based on a ranking system
-- update sb table to be based on watch changes to the parameters
-- update sb table to allow for page limit changes
-- update sb table to allow for ctrl to customise search options (advanced search)
+- (DONE) update sb table to be based on watch changes to the parameters
+- (DONE) update sb table to allow for page limit changes
+- (DONE) update sb table to allow for ctrl to customise search options (advanced search)
+- sb table - Fixed the no records text to make clear why there are no records also center and enlarge text
+- sb table - Add text search back to most tables
+- sb table - Remove references to hide search
 - update sb table to allow for custom column expands
 - change greyhound view to make clear the offspring and places
 - change the race view to make clear the placing (BUG: paging and totals)
 - change how ranking queries work so that they are calculated based on parameters of a period
 - cache ranking queries
+- Fix greyhound casing
 - allow users to select which ranking system they wish to view
 - allow users to select which ranking system type they wish to view
 - update ranking display to show placing points on a card(lazyload?)

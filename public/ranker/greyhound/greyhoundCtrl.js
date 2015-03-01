@@ -21,6 +21,10 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             {title: "Dam", field:"dam.name", baseLink:"#/greyhound/view/", linkField: "damRef", link:true, filter: "uppercase"}
         ];
 
+        $scope.searchInfo = [
+            {"name":"Name", field:"like", type:"text"}
+        ];
+
         $scope.findOne = function() {
             greyhoundSvr.get({
                 greyhoundId: $routeParams.id

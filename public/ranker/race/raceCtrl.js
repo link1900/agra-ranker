@@ -95,6 +95,10 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
             {title: "Distance (meters)", field:"distanceMeters"}
         ];
 
+        $scope.searchInfo = [
+            {"name":"Name", field:"like", type:"text"}
+        ];
+
         $scope.create = function(){
             if ($scope.race.disqualified == undefined){
                 $scope.race.disqualified = false;
