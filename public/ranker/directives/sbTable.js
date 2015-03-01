@@ -3,8 +3,8 @@ angular.module('directives')
         function linkBody(scope, element, attrs) {
 
             scope.noRecords = true;
-            scope.noSearchRecords = false;
-            scope.showAdvancedSearch = false;
+            scope.showAdvancedSearch = true;
+            scope.selected = {};
             scope.perPageOptions = [{"name":"10","value":10},
                 {"name":"15","value":15},
                 {"name":"25","value":25},
@@ -15,9 +15,9 @@ angular.module('directives')
                 page : 1,
                 per_page : 10,
                 sort_field: 'name',
-                sort_direction: 'asc',
-                like : ''
+                sort_direction: 'asc'
             };
+
 
             if (scope.sortField){
                 scope.searchParams.sort_field = scope.sortField;
@@ -40,10 +40,6 @@ angular.module('directives')
                     scope.loadModels();
                 });
             }
-
-            scope.clearSearch = function(){
-                scope.searchParams.like = '';
-            };
 
             scope.changePage = function(page){
                 scope.searchParams.page = page;
@@ -103,69 +99,10 @@ angular.module('directives')
 
             };
 
-            scope.parseSearchOptions = function(){
-                return _.chain(scope.searchFields)
-                    .map(scope.parseSearchField)
-                    .filter(function(f){return f!=null;})
-                    .reduce(_.merge)
-                    .value();
-            };
-
-            scope.parseSearchField = function(searchField){
-                if (searchField.selected != null){
-                    if (searchField.field != null){
-                        var value = searchField.selected.toString().trim();
-                        if (value.length > 0){
-                            var searchFieldPair = {};
-                            searchFieldPair[searchField.field] = searchField.selected.toString().trim();
-                            return searchFieldPair;
-                        } else {
-                            return null;
-                        }
-                    } else if (searchField.fieldComplex != null) {
-                        return scope.parseSearchFieldComplex(searchField.selected, searchField.fieldComplex);
-                    } else {
-                        return null;
-                    }
-                } else {
-                    return null;
-                }
-            };
-
-            scope.parseSearchFieldComplex = function(selected, complexFields){
-                if (selected != null && complexFields != null && complexFields.length > 0){
-                    return _.chain(complexFields)
-                        .map(function(subField){
-                            return scope.parseSubField(selected, subField);
-                        })
-                        .reduce(_.merge)
-                        .value();
-                } else {
-                    return null;
-                }
-            };
-
-            scope.parseSubField = function(selected, subField){
-                var subFieldPair = {};
-                if (subField.dataType != null && subField.dataType == 'date'){
-                    subFieldPair[subField.queryName] = moment(selected[subField.selectedValue]).format();
-                } else {
-                    subFieldPair[subField.queryName] = selected[subField.selectedValue].toString().trim();
-                }
-                return subFieldPair;
-            };
-
             scope.loadModels = function() {
-                var queryParams = {};
-                if (scope.searchFields != null){
-                    queryParams = _.extend(scope.searchParams, scope.parseSearchOptions());
-                } else {
-                    queryParams = scope.searchParams;
-                }
-                scope.modelService.query(queryParams, function(resultModels, headers) {
+                scope.modelService.query(scope.searchParams, function(resultModels, headers) {
                     scope.models = resultModels;
-                    scope.noRecords = scope.models.length == 0 && scope.searchParams.like == '';
-                    scope.noSearchRecords = scope.models.length == 0 && scope.searchParams.like != '';
+                    scope.noRecords = scope.models.length == 0;
                     if (scope.postProcess){
                         scope.postProcess(resultModels);
                     }
@@ -180,12 +117,24 @@ angular.module('directives')
             }, true);
 
             if (scope.searchFields != null){
-                scope.$watch('searchFields', function(oldVal, newVal){
-                    if (newVal){
-                        scope.loadModels();
+                _.forEach(scope.searchFields, function(field){
+                    if (field.loadOptions != null){
+                        field.loadOptions().then(function(results){
+                            field.options = results;
+                            if (field != null && field.options != null && field.options.length != null && field.options.length > 0){
+                                if (field.type === "selectRangeSingle"){
+                                    scope.selected[field.name] = field.options[0]._id;
+                                    scope.searchParams[field.fieldStart] = field.options[0]._id[field.selectedStart];
+                                    scope.searchParams[field.fieldEnd] = field.options[0]._id[field.selectedEnd];
+                                } else {
+                                    scope.searchParams[field.field] = field.options[0]._id;
+                                }
+                            }
+                        });
                     }
-                }, true);
+                });
             }
+
         }
 
         return {

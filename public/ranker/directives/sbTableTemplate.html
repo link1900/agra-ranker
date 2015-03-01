@@ -1,34 +1,42 @@
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <div class="row">
-            <div class="col-md-10">
-                <div ng-hide="noRecords || hideSearch">
-                    <label class="sr-only" for="table-search">Search:</label>
-                    <span class="glyphicon glyphicon-search"></span>
-                    <input id="table-search" type="text" data-ng-model="searchParams.like" autocomplete="off"/>
-                    <button class="btn btn-primary btn-xs" ng-class="{active: showAdvancedSearch}" ng-show="searchFields" ng-click="toggleAdvancedSearch()">Options</button>
-                </div>
-            </div>
-            <div class="col-md-2 pull-right">
-                Show <label><select id="perPageCountSelection" class="form-control input-sm" data-ng-model="searchParams.per_page" ng-options="perPageOption.value as perPageOption.name for perPageOption in perPageOptions"></select></label> items
-            </div>
-        </div>
         <div ng-show="showAdvancedSearch">
-            <div class="row" ng-repeat="searchField in searchFields">
-                <div ng-switch data-on="searchField.type">
-                    <div ng-switch-when="select">
-                        <div class="col-md-3">
-                            <label class="control-label" for="SearchField{{searchField.name}}">{{searchField.name}}</label>
-                            <select id="SearchField{{searchField.name}}" class="form-control" data-ng-model="searchField.selected" ng-options="searchFieldOption._id as searchFieldOption.name for searchFieldOption in searchField.options"></select>
+            <div ng-repeat="searchField in searchFields">
+                <div ng-class-even="row">
+                    <div ng-switch data-on="searchField.type">
+                        <div ng-switch-when="select">
+                            <div class="col-md-3">
+                                <label class="control-label" for="SearchSelectField{{searchField.name}}">{{searchField.name}}</label>
+                                <select id="SearchSelectField{{searchField.name}}" class="form-control" data-ng-model="searchParams[searchField.field]" ng-options="searchFieldOption._id as searchFieldOption.name for searchFieldOption in searchField.options"></select>
+                            </div>
                         </div>
+                        <div ng-switch-when="selectRangeSingle">
+                            <div class="col-md-3">
+                                <label class="control-label" for="SearchSelectRangeField{{searchField.name}}">{{searchField.name}}</label>
+                                <select id="SearchSelectRangeField{{searchField.name}}"
+                                        data-ng-change="searchParams[searchField.fieldStart]=selected[searchField.name][searchField.selectedStart]; searchParams[searchField.fieldEnd]=selected[searchField.name][searchField.selectedEnd]"
+                                        class="form-control"
+                                        data-ng-model="selected[searchField.name]"
+                                        ng-options="searchFieldOption._id as searchFieldOption.name for searchFieldOption in searchField.options">
+                                </select>
+                            </div>
+                        </div>
+                        <div ng-switch-when="text">
+                            <div class="col-md-3">
+                                <label class="control-label" for="SearchTextField{{searchField.name}}">{{searchField.name}}</label>
+                                <input id="SearchTextField{{searchField.name}}" type="text" data-ng-model="searchParams[searchField.field]" autocomplete="off"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="$index == 0" class="col-md-2 pull-right">
+                        Show <label><select id="perPageCountSelection" class="form-control input-sm" data-ng-model="searchParams.per_page" ng-options="perPageOption.value as perPageOption.name for perPageOption in perPageOptions"></select></label> items
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div ng-show="noRecords">{{messageEmpty}}</div>
-    <div ng-show="noSearchRecords">Search did not find any results</div>
-    <table ng-hide="noRecords || noSearchRecords" border="0" class="table table-striped table-bordered">
+    <table ng-hide="noRecords" border="0" class="table table-striped table-bordered">
         <thead>
         <tr>
             <th data-ng-repeat="column in columnInfo">{{column.title}}</th>
@@ -47,7 +55,7 @@
         </tr>
         </tbody>
     </table>
-    <div ng-hide="noRecords || noSearchRecords" class="panel-footer clearfix">
+    <div class="panel-footer clearfix">
         <div class="row">
             <div class="col-md-3">
                 Displaying {{calculatePageRange(searchParams.page,searchParams.per_page, totalItems)}} of {{totalItems}} items
