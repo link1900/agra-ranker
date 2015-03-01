@@ -230,7 +230,7 @@
 - (DONE) update sb table to be based on watch changes to the parameters
 - (DONE) update sb table to allow for page limit changes
 - (DONE) update sb table to allow for ctrl to customise search options (advanced search)
-- sb table - Fixed the no records text to make clear why there are no records also center and enlarge text
+- (DONE) sb table - Fixed the no records text to make clear why there are no records also enlarge text
 - sb table - Add text search back to most tables
 - sb table - Remove references to hide search
 - update sb table to allow for custom column expands
