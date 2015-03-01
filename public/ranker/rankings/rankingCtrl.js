@@ -1,4 +1,4 @@
-angular.module('controllers').controller('rankingCtrl', function($scope, rankingSvr, rankingSystemSvr) {
+angular.module('controllers').controller('rankingCtrl', function($scope, rankingSvr, rankingSystemSvr, $q) {
     $scope.rankingService = rankingSvr;
     $scope.selected = {};
     $scope.columnInfo = [
@@ -16,27 +16,20 @@ angular.module('controllers').controller('rankingCtrl', function($scope, ranking
     };
 
     $scope.searchInfo = [
-        {"name":"Type", field:"rankingSystemRef", type:"select", options: [], selected: ""},
-        {"name":"Year", fieldComplex:[{"queryName":"startDate", "selectedValue":"start", "dataType": "date"},{"queryName":"endDate", "selectedValue":"end", "dataType": "date"}], type:"select", options: [], selected: ""}
+        {"name":"Year", fieldStart:"startDate", fieldEnd:"endDate", selectedStart: "start", selectedEnd:"end", type:"selectRangeSingle",  options: [], loadOptions: function(){
+            var startYear = 2010;
+            var endYear = new Date().getFullYear();
+            var periods = [];
+            for (var i=endYear; i>=startYear;i--){
+                periods.push({name: i+"", _id: $scope.getYearDates(i)});
+                //periods.push({name: i+"-"+(i+1), period: $scope.getFYearDates(i)});
+            }
+            return $q.when(periods);
+        }},
+        {"name":"Type", field:"rankingSystemRef", type:"select", options: [], loadOptions: function(){
+            return rankingSystemSvr.query($scope.rankingSystemSearch).$promise;
+        }}
     ];
-
-    $scope.buildPeriodList = function(){
-        var startYear = 2010;
-        var endYear = new Date().getFullYear();
-        $scope.searchInfo[1].options = $scope.generateYearPeriods(startYear, endYear);
-        if ($scope.searchInfo[1].options.length > 0){
-            $scope.searchInfo[1].selected = $scope.searchInfo[1].options[0]._id;
-        }
-    };
-
-    $scope.generateYearPeriods = function(startYear, inclusiveEndYear){
-        var periods = [];
-        for (var i=inclusiveEndYear; i>=startYear;i--){
-            periods.push({name: i+"", _id: $scope.getYearDates(i)});
-            //periods.push({name: i+"-"+(i+1), period: $scope.getFYearDates(i)});
-        }
-        return periods;
-    };
 
     $scope.getFYearDates = function(year){
         var midYear = moment().set('year', year).set('month', 'July').set('date', 1).startOf('day');
@@ -51,12 +44,9 @@ angular.module('controllers').controller('rankingCtrl', function($scope, ranking
 
     $scope.loadRankingSystems = function(){
         rankingSystemSvr.query($scope.rankingSystemSearch, function(resultModels) {
-            $scope.searchInfo[0].options = resultModels;
-            $scope.searchInfo[0].selected = $scope.searchInfo[0].options[0]._id;
+            $scope.searchInfo[1].options = resultModels;
+            $scope.searchInfo[1].selected = $scope.searchInfo[1].options[0]._id;
+            console.log("i updated the selection", $scope.searchInfo[1].selected);
         });
     };
-
-    $scope.buildPeriodList();
-    $scope.loadRankingSystems();
-
 });
