@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <div ng-show="showAdvancedSearch">
+        <div ng-show="showSearch">
             <div ng-repeat="searchField in searchFields">
                 <div ng-class-even="row">
                     <div ng-switch data-on="searchField.type">
@@ -35,7 +35,9 @@
             </div>
         </div>
     </div>
-    <div ng-show="noRecords">{{messageEmpty}}</div>
+    <div ng-show="noRecords" class="panel-body">
+        <p>{{messageEmpty}}</p>
+    </div>
     <table ng-hide="noRecords" border="0" class="table table-striped table-bordered">
         <thead>
         <tr>
@@ -73,9 +75,6 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
 </div>
 
