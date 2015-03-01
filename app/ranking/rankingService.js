@@ -12,10 +12,18 @@ var Ranking = require('./ranking').model;
 var rankingSystemService = require('./rankingSystemService');
 var eventService = require('../event/eventService');
 var batchService = require('../batch/batchService');
+var baseService = require('../baseService');
 
-rankingService.calculateRankings = function(rankingSystemRef){
+baseService.addStandardServiceMethods(rankingService, Ranking);
+
+rankingService.calculateRankings = function(periodStart, periodEnd, rankingSystemRef){
+    periodStart = rankingService.defaultPeriodStart(periodStart);
+    periodEnd = rankingService.defaultPeriodEnd(periodEnd);
     return rankingService.getRankingSystem(rankingSystemRef).then(function(rankingSystem){
-        rankingService.insertCommonCriteria(rankingSystem);
+        rankingSystem = rankingSystem.toObject();
+        rankingSystem = rankingService.addPeriodCriteria(periodStart, periodEnd, rankingSystem);
+        rankingSystem = rankingService.insertCommonCriteria(rankingSystem);
+        console.log(JSON.stringify(rankingSystem, null, 2));
         return rankingService.convertPointAllotmentsToPlacingsPoints(rankingSystem.pointAllotments)
             .then(function(pointPlacings){
                 var rankings = rankingService.sumPlacingsIntoRankings(pointPlacings, true);
@@ -28,36 +36,26 @@ rankingService.calculateRankings = function(rankingSystemRef){
     });
 };
 
-rankingService.calculateAndStoreRankings = function(rankingSystemRef){
-    return rankingService.calculateRankings(rankingSystemRef).then(function(rankings){
-        return mongoService.removeAll(Ranking, {'rankingSystemRef' : rankingSystemRef}).then(function(){
-            return mongoService.saveAllAtOnce(rankings.map(function(ranking){
-                return new Ranking(ranking);
-            })).then(function(result){
-                var eventData = {};
-                eventData.rankingsCalculated = rankings.length;
-                eventData.rankingSystemRef = rankingSystemRef;
-                eventService.logEvent({type:"Rankings Calculated", data: eventData});
-                return q(result);
-            });
-        });
-    });
+rankingService.defaultPeriodStart = function(periodStart){
+    if (periodStart != null && _.isDate(periodStart)){
+        return periodStart;
+    } else {
+        return rankingSystemService.getYearForDate(new Date()).start;
+    }
 };
 
-rankingService.calculateAndStoreAllRankings = function(){
-    return mongoService.find(RankingSystem, {}).then(function(rankingSystems){
-        var rankingSystemRefs = rankingSystems.map(function(rankingSystem){
-            return rankingSystem._id.toString();
-        });
+rankingService.defaultPeriodEnd = function(periodEnd){
+    if (periodEnd != null && _.isDate(periodEnd)){
+        return periodEnd;
+    } else {
+        return rankingSystemService.getYearForDate(new Date()).end;
+    }
+};
 
-        var proms = rankingSystemRefs.map(function(rankingSystemRef){
-            return rankingService.calculateAndStoreRankings(rankingSystemRef);
-        });
-
-        return q.allSettled(proms).then(function(results){
-            return q(results);
-        });
-    });
+rankingService.addPeriodCriteria = function(periodStart, periodEnd, rankingSystem){
+    rankingSystem.commonCriteria.push({field: "race.date", "comparator": ">=", "value": periodStart, type: "Date"});
+    rankingSystem.commonCriteria.push({field: "race.date", "comparator": "<=", "value": periodEnd, type: "Date"});
+    return rankingSystem;
 };
 
 rankingService.getRankingSystem = function(rankingSystemRef){
@@ -83,9 +81,10 @@ rankingService.getRankingSystem = function(rankingSystemRef){
 rankingService.insertCommonCriteria = function(rankingSystem){
     rankingSystem.pointAllotments.forEach(function(pointAllotment){
         if (rankingSystem.commonCriteria != null && rankingSystem.commonCriteria.length > 0){
-            pointAllotment.criteria.concat(rankingSystem.commonCriteria);
+            pointAllotment.criteria = pointAllotment.criteria.concat(rankingSystem.commonCriteria);
         }
     });
+    return rankingSystem;
 };
 
 rankingService.convertPointAllotmentsToPlacingsPoints = function(pointAllotments){
@@ -201,42 +200,3 @@ rankingService.addRankingPosition = function(rankings){
 
     return rankings;
 };
-
-eventService.addListener("ranking recalculate listener","Placing", function(){
-    return batchService.createBatch("Calculate All Rankings", {}, true);
-});
-
-rankingService.createRankingCalculateBatchJob = function(rankingSystemRef){
-    return batchService.createBatch("Calculate Rankings", {rankingSystemRef: rankingSystemRef});
-};
-
-rankingService.calculateRankingsBatchJob = function(batchJob){
-    var startDate = new Date();
-    if (batchJob.metadata != null && batchJob.metadata.rankingSystemRef != null){
-        return rankingService.calculateAndStoreRankings(batchJob.metadata.rankingSystemRef).then(function(){
-            return batchService.createBatchResult(batchJob._id,
-                1,
-                batchService.getBatchResultFromBoolean(true),
-                startDate,
-                "Calculated rankings for ranking system ref " +batchJob.metadata.rankingSystemRef,
-                []);
-        });
-    } else {
-        return q.reject({"error": "missing metadata"});
-    }
-};
-
-rankingService.calculateAllRankingsBatchJob = function(batchJob){
-    var startDate = new Date();
-    return rankingService.calculateAndStoreAllRankings().then(function(){
-        return batchService.createBatchResult(batchJob._id,
-            1,
-            batchService.getBatchResultFromBoolean(true),
-            startDate,
-            "Calculated rankings for all ranking systems",
-            []);
-    });
-};
-
-batchService.loadBatchHandler("Calculate Rankings", rankingService.calculateRankingsBatchJob);
-batchService.loadBatchHandler("Calculate All Rankings", rankingService.calculateAllRankingsBatchJob);

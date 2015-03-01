@@ -255,7 +255,7 @@ describe("rankingService", function(){
         });
 
         it("calculates the correct rankings", function (done) {
-            rankingService.calculateRankings("54ac8b031ee51022d545c8fc").then(function(results){
+            rankingService.calculateRankings(new Date(2010,1,1), new Date(2015,1,1), "54ac8b031ee51022d545c8fc").then(function(results){
                 assert.lengthOf(results, 4);
                 assert.equal(results[0].greyhoundName, "john");
                 assert.equal(results[0].rank, 1);
@@ -271,20 +271,16 @@ describe("rankingService", function(){
                 done(err);
             });
         });
-    });
 
-    describe("Ranking Service is listening to placing events", function(){
-
-        before(function(done){
-            BatchJob.remove({}, function(){done();});
-        });
-
-        it("when placing event is fired that a ranking batch is created", function(done){
-            eventService.logEvent({type:"Placing"}, true).then(function(){
-                BatchJob.find({}, function(err, res){
-                    assert.equal(res.length, 1);
-                    done();
-                });
+        it("calculates the correct rankings for the time period", function (done) {
+            rankingService.calculateRankings(new Date(2011,1,1), new Date(2012,11,11), "54ac8b031ee51022d545c8fc").then(function(results){
+                assert.equal(1, results.length);
+                assert.equal(results[0].greyhoundName, "john");
+                assert.equal(results[0].rank, 1);
+                assert.equal(20, results[0].totalPoints);
+                done();
+            },done).catch(function(err){
+                done(err);
             });
         });
     });

@@ -28,13 +28,13 @@ describe("rankingService", function(){
             assert(_.isDate(result.start));
             assert(_.isDate(result.end));
             assert.equal(result.start.getFullYear(), 2013);
-            assert.equal(result.start.getMonth(), 7);
+            assert.equal(result.start.getMonth(), 6);
             assert.equal(result.start.getDate(), 1);
             assert.equal(result.start.getHours(), 0);
-            //check end date is 31 of June
+            //check end date is 30 of June
             assert.equal(result.end.getFullYear(), 2014);
-            assert.equal(result.end.getMonth(), 6);
-            assert.equal(result.end.getDate(), 31);
+            assert.equal(result.end.getMonth(), 5);
+            assert.equal(result.end.getDate(), 30);
             assert.equal(result.end.getHours(), 23);
             done();
         });
@@ -47,13 +47,13 @@ describe("rankingService", function(){
             assert(_.isDate(result.start));
             assert(_.isDate(result.end));
             assert.equal(result.start.getFullYear(), 2014);
-            assert.equal(result.start.getMonth(), 7);
+            assert.equal(result.start.getMonth(), 6);
             assert.equal(result.start.getDate(), 1);
             assert.equal(result.start.getHours(), 0);
-            //check end date is 31 of June
+            //check end date is 30 of June
             assert.equal(result.end.getFullYear(), 2015);
-            assert.equal(result.end.getMonth(), 6);
-            assert.equal(result.end.getDate(), 31);
+            assert.equal(result.end.getMonth(), 5);
+            assert.equal(result.end.getDate(), 30);
             assert.equal(result.end.getHours(), 23);
             done();
         });
@@ -69,6 +69,7 @@ describe("rankingService", function(){
                     {field: "race.groupLevel.name", "comparator": "=", "value": "Group 1"},
                     {field: "distanceMeters", "comparator": "<", "value": "715"},
                     {field: "distanceMeters", "comparator": ">", "value": "515"},
+                    {field: "race.date", "comparator": ">=", "value": new Date(2011,5,5)},
                     {field: "disqualified", "comparator": "!=", "value": true}
                 ],
                 points: 70
@@ -79,6 +80,7 @@ describe("rankingService", function(){
                 'someField': { '$gte': "55"},
                 'beforeMe': { '$lte': 22},
                 'distanceMeters': { '$lt': '715', '$gt': '515' },
+                'race.date' : { '$gte' :  new Date(2011,5,5)},
                 'disqualified': { '$ne' : true }
             };
 

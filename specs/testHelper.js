@@ -283,28 +283,28 @@ testHelper.setupRankingTestData = function(done){
         "name": "Test ranking system",
         "description": "Test ranking system",
         equalPositionResolution: "splitPoints",
+        commonCriteria: [
+            {field: "race.disqualified", "comparator": "=", "value": false}
+        ],
         pointAllotments: [{
             criteria: [
                 {field: "placing", "comparator": "=", "value": "1"},
                 {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
-                {field: "race.distanceMeters", "comparator": "<", "value": 715},
-                {field: "race.disqualified", "comparator": "=", "value": false}
+                {field: "race.distanceMeters", "comparator": "<", "value": 715}
             ],
             points: 20
         },{
             criteria: [
                 {field: "placing", "comparator": "=", "value": "2"},
                 {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
-                {field: "race.distanceMeters", "comparator": "<", "value": 715},
-                {field: "race.disqualified", "comparator": "=", "value": false}
+                {field: "race.distanceMeters", "comparator": "<", "value": 715}
             ],
             points: 10
         },{
             criteria: [
                 {field: "placing", "comparator": "=", "value": "3"},
                 {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
-                {field: "race.distanceMeters", "comparator": "<", "value": 715},
-                {field: "race.disqualified", "comparator": "=", "value": false}
+                {field: "race.distanceMeters", "comparator": "<", "value": 715}
             ],
             points: 5
         }]

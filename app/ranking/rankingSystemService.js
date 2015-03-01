@@ -208,7 +208,7 @@ rankingSystemService.convertPlaceHolder = function(placeholder){
 };
 
 rankingSystemService.getFinancialYearForDate = function(now){
-    var midYear = moment(now).set('month', 7).set('date', 1).startOf('day');
+    var midYear = moment(now).set('month', 'July').set('date', 1).startOf('day');
     if (midYear.isAfter(now)){
         return { start: midYear.clone().subtract(12, 'months').toDate(), end : midYear.subtract(1, 'days').endOf('day').toDate()};
     } else {
@@ -217,8 +217,8 @@ rankingSystemService.getFinancialYearForDate = function(now){
 };
 
 rankingSystemService.getYearForDate = function(now){
-    var startYear = moment(now).set('month', 1).set('date', 1).startOf('day');
-    var endYear = moment(now).set('month', 12).set('date', 31).endOf('day');
+    var startYear = moment(now).set('month', 'Jan').set('date', 1).startOf('day').toDate();
+    var endYear = moment(now).set('month', 'Dec').set('date', 31).endOf('day').toDate();
     return {start: startYear, end: endYear};
 };
 
