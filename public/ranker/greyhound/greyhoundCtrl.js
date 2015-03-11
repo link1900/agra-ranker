@@ -11,9 +11,9 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             {title: "Name", field:"name", baseLink:"#/greyhound/view/", linkField: "_id", link:true, filter: "uppercase"}
         ];
 
-        $scope.offspringSearchFields = {
-            'parentRef': $routeParams.id
-        };
+        $scope.offspringSearchFields = [
+            {"name":"parentRef", field:"parentRef", value:$routeParams.id, type:"hidden"}
+        ];
 
         $scope.columnInfo = [
             {title: "Name", field:"name", baseLink:"#/greyhound/view/", linkField: "_id", link:true, filter: "uppercase"},

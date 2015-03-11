@@ -131,6 +131,8 @@ angular.module('directives')
                                 }
                             }
                         });
+                    } else if (field.type === "hidden") {
+                        scope.searchParams[field.field] = field.value;
                     }
                 });
             }

@@ -159,18 +159,18 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
         {title: "Race Date", field:"race.date", filter: "date", filterFormat: 'dd MMMM yyyy'}
     ];
 
-    $scope.greyhoundSearchFields = {
-        'greyhoundRef': $routeParams.id
-    };
+    $scope.greyhoundSearchFields = [
+        {"name":"greyhoundRef", field:"greyhoundRef", value:$routeParams.id, type:"hidden"}
+    ];
 
     $scope.racePlacingColumns =[
         {title: "Placing", field:"placing"},
         {title: "Greyhound Name", field:"greyhound.name", baseLink:"#/greyhound/view/", linkField: "greyhoundRef", link:true, filter: "uppercase"}
     ];
 
-    $scope.raceSearchFields = {
-        'raceRef': $routeParams.id
-    };
+    $scope.raceSearchFields = [
+        {"name":"raceRef", field:"raceRef", value:$routeParams.id, type:"hidden"}
+    ];
 
     $scope.removePlacing = function(placingSetIndex, greyhoundIndex){
         var placingToRemove = $scope.placings[placingSetIndex][greyhoundIndex];
