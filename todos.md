@@ -231,8 +231,11 @@
 - (DONE) update sb table to allow for page limit changes
 - (DONE) update sb table to allow for ctrl to customise search options (advanced search)
 - (DONE) sb table - Fixed the no records text to make clear why there are no records also enlarge text
-- sb table - Add text search back to most tables
-- sb table - Remove references to hide search
+- (DONE) sb table - Add text search back to greyhound and race
+- (DONE) sb table - Remove references to hide search
+- (DONE) fix greyhound placings
+- (DONE) fix greyhound offspring
+- (DONE) fix race placings
 - update sb table to allow for custom column expands
 - change greyhound view to make clear the offspring and places
 - change the race view to make clear the placing (BUG: paging and totals)

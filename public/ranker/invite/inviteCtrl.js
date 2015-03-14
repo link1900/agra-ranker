@@ -58,7 +58,7 @@ angular.module('controllers').controller('inviteCtrl', function($scope, $routePa
 
     $scope.inviteSvr = inviteSvr;
     $scope.columnInfo = [
-        {title: "Email", field:"email", baseLink:"#/invite/view/", linkField: "_id", link:true},
+        {title: "Email", field:"email", type:"link", baseLink:"#/invite/view/", linkField: "_id"},
         {title: "Expires", field:"expiry", filter: "fromNow", filterFormat: 'both'},
         {title: "Created", field:"createdAt", filter: "fromNow"}
     ];

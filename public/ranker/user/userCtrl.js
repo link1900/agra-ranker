@@ -208,7 +208,7 @@ angular.module('controllers').controller('userCtrl', function($scope,
         $scope.userService  = userService;
 
         $scope.columnInfo = [
-            {title: "Email", field:"email", baseLink:"#/user/view/", linkField: "_id", link:true},
+            {title: "Email", field:"email", type:"link", baseLink:"#/user/view/", linkField: "_id"},
             {title: "First Name", field:"firstName"},
             {title: "Last Name", field:"lastName"},
             {title: "Status", field:"state"},

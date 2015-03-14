@@ -24,7 +24,7 @@ angular.module('controllers').controller('batchResultCtrl', function($scope, $ro
     $scope.columnInfo = [
         {title: "Record Number", field:"recordNumber"},
         {title: "Record", field:"raw"},
-        {title: "Status", field:"status", baseLink:"#/batchResult/view/", linkField: "_id", link:true}
+        {title: "Status", field:"status", type:"link", baseLink:"#/batchResult/view/", linkField: "_id"}
     ];
 
     $scope.searchFields = {

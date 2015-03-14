@@ -56,7 +56,7 @@ angular.module('controllers').controller('BatchCtrl', function($scope, $routePar
     $scope.batchService = batchService;
 
     $scope.columnInfo = [
-        {title: "Status", field:"status", baseLink:"#/batch/view/", linkField: "_id", link:true},
+        {title: "Status", field:"status", type:"link", baseLink:"#/batch/view/", linkField: "_id"},
         {title: "Batch Type", field:"type"},
         {title: "Created", field:"createdAt", filter: "fromNow"}
     ];

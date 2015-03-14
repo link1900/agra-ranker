@@ -8,7 +8,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         $scope.greyhoundSvr = greyhoundSvr;
 
         $scope.offspringColumnInfo = [
-            {title: "Name", field:"name", baseLink:"#/greyhound/view/", linkField: "_id", link:true, filter: "uppercase"}
+            {title: "Name", field:"name", type:"link", baseLink:"#/greyhound/view/", linkField: "_id", filter: "uppercase"}
         ];
 
         $scope.offspringSearchFields = [
@@ -16,9 +16,9 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         ];
 
         $scope.columnInfo = [
-            {title: "Name", field:"name", baseLink:"#/greyhound/view/", linkField: "_id", link:true, filter: "uppercase"},
-            {title: "Sire", field:"sire.name", baseLink:"#/greyhound/view/", linkField: "sireRef", link:true, filter: "uppercase"},
-            {title: "Dam", field:"dam.name", baseLink:"#/greyhound/view/", linkField: "damRef", link:true, filter: "uppercase"}
+            {title: "Name", field:"name", type:"link", baseLink:"#/greyhound/view/", linkField: "_id", filter: "uppercase"},
+            {title: "Sire", field:"sire.name", type:"link", baseLink:"#/greyhound/view/", linkField: "sireRef", filter: "uppercase"},
+            {title: "Dam", field:"dam.name", type:"link", baseLink:"#/greyhound/view/", linkField: "damRef", filter: "uppercase"}
         ];
 
         $scope.searchInfo = [

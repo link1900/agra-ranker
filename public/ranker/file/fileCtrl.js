@@ -14,7 +14,7 @@ angular.module('controllers').controller('FileCtrl', function($scope, $routePara
     };
 
     $scope.columnInfo = [
-        {title: "File Name", field:"filename", baseLink:"#/file/view/", linkField: "_id", link:true},
+        {title: "File Name", field:"filename", type:"link", baseLink:"#/file/view/", linkField: "_id"},
         {title: "Size", field:"length", filter: "bytes"},
         {title: "Uploaded", field:"uploadDate", filter: "fromNow"}
     ];

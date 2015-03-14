@@ -49,8 +49,8 @@
         <tbody>
         <tr data-ng-repeat="model in models">
             <td data-ng-repeat="column in columnInfo">
-                <div ng-switch data-on="column.link">
-                    <div ng-switch-when="true">
+                <div ng-switch data-on="column.type">
+                    <div ng-switch-when="link">
                         <a data-ng-href="{{column.baseLink}}{{getValueFromModel(model, column.linkField)}}">{{getFieldValue(model,column)}}</a>
                     </div>
                     <div ng-switch-default>{{getFieldValue(model,column)}}</div>

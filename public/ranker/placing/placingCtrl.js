@@ -155,7 +155,7 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
 
     $scope.greyhoundPlacingColumns =[
         {title: "Placing", field:"placing"},
-        {title: "Race", field:"race.name", baseLink:"#/race/view/", linkField: "raceRef", link:true},
+        {title: "Race", field:"race.name", type:"link", baseLink:"#/race/view/", linkField: "raceRef"},
         {title: "Race Date", field:"race.date", filter: "date", filterFormat: 'dd MMMM yyyy'}
     ];
 
@@ -165,7 +165,7 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
 
     $scope.racePlacingColumns =[
         {title: "Placing", field:"placing"},
-        {title: "Greyhound Name", field:"greyhound.name", baseLink:"#/greyhound/view/", linkField: "greyhoundRef", link:true, filter: "uppercase"}
+        {title: "Greyhound Name", field:"greyhound.name", type:"link", baseLink:"#/greyhound/view/", linkField: "greyhoundRef", filter: "uppercase"}
     ];
 
     $scope.raceSearchFields = [

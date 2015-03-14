@@ -226,7 +226,7 @@ angular.module('controllers').controller('RankingSystemCtrl',
         $scope.rankingSystemSvr = rankingSystemSvr;
 
         $scope.columnInfo = [
-            {title: "Name", field:"name", baseLink:"#/rankingSystem/view/", linkField: "_id", link:true}
+            {title: "Name", field:"name", type:"link", baseLink:"#/rankingSystem/view/", linkField: "_id"}
         ];
 
         $scope.create = function(){

@@ -89,7 +89,7 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
         };
 
         $scope.columnInfo = [
-            {title: "Name", field:"name", baseLink:"#/race/view/", linkField: "_id", link:true},
+            {title: "Name", field:"name", type:"link", baseLink:"#/race/view/", linkField: "_id"},
             {title: "Date", field:"date", filter: "date", filterFormat: 'dd MMMM yyyy'},
             {title: "Group Level", field:"groupLevel.name"},
             {title: "Distance (meters)", field:"distanceMeters"}

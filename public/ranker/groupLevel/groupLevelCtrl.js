@@ -20,7 +20,7 @@ angular.module('controllers').controller('GroupLevelCtrl', ['$scope', '$routePar
         $scope.groupLevelService = groupLevelService;
 
         $scope.columnInfo = [
-            {title: "Name", field:"name", baseLink:"#/groupLevel/view/", linkField: "_id", link:true},
+            {title: "Name", field:"name", type:"link", baseLink:"#/groupLevel/view/", linkField: "_id"},
             {title: "Last updated", field:"updatedAt", filter: "fromNow"}
         ];
 
