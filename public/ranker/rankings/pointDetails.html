@@ -1,0 +1,18 @@
+<a ng-click="model.tableShow = !model.tableShow" ng-hide="model.tableShow">{{model.totalPoints}}</a>
+<div ng-show="model.tableShow">
+    <h4>Contributing Races</h4> <a ng-click="model.tableShow = !model.tableShow">(Hide)</a>
+    <table>
+        <thead>
+        <tr>
+            <th>Race</th><th>Placing</th><th>Points</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="placingPoint in model.placingPoints | orderBy:'-points'">
+            <td>{{placingPoint.raceName}}</td><td>{{placingPoint.position}}</td><td>{{placingPoint.points}}</td>
+        </tr>
+        <tr><td></td><td><b>Total points:</b></td><td>{{model.totalPoints}}</td></tr>
+        </tbody>
+    </table>
+
+</div>

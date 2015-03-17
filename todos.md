@@ -237,6 +237,7 @@
 - (DONE) fix greyhound offspring
 - (DONE) fix race placings
 - update sb table to allow for custom column expands
+- put search terms in the url to allow for search linking
 - change greyhound view to make clear the offspring and places
 - change the race view to make clear the placing (BUG: paging and totals)
 - change how ranking queries work so that they are calculated based on parameters of a period

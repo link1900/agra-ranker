@@ -4,7 +4,7 @@ angular.module('controllers').controller('rankingCtrl', function($scope, ranking
     $scope.columnInfo = [
         {title: "Rank", field:"rank"},
         {title: "Greyhound", field:"greyhoundName", type:"link", baseLink:"#/greyhound/view/", linkField: "greyhoundRef", filter: "uppercase"},
-        {title: "Points", field:"totalPoints"}
+        {title: "Points", field:"totalPoints", type: "template", template:"/ranker/rankings/pointDetails.html" }
     ];
     $scope.rankingSystems = [];
     $scope.periods = [];
