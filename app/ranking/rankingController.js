@@ -38,7 +38,7 @@ rankingController.getRankings = function(req, res) {
 
     rankingService.calculateRankings(periodStart, periodEnd, rankingSystemRef).then(function(rankingResults){
         res.set('total', rankingResults.length);
-        res.jsonp(200, rankingResults.slice(limit*offset, limit));
+        res.jsonp(200, rankingResults.slice(limit*offset, (limit*offset)+limit));
     },function(error){
         helper.errorResponse(res, error);
     });
