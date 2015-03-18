@@ -87,6 +87,7 @@ angular.module('directives')
                         scope.postProcess(resultModels);
                     }
                     scope.totalItems = headerHelperService.totalItemsFromHeader(headers());
+                    localStorageService.set(scope.getStorageKeyTotalItems(), scope.totalItems);
                 });
             };
 
@@ -110,9 +111,18 @@ angular.module('directives')
                 }
             };
 
+            scope.getStorageKeySearchParam = function(){
+                return 'sbTable.'+scope.tableName + ".searchParams";
+            };
+
+            scope.getStorageKeyTotalItems = function(){
+                return 'sbTable.'+scope.tableName + ".totalItems";
+            };
+
             scope.setDefaultSearchParams = function(){
-                if (scope.tableName != null && localStorageService.get('sbTable.'+scope.tableName)!= null){
-                    scope.searchParams = localStorageService.get('sbTable.'+scope.tableName);
+                if (scope.tableName != null && localStorageService.get(scope.getStorageKeySearchParam())!= null){
+                    scope.searchParams = localStorageService.get(scope.getStorageKeySearchParam());
+                    scope.totalItems = localStorageService.get(scope.getStorageKeyTotalItems());
                     scope.setSearchFieldsFromSearchParams();
                 } else { //load the defaults from the
                     scope.searchParams = {
@@ -183,7 +193,7 @@ angular.module('directives')
                 scope.$watch('searchParams', function(newVal, oldVal){
                     if (oldVal){
                         if (scope.tableName){
-                            localStorageService.set('sbTable.'+scope.tableName, newVal);
+                            localStorageService.set(scope.getStorageKeySearchParam(), newVal);
                         }
                         scope.loadModels();
                     }
