@@ -39,7 +39,7 @@ angular.module('controllers').controller('rankingCtrl', function($scope, ranking
     $scope.getYearDates = function(year){
         var startYear = moment().set('year',year).set('month', 'Jan').set('date', 1).startOf('day');
         var endYear = moment().set('year',year).set('month', 'Dec').set('date', 31).endOf('day');
-        return {start: startYear.toDate(), end: endYear.toDate()};
+        return {start: startYear.toString(), end: endYear.toString()};
     };
 
     $scope.loadRankingSystems = function(){

@@ -1,5 +1,5 @@
 angular.module('directives')
-    .directive('sbTable', function(headerHelperService, $filter, rankerEventBus) {
+    .directive('sbTable', function(headerHelperService, $filter, localStorageService, $q) {
         function linkBody(scope, element, attrs) {
 
             scope.noRecords = true;
@@ -10,26 +10,6 @@ angular.module('directives')
                 {"name":"25","value":25},
                 {"name":"50","value":50},
                 {"name":"100","value":100}];
-
-            scope.searchParams = {
-                page : 1,
-                per_page : 10,
-                sort_field: 'name',
-                sort_direction: 'asc'
-            };
-
-
-            if (scope.sortField){
-                scope.searchParams.sort_field = scope.sortField;
-            }
-
-            if (scope.sortDirection){
-                scope.searchParams.sort_direction = scope.sortDirection;
-            }
-
-            if (scope.perPage){
-                scope.searchParams.per_page = parseInt(scope.perPage);
-            }
 
             if (scope.messageEmpty){
                 scope.messageEmpty = "No records";
@@ -110,39 +90,116 @@ angular.module('directives')
                 });
             };
 
-            scope.$watch('searchParams', function(oldVal, newVal){
-                if (newVal){
-                    scope.loadModels();
-                }
-            }, true);
+            scope.loadSearchFieldsOptions = function(){
+                if (scope.searchFields != null){
+                    var optionProms = _.chain(scope.searchFields).filter(function(field){
+                        return field.type === "select" || field.type === "selectRangeSingle";
+                    }).map(function(field){
+                        if (field.loadOptions != null){
+                            return field.loadOptions().then(function(options){
+                                field.options = options;
+                            })
+                        } else {
+                            return $q.when();
+                        }
+                    });
 
-            if (scope.searchFields != null){
-                _.forEach(scope.searchFields, function(field){
-                    if (field.loadOptions != null){
-                        field.loadOptions().then(function(results){
-                            field.options = results;
-                            if (field != null && field.options != null && field.options.length != null && field.options.length > 0){
-                                if (field.type === "selectRangeSingle"){
-                                    scope.selected[field.name] = field.options[0]._id;
-                                    scope.searchParams[field.fieldStart] = field.options[0]._id[field.selectedStart];
-                                    scope.searchParams[field.fieldEnd] = field.options[0]._id[field.selectedEnd];
-                                } else {
-                                    scope.searchParams[field.field] = field.options[0]._id;
+                    return $q.all(optionProms);
+                } else {
+                    return $q.when([]);
+                }
+            };
+
+            scope.setDefaultSearchParams = function(){
+                if (scope.tableName != null && localStorageService.get('sbTable.'+scope.tableName)!= null){
+                    scope.searchParams = localStorageService.get('sbTable.'+scope.tableName);
+                    scope.setSearchFieldsFromSearchParams();
+                } else { //load the defaults from the
+                    scope.searchParams = {
+                        page : 1,
+                        per_page : 10,
+                        sort_field: 'name',
+                        sort_direction: 'asc'
+                    };
+
+                    if (scope.sortField){
+                        scope.searchParams.sort_field = scope.sortField;
+                    }
+
+                    if (scope.sortDirection){
+                        scope.searchParams.sort_direction = scope.sortDirection;
+                    }
+
+                    if (scope.perPage){
+                        scope.searchParams.per_page = parseInt(scope.perPage);
+                    }
+                    scope.setSearchFieldsDefaults();
+                }
+            };
+
+            scope.setSearchFieldsDefaults = function(){
+                if (scope.searchFields != null){
+                    _.forEach(scope.searchFields, function(field){
+                        if (field.type === "select"){
+                            if (field.options.length > 0){
+                                scope.searchParams[field.field] = field.options[0]._id;
+                            }
+                        }
+                        if (field.type === "selectRangeSingle"){
+                            if (field.options.length > 0){
+                                scope.selected[field.name] = field.options[0]._id;
+                                scope.searchParams[field.fieldStart] = field.options[0]._id[field.selectedStart];
+                                scope.searchParams[field.fieldEnd] = field.options[0]._id[field.selectedEnd];
+                            }
+                        }
+                        if (field.type === "text"){
+                            scope.searchParams[field.field] = "";
+                        }
+                        if (field.type === "hidden"){
+                            scope.searchParams[field.field] = field.value;
+                        }
+                    });
+                }
+            };
+
+            scope.setSearchFieldsFromSearchParams = function(){
+                if (scope.searchFields != null){
+                    _.forEach(scope.searchFields, function(field){
+                        if (field.type === "selectRangeSingle"){
+                            if (field.options.length > 0){
+                                var selectedIndex = _.findIndex(field.options, function(item){
+                                    return _.isEqual(item._id[field.selectedStart],scope.searchParams[field.fieldStart]);
+                                });
+                                if (selectedIndex > -1){
+                                    scope.selected[field.name] = field.options[selectedIndex]._id;
                                 }
                             }
-                        });
-                    } else if (field.type === "hidden") {
-                        scope.searchParams[field.field] = field.value;
+                        }
+                    });
+                }
+            };
+
+            scope.addWatch = function(){
+                scope.$watch('searchParams', function(newVal, oldVal){
+                    if (oldVal){
+                        if (scope.tableName){
+                            localStorageService.set('sbTable.'+scope.tableName, newVal);
+                        }
+                        scope.loadModels();
                     }
-                });
-            }
+                }, true);
+            };
+
+            scope.loadSearchFieldsOptions().then(function(){
+                scope.setDefaultSearchParams();
+                scope.addWatch();
+            });
 
         }
 
         return {
             restrict: 'A',
             scope: {
-                tableTitle: '@',
                 perPage : '@',
                 sortField: '@',
                 sortDirection: '@',
@@ -151,7 +208,8 @@ angular.module('directives')
                 modelService: '=',
                 columnInfo: '=',
                 searchFields: '=',
-                postProcess: '='
+                postProcess: '=',
+                tableName: '@'
             },
             link: linkBody,
             templateUrl: '/ranker/directives/sbTableTemplate.html'
