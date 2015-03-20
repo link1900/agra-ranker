@@ -79,6 +79,10 @@ angular.module('directives')
 
             };
 
+            scope.resetSearch = function(){
+                scope.setSearchFieldsDefaults();
+            };
+
             scope.loadModels = function() {
                 scope.modelService.query(scope.searchParams, function(resultModels, headers) {
                     scope.models = resultModels;
@@ -124,30 +128,30 @@ angular.module('directives')
                     scope.searchParams = localStorageService.get(scope.getStorageKeySearchParam());
                     scope.totalItems = localStorageService.get(scope.getStorageKeyTotalItems());
                     scope.setSearchFieldsFromSearchParams();
-                } else { //load the defaults from the
-                    scope.searchParams = {
-                        page : 1,
-                        per_page : 10,
-                        sort_field: 'name',
-                        sort_direction: 'asc'
-                    };
-
-                    if (scope.sortField){
-                        scope.searchParams.sort_field = scope.sortField;
-                    }
-
-                    if (scope.sortDirection){
-                        scope.searchParams.sort_direction = scope.sortDirection;
-                    }
-
-                    if (scope.perPage){
-                        scope.searchParams.per_page = parseInt(scope.perPage);
-                    }
+                } else { //load the defaults from directive parameters
                     scope.setSearchFieldsDefaults();
                 }
             };
 
             scope.setSearchFieldsDefaults = function(){
+                scope.searchParams = {
+                    page : 1,
+                    per_page : 10,
+                    sort_field: 'name',
+                    sort_direction: 'asc'
+                };
+
+                if (scope.sortField){
+                    scope.searchParams.sort_field = scope.sortField;
+                }
+
+                if (scope.sortDirection){
+                    scope.searchParams.sort_direction = scope.sortDirection;
+                }
+
+                if (scope.perPage){
+                    scope.searchParams.per_page = parseInt(scope.perPage);
+                }
                 if (scope.searchFields != null){
                     _.forEach(scope.searchFields, function(field){
                         if (field.type === "select"){

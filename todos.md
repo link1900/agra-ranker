@@ -236,7 +236,13 @@
 - (DONE) fix greyhound placings
 - (DONE) fix greyhound offspring
 - (DONE) fix race placings
-- update sb table to allow for custom column expands
+- (DONE) update sb table to allow for custom column expands
+- (DONE) have rankings paging work
+- (DONE) fix an issue where page is not saved in search save
+- allow user to reset searches settings (delete storage keys and set to defaults)
+- allow user to save searches
+- have different race search options, ie boolean to search for all races with missing placings?
+- Have sb table show an animation when the data is loading
 - put search terms in the url to allow for search linking
 - change greyhound view to make clear the offspring and places
 - change the race view to make clear the placing (BUG: paging and totals)
