@@ -91,7 +91,9 @@ angular.module('directives')
                         scope.postProcess(resultModels);
                     }
                     scope.totalItems = headerHelperService.totalItemsFromHeader(headers());
-                    localStorageService.set(scope.getStorageKeyTotalItems(), scope.totalItems);
+                    if (scope.tableName != null){
+                        localStorageService.set(scope.getStorageKeyTotalItems(), scope.totalItems);
+                    }
                 });
             };
 
