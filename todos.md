@@ -239,13 +239,10 @@
 - (DONE) update sb table to allow for custom column expands
 - (DONE) have rankings paging work
 - (DONE) fix an issue where page is not saved in search save
-- allow user to reset searches settings (delete storage keys and set to defaults)
-- allow user to save searches
+- (DONE) allow user to reset searches settings (delete storage keys and set to defaults)
 - have different race search options, ie boolean to search for all races with missing placings?
-- Have sb table show an animation when the data is loading
-- put search terms in the url to allow for search linking
-- change greyhound view to make clear the offspring and places
-- change the race view to make clear the placing (BUG: paging and totals)
+- (DONE) change greyhound view to make clear the offspring and places
+- (DONE) change the race view to make clear the placing (BUG: paging and totals)
 - change how ranking queries work so that they are calculated based on parameters of a period
 - cache ranking queries
 - Fix greyhound casing
@@ -318,6 +315,8 @@
 - Add activity stream admin page
 - Add roles [user, admin] (user allows editing, admin allows access to admin api)
 - add scheduling to batch system
+- allow user to save searches
+- put search terms in the url to allow for search linking
 - Add created by which is a flyweight to user?
 - new batch job to automatic backup database to s3
 - Add user setting timezone and make sure timezones works

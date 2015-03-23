@@ -38,13 +38,8 @@ expressService.buildQueryFromRequest = function(req, fieldDefinitions){
  * Takes a list of fields and converts it to mongo query
  */
 expressService.buildQuery = function(fieldDefinitions, valuesMap){
-    var specialChar = /[~=]|(\|\|)/;
     var queryFields = fieldDefinitions.map(function(fieldDefinition){
-        if (fieldDefinition.match(specialChar)){
-            return expressService.buildQueryForField(fieldDefinition, valuesMap);
-        } else {
-            return null;
-        }
+        return expressService.buildQueryForField(fieldDefinition, valuesMap);
     });
     return queryFields.reduce(function(previousValue, currentValue){
         if (currentValue != null){
@@ -57,7 +52,19 @@ expressService.buildQuery = function(fieldDefinitions, valuesMap){
 
 expressService.buildQueryForField = function(fieldDefinition, values){
     if (fieldDefinition.match(/(\|\|)/)){
-        return expressService.buildQueryForOr(fieldDefinition,values);
+        return expressService.buildQueryForOr(fieldDefinition, values);
+    }
+    if (fieldDefinition.match(/<=/)){
+        return expressService.buildQueryForLessThenOrEqual(fieldDefinition, values);
+    }
+    if (fieldDefinition.match(/>=/)){
+        return expressService.buildQueryForGreaterThenOrEqual(fieldDefinition, values);
+    }
+    if (fieldDefinition.match(/>/)){
+        return expressService.buildQueryForGreaterThen(fieldDefinition, values);
+    }
+    if (fieldDefinition.match(/</)){
+        return expressService.buildQueryForLessThen(fieldDefinition, values);
     }
     if (fieldDefinition.match("=")){
         return expressService.buildQueryForEqual(fieldDefinition, values);
@@ -65,6 +72,7 @@ expressService.buildQueryForField = function(fieldDefinition, values){
     if (fieldDefinition.match("~")){
         return expressService.buildQueryForLike(fieldDefinition, values);
     }
+
     return null;
 };
 
@@ -73,6 +81,50 @@ expressService.buildQueryForEqual = function(fieldDefinition, values){
     var definition = fieldDefinition.split("=");
     if (values[definition[1]] != null){
         query[definition[0]] = values[definition[1]];
+        return query;
+    } else {
+        return null;
+    }
+};
+
+expressService.buildQueryForGreaterThen = function(fieldDefinition, values){
+    var query = {};
+    var definition = fieldDefinition.split(">");
+    if (values[definition[1]] != null){
+        query[definition[0]] = {"$gt":  values[definition[1]]};
+        return query;
+    } else {
+        return null;
+    }
+};
+
+expressService.buildQueryForLessThen = function(fieldDefinition, values){
+    var query = {};
+    var definition = fieldDefinition.split("<");
+    if (values[definition[1]] != null){
+        query[definition[0]] = {"$lt":  values[definition[1]]};
+        return query;
+    } else {
+        return null;
+    }
+};
+
+expressService.buildQueryForGreaterThenOrEqual = function(fieldDefinition, values){
+    var query = {};
+    var definition = fieldDefinition.split(">=");
+    if (values[definition[1]] != null){
+        query[definition[0]] = {"$gte":  values[definition[1]]};
+        return query;
+    } else {
+        return null;
+    }
+};
+
+expressService.buildQueryForLessThenOrEqual = function(fieldDefinition, values){
+    var query = {};
+    var definition = fieldDefinition.split("<=");
+    if (values[definition[1]] != null){
+        query[definition[0]] = {"$lte":  values[definition[1]]};
         return query;
     } else {
         return null;
@@ -155,7 +207,6 @@ expressService.errorResponse = function(res, error){
 expressService.standardSearch = function(req, res, service, fields){
     var query = expressService.buildQueryFromRequest(req, fields);
     var searchParams = expressService.parseSearchParams(req);
-
     return expressService.setTotalHeader(res, service, query).then(function(){
         return expressService.promToRes(service.find(query, searchParams.limit, searchParams.offset, searchParams.sort), res);
     });

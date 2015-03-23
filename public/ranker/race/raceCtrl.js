@@ -96,7 +96,8 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
         ];
 
         $scope.searchInfo = [
-            {"name":"Name", field:"like", type:"text"}
+            {"name":"Name", field:"like", type:"text"},
+            {"name":"Date Range", type:"dateRange"}
         ];
 
         $scope.create = function(){

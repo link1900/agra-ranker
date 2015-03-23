@@ -11,7 +11,7 @@ var expressService = require('../expressService');
 expressService.addStandardMethods(raceController, raceService);
 
 raceController.find = function(req, res){
-    expressService.standardSearch(req, res, raceService, ['name=name','name~like']);
+    expressService.standardSearch(req, res, raceService, ['name=name','name~like', 'date>=startDate', 'date<=endDate']);
 };
 
 raceController.getDistinctForDistance = function(req, res){
