@@ -1,0 +1,42 @@
+<div id="sbDateRange" class="row">
+    <button class="btn btn-default" ng-class="{active:showDateRangeDetails}" ng-click="showDateRangeDetails=!showDateRangeDetails">
+        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+        <span>{{sbModel.startDate | date:'MMMM yyyy'}} - {{sbModel.endDate | date:'MMMM yyyy'}}</span> <b class="caret"></b>
+    </button>
+</div>
+<div ng-show="showDateRangeDetails">
+    <div class="row">
+        <div id="dateRangeSelectionSection" class="col-md-3">
+            <label for="dateRangeStart">From: </label>
+            <input id="dateRangeStart" type="date" ng-model="sbModel.startDate" />
+            <label for="dateRangeEnd">To: </label>
+            <input id="dateRangeEnd" type="date" ng-model="sbModel.endDate" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <button type="button" class="btn btn-default btn-xs" ng-click="setToThisYear()">This year</button>
+            <button type="button" class="btn btn-default btn-xs" ng-click="setToLastYear()">Last year</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">More years</button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="yearOption in yearOptions">
+                        <a ng-click="setYear(yearOption.value)">{{yearOption.name}}</a>
+                    </li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-default btn-xs" ng-click="setToThisRankingYear()">This ranking year</button>
+            <button type="button" class="btn btn-default btn-xs" ng-click="setToLastRankingYear()">Last ranking year</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">More ranking years</button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="rankingYearOption in rankingYearOptions">
+                        <a ng-click="setRankerYear(rankingYearOption.value)">{{rankingYearOption.name}}</a>
+                    </li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-default btn-xs" ng-click="setToThisMonth()">This month</button>
+            <button type="button" class="btn btn-default btn-xs" ng-click="setToLastMonth()">Last month</button>
+        </div>
+    </div>
+</div>
