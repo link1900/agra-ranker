@@ -5,6 +5,7 @@ angular.module('directives')
             scope.noRecords = true;
             scope.showSearch = true;
             scope.selected = {};
+            scope.searchParams = {};
             scope.perPageOptions = [{"name":"10","value":10},
                 {"name":"15","value":15},
                 {"name":"25","value":25},
@@ -39,7 +40,6 @@ angular.module('directives')
                     end = end > total ? total : end;
                     return start + "-" + end;
                 }
-
             };
 
             scope.getValueFromModel = function(model, field){
@@ -136,12 +136,10 @@ angular.module('directives')
             };
 
             scope.setSearchFieldsDefaults = function(){
-                scope.searchParams = {
-                    page : 1,
-                    per_page : 10,
-                    sort_field: 'name',
-                    sort_direction: 'asc'
-                };
+                scope.searchParams.page = 1;
+                scope.searchParams.per_page = 10;
+                scope.searchParams.sort_field = 'name';
+                scope.searchParams.sort_direction = 'asc';
 
                 if (scope.sortField){
                     scope.searchParams.sort_field = scope.sortField;
