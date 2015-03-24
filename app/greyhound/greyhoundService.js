@@ -48,7 +48,7 @@ greyhoundService.preProcessGreyhound = function(greyhound){
         return q.reject("greyhound requires a body");
     } else {
         if (greyhound.name != null){
-            greyhound.name = greyhound.name.toLowerCase().trim();
+            greyhound.name = greyhound.name.toUpperCase().trim();
         }
 
         return q(greyhound);
@@ -154,13 +154,13 @@ greyhoundService.rawCsvArrayToGreyhound = function(rawRow){
     };
 
     if (greyhound.name){
-        greyhound.name = greyhound.name.toLowerCase().trim();
+        greyhound.name = greyhound.name.toUpperCase().trim();
     }
     if (greyhound.sire.name){
-        greyhound.sire.name = greyhound.sire.name.toLowerCase().trim();
+        greyhound.sire.name = greyhound.sire.name.toUpperCase().trim();
     }
     if (greyhound.dam.name){
-        greyhound.dam.name = greyhound.dam.name.toLowerCase().trim();
+        greyhound.dam.name = greyhound.dam.name.toUpperCase().trim();
     }
 
     //check fields

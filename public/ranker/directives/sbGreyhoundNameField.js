@@ -18,7 +18,7 @@ angular.module('directives')
                 scope.searchParamsGreyhoundField.like = val;
                 return greyhoundSvr.query(scope.searchParamsGreyhoundField).$promise.then(function(result){
                     return _.map(result, function(r){
-                        return r.name.toUpperCase();
+                        return r.name;
                     });
                 });
             };

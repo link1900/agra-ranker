@@ -85,7 +85,7 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
                     greyhoundSvr.get({
                         greyhoundId: placingDisplay.greyhoundRef
                     }, function(model) {
-                        placingDisplay.name = model.name.toUpperCase();
+                        placingDisplay.name = model.name;
                     }, function(){
                         $scope.placingAlerts = [
                             { type: 'danger', msg: "Failed load using the id " + placingDisplay.greyhoundRef }
@@ -165,7 +165,7 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
 
     $scope.racePlacingColumns =[
         {title: "Placing", field:"placing"},
-        {title: "Greyhound Name", field:"greyhound.name", type:"link", baseLink:"#/greyhound/view/", linkField: "greyhoundRef", filter: "uppercase"}
+        {title: "Greyhound Name", field:"greyhound.name", type:"link", baseLink:"#/greyhound/view/", linkField: "greyhoundRef"}
     ];
 
     $scope.raceSearchFields = [

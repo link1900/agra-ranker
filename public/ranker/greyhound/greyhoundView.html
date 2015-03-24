@@ -1,17 +1,17 @@
 <div id="greyhoundDetail" data-ng-controller="GreyhoundCtrl" data-ng-init="findOne()">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Greyhound - {{greyhound.name | uppercase}}</h3>
+            <h3 class="panel-title">Greyhound - {{greyhound.name}}</h3>
         </div>
         <div class="panel-body">
             <div data-ng-show="greyhound.name">
                 <dl class="dl-horizontal">
                     <dt>Name</dt>
-                    <dd>{{greyhound.name | uppercase}}</dd>
+                    <dd>{{greyhound.name}}</dd>
                     <dt ng-show="greyhound.sire.name">Sire</dt>
-                    <dd ng-show="greyhound.sire.name"><a data-ng-href="#/greyhound/view/{{greyhound.sire._id}}">{{greyhound.sire.name | uppercase}}</a></dd>
+                    <dd ng-show="greyhound.sire.name"><a data-ng-href="#/greyhound/view/{{greyhound.sire._id}}">{{greyhound.sire.name}}</a></dd>
                     <dt ng-show="greyhound.dam.name">Dam</dt>
-                    <dd ng-show="greyhound.dam.name"><a data-ng-href="#/greyhound/view/{{greyhound.dam._id}}">{{greyhound.dam.name | uppercase}}</a></dd>
+                    <dd ng-show="greyhound.dam.name"><a data-ng-href="#/greyhound/view/{{greyhound.dam._id}}">{{greyhound.dam.name}}</a></dd>
                     <dt>Created</dt>
                     <dd>{{greyhound.createdAt | fromNow}}</dd>
                     <dt>Last updated</dt>

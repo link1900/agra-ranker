@@ -65,7 +65,7 @@ angular.module('controllers').controller('GroupLevelCtrl', ['$scope', '$routePar
             $scope.groupLevel.$delete(function(data){
                     delete $scope.batch;
                     $scope.alerts = [
-                        { type: 'success', msg: "Deleted " + data.name.toUpperCase() }
+                        { type: 'success', msg: "Deleted " + data.name }
                     ];
                     $location.path('/groupLevel');
                 },

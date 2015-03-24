@@ -3,7 +3,7 @@ angular.module('controllers').controller('rankingCtrl', function($scope, ranking
     $scope.selected = {};
     $scope.columnInfo = [
         {title: "Rank", field:"rank"},
-        {title: "Greyhound", field:"greyhoundName", type:"link", baseLink:"#/greyhound/view/", linkField: "greyhoundRef", filter: "uppercase"},
+        {title: "Greyhound", field:"greyhoundName", type:"link", baseLink:"#/greyhound/view/", linkField: "greyhoundRef"},
         {title: "Points", field:"totalPoints", type: "template", template:"/ranker/rankings/pointDetails.html" }
     ];
     $scope.rankingSystems = [];

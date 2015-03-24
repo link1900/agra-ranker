@@ -8,7 +8,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         $scope.greyhoundSvr = greyhoundSvr;
 
         $scope.offspringColumnInfo = [
-            {title: "Name", field:"name", type:"link", baseLink:"#/greyhound/view/", linkField: "_id", filter: "uppercase"}
+            {title: "Name", field:"name", type:"link", baseLink:"#/greyhound/view/", linkField: "_id"}
         ];
 
         $scope.offspringSearchFields = [
@@ -16,9 +16,9 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         ];
 
         $scope.columnInfo = [
-            {title: "Name", field:"name", type:"link", baseLink:"#/greyhound/view/", linkField: "_id", filter: "uppercase"},
-            {title: "Sire", field:"sire.name", type:"link", baseLink:"#/greyhound/view/", linkField: "sireRef", filter: "uppercase"},
-            {title: "Dam", field:"dam.name", type:"link", baseLink:"#/greyhound/view/", linkField: "damRef", filter: "uppercase"}
+            {title: "Name", field:"name", type:"link", baseLink:"#/greyhound/view/", linkField: "_id"},
+            {title: "Sire", field:"sire.name", type:"link", baseLink:"#/greyhound/view/", linkField: "sireRef"},
+            {title: "Dam", field:"dam.name", type:"link", baseLink:"#/greyhound/view/", linkField: "damRef"}
         ];
 
         $scope.searchInfo = [
@@ -99,7 +99,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         $scope.save = function(){
             $scope.greyhound.$update(function(data){
                     $scope.alerts = [
-                        { type: 'success', msg: "Updated " + data.name.toUpperCase() }
+                        { type: 'success', msg: "Updated " + data.name}
                     ];
                     $scope.loadGreyhound(data);
                 },
@@ -114,7 +114,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             $scope.greyhound.$delete(function(data){
                     delete $scope.greyhound;
                     $scope.alerts = [
-                        { type: 'success', msg: "Deleted " + data.name.toUpperCase() }
+                        { type: 'success', msg: "Deleted " + data.name }
                     ];
                     $location.path('/greyhound');
                 },
