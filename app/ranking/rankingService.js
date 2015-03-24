@@ -23,7 +23,6 @@ rankingService.calculateRankings = function(periodStart, periodEnd, rankingSyste
         rankingSystem = rankingSystem.toObject();
         rankingSystem = rankingService.addPeriodCriteria(periodStart, periodEnd, rankingSystem);
         rankingSystem = rankingService.insertCommonCriteria(rankingSystem);
-        console.log(JSON.stringify(rankingSystem, null, 2));
         return rankingService.convertPointAllotmentsToPlacingsPoints(rankingSystem.pointAllotments)
             .then(function(pointPlacings){
                 var rankings = rankingService.sumPlacingsIntoRankings(pointPlacings, true);
