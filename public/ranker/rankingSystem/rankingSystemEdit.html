@@ -119,7 +119,7 @@
                             </div>
                             <div ng-switch-when="Date">
                                 <label class="sr-only" for="dateValueFieldCommon"></label>
-                                <input id="dateValueFieldCommon" class="form-control" type="text" ng-model="criteria.value" datepicker-popup="dd MMMM yyyy" data-datepicker-options="datePickerOptions" data-is-open="opened" ng-required="true" />
+                                <input id="dateValueFieldCommon" class="form-control" type="text" ng-model="criteria.value" bs-datepicker data-date-format="dd MMM yyyy" data-container="body" data-autoclose="true" ng-required="true" ng-required="true" />
                             </div>
                             <div ng-switch-when="Boolean">
                                 <label class="sr-only" for="booleanValueFieldCommon"></label>
@@ -241,7 +241,7 @@
                                         </div>
                                         <div ng-switch-when="Date">
                                             <label class="sr-only" for="dateValueField"></label>
-                                            <input id="dateValueField" class="form-control" type="text" ng-model="criteria.value" datepicker-popup="dd MMMM yyyy" data-datepicker-options="datePickerOptions" data-is-open="opened" ng-required="true" />
+                                            <input id="dateValueField" class="form-control" type="text" ng-model="criteria.value" bs-datepicker data-date-format="dd MMM yyyy" data-container="body" data-autoclose="true" ng-required="true" />
                                         </div>
                                         <div ng-switch-when="Boolean">
                                             <label class="sr-only" for="booleanValueField"></label>

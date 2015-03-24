@@ -197,17 +197,6 @@ angular.module('controllers').controller('RankingSystemCtrl',
             {"name": "Current Financial Year End", "value": "currentFinancialYearEnd"}
         ];
 
-        $scope.datePickerOptions = {
-            'show-weeks': false
-        };
-
-        $scope.openCalendar = function($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-
-            $scope.opened = true;
-        };
-
         /**
          * Loads default form fields
          */

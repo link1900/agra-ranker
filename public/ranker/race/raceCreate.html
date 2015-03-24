@@ -25,10 +25,7 @@
                     <div class="col-md-3">
                         <label class="control-label" for="raceDateField">Date</label>
                         <div class="input-group">
-                            <input id="raceDateField" class="form-control" type="text" ng-model="race.date" datepicker-popup="dd MMMM yyyy" data-datepicker-options="dateOptions" data-is-open="opened"  ng-required="true" />
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
+                            <input id="raceDateField" class="form-control" type="text" ng-model="race.date" bs-datepicker data-date-format="dd MMM yyyy" data-container="body" data-autoclose="true" ng-required="true" />
                         </div>
                     </div>
                 </div>

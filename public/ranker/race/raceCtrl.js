@@ -77,17 +77,6 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
 
         $scope.raceSvr = raceSvr;
 
-        $scope.dateOptions = {
-            'show-weeks': false
-        };
-
-        $scope.open = function($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-
-            $scope.opened = true;
-        };
-
         $scope.columnInfo = [
             {title: "Name", field:"name", type:"link", baseLink:"#/race/view/", linkField: "_id"},
             {title: "Date", field:"date", filter: "date", filterFormat: 'dd MMMM yyyy'},
