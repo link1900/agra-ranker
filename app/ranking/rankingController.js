@@ -30,10 +30,14 @@ rankingController.getRankings = function(req, res) {
 
     if (periodStart != null){
         periodStart = moment(periodStart).toDate();
+    } else {
+        periodStart = moment().toDate();
     }
 
     if (periodEnd != null){
         periodEnd = moment(periodEnd).toDate();
+    } else {
+        periodStart = moment().subtract(100, 'years').toDate();
     }
 
     rankingService.calculateRankings(periodStart, periodEnd, rankingSystemRef).then(function(rankingResults){

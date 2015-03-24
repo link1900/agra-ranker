@@ -17,8 +17,6 @@ var baseService = require('../baseService');
 baseService.addStandardServiceMethods(rankingService, Ranking);
 
 rankingService.calculateRankings = function(periodStart, periodEnd, rankingSystemRef){
-    periodStart = rankingService.defaultPeriodStart(periodStart);
-    periodEnd = rankingService.defaultPeriodEnd(periodEnd);
     return rankingService.getRankingSystem(rankingSystemRef).then(function(rankingSystem){
         rankingSystem = rankingSystem.toObject();
         rankingSystem = rankingService.addPeriodCriteria(periodStart, periodEnd, rankingSystem);
@@ -35,25 +33,13 @@ rankingService.calculateRankings = function(periodStart, periodEnd, rankingSyste
     });
 };
 
-rankingService.defaultPeriodStart = function(periodStart){
-    if (periodStart != null && _.isDate(periodStart)){
-        return periodStart;
-    } else {
-        return rankingSystemService.getYearForDate(new Date()).start;
-    }
-};
-
-rankingService.defaultPeriodEnd = function(periodEnd){
-    if (periodEnd != null && _.isDate(periodEnd)){
-        return periodEnd;
-    } else {
-        return rankingSystemService.getYearForDate(new Date()).end;
-    }
-};
-
 rankingService.addPeriodCriteria = function(periodStart, periodEnd, rankingSystem){
-    rankingSystem.commonCriteria.push({field: "race.date", "comparator": ">=", "value": periodStart, type: "Date"});
-    rankingSystem.commonCriteria.push({field: "race.date", "comparator": "<=", "value": periodEnd, type: "Date"});
+    if (periodStart != null && _.isDate(periodStart)){
+        rankingSystem.commonCriteria.push({field: "race.date", "comparator": ">=", "value": periodStart, type: "Date"});
+    }
+    if (periodEnd != null && _.isDate(periodEnd)){
+        rankingSystem.commonCriteria.push({field: "race.date", "comparator": "<=", "value": periodEnd, type: "Date"});
+    }
     return rankingSystem;
 };
 
