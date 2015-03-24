@@ -95,14 +95,6 @@ angular.module('directives')
 
             scope.yearOptions = scope.yearList();
             scope.rankingYearOptions = scope.rankingYearList();
-
-            if (scope.sbModel == null || scope.sbModel.startDate == null){
-                scope.setModelDateFromRange(scope.getYearDates(new Date().getFullYear()));
-            }
-
-            if (typeof scope.sbModel.startDate !== 'date'){
-                scope.setModelDate(scope.sbModel.startDate, scope.sbModel.endDate);
-            }
         }
 
         return {

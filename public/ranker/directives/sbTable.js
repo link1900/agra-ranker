@@ -136,6 +136,7 @@ angular.module('directives')
             };
 
             scope.setSearchFieldsDefaults = function(){
+                scope.searchParams = {};
                 scope.searchParams.page = 1;
                 scope.searchParams.per_page = 10;
                 scope.searchParams.sort_field = 'name';
