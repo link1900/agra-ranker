@@ -473,7 +473,7 @@ describe("Placing", function(){
                         .expect(200)
                         .end(function(err, update2){
                             if (err){ throw err; }
-                            assert.equal(update2.body.name, 'different');
+                            assert.equal(update2.body.name, 'DIFFERENT');
 
                             testHelper.authSession
                                 .get('/placing/'+ placingId)
@@ -483,7 +483,7 @@ describe("Placing", function(){
                                 .end(function(err, res){
                                     if (err){ throw err; }
                                     assert.equal(res.body.greyhound._id, "531d1f74e407586c214773df");
-                                    assert.equal(res.body.greyhound.name, 'different');
+                                    assert.equal(res.body.greyhound.name, 'DIFFERENT');
                                     done();
                                 });
                         });

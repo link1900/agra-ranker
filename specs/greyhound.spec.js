@@ -66,12 +66,12 @@ describe("Greyhound", function(){
                 .end(function(err, res){
                     if (err){ throw err; }
                     res.body.should.have.property("name");
-                    res.body.name.should.equal("createdgrey");
+                    res.body.name.should.equal("CREATEDGREY");
                     done();
                 });
         });
 
-        it("lowercases the name", function(done){
+        it("uppercases the name", function(done){
             var body = {name:"CreatedGrey"};
             testHelper.authSession
                 .post('/greyhound')
@@ -82,7 +82,7 @@ describe("Greyhound", function(){
                 .end(function(err, res){
                     if (err){ throw err; }
                     res.body.should.have.property("name");
-                    res.body.name.should.equal("createdgrey");
+                    res.body.name.should.equal("CREATEDGREY");
                     done();
                 });
         });
@@ -230,7 +230,7 @@ describe("Greyhound", function(){
                 .end(function(err, res){
                     if (err){ throw err; }
                     res.body.should.have.property("name");
-                    res.body.name.should.equal("updategrey");
+                    res.body.name.should.equal("UPDATEGREY");
                     done();
                 });
         });
@@ -246,7 +246,7 @@ describe("Greyhound", function(){
                 .end(function(err, res){
                     if (err){ throw err; }
                     res.body.should.have.property("name");
-                    res.body.name.should.equal("updategrey");
+                    res.body.name.should.equal("UPDATEGREY");
                     done();
                 });
         });
