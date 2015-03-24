@@ -24,7 +24,7 @@
                         <div ng-switch-when="dateRange">
                             <div class="col-md-3">
                                 <label class="control-label">{{searchField.name}}</label>
-                                <div sb-date-range data-sb-model="searchParams"></div>
+                                <div sb-date-range data-sb-model="searchParams" data-default-start-date="searchField.defaultStartDate" data-default-end-date="searchField.defaultEndDate"></div>
                             </div>
                         </div>
                         <div ng-switch-when="text">

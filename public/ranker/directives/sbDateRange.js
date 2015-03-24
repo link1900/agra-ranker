@@ -57,7 +57,15 @@ angular.module('directives')
             };
 
             scope.setModelDate = function(start, end){
+                scope.setModelStartDate(start);
+                scope.setModelEndDate(end);
+            };
+
+            scope.setModelStartDate = function(start){
                 scope.sbModel.startDate = moment(start).toDate();
+            };
+
+            scope.setModelEndDate = function(end){
                 scope.sbModel.endDate = moment(end).toDate();
             };
 
@@ -95,12 +103,23 @@ angular.module('directives')
 
             scope.yearOptions = scope.yearList();
             scope.rankingYearOptions = scope.rankingYearList();
+
+
+            if (scope.defaultStartDate != null){
+                scope.setModelStartDate(scope.defaultStartDate);
+            }
+
+            if (scope.defaultEndDate != null){
+                scope.setModelEndDate(scope.defaultEndDate);
+            }
         }
 
         return {
             restrict: 'A',
             scope: {
                 fromYear:'@',
+                defaultStartDate: '=',
+                defaultEndDate: '=',
                 sbModel:'='
             },
             link: linkBody,

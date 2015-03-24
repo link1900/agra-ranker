@@ -16,7 +16,7 @@ angular.module('controllers').controller('rankingCtrl', function($scope, ranking
     };
 
     $scope.searchInfo = [
-        {"name":"Ranking for period", type:"dateRange"},
+        {"name":"Ranking for period", type:"dateRange", defaultStartDate: moment().startOf('year').toDate(), defaultEndDate: moment().endOf('year').toDate()},
         {"name":"Type", field:"rankingSystemRef", type:"select", options: [], loadOptions: function(){
             return rankingSystemSvr.query($scope.rankingSystemSearch).$promise;
         }}

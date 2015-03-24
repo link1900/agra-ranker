@@ -127,7 +127,7 @@ angular.module('directives')
 
             scope.setDefaultSearchParams = function(){
                 if (scope.tableName != null && localStorageService.get(scope.getStorageKeySearchParam())!= null){
-                    scope.searchParams = localStorageService.get(scope.getStorageKeySearchParam());
+                    scope.searchParams = _.extend(scope.searchParams, localStorageService.get(scope.getStorageKeySearchParam()));
                     scope.totalItems = localStorageService.get(scope.getStorageKeyTotalItems());
                     scope.setSearchFieldsFromSearchParams();
                 } else { //load the defaults from directive parameters
