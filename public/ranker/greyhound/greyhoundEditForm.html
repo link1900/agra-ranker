@@ -20,7 +20,7 @@
                                    ng-disabled="disabled"
                                    reset-search-input="false" style="width: 300px;">
                             <ui-select-match placeholder="Select a sire">
-                                {{$select.selected.name || greyhound.sire.name}}
+                                {{$select.selected.name || greyhound.sireName}}
                             </ui-select-match>
                             <ui-select-choices repeat="greyhound._id as greyhound in searchGreyhounds track by $index"
                                                refresh="refreshGreyhoundSearch($select.search)"
@@ -40,7 +40,7 @@
                                    ng-disabled="disabled"
                                    reset-search-input="false" style="width: 300px;">
                             <ui-select-match placeholder="Select a dam">
-                                {{$select.selected.name || greyhound.dam.name}}
+                                {{$select.selected.name || greyhound.damName}}
                             </ui-select-match>
                             <ui-select-choices repeat="greyhound._id as greyhound in searchGreyhounds track by $index"
                                                refresh="refreshGreyhoundSearch($select.search)"

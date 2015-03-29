@@ -22,6 +22,8 @@ greyhoundService.createGreyhoundFromJson = function(greyhoundJson){
         .then(greyhoundService.validateGreyhoundIsNew)
         .then(greyhoundService.validateSireRef)
         .then(greyhoundService.validateDamRef)
+        .then(greyhoundService.addSireNameFlyweight)
+        .then(greyhoundService.addDamNameFlyweight)
         .then(greyhoundService.create);
 };
 
@@ -32,6 +34,8 @@ greyhoundService.updateGreyhoundFromJson = function(existingModel, updatedGreyho
         .then(greyhoundService.validateIfNameIsUsed)
         .then(greyhoundService.validateSireRef)
         .then(greyhoundService.validateDamRef)
+        .then(greyhoundService.addSireNameFlyweight)
+        .then(greyhoundService.addDamNameFlyweight)
         .then(greyhoundService.update);
 };
 
@@ -229,6 +233,7 @@ greyhoundService.createSireStep = function(batchRecord){
 greyhoundService.setSireStep = function(batchRecord){
     if (batchRecord.createdSire != null && batchRecord.createdGreyhound != null){
         batchRecord.createdGreyhound.sireRef = batchRecord.createdSire._id;
+        batchRecord.createdGreyhound.sireName = batchRecord.createdSire.name;
         return greyhoundService.update(batchRecord.createdGreyhound).then(function(updatedGreyhound){
             batchRecord.createdGreyhound = updatedGreyhound;
             batchRecord.stepResults.push("Updated \"" + updatedGreyhound.name + "\" to have sire \"" + batchRecord.createdSire.name + "\"");
@@ -262,6 +267,7 @@ greyhoundService.createDamStep = function(batchRecord){
 greyhoundService.setDamStep = function(batchRecord){
     if (batchRecord.createdDam != null && batchRecord.createdGreyhound != null){
         batchRecord.createdGreyhound.damRef = batchRecord.createdDam._id;
+        batchRecord.createdGreyhound.damDam = batchRecord.createdDam.name;
         return greyhoundService.update(batchRecord.createdGreyhound).then(function(updatedGreyhound){
             batchRecord.createdGreyhound = updatedGreyhound;
             batchRecord.stepResults.push("Updated \"" + updatedGreyhound.name + "\" to have dam \"" + batchRecord.createdDam.name + "\"");
@@ -298,6 +304,28 @@ greyhoundService.newGreyhound = function(json){
 greyhoundService.saveOrFindGreyhoundImportObject = function(greyhound){
     greyhound = greyhoundService.newGreyhound(greyhound);
     return greyhoundService.findExistingOld(greyhound).then(mongoService.savePromise);
+};
+
+greyhoundService.addSireNameFlyweight = function(greyhound){
+    if (greyhound.sireRef != null){
+        return mongoService.findOneById(Greyhound, greyhound.sireRef).then(function(found){
+            greyhound.sireName = found.name;
+            return greyhound;
+        });
+    } else {
+        return q(greyhound);
+    }
+};
+
+greyhoundService.addDamNameFlyweight = function(greyhound){
+    if (greyhound.damRef != null){
+        return mongoService.findOneById(Greyhound, greyhound.damRef).then(function(found){
+            greyhound.damName = found.name;
+            return greyhound;
+        });
+    } else {
+        return q(greyhound);
+    }
 };
 
 greyhoundService.findExistingOld = function(greyhound) {
@@ -424,6 +452,36 @@ greyhoundService.processGreyhoundCSV = function(batchJob){
     }
     return deferred.promise;
 };
+
+eventService.addListener("greyhound update listener","Updated Greyhound", function(event){
+    if (event != null && event.data != null && event.data.entity != null && event.data.entity._id != null){
+        return greyhoundService.find({ $or: [{sireRef: event.data.entity._id}, {damRef: event.data.entity._id}]}).then(function(results){
+            var proms = results.map(function(greyhoundToUpdate){
+                var updateRequired = false;
+                if (greyhoundToUpdate.sireRef == event.data.entity._id.toString() &&
+                    !_.isEqual(greyhoundToUpdate.sireName, event.data.entity.name)){
+                    greyhoundToUpdate.sireName = event.data.entity.name;
+                    updateRequired = true;
+                }
+                if (greyhoundToUpdate.damRef == event.data.entity._id.toString()
+                    && !_.isEqual(greyhoundToUpdate.damName, event.data.entity.name)){
+                    greyhoundToUpdate.damName = event.data.entity.name;
+                    updateRequired = true;
+                }
+
+                if (updateRequired){
+                    return greyhoundService.update(greyhoundToUpdate);
+                } else {
+                    return q(greyhoundToUpdate);
+                }
+
+            });
+            return q.all(proms);
+        });
+    } else {
+        return q();
+    }
+});
 
 eventService.addListener("greyhound deleted listener","Deleted Greyhound", function(event){
     if (event != null && event.data != null && event.data.entity != null && event.data.entity._id != null){

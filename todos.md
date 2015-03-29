@@ -240,25 +240,23 @@
 - (DONE) have rankings paging work
 - (DONE) fix an issue where page is not saved in search save
 - (DONE) allow user to reset searches settings (delete storage keys and set to defaults)
-- have different race search options, ie boolean to search for all races with missing placings?
 - (DONE) change greyhound view to make clear the offspring and places
 - (DONE) change the race view to make clear the placing (BUG: paging and totals)
-- change how ranking queries work so that they are calculated based on parameters of a period
-- cache ranking queries
-- Fix greyhound casing
-- allow users to select which ranking system they wish to view
-- allow users to select which ranking system type they wish to view
-- update ranking display to show placing points on a card(lazyload?)
-- define agra ranking system and test importing it
-- define sire and dam ranking systems test import it
-- dead heat rule - points from matching positions are summed and divided
+- (DONE) change how ranking queries work so that they are calculated based on parameters of a period
+- (DONE) Fix greyhound casing
+- (DONE) allow users to select which ranking system they wish to view
+- (DONE) allow users to select which ranking system type they wish to view
+- (DONE) update ranking display to show placing points on a card(lazyload?)
 - (DONE) update rankings when race is changed
-- update rankings when ranking system (or its sub entities is changed) is changed
-- update when greyhound is deleted
-- update when race is deleted
-- update when rule set is deleted
-- delete rankings when ranking system is deleted
-
+- (DONE) update rankings when ranking system (or its sub entities is changed) is changed
+- (DONE) update when greyhound is deleted
+- (DONE) update when race is deleted
+- (DONE) update when rule set is deleted
+- (DONE) delete rankings when ranking system is deleted
+- dead heat rule - points from matching positions are summed and divided
+- define agra ranking system and test importing it
+- define sire and dam ranking systems
+- confirm sire and dam ranking system by doing a system compare
 
 ### 6.0.15 Advanced search
 - Upgrade grid to have good search controls for races
@@ -324,6 +322,8 @@
 - global search (on a search page)
 - Add a find parents button
 - fixture data is required
+- cache ranking queries
+- admin specific search options for races, to find problem races
 - batch job to clean up expired invites or (mongo TTL index)
 - Send emails when password is changed
 - On the view point definitions have common criteria sit under the series header on for each definition

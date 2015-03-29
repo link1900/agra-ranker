@@ -8,10 +8,10 @@
                 <dl class="dl-horizontal">
                     <dt>Name</dt>
                     <dd>{{greyhound.name}}</dd>
-                    <dt ng-show="greyhound.sire.name">Sire</dt>
-                    <dd ng-show="greyhound.sire.name"><a data-ng-href="#/greyhound/view/{{greyhound.sire._id}}">{{greyhound.sire.name}}</a></dd>
-                    <dt ng-show="greyhound.dam.name">Dam</dt>
-                    <dd ng-show="greyhound.dam.name"><a data-ng-href="#/greyhound/view/{{greyhound.dam._id}}">{{greyhound.dam.name}}</a></dd>
+                    <dt ng-show="greyhound.sireName">Sire</dt>
+                    <dd ng-show="greyhound.sireName"><a data-ng-href="#/greyhound/view/{{greyhound.sireRef}}">{{greyhound.sireName}}</a></dd>
+                    <dt ng-show="greyhound.damName">Dam</dt>
+                    <dd ng-show="greyhound.damName"><a data-ng-href="#/greyhound/view/{{greyhound.damRef}}">{{greyhound.damName}}</a></dd>
                     <dt>Created</dt>
                     <dd>{{greyhound.createdAt | fromNow}}</dd>
                     <dt>Last updated</dt>

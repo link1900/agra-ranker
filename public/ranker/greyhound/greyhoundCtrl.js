@@ -17,8 +17,8 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
 
         $scope.columnInfo = [
             {title: "Name", field:"name", type:"link", baseLink:"#/greyhound/view/", linkField: "_id"},
-            {title: "Sire", field:"sire.name", type:"link", baseLink:"#/greyhound/view/", linkField: "sireRef"},
-            {title: "Dam", field:"dam.name", type:"link", baseLink:"#/greyhound/view/", linkField: "damRef"}
+            {title: "Sire", field:"sireName", type:"link", baseLink:"#/greyhound/view/", linkField: "sireRef"},
+            {title: "Dam", field:"damName", type:"link", baseLink:"#/greyhound/view/", linkField: "damRef"}
         ];
 
         $scope.searchInfo = [
@@ -37,41 +37,8 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             });
         };
 
-        $scope.postProcessing = function(greyhound){
-            $scope.loadSire(greyhound);
-            $scope.loadDam(greyhound);
-        };
-
-        $scope.postProcessingCollection = function(greyhounds){
-            _.each(greyhounds, function(grey){
-                $scope.loadSire(grey);
-                $scope.loadDam(grey);
-            });
-        };
-
-        $scope.loadSire = function(greyhound){
-            if (greyhound.sireRef){
-                greyhoundSvr.get({
-                    greyhoundId: greyhound.sireRef
-                }, function(foundGreyhound) {
-                    greyhound.sire = foundGreyhound;
-                });
-            }
-        };
-
-        $scope.loadDam = function(greyhound){
-            if (greyhound.damRef){
-                greyhoundSvr.get({
-                    greyhoundId: greyhound.damRef
-                }, function(foundGreyhound) {
-                    greyhound.dam = foundGreyhound;
-                });
-            }
-        };
-
         $scope.loadGreyhound = function(greyhound){
             $scope.greyhound = greyhound;
-            $scope.postProcessing($scope.greyhound);
         };
 
         $scope.create = function(){
@@ -145,14 +112,14 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         $scope.clearSire = function(){
             if ($scope.greyhound != null && $scope.greyhound.sireRef != null){
                 $scope.greyhound.sireRef = null;
-                $scope.greyhound.sire = null;
+                $scope.greyhound.sireName = null;
             }
         };
 
         $scope.clearDam = function(){
             if ($scope.greyhound != null && $scope.greyhound.damRef != null){
                 $scope.greyhound.damRef = null;
-                $scope.greyhound.dam = null;
+                $scope.greyhound.damName = null;
             }
         };
     }
