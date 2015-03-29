@@ -92,9 +92,32 @@ adminService.setupRankingSystemDefaults = function(){
     agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([30, 20, 12, 8, 6, 4, 2, 1], group2Stay));
     agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([20, 14, 10, 6, 4, 3, 2, 1], group3Stay));
 
-    return mongoService.saveAll([
-        new RankingSystem(agraRanker)
-    ]);
+    //sire
+    var sireRanking = {
+        name: "Sire",
+        description: "Sire based rankings",
+        equalPositionResolution: "splitPoints",
+        defaultRanking: false,
+        pointAllotments:[],
+        commonCriteria: [
+            {field: "race.disqualified", "comparator": "=", "value": false, type: "Boolean"}
+        ]
+    };
+
+    //sprint group
+    var group1Sire = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}];
+    var group2Sire = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}];
+    var group3Sire = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}];
+    sireRanking.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([70, 35, 20, 15, 10, 8, 7, 6], group1Sire));
+    sireRanking.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sire));
+    sireRanking.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([25, 16, 12, 8, 6, 5, 4, 3], group3Sire));
+
+    return adminService.removeAllRankingSystems.then(function(){
+        return mongoService.saveAll([
+            new RankingSystem(agraRanker),
+            new RankingSystem(sireRanking)
+        ]);
+    });
 };
 
 adminService.generateAllotmentSet = function(pointArray, defaultCriteria){
