@@ -11,8 +11,12 @@
                     <dd>{{rankingSystem.name}}</dd>
                     <dt ng-show="rankingSystem.description">Description</dt>
                     <dd ng-show="rankingSystem.description">{{rankingSystem.description}}</dd>
-                    <dt ng-show="rankingSystem.equalPositionResolution">Equal Placing Resolution</dt>
+                    <dt ng-show="rankingSystem.equalPositionResolution">Equal placing resolution</dt>
                     <dd ng-show="rankingSystem.equalPositionResolution">{{resolutionLabelForValue(rankingSystem.equalPositionResolution)}}</dd>
+                    <dt ng-show="rankingSystem.groupBy.label">Group by label</dt>
+                    <dd ng-show="rankingSystem.groupBy.label">{{rankingSystem.groupBy.label}}</dd>
+                    <dt ng-show="rankingSystem.groupBy.field">Group by field</dt>
+                    <dd ng-show="rankingSystem.groupBy.label">{{rankingSystem.groupBy.field}}</dd>
                     <dt>Created</dt>
                     <dd>{{rankingSystem.createdAt | fromNow}}</dd>
                     <dt>Last updated</dt>

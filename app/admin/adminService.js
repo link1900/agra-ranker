@@ -68,6 +68,10 @@ adminService.setupRankingSystemDefaults = function(){
         description: "The main ranking system for agra",
         equalPositionResolution: "splitPoints",
         defaultRanking: true,
+        groupBy:{
+            label: "greyhound.name",
+            field: "greyhoundRef"
+        },
         pointAllotments:[],
         commonCriteria: [
             {field: "race.disqualified", "comparator": "=", "value": false, type: "Boolean"}
@@ -98,6 +102,10 @@ adminService.setupRankingSystemDefaults = function(){
         description: "Sire based rankings",
         equalPositionResolution: "splitPoints",
         defaultRanking: false,
+        groupBy:{
+            label: "greyhound.sireName",
+            field: "greyhound.sireRef"
+        },
         pointAllotments:[],
         commonCriteria: [
             {field: "race.disqualified", "comparator": "=", "value": false, type: "Boolean"}

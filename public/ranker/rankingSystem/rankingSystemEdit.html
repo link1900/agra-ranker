@@ -16,7 +16,7 @@
                            name="rankingSystemNameField"
                            data-ng-model="rankingSystem.name"
                            autocomplete="off"
-                           autofocus="true" />
+                           autofocus />
                     </div>
                 </div>
                 <div class="form-group row">
@@ -32,6 +32,20 @@
                     <div class="col-md-6">
                         <label class="control-label" for="rankingSystemEPRField">Equal Placing Resolution</label>
                         <select id="rankingSystemEPRField" class="form-control" data-ng-model="rankingSystem.equalPositionResolution" ng-options="positionResolution.value as positionResolution.name for positionResolution in positionResolutions"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label class="control-label" for="rankingSystemGroupByLabel">Group by label</label>
+                        <input id="rankingSystemGroupByLabel" type="text" class="form-control" name="rankingSystemGroupByLabel"
+                               data-ng-model="rankingSystem.groupBy.label" autocomplete="off" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label class="control-label" for="rankingSystemGroupByField">Group by field</label>
+                        <input id="rankingSystemGroupByField" type="text" class="form-control" name="rankingSystemGroupByField"
+                               data-ng-model="rankingSystem.groupBy.field" autocomplete="off"/>
                     </div>
                 </div>
                 <div class="form-group">
