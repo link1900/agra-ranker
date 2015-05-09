@@ -320,9 +320,12 @@ mongoService.collectionExists = function(collectionName){
     return deferred.promise;
 };
 
-mongoService.findDistinctByField = function(dao, field){
+mongoService.findDistinctByField = function(dao, field, query){
     var deferred = q.defer();
-    dao.distinct(field, function(err, results){
+    if (query == null){
+        query = {};
+    }
+    dao.distinct(field, query, function(err, results){
         if (err) {
             deferred.reject(err);
         } else {
