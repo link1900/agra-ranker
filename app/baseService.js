@@ -70,7 +70,7 @@ baseService.addStandardServiceMethods = function(service, dao){
                         var baseFingerPrint = "";
                         baseFingerPrint += lastRecord.updatedAt.getTime().toString();
                         baseFingerPrint += count.toString();
-                        return new Buffer(JSON.stringify(baseFingerPrint)).toString('base64');
+                        return new Buffer(baseFingerPrint).toString('base64');
                     } else {
                         return q.reject("record does not have updatedAt or there are no records");
                     }
