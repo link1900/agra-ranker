@@ -158,7 +158,7 @@ rankingSystemService.getQueryForPointAllotment = function(pointAllotment){
     var query = {};
     pointAllotment.criteria.forEach(function(criteria){
         //replace placeholders
-        if (criteria.value != null && _.isString(criteria.value) &&  criteria.value.indexOf('##') == 0){
+        if (criteria.value != null && _.isString(criteria.value) && criteria.value.indexOf('##') == 0){
             criteria.value = rankingSystemService.convertPlaceHolder(criteria.value);
         }
     });
