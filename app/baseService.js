@@ -44,7 +44,40 @@ baseService.addStandardServiceMethods = function(service, dao){
         return q(_.extend(existingModel, updatedBody));
     };
 
-    service.distinctField = function(field){
-        return mongoService.findDistinctByField(dao, field);
+    service.distinctField = function(field, query){
+        return mongoService.findDistinctByField(dao, field, query);
+    };
+
+    service.aggregate = function(aggregations){
+        return mongoService.aggregatePromise(dao, aggregations);
+    };
+
+    service.lastUpdatedRecord = function(){
+        return service.find({}, 1, 0, {"updatedAt":-1}).then(function(lastRecords){
+            if (lastRecords != null && lastRecords.length > 0){
+                return lastRecords[0];
+            } else {
+                return null;
+            }
+        });
+    };
+
+    service.collectionFingerPrint = function(){
+        return service.count().then(function(count){
+            if (count > 0){
+                return service.lastUpdatedRecord().then(function(lastRecord){
+                    if (lastRecord != null && lastRecord.updatedAt != null){
+                        var baseFingerPrint = "";
+                        baseFingerPrint += lastRecord.updatedAt.getTime().toString();
+                        baseFingerPrint += count.toString();
+                        return new Buffer(JSON.stringify(baseFingerPrint)).toString('base64');
+                    } else {
+                        return q.reject("record does not have updatedAt or there are no records");
+                    }
+                });
+            } else {
+                return q.reject("cannot generate finger print for collection as there are no records");
+            }
+        });
     };
 };
