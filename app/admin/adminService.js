@@ -120,7 +120,7 @@ adminService.setupRankingSystemDefaults = function(){
     sireRanking.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sire));
     sireRanking.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([25, 16, 12, 8, 6, 5, 4, 3], group3Sire));
 
-    return adminService.removeAllRankingSystems.then(function(){
+    return adminService.removeAllRankingSystems().then(function(){
         return mongoService.saveAll([
             new RankingSystem(agraRanker),
             new RankingSystem(sireRanking)
