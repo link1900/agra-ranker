@@ -12,6 +12,7 @@ ranking.placingPointSchema = {
 };
 
 ranking.definition = {
+    fingerPrint : {type: String},
     rank: {type: Number},
     rankingSystemRef : { type: String },
     greyhoundRef: { type: String },
