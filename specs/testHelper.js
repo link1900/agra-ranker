@@ -283,6 +283,8 @@ testHelper.setupRankingTestData = function(done){
         "name": "Test ranking system",
         "description": "Test ranking system",
         equalPositionResolution: "splitPoints",
+        defaultRanking: true,
+        updatedAt: new Date(),
         commonCriteria: [
             {field: "race.disqualified", "comparator": "=", "value": false}
         ],
