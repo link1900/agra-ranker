@@ -284,6 +284,10 @@ testHelper.setupRankingTestData = function(done){
         "description": "Test ranking system",
         equalPositionResolution: "splitPoints",
         defaultRanking: true,
+        groupBy: {
+            label: "greyhound.name",
+            field: "greyhoundRef"
+        },
         updatedAt: new Date(),
         commonCriteria: [
             {field: "race.disqualified", "comparator": "=", "value": false}
