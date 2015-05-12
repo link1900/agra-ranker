@@ -9,6 +9,7 @@ var greyhoundService = require('../greyhound/greyhoundService');
 var mongoService = require('../mongoService');
 var RankingSystem = require('./rankingSystem').model;
 var Ranking = require('./ranking').model;
+var scoreService = require('./scoreService');
 var rankingSystemService = require('./rankingSystemService');
 var eventService = require('../event/eventService');
 var batchService = require('../batch/batchService');
@@ -16,20 +17,89 @@ var baseService = require('../baseService');
 
 baseService.addStandardServiceMethods(rankingService, Ranking);
 
-rankingService.calculateRankings = function(periodStart, periodEnd, rankingSystemRef){
+/**
+ * Main method for creating the rankings. Will not create rankings if a valid ranking set already exists.
+ */
+rankingService.createRankingsIfRequired = function(periodStart, periodEnd, rankingSystemRef){
+    //get complete ranking system
+    return rankingService.getCompleteRankingSystem(periodStart, periodEnd, rankingSystemRef).then(function(rankingSystem){
+        //get ranking finger print
+        return rankingService.getRankingsFingerPrint(periodStart, periodEnd, rankingSystem).then(function(rankingsFingerPrint){
+            return rankingService.distinctField("fingerPrint", {"fingerPrint": rankingsFingerPrint}).then(function(fingerPrints){
+                if (fingerPrints != null && fingerPrints.length > 0){
+                    return rankingsFingerPrint;
+                } else {
+                    return rankingService.calculateAndStoreRankings(rankingsFingerPrint, rankingSystem);
+                }
+            });
+        });
+    });
+};
+
+rankingService.getRankingsFingerPrint = function(periodStart, periodEnd, rankingSystem){
+    return placingService.collectionFingerPrint().then(function(placingCollectionFingerPrint){
+        if (rankingSystem.updatedAt != null){
+            //encode dates as base64 to generate rankingsFingerPrint
+            return rankingService.generateRankingsFingerPrint(
+                    periodStart,
+                    periodEnd,
+                    rankingSystem.updatedAt) + "." + placingCollectionFingerPrint;
+        } else {
+            return q.reject("rankingSystem does not have an updatedAt field");
+        }
+    });
+};
+
+rankingService.calculateAndStoreRankings = function(rankingsFingerPrint, rankingSystem){
+    if (rankingSystem != null && rankingSystem.groupBy != null && rankingSystem.groupBy != null && rankingSystem.groupBy.label != null && rankingSystem.groupBy.field != null){
+        return scoreService.generateRankingsFromScores(rankingsFingerPrint, rankingSystem).then(function(){
+            return rankingService.addRankToRankingSet(rankingsFingerPrint).then(function(){
+                return rankingsFingerPrint;
+            });
+        });
+    } else {
+        q.reject("ranking system by have valid group by fields");
+    }
+};
+
+rankingService.addRankToRankingSet = function(rankingsFingerPrint){
+    return rankingService.find({fingerPrint: rankingsFingerPrint}).then(function(rankings){
+        var proms = rankings.map(function(ranking){
+            return rankingService.count({fingerPrint: rankingsFingerPrint, "totalPoints":{"$gt":ranking.totalPoints}}).then(function(count){
+                ranking.rank = count+1;
+                return rankingService.update(ranking);
+            });
+        });
+        return q.allSettled(proms).then(function(results){
+            return results.filter(function(item){
+                return item.state == 'fulfilled';
+            }).map(function(i){return i.value;});
+        });
+    });
+};
+
+rankingService.generateRankingsFingerPrint = function(periodStart, periodEnd, rankingSystemRefUpdateDate){
+    var baseFingerPrint = "";
+
+    if (periodStart != null){
+        baseFingerPrint += periodStart.getTime().toString();
+    }
+    if (periodEnd != null){
+        baseFingerPrint += periodEnd.getTime().toString();
+    }
+    if (rankingSystemRefUpdateDate != null){
+        baseFingerPrint += rankingSystemRefUpdateDate.getTime().toString();
+    }
+
+    return new Buffer(baseFingerPrint).toString('base64');
+};
+
+rankingService.getCompleteRankingSystem = function(periodStart, periodEnd, rankingSystemRef){
     return rankingService.getRankingSystem(rankingSystemRef).then(function(rankingSystem){
         rankingSystem = rankingSystem.toObject();
         rankingSystem = rankingService.addPeriodCriteria(periodStart, periodEnd, rankingSystem);
         rankingSystem = rankingService.insertCommonCriteria(rankingSystem);
-        return rankingService.convertPointAllotmentsToPlacingsPoints(rankingSystem.pointAllotments)
-            .then(function(pointPlacings){
-                var rankings = rankingService.sumPlacingsIntoRankings(pointPlacings, true);
-                rankings = rankings.map(function(ranking){
-                    ranking.rankingSystemRef = rankingSystem._id.toString();
-                    return ranking;
-                });
-                return rankingService.addRankingPosition(rankings);
-            });
+        return rankingSystem;
     });
 };
 
@@ -70,118 +140,4 @@ rankingService.insertCommonCriteria = function(rankingSystem){
         }
     });
     return rankingSystem;
-};
-
-rankingService.convertPointAllotmentsToPlacingsPoints = function(pointAllotments){
-    var proms = pointAllotments.map(rankingService.convertPointAllotmentToPlacingsPoints);
-    return q.allSettled(proms).then(function(results){
-        return results.filter(function(item){
-            return item.state == 'fulfilled';
-        }).map(function(i){return i.value;});
-    }).then(function(arrayOfPointPlacings){
-        return _.flatten(arrayOfPointPlacings);
-    });
-};
-
-rankingService.convertPointAllotmentToPlacingsPoints = function(pointAllotment){
-    var query = rankingSystemService.getQueryForPointAllotment(pointAllotment);
-    return placingService.find(query).then(function(placings){
-        //map placing results into placings with points
-        return placings.map(function(placing){
-            return {
-                points: pointAllotment.points,
-                placing: placing
-            };
-        });
-    });
-};
-
-rankingService.sumPlacingsIntoRankings = function(placingPoints, includePlacings){
-    var grouped = _.groupBy(placingPoints, function(placingPoint){
-        return placingPoint.placing.greyhoundRef;
-    });
-
-    return _.keys(grouped).map(function(greyhoundRef){
-        var placingPointsForGreyhound = grouped[greyhoundRef];
-        var greyhoundName = rankingService.getGreyhoundNameFromPlacingSet(placingPointsForGreyhound);
-        if (includePlacings){
-            placingPointsForGreyhound = placingPointsForGreyhound.map(function(placingPoint){
-                return rankingService.getPlacingReferenceFromPlacingPoint(placingPoint);
-            });
-        }
-
-        var totalPoints = placingPointsForGreyhound.reduce(function(sum, placingPoint){
-            return sum + placingPoint.points;
-        }, 0);
-
-        var rankingResult = {
-            greyhoundRef : greyhoundRef,
-            greyhoundName : greyhoundName,
-            totalPoints: totalPoints
-        };
-
-        if (includePlacings){
-            rankingResult.placingPoints =  placingPointsForGreyhound;
-        }
-
-        return rankingResult;
-    });
-};
-
-rankingService.getGreyhoundNameFromPlacingSet = function(placingPointSet){
-    var foundPlacingPoint = _.first(placingPointSet);
-    if (foundPlacingPoint != null && foundPlacingPoint.placing && foundPlacingPoint.placing.greyhound &&
-        foundPlacingPoint.placing.greyhound.name){
-        return foundPlacingPoint.placing.greyhound.name;
-    } else {
-        return "";
-    }
-};
-
-rankingService.getPlacingReferenceFromPlacingPoint = function(placingPoint){
-    var points = 0;
-    var placingRef = "";
-    var position = "";
-    var raceName = "";
-
-    if (placingPoint && placingPoint.points){
-        points = placingPoint.points
-    }
-
-    if (placingPoint && placingPoint.placing && placingPoint.placing._id){
-        placingRef = placingPoint.placing._id.toString()
-    }
-
-    if (placingPoint && placingPoint.placing && placingPoint.placing.placing){
-        position = placingPoint.placing.placing;
-    }
-
-    if (placingPoint && placingPoint.placing && placingPoint.placing.race && placingPoint.placing.race.name){
-        raceName = placingPoint.placing.race.name;
-    }
-
-    return {
-        points: points,
-        placingRef: placingRef,
-        position: position,
-        raceName: raceName
-    };
-};
-
-rankingService.addRankingPosition = function(rankings){
-    rankings.sort(function(a, b) {
-        return b.totalPoints - a.totalPoints;
-    });
-
-    var rankIndex = 0;
-    for (var i=0; i<rankings.length;i++){
-        if(i>0 && rankings[i-1].totalPoints == rankings[i].totalPoints){
-            rankings[i].rank = rankIndex;
-        } else {
-            rankIndex++;
-            rankings[i].rank = rankIndex;
-        }
-    }
-
-    return rankings;
 };
