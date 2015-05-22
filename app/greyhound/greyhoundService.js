@@ -267,7 +267,7 @@ greyhoundService.createDamStep = function(batchRecord){
 greyhoundService.setDamStep = function(batchRecord){
     if (batchRecord.createdDam != null && batchRecord.createdGreyhound != null){
         batchRecord.createdGreyhound.damRef = batchRecord.createdDam._id;
-        batchRecord.createdGreyhound.damDam = batchRecord.createdDam.name;
+        batchRecord.createdGreyhound.damName = batchRecord.createdDam.name;
         return greyhoundService.update(batchRecord.createdGreyhound).then(function(updatedGreyhound){
             batchRecord.createdGreyhound = updatedGreyhound;
             batchRecord.stepResults.push("Updated \"" + updatedGreyhound.name + "\" to have dam \"" + batchRecord.createdDam.name + "\"");
