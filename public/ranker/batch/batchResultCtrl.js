@@ -27,7 +27,7 @@ angular.module('controllers').controller('batchResultCtrl', function($scope, $ro
         {title: "Status", field:"status", type:"link", baseLink:"#/batchResult/view/", linkField: "_id"}
     ];
 
-    $scope.searchFields = {
-        'batchRef': $routeParams.id
-    };
+    $scope.searchFields = [
+        {"name":"batchRef", field:"batchRef", value:$routeParams.id, type:"hidden"}
+    ];
 });

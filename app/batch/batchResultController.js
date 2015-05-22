@@ -1,19 +1,12 @@
 var batchResultController = module.exports = {};
 
 var mongoose = require('mongoose');
-var BatchResult = require('./batchResult').model;
 
+var expressService = require('../expressService');
+var batchResultService = require('./batchResultService');
 
-batchResultController.prepareQuery = function(req, res, next) {
-    req.searchQuery = {};
-    var like = req.param('like');
-    var batchRef = req.param('batchRef');
-    if (like){
-        req.searchQuery.rawData = {'$regex': new RegExp(like, "i")};
-    }
-    if (batchRef){
-        req.searchQuery.batchRef = batchRef;
-    }
-    req.dao = BatchResult;
-    next();
+expressService.addStandardMethods(batchResultController, batchResultService);
+
+batchResultController.find = function(req, res){
+    expressService.standardSearch(req, res, batchResultService, ['batchRef=batchRef']);
 };
