@@ -489,9 +489,11 @@ eventService.addListener("greyhound deleted listener","Deleted Greyhound", funct
             var proms = results.map(function(greyhoundToUpdate){
                 if (greyhoundToUpdate.sireRef == event.data.entity._id.toString()){
                     greyhoundToUpdate.sireRef = null;
+                    greyhoundToUpdate.sireName = null;
                 }
                 if (greyhoundToUpdate.damRef == event.data.entity._id.toString()){
                     greyhoundToUpdate.damRef = null;
+                    greyhoundToUpdate.damName = null;
                 }
 
                 return greyhoundService.update(greyhoundToUpdate);
