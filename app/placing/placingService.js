@@ -46,13 +46,26 @@ placingService.preProcessPlacingObject = function(placing){
 
 placingService.convertGreyhoundNameToRef = function(placing){
     if (placing != null && placing.greyhoundName != null){
-        return greyhoundService.createGreyhoundByName(placing.greyhoundName).then(function(result){
-            if (result != null && result.model != null){
-                placing.greyhoundRef = result.model._id;
-            }
-            delete placing.greyhoundName;
+        var greyhoundName = placing.greyhoundName.trim();
+        if (greyhoundName.length>0){
+            return greyhoundService.findGreyhoundByName(placing.greyhoundName).then(function(findResult){
+                if (findResult != null){
+                    placing.greyhoundRef = findResult._id;
+                    delete placing.greyhoundName;
+                    return q(placing);
+                } else {
+                    return greyhoundService.createGreyhoundFromJson({"name":placing.greyhoundName}).then(function(result){
+                        if (result != null){
+                            placing.greyhoundRef = result._id;
+                        }
+                        delete placing.greyhoundName;
+                        return q(placing);
+                    });
+                }
+            });
+        } else {
             return q(placing);
-        });
+        }
     } else {
         return q(placing);
     }

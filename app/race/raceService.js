@@ -205,9 +205,9 @@ raceService.createRaceForBatch = function(batchRecord){
 };
 
 raceService.createPlacingsForBatch = function(batchRecord){
-    if (batchRecord.record != null && batchRecord.record.placingText != null && batchRecord.record.placingText.length > 0){
-        var proms = batchRecord.record.placingText.map(function(placingText){
-            return raceService.createPlacingFromBatch(batchRecord.race, placingText);
+    if (batchRecord.record != null && batchRecord.record.placingObjects != null && batchRecord.record.placingObjects.length > 0){
+        var proms = batchRecord.record.placingObjects.map(function(placingObject){
+            return raceService.createPlacingFromBatch(batchRecord.race, placingObject);
         });
         return q.allSettled(proms).then(function(results){
             var failures = results.filter(function(i){return i.state == "rejected";});
@@ -241,11 +241,11 @@ raceService.rawCsvArrayToRaceText = function(rawRow){
         lengthText: rawRow[3]
     };
 
-    race.placingText = [];
+    race.placingObjects = [];
     var placingArray = rawRow.slice(4);
     for(var i=0; i<placingArray.length; i++){
         var nextPlacing = {};
-        nextPlacing.greyhoundName = placingArray[i].toLowerCase().trim();
+        nextPlacing.greyhoundName = placingArray[i].toUpperCase().trim();
         if (i+1 < placingArray.length){
             nextPlacing.placing = placingArray[i+1];
             i++;
@@ -255,7 +255,7 @@ raceService.rawCsvArrayToRaceText = function(rawRow){
             !validator.isNull(nextPlacing.placing) &&
             validator.isLength(nextPlacing.placing, 1)
         ){
-            race.placingText.push(nextPlacing);
+            race.placingObjects.push(nextPlacing);
         }
     }
 
