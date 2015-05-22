@@ -54,9 +54,9 @@ module.exports = function(app) {
     app.param('batchId',securityController.checkAuthentication, batchController.setBatch);
 
     //batch record routes
-    app.get('/batchResult', securityController.checkAuthentication, batchResultController.prepareQuery, helper.runQuery);
-    app.get('/batchResult/:batchResultId',securityController.checkAuthentication, helper.getOne);
-    app.param('batchResultId',securityController.checkAuthentication, batchController.setBatchResult);
+    app.get('/batchResult', securityController.checkAuthentication, batchResultController.find);
+    app.get('/batchResult/:batchResultId',securityController.checkAuthentication, batchResultController.getOne);
+    app.param('batchResultId',securityController.checkAuthentication, batchResultController.setModel);
 
     //greyhound routes
     app.get('/greyhound', greyhoundController.find);
