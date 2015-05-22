@@ -109,7 +109,7 @@ adminService.setupRankingSystemDefaults = function(){
         pointAllotments:[],
         commonCriteria: [
             {field: "race.disqualified", "comparator": "=", "value": false, type: "Boolean"},
-            {field: "greyhound.sireRef", "comparator": "!=", "value": null, type: "Text"}
+            {field: "greyhound.sireRef", "comparator": "!=", "value": "", type: "Text"}
         ]
     };
 
@@ -134,17 +134,17 @@ adminService.setupRankingSystemDefaults = function(){
         pointAllotments:[],
         commonCriteria: [
             {field: "race.disqualified", "comparator": "=", "value": false, type: "Boolean"},
-            {field: "greyhound.damRef", "comparator": "!=", "value": null, type: "Text"}
+            {field: "greyhound.damRef", "comparator": "!=", "value": "", type: "Text"}
         ]
     };
 
-    //sprint group
-    var group1 = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}];
-    var group2 = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}];
-    var group3 = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}];
-    damRanking.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([6, 4, 3, 1, 1, 1, 1, 1], group1));
-    damRanking.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([4, 3, 2, 1, 1, 1, 1, 1], group2));
-    damRanking.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([4, 3, 2, 1, 1, 1, 1, 1], group3));
+    //dam group
+    var group1Dam = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}];
+    var group2Dam = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}];
+    var group3Dam = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}];
+    damRanking.pointAllotments = damRanking.pointAllotments.concat(adminService.generateAllotmentSet([6, 4, 3, 1, 1, 1, 1, 1], group1Dam));
+    damRanking.pointAllotments = damRanking.pointAllotments.concat(adminService.generateAllotmentSet([4, 3, 2, 1, 1, 1, 1, 1], group2Dam));
+    damRanking.pointAllotments = damRanking.pointAllotments.concat(adminService.generateAllotmentSet([4, 3, 2, 1, 1, 1, 1, 1], group3Dam));
 
     return adminService.removeAllRankingSystems().then(function(){
         return mongoService.saveAll([
