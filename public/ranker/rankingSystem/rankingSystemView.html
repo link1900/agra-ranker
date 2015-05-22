@@ -37,7 +37,7 @@
                 <tbody>
                 <tr>
                     <td>
-                        <div data-ng-repeat="criteria in rankingSystem.commonCriteria">{{criteria.field}} {{criteria.comparator}} {{criteria.value}}</div>
+                        <div data-ng-repeat="criteria in rankingSystem.commonCriteria">"{{criteria.field}}" {{criteria.comparator}} "{{criteria.value}}"</div>
                     </td>
                 </tr>
                 </tbody>
@@ -60,7 +60,7 @@
                 <tr data-ng-repeat="allotment in rankingSystem.pointAllotments">
                     <td>{{allotment.points}}</td>
                     <td>
-                        <div data-ng-repeat="criteria in allotment.criteria">{{criteria.field}} {{criteria.comparator}} {{criteria.value}}</div>
+                        <div data-ng-repeat="criteria in allotment.criteria">"{{criteria.field}}" {{criteria.comparator}} "{{criteria.value}}"</div>
                     </td>
                 </tr>
                 </tbody>
