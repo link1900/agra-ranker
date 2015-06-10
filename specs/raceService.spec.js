@@ -72,14 +72,14 @@ describe("raceService", function(){
                 groupText: "Group 1",
                 lengthText: "Sprint",
                 placingText: [
-                    {"greyhoundName": "lucy lobster","placing": "1"},
-                    {"greyhoundName": "jewel action","placing": "2"},
-                    {"greyhoundName": "anything less", "placing": "3"},
-                    {"greyhoundName": "xtreme knocka","placing": "4"},
-                    {"greyhoundName": "cosmic angel","placing": "5"},
-                    {"greyhoundName": "all strung out","placing": "6"},
-                    {"greyhoundName": "la grand logie","placing": "7"},
-                    {"greyhoundName": "frattini","placing": "8"}
+                    {"greyhoundName": "LUCY LOBSTER","placing": "1"},
+                    {"greyhoundName": "JEWEL ACTION","placing": "2"},
+                    {"greyhoundName": "ANYTHING LESS", "placing": "3"},
+                    {"greyhoundName": "XTREME KNOCKA","placing": "4"},
+                    {"greyhoundName": "COSMIC ANGEL","placing": "5"},
+                    {"greyhoundName": "ALL STRUNG OUT","placing": "6"},
+                    {"greyhoundName": "LA GRAND LOGIE","placing": "7"},
+                    {"greyhoundName": "FRATTINI","placing": "8"}
                 ]
             };
             var raceResult = raceService.rawCsvArrayToRaceText(raceRow);
