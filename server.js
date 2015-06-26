@@ -9,8 +9,9 @@ var winston = require('winston');
 var logger = require('winston');
 var dotenv = require('dotenv');
 var mongoose = require('mongoose');
+var primus = require('primus');
 
-/**
+    /**
  * Main application entry file.
  * Please note that the order of loading is important.
  */
@@ -23,17 +24,19 @@ main.start = _.once(function(){
         .then(main.setupDatabaseConnection)
         .then(main.setupSecurity)
         .then(main.setupHTTP)
+        .then(main.setupWebSocketServer)
         .then(main.setupBatchService).then(function(){
             logger.info("Started system successfully");
         }, function(err){
             logger.log('error', err.message, err.stack);
+            process.exit(1);
         });
 });
 
 main.setupExceptionHandling = function(mainConfig){
     if (process.env.NODE_ENV != 'test'){
         process.on('uncaughtException', function(ex) {
-            console.log('Uncaught exception ' + ex);
+            logger.error('Uncaught exception ' + ex);
             process.exit(1);
         });
     }
@@ -59,13 +62,13 @@ main.setupDatabaseConnection = function(mainConfig){
     var deferred = q.defer();
     var db = mongoose.connect(process.env.MONGOHQ_URL, function (err) {
         if (err) {
-            console.log('Unable to connect at startup, exiting', err);
+            error.log('Unable to connect at startup, exiting', err);
             deferred.resolve(mainConfig);
         }
     });
 
     mongoose.connection.on("open", function () {
-        console.log("Mongoose: open");
+        logger.info("Mongoose: open");
         mainConfig.db = db;
         var grid = require('gridfs-stream');
         grid.mongo = mongoose.mongo;
@@ -73,11 +76,11 @@ main.setupDatabaseConnection = function(mainConfig){
     });
 
     mongoose.connection.on("error", function (err) {
-        console.error('Mongoose: ' + err + ' exiting');
+        logger.error('Mongoose: ' + err + ' exiting');
     });
 
     mongoose.connection.on("disconnected", function (err) {
-        console.log("Mongoose: disconnected, exiting", err);
+        logger.log("Mongoose: disconnected, exiting", err);
     });
 
     return deferred.promise;
@@ -103,10 +106,8 @@ main.setupHTTP = function(mainConfig){
     var port = process.env.PORT || 3000;
     var server = require('http').createServer(app);
 
-    //var io = require('socket.io')(server);
-    //require('./app/sockets.js').setup(io);
-
     server.on('listening', function(){
+        mainConfig.server = server;
         deferred.resolve(mainConfig);
     });
 
@@ -115,7 +116,21 @@ main.setupHTTP = function(mainConfig){
     });
 
     server.listen(port);
-    console.log('Express app started on port ' + port);
+    logger.info('Express app started on port ' + port);
+    return deferred.promise;
+};
+
+main.setupWebSocketServer = function(mainConfig){
+    var deferred = q.defer();
+    if (mainConfig.server != null){
+        var webSocketServer = new primus(mainConfig.server);
+        mainConfig.webSocketServer = mainConfig;
+        deferred.resolve(mainConfig);
+    } else {
+        var error = "cannot start web socket server not passed active web server";
+        logger.error(error);
+        deferred.reject(error);
+    }
     return deferred.promise;
 };
 

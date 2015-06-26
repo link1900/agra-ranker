@@ -247,15 +247,12 @@
 - (DONE) allow users to select which ranking system they wish to view
 - (DONE) allow users to select which ranking system type they wish to view
 - (DONE) update ranking display to show placing points on a card(lazyload?)
-- (DONE) update rankings when race is changed
-- (DONE) update rankings when ranking system (or its sub entities is changed) is changed
-- (DONE) update when greyhound is deleted
-- (DONE) update when race is deleted
-- (DONE) update when rule set is deleted
-- (DONE) delete rankings when ranking system is deleted
+- (DONE) update ranking system to use mongo to do the aggregation
+- (DONE) update ranking system to store result to the ranking collection and read from there
+- (DONE) define agra ranking system
+- (DONE) define sire and dam ranking systems
 - dead heat rule - points from matching positions are summed and divided
-- define agra ranking system and test importing it
-- define sire and dam ranking systems
+- confirm main ranking system by doing a system compare
 - confirm sire and dam ranking system by doing a system compare
 
 ### 6.0.15 Advanced search
