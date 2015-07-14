@@ -22,7 +22,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li ng-show="user" class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings</a>
                     <ul class="dropdown-menu" role="menu">
                         <li class="dropdown-header">Administration</li>
                         <li><a href="#/user">Users</a></li>
@@ -36,9 +36,18 @@
                 <li ng-show="user">
                     <p class="navbar-text">{{user.email}}</p>
                 </li>
-                <li ng-show="user"><a data-ng-click="logout()">Sign out</a></li>
-                <li ng-hide="user" ui-route="/login" ng-class="{active: $uiRoute}"><a data-ng-href="#/login">Sign in</a></li>
-                <li ng-hide="user" ui-route="/signup" ng-class="{active: $uiRoute}"><a data-ng-href="#/signup">Sign up</a></li>
+                <li ng-show="user">
+                    <button type="button" class="btn btn-default navbar-btn" data-ng-click="logout()">Sign out</button>
+                </li>
+                <li ng-hide="user">
+                    <button type="button" class="btn btn-default navbar-btn" data-ng-href="#/login">Sign in</button>
+                </li>
+                <li ng-hide="user">
+                    <p class="navbar-text">or</p>
+                </li>
+                <li ng-hide="user">
+                    <button type="button" class="btn btn-default navbar-btn" data-ng-href="#/signup">Sign up</button>
+                </li>
             </ul>
         </div>
     </div>
