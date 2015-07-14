@@ -10,5 +10,13 @@ angular.module('controllers').controller('menuCtrl', ['$scope', 'securityService
                 });
             }
         };
+
+        $scope.login = function(){
+            $location.path('/login');
+        };
+
+        $scope.signUp = function(){
+            $location.path('/signup');
+        };
     }
 ]);

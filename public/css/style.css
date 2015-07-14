@@ -10,10 +10,6 @@ body {
   margin-bottom: 40px;
 }
 
-a {
-  color: #00B7FF;
-}
-
 #loading-bar-spinner .spinner-icon {
     border-top-color:  #fff;
     border-left-color: #fff;
