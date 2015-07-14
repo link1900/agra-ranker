@@ -182,10 +182,6 @@ batchService.getBatchResultFromBoolean = function(boolean){
     }
 };
 
-batchService.getBatchInfo = function(){
-    return batchService.processes[0];
-};
-
 batchService.createBatch = function(type, metadata, createIfNotAwaiting) {
     //generate the batch model
     var batch = new BatchJob({
