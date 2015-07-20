@@ -42,6 +42,16 @@ angular.module('directives')
                 return years;
             };
 
+            scope.monthList = function(){
+                var currentMonth = moment().startOf('year');
+                var months = [];
+                for (var i=1;i<13;i++){
+                    months.push({name: currentMonth.format("MMMM"), value:currentMonth.clone()});
+                    currentMonth = currentMonth.add(1, 'months');
+                }
+                return months;
+            };
+
             scope.rankingYearList = function(){
                 var startYear = scope.fromYear;
                 var endYear = new Date().getFullYear();
@@ -93,6 +103,10 @@ angular.module('directives')
                 scope.setModelDate(moment().subtract(1, 'month').startOf('month').toDate(), moment().subtract(1, 'month').endOf('month').toDate());
             };
 
+            scope.setMonth = function(date){
+                scope.setModelDate(date.startOf('month').toDate(), date.endOf('month').toDate());
+            };
+
             scope.setYear = function(year){
                 scope.setModelDateFromRange(scope.getYearDates(year));
             };
@@ -101,6 +115,7 @@ angular.module('directives')
                 scope.setModelDateFromRange(scope.getRankingYearDates(rankerYear));
             };
 
+            scope.monthOptions = scope.monthList();
             scope.yearOptions = scope.yearList();
             scope.rankingYearOptions = scope.rankingYearList();
 

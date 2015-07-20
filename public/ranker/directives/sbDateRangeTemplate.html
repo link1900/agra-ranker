@@ -18,7 +18,7 @@
             <button type="button" class="btn btn-default btn-xs" ng-click="setToThisYear()">This year</button>
             <button type="button" class="btn btn-default btn-xs" ng-click="setToLastYear()">Last year</button>
             <div class="btn-group">
-                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">More years</button>
+                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">More years <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu">
                     <li ng-repeat="yearOption in yearOptions">
                         <a ng-click="setYear(yearOption.value)">{{yearOption.name}}</a>
@@ -28,7 +28,7 @@
             <button type="button" class="btn btn-default btn-xs" ng-click="setToThisRankingYear()">This ranking year</button>
             <button type="button" class="btn btn-default btn-xs" ng-click="setToLastRankingYear()">Last ranking year</button>
             <div class="btn-group">
-                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">More ranking years</button>
+                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">More ranking years <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu">
                     <li ng-repeat="rankingYearOption in rankingYearOptions">
                         <a ng-click="setRankerYear(rankingYearOption.value)">{{rankingYearOption.name}}</a>
@@ -37,6 +37,14 @@
             </div>
             <button type="button" class="btn btn-default btn-xs" ng-click="setToThisMonth()">This month</button>
             <button type="button" class="btn btn-default btn-xs" ng-click="setToLastMonth()">Last month</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">More months <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="monthOption in monthOptions">
+                        <a ng-click="setMonth(monthOption.value)">{{monthOption.name}}</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
