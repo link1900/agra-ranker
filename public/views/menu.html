@@ -14,11 +14,8 @@
                 <li ui-route="/" ng-class="{active: $uiRoute}"><a data-ng-href="#/">Rankings</a></li>
                 <li ui-route="#/greyhound.*" ng-class="{active: $uiRoute}"><a data-ng-href="#/greyhound">Greyhounds</a></li>
                 <li ui-route="#/race.*" ng-class="{active: $uiRoute}"><a data-ng-href="#/race">Races</a></li>
-                <li ui-route="#/groupLevel.*" class="visible-lg" ng-class="{active: $uiRoute}" ><a data-ng-href="#/groupLevel">Group Levels</a></li>
-                <li ui-route="#/rankingSystem.*" class="visible-lg" ng-class="{active: $uiRoute}"><a data-ng-href="#/rankingSystem">Ranking Systems</a></li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
+                <li ng-show="user" ui-route="#/groupLevel.*" class="visible-lg" ng-class="{active: $uiRoute}" ><a data-ng-href="#/groupLevel">Group Levels</a></li>
+                <li ng-show="user" ui-route="#/rankingSystem.*" class="visible-lg" ng-class="{active: $uiRoute}"><a data-ng-href="#/rankingSystem">Ranking Systems</a></li>
                 <li ng-show="user" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings</a>
                     <ul class="dropdown-menu" role="menu">
@@ -31,6 +28,9 @@
                         <li><a href="#/data">Data management</a></li>
                     </ul>
                 </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
                 <li ng-show="user">
                     <p class="navbar-text">{{user.email}}</p>
                 </li>
@@ -40,10 +40,10 @@
                 <li ng-hide="user">
                     <button type="button" class="btn btn-default navbar-btn" data-ng-click="login()">Sign in</button>
                 </li>
-                <li ng-hide="user">
+                <li ng-show="false">
                     <p class="navbar-text">or</p>
                 </li>
-                <li ng-hide="user">
+                <li ng-show="false">
                     <button type="button" class="btn btn-default navbar-btn" data-ng-click="signUp()">Sign up</button>
                 </li>
             </ul>
