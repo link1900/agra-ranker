@@ -3,7 +3,7 @@ angular.module('directives')
         function linkBody(scope, element, attrs) {
 
             scope.noRecords = true;
-            scope.showSearch = true;
+            scope.showSearch = scope.showSearch == null ? true : scope.showSearch;
             scope.selected = {};
             scope.searchParams = {};
             scope.perPageOptions = [{"name":"10","value":10},
@@ -215,6 +215,7 @@ angular.module('directives')
         return {
             restrict: 'A',
             scope: {
+                title: '@',
                 perPage : '@',
                 sortField: '@',
                 sortDirection: '@',
@@ -224,7 +225,8 @@ angular.module('directives')
                 columnInfo: '=',
                 searchFields: '=',
                 postProcess: '=',
-                tableName: '@'
+                tableName: '@',
+                showSearch : '='
             },
             link: linkBody,
             templateUrl: '/ranker/directives/sbTableTemplate.html'
