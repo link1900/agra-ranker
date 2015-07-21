@@ -164,7 +164,7 @@ raceService.setGroupLevel = function(batchRecord){
 
 raceService.setRaceDate = function(batchRecord){
     if (batchRecord.record.dateText != null){
-        var aDate = moment(batchRecord.record.dateText, "DD-MM-YYYY hh:mm:ss A");
+        var aDate = moment(batchRecord.record.dateText);
         if (aDate.isValid()){
             batchRecord.race.date = aDate.toDate();
             return q(batchRecord);
