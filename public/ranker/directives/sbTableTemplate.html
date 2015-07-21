@@ -1,7 +1,8 @@
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
         <span ng-show="title"><b>{{title}}</b></span>
-        <span class="pull-right" ng-click="showSearch=!showSearch"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></span>
+        <span class="pull-right" ng-hide="showSearch" ng-click="showSearch=true"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></span>
+        <span class="pull-right" ng-show="showSearch" ng-click="showSearch=false"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>
         <div ng-show="showSearch">
             <div ng-repeat="searchField in searchFields">
                 <div ng-class-even="row">
