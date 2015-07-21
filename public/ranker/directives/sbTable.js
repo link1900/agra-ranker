@@ -7,6 +7,11 @@ angular.module('directives')
             if (scope.hideSearch != null && scope.hideSearch === "true"){
                 scope.showSearch = false;
             }
+
+            scope.allowTableHide = false;
+            if (scope.hideOnEmpty != null && scope.hideOnEmpty === "true"){
+                scope.allowTableHide = true;
+            }
             scope.selected = {};
             scope.searchParams = {};
             scope.perPageOptions = [{"name":"10","value":10},
@@ -229,7 +234,8 @@ angular.module('directives')
                 searchFields: '=',
                 postProcess: '=',
                 tableName: '@',
-                hideSearch : '@'
+                hideSearch : '@',
+                hideOnEmpty: '@'
             },
             link: linkBody,
             templateUrl: '/ranker/directives/sbTableTemplate.html'
