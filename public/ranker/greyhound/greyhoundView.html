@@ -1,7 +1,7 @@
 <div id="greyhoundDetail" data-ng-controller="GreyhoundCtrl" data-ng-init="findOne()">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Greyhound - {{greyhound.name}}</h3>
+            <h3 class="panel-title">{{greyhound.name}}</h3>
         </div>
         <div class="panel-body">
             <div data-ng-show="greyhound.name">
@@ -12,27 +12,37 @@
                     <dd ng-show="greyhound.sireName"><a data-ng-href="#/greyhound/view/{{greyhound.sireRef}}">{{greyhound.sireName}}</a></dd>
                     <dt ng-show="greyhound.damName">Dam</dt>
                     <dd ng-show="greyhound.damName"><a data-ng-href="#/greyhound/view/{{greyhound.damRef}}">{{greyhound.damName}}</a></dd>
-                    <dt>Created</dt>
-                    <dd>{{greyhound.createdAt | fromNow}}</dd>
-                    <dt>Last updated</dt>
-                    <dd>{{greyhound.updatedAt | fromNow}}</dd>
+                    <dt ng-show="user">Created</dt>
+                    <dd ng-show="user">{{greyhound.createdAt | fromNow}}</dd>
+                    <dt ng-show="user">Last updated</dt>
+                    <dd ng-show="user">{{greyhound.updatedAt | fromNow}}</dd>
                 </dl>
+                <div data-sb-table
+                     data-title="Offspring"
+                     data-message-empty="No offspring found"
+                     data-model-service="greyhoundSvr"
+                     data-column-info="offspringColumnInfo"
+                     data-search-fields="offspringSearchFields"
+                     data-per-page="10"
+                     data-sort-field="name"
+                     data-hide-search="true"
+                     data-sort-direction="asc">
+                </div>
+                <div ng-controller="PlacingCtrl">
+                    <div data-sb-table
+                         data-title="Placings"
+                         data-model-service="placingSvr"
+                         data-column-info="greyhoundPlacingColumns"
+                         data-search-fields="greyhoundSearchFields"
+                         data-message-empty="No placings found"
+                         data-hide-search="true"
+                         data-per-page="15">
+                    </div>
+                </div>
                 <a ng-show="user" data-ng-href="#/greyhound/edit/{{greyhound._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
                 <button ng-show="user" data-ng-click="deleteGreyhound()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
             </div>
         </div>
     </div>
-    <h3>Offspring</h3>
-    <div data-sb-table
-         data-message-empty="No offspring found"
-         data-model-service="greyhoundSvr"
-         data-column-info="offspringColumnInfo"
-         data-search-fields="offspringSearchFields"
-         data-per-page="10"
-         data-sort-field="name"
-         data-sort-direction="asc">
-    </div>
-    <h3>Placings</h3>
-    <div data-ng-include="'ranker/placing/placingGreyhoundList.html'"></div>
     <a data-ng-href="#/greyhound">Back to Greyhounds</a>
 </div>
