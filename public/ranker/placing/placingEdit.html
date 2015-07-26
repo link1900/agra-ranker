@@ -11,7 +11,7 @@
                     <button data-ng-click="showEdit()" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
                 </div>
                 <div ng-show="formMode == 'edit'" class="col-md-1">
-                    <button data-ng-click="finishEditing()" class="btn btn-primary">Done Editing</button>
+                    <button data-ng-click="finishEditing()" class="btn btn-success">Save</button>
                 </div>
                 <div ng-show="formMode == 'add'" class="col-md-6">
                     <ui-select ng-model="selection.greyhound"
@@ -33,8 +33,11 @@
             </div>
             <div class="row placing-row" ng-repeat="placing in placings">
                 <div class="col-md-1" ng-class="placingDefinitions[$index].style">{{placingDefinitions[$index].placingLabel}}</div>
-                <div id="placingSet-{{$index}}" ui-sortable="sortableOptions" class="placing-container col-md-2" data-ng-model="placing">
-                    <div id="placing-{{$parent.$index}}-{{$index}}" class="placing-greyhound" ng-repeat="greyhound in placing">{{greyhound.name}}  <button data-ng-click="removePlacing($parent.$index, $index)" ng-show="formMode == 'edit'" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-minus-sign"></span> Remove</button></div>
+                <div data-ng-model="placing" id="placingSet-{{$index}}" ui-sortable="sortableOptions" class="placing-container col-md-7">
+                    <div id="placing-{{$parent.$index}}-{{$index}}" class="row" style="margin-bottom: 5px; margin-top: 5px;" ng-repeat="greyhound in placing">
+                        <span class="placing-greyhound col-md-4">{{greyhound.name}}</span>
+                        <span class="col-md-2"><button data-ng-click="removePlacing($parent.$index, $index)" ng-show="formMode == 'edit'" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-minus-sign"></span> Remove</button></span>
+                    </div>
                 </div>
             </div>
         </div>
