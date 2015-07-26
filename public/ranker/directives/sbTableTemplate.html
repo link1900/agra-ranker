@@ -39,11 +39,11 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-if="$index == 0" class="col-md-2 pull-right">
-                        Show <label><select id="perPageCountSelection" class="form-control input-sm" data-ng-model="searchParams.per_page" ng-options="perPageOption.value as perPageOption.name for perPageOption in perPageOptions"></select></label> items
-                        <button type="button" ng-click="resetSearch()" class="btn btn-primary btn-xs">Reset Search</button>
-                    </div>
                 </div>
+            </div>
+            <div class="col-md-2 pull-right">
+                Show <label><select id="perPageCountSelection" class="form-control input-sm" data-ng-model="searchParams.per_page" ng-options="perPageOption.value as perPageOption.name for perPageOption in perPageOptions"></select></label> items
+                <button type="button" ng-click="resetSearch()" class="btn btn-primary btn-xs">Reset Search</button>
             </div>
         </div>
     </div>
