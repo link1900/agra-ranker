@@ -6,4 +6,14 @@
         <a href="#/groupLevel/create" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Add</a>
     </div>
 </div>
-<div data-ng-include="'ranker/groupLevel/groupLevelList.html'"></div>
+<div id="groupLevelList" data-ng-controller="GroupLevelCtrl">
+    <div data-sb-table
+         data-model-service="groupLevelService"
+         data-message-empty="No group levels found"
+         data-column-info="columnInfo"
+         data-per-page="15"
+         data-sort-field="name"
+         data-hide-search="true"
+         data-sort-direction="asc">
+    </div>
+</div>
