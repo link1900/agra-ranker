@@ -53,16 +53,16 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default" data-ng-model="race.disqualified" btn-checkbox>
-                                Mark as no race
-                            </button>
-                        </div>
-                        <button class="btn btn-default" ng-click="showNoRaceInfo = !showNoRaceInfo"><span class="glyphicon glyphicon-info-sign"></span></button>
-                        <div ng-show="showNoRaceInfo" class="alert alert-info" role="alert">
-                            A no race is race that has been judged as not counting towards to the rankings.
-                            This maybe because of an external influence completely disrupting the race.
-                            I.e a lure break down, not enough runners, etc.
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" data-ng-model="race.disqualified"> Disqualified race
+                            </label>
+                            <span ng-click="showNoRaceInfo = !showNoRaceInfo" class="glyphicon glyphicon-question-sign"></span>
+                            <div ng-show="showNoRaceInfo" class="alert alert-info" role="alert">
+                                A disqualified race is race that has been judged as not counting towards to the rankings.
+                                This maybe because of an something completely disrupting the race.
+                                I.e a lure break down, not enough runners, etc.
+                            </div>
                         </div>
                     </div>
                 </div>
