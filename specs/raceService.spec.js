@@ -71,7 +71,7 @@ describe("raceService", function(){
                 dateText: "1/11/2014 12:00:00 AM",
                 groupText: "Group 1",
                 lengthText: "Sprint",
-                placingText: [
+                placingObjects: [
                     {"greyhoundName": "LUCY LOBSTER","placing": "1"},
                     {"greyhoundName": "JEWEL ACTION","placing": "2"},
                     {"greyhoundName": "ANYTHING LESS", "placing": "3"},

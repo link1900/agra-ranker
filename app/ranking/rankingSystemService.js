@@ -7,6 +7,9 @@ var moment = require('moment');
 var greyhoundService = require('../greyhound/greyhoundService');
 var mongoService = require('../mongoService');
 var RankingSystem = require('./rankingSystem').model;
+var baseService = require('../baseService');
+
+baseService.addStandardServiceMethods(rankingSystemService, RankingSystem);
 
 rankingSystemService.preProcessRaw = function(entityRequest){
     var model = entityRequest.rawEntity;
