@@ -1,7 +1,7 @@
 <div id="raceView" data-ng-controller="RaceCtrl" data-ng-init="findOne()">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Race - {{race.name}}</h3>
+            <h3 class="panel-title">{{race.name}}</h3>
         </div>
         <div class="panel-body">
             <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
