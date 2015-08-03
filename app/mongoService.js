@@ -17,6 +17,10 @@ mongoService.find = function(dao, search, limit, offset, sort){
     return deferred.promise;
 };
 
+mongoService.findAsStream = function(dao, search, limit, offset, sort){
+    return dao.find(search).limit(limit).skip(limit * offset).sort(sort).stream();
+};
+
 mongoService.count = function(dao, search){
     var deferred = q.defer();
     dao.count(search).exec(function(err, result){

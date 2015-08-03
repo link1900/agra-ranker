@@ -13,6 +13,10 @@ baseService.addStandardServiceMethods = function(service, dao){
         return mongoService.find(dao, query, limit, offset, sort);
     };
 
+    service.findAsStream = function(query, limit, offset, sort){
+        return mongoService.findAsStream(dao, query, limit, offset, sort);
+    };
+
     service.count = function(query){
         return mongoService.count(dao, query);
     };
