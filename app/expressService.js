@@ -2,6 +2,7 @@ var expressService = module.exports = {};
 
 var _ = require('lodash');
 var q = require('q');
+var csv = require('csv');
 
 expressService.setTotalHeader = function(res, service, query){
     return service.count(query).then(function(count){
@@ -210,4 +211,34 @@ expressService.standardSearch = function(req, res, service, fields){
     return expressService.setTotalHeader(res, service, query).then(function(){
         return expressService.promToRes(service.find(query, searchParams.limit, searchParams.offset, searchParams.sort), res);
     });
+};
+
+expressService.streamCollectionToCSVResponse = function(req, res, service, fields, fileName, transformFunction){
+    var deferred = q.defer();
+
+    var query = expressService.buildQueryFromRequest(req, fields);
+    var searchParams = expressService.parseSearchParams(req);
+    var dbStream = service.findAsStream(query, searchParams.limit, searchParams.offset, searchParams.sort);
+    var transformer = csv.transform(transformFunction);
+    var stringifier = csv.stringify();
+
+    res.setHeader('Content-disposition', 'attachment; filename='+fileName);
+    res.writeHead(200, {
+        'Content-Type': 'text/csv'
+    });
+
+    dbStream.on('error', function (err) {
+        deferred.reject(err);
+    });
+
+    transformer.on('error', function (err) {
+        deferred.reject(err);
+    });
+
+    stringifier.on('error', function (err) {
+        deferred.reject(err);
+    });
+
+    dbStream.pipe(transformer).pipe(stringifier).pipe(res);
+    return deferred.promise;
 };
