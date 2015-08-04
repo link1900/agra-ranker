@@ -351,6 +351,18 @@ greyhoundService.greyhoundExportTransformer = function(greyhoundRecord, callback
     });
 };
 
+greyhoundService.greyhoundToExportFormat = function(greyhound){
+    var exportFormat = {};
+    exportFormat.name = greyhound.name;
+    if (greyhound.sireName != null){
+        exportFormat.sire = greyhound.sireName;
+    }
+    if (greyhound.damName != null){
+        exportFormat.dam = greyhound.damName;
+    }
+    return exportFormat;
+};
+
 greyhoundService.convertGreyhoundRecordIntoRow = function(greyhoundRecord){
     var processing = {record: greyhoundRecord, row: {name: greyhoundRecord.name}};
     return greyhoundService.addSireName(processing).then(greyhoundService.addDamName);

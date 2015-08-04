@@ -3,6 +3,8 @@ var expressService = module.exports = {};
 var _ = require('lodash');
 var q = require('q');
 var csv = require('csv');
+var moment = require('moment');
+var JSONStream = require('JSONStream');
 
 expressService.setTotalHeader = function(res, service, query){
     return service.count(query).then(function(count){
@@ -214,31 +216,49 @@ expressService.standardSearch = function(req, res, service, fields){
 };
 
 expressService.streamCollectionToCSVResponse = function(req, res, service, fields, fileName, transformFunction){
-    var deferred = q.defer();
-
     var query = expressService.buildQueryFromRequest(req, fields);
     var searchParams = expressService.parseSearchParams(req);
-    var dbStream = service.findAsStream(query, searchParams.limit, searchParams.offset, searchParams.sort);
+    var dbStream = service.findAsStream(query, null, searchParams.offset, searchParams.sort);
     var transformer = csv.transform(transformFunction);
     var stringifier = csv.stringify();
 
-    res.setHeader('Content-disposition', 'attachment; filename='+fileName);
+    res.setHeader('Content-disposition', 'attachment; filename='+expressService.generateFileName(fileName, "csv"));
     res.writeHead(200, {
         'Content-Type': 'text/csv'
     });
 
     dbStream.on('error', function (err) {
-        deferred.reject(err);
+        expressService.errorResponse(res, err);
     });
 
     transformer.on('error', function (err) {
-        deferred.reject(err);
+        expressService.errorResponse(res, err);
     });
 
     stringifier.on('error', function (err) {
-        deferred.reject(err);
+        expressService.errorResponse(res, err);
     });
 
     dbStream.pipe(transformer).pipe(stringifier).pipe(res);
-    return deferred.promise;
+};
+
+expressService.streamCollectionToJSONResponse = function(req, res, service, fields, fileName, mapFunction){
+    var query = expressService.buildQueryFromRequest(req, fields);
+    var searchParams = expressService.parseSearchParams(req);
+    var dbStream = service.findAsStream(query, null, searchParams.offset, searchParams.sort);
+    var jsonStream = JSONStream.stringify();
+    res.setHeader('Content-disposition', 'attachment; filename='+expressService.generateFileName(fileName, "json"));
+    res.writeHead(200, {
+        'Content-Type': 'application/json'
+    });
+
+    dbStream.on('error', function (err) {
+        expressService.errorResponse(res, err);
+    });
+
+    dbStream.pipe(jsonStream).pipe(res);
+};
+
+expressService.generateFileName = function(prefix, extention){
+    return prefix + "_" + moment().format('YYYYMMDDHHmmss').toString() + "." + extention;
 };

@@ -3,8 +3,6 @@ var greyhoundController = module.exports = {};
 var mongoose = require('mongoose');
 var q = require('q');
 var _ = require('lodash');
-var moment = require('moment');
-
 
 var expressService = require('../expressService');
 var greyhoundService = require('./greyhoundService');
@@ -26,11 +24,12 @@ greyhoundController.update = function(req, res) {
 };
 
 greyhoundController.exportCSV = function(req, res){
-    var fileName = "greyhound_export_" + moment().format('YYYYMMDDHHmmss').toString() + ".csv";
     expressService.streamCollectionToCSVResponse(
-        req,
-        res,
-        greyhoundService,
-        greyhoundController.searchFields,
-        fileName, greyhoundService.greyhoundExportTransformer);
+        req, res, greyhoundService, greyhoundController.searchFields,
+        "greyhound_export", greyhoundService.greyhoundExportTransformer);
+};
+
+greyhoundController.exportJSON = function(req, res){
+    expressService.streamCollectionToJSONResponse(
+        req, res, greyhoundService, greyhoundController.searchFields, "greyhound_export");
 };

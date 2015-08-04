@@ -61,6 +61,7 @@ module.exports = function(app) {
     //greyhound routes
     app.get('/greyhound', greyhoundController.find);
     app.get('/greyhound.csv', greyhoundController.exportCSV);
+    app.get('/greyhound.json', greyhoundController.exportJSON);
     app.get('/greyhound/:greyhoundId', greyhoundController.getOne);
     app.post('/greyhound', securityController.checkAuthentication,greyhoundController.create);
     app.put('/greyhound/:greyhoundId', securityController.checkAuthentication, greyhoundController.update);

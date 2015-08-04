@@ -251,29 +251,63 @@
 - (DONE) update ranking system to store result to the ranking collection and read from there
 - (DONE) define agra ranking system
 - (DONE) define sire and dam ranking systems
-- dead heat rule - points from matching positions are summed and divided
-- confirm main ranking system by doing a system compare
-- confirm sire and dam ranking system by doing a system compare
 
-### 6.0.15 Advanced search
+## 6.1.0 - Getting to Ranker 6 Level
+- (DONE) list all rankings on the home screen
+- Export rankings in overlapping grid format csv
+- Export rankings as csv
+- (DONE) Export greyhounds as csv
+- Export greyhounds as JSON
+- Export Races as CSV
+- Contributing races should say group and distance of the race
+- Contributing races should link to the race
+- Expose the ability to make a ranking a default ranking for the system
+- Add points to a greyhounds record
+- Add the ability to get default points and ranking
+- Display a greyhounds rank and points on the greyhound view
+- When adding a greyhound to a race have the ability for it to be a new greyhound
+- Greyhounds listed in the placings on a race should display its points
+- Have the ability to add many greyhounds at once
+- When setting a sire of a greyhound it should be a modal or link back to the sire and same for dam
+- Greyhound placings should display group and race length (and default points)
+- List all placings
+- Stats menu
+  - Greyhound count
+  - rankings greyhounds
+  - races
+  - placings
+  - ranked greyhounds this month
+  - 3 races this month
+  - last changed date
+  - group 1 races
+  - group 2 races
+  - group 3 race
+  - sprint dogs
+  - distance dogs
+- List races
+    - Filter by month
+    - Filter by year
+    - Filter by financial year
+    - Filter between dates
+
+- List greyhounds
+    - Filter by month
+    - Filter by year
+    - Filter by financial year
+    - Filter between dates
+- About section explaining the site
+- Search greyhound by name
+- Search race by name
+- Get point calculations for each ranking
 - Upgrade grid to have good search controls for races
 - Hide extra search options if none are defined
 - Save the advanced search options on a grid (in the panel is open or closed and the details)
 - Advanced search options have a clear button which clears all settings
 - Switch basic like search to use mongo full text search
 - allow race search to be done by two dates
-
-## 6.1.0 - Getting to Ranker 6 Level
-- auto retrieve sire and dam for a greyhound from authority site (with confirm prompt)
 - update the read me with the .example_env and what each config does
-- refactor the admin service to import the models once and do all operations of that list
-- add protactor tests for the major flows like greyhound crud, race crud placing crud, rankings and score check
-- (DONE) list all rankings on the home screen
 - put in proper action logging
 - save the history log to the database
-- change npm test to constant
-- Move upload to a directive
-- have the ability confirm a races data / deal with conflicts and merge it
 - export races csv
 - race upload section
 - placing upload section
@@ -288,15 +322,24 @@
 - inline edit form on greyhound
 - search on keydown for tables search box
 - race & placing csv import api
-- Switch test data loading to fixtures
 - deploy and perform PVT online
+- confirm main ranking system by doing a system compare
+- confirm sire and dam ranking system by doing a system compare
 
 ## 6.1.1 - Beyond the ranker 6 first steps
 
 ## Backlog - Beyond the ranker 6
+- Have the ability to rank by prize money
 - export greyhound json
 - export races json
 - add a news section
+- auto retrieve sire and dam for a greyhound from authority site (with confirm prompt)
+- refactor the admin service to import the models once and do all operations of that list
+- add protactor tests for the major flows like greyhound crud, race crud placing crud, rankings and score check
+- change npm test to constant
+- Move upload to a directive
+- have the ability confirm a races data / deal with conflicts and merge it
+- Switch test data loading to fixtures
 - siblings feature which display both full and half siblings
 - Fix set model in the routes to be json based, done after auth and standardized
 - Fix an issue when calling DELETE /user/badid
@@ -319,6 +362,7 @@
 - global search (on a search page)
 - Add a find parents button
 - fixture data is required
+- dead heat rule - points from matching positions are summed and divided
 - cache ranking queries
 - admin specific search options for races, to find problem races
 - batch job to clean up expired invites or (mongo TTL index)
