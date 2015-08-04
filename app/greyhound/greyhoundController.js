@@ -31,5 +31,5 @@ greyhoundController.exportCSV = function(req, res){
 
 greyhoundController.exportJSON = function(req, res){
     expressService.streamCollectionToJSONResponse(
-        req, res, greyhoundService, greyhoundController.searchFields, "greyhound_export");
+        req, res, greyhoundService, greyhoundController.searchFields, "greyhound_export", greyhoundService.greyhoundToExportFormat);
 };

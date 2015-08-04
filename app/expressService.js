@@ -5,6 +5,7 @@ var q = require('q');
 var csv = require('csv');
 var moment = require('moment');
 var JSONStream = require('JSONStream');
+var highland = require('highland');
 
 expressService.setTotalHeader = function(res, service, query){
     return service.count(query).then(function(count){
@@ -246,6 +247,7 @@ expressService.streamCollectionToJSONResponse = function(req, res, service, fiel
     var query = expressService.buildQueryFromRequest(req, fields);
     var searchParams = expressService.parseSearchParams(req);
     var dbStream = service.findAsStream(query, null, searchParams.offset, searchParams.sort);
+    var stream = highland(dbStream);
     var jsonStream = JSONStream.stringify();
     res.setHeader('Content-disposition', 'attachment; filename='+expressService.generateFileName(fileName, "json"));
     res.writeHead(200, {
@@ -256,7 +258,11 @@ expressService.streamCollectionToJSONResponse = function(req, res, service, fiel
         expressService.errorResponse(res, err);
     });
 
-    dbStream.pipe(jsonStream).pipe(res);
+    if (mapFunction != null){
+        stream = stream.map(mapFunction);
+    }
+
+    stream.pipe(jsonStream).pipe(res);
 };
 
 expressService.generateFileName = function(prefix, extention){
