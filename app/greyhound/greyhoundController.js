@@ -24,9 +24,10 @@ greyhoundController.update = function(req, res) {
 };
 
 greyhoundController.exportCSV = function(req, res){
-    expressService.streamCollectionToCSVResponse(
-        req, res, greyhoundService, greyhoundController.searchFields,
-        "greyhound_export", greyhoundService.greyhoundExportTransformer);
+    var findOptions = expressService.parseSearchParams(req);
+    findOptions.query = expressService.buildQueryFromRequest(req, greyhoundController.searchFields);
+    findOptions.limit = null;
+    expressService.streamCollectionToCSVResponse(res, findOptions, greyhoundService, "greyhound_export", greyhoundService.greyhoundExportTransformer);
 };
 
 greyhoundController.exportJSON = function(req, res){

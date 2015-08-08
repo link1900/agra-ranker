@@ -216,10 +216,8 @@ expressService.standardSearch = function(req, res, service, fields){
     });
 };
 
-expressService.streamCollectionToCSVResponse = function(req, res, service, fields, fileName, transformFunction){
-    var query = expressService.buildQueryFromRequest(req, fields);
-    var searchParams = expressService.parseSearchParams(req);
-    var dbStream = service.findAsStream(query, null, searchParams.offset, searchParams.sort);
+expressService.streamCollectionToCSVResponse = function(res, findOptions, service, fileName, transformFunction){
+    var dbStream = service.findAsStream(findOptions.query, findOptions.limit, findOptions.offset, findOptions.sort);
     var transformer = csv.transform(transformFunction);
     var stringifier = csv.stringify();
 
