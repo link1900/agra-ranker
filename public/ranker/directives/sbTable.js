@@ -233,6 +233,7 @@ angular.module('directives')
                 columnInfo: '=',
                 searchFields: '=',
                 postProcess: '=',
+                exportLink: '=',
                 tableName: '@',
                 hideSearch : '@',
                 hideOnEmpty: '@'

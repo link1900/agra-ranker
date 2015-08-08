@@ -141,3 +141,11 @@ rankingService.insertCommonCriteria = function(rankingSystem){
     });
     return rankingSystem;
 };
+
+rankingService.transformCSV = function(ranking){
+    var exportFormat = {};
+    exportFormat.rank = ranking.rank;
+    exportFormat.name = ranking.greyhoundName;
+    exportFormat.points = ranking.totalPoints;
+    return exportFormat;
+};

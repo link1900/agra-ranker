@@ -12,24 +12,31 @@ var expressService = require('../expressService');
 
 expressService.addStandardMethods(rankingController, rankingService);
 
+rankingController.getDefaultParams = function(req){
+    var params = {};
+    params.rankingSystemRef = req.param('rankingSystemRef');
+    params.periodStart = req.param('startDate');
+    params.periodEnd = req.param('endDate');
+
+    if (params.periodStart != null){
+        params.periodStart = moment(params.periodStart).toDate();
+    } else {
+        params.periodStart = moment().toDate();
+    }
+
+    if (params.periodEnd != null){
+        params.periodEnd = moment(params.periodEnd).toDate();
+    } else {
+        params.periodStart = moment().subtract(100, 'years').toDate();
+    }
+
+    return params;
+};
+
 rankingController.getRankings = function(req, res) {
-    var rankingSystemRef = req.param('rankingSystemRef');
-    var periodStart = req.param('startDate');
-    var periodEnd = req.param('endDate');
+    var params = rankingController.getDefaultParams(req);
 
-    if (periodStart != null){
-        periodStart = moment(periodStart).toDate();
-    } else {
-        periodStart = moment().toDate();
-    }
-
-    if (periodEnd != null){
-        periodEnd = moment(periodEnd).toDate();
-    } else {
-        periodStart = moment().subtract(100, 'years').toDate();
-    }
-
-    rankingService.createRankingsIfRequired(periodStart, periodEnd, rankingSystemRef).then(function(rankingsFingerPrint){
+    rankingService.createRankingsIfRequired(params.periodStart, params.periodEnd, params.rankingSystemRef).then(function(rankingsFingerPrint){
         var query = {"fingerPrint": rankingsFingerPrint};
         var searchParams = expressService.parseSearchParams(req);
         return expressService.setTotalHeader(res, rankingService, query).then(function(){
@@ -39,3 +46,16 @@ rankingController.getRankings = function(req, res) {
         helper.errorResponse(res, error);
     });
 };
+
+rankingController.exportCSV = function(req, res){
+    var params = rankingController.getDefaultParams(req);
+
+    rankingService.createRankingsIfRequired(params.periodStart, params.periodEnd, params.rankingSystemRef).then(function(rankingsFingerPrint){
+        var findOptions = expressService.parseSearchParams(req);
+        findOptions.query = {"fingerPrint": rankingsFingerPrint};
+        expressService.streamCollectionToCSVResponse(res, findOptions, rankingService, "rankings", rankingService.transformCSV);
+    },function(error){
+        helper.errorResponse(res, error);
+    });
+};
+
