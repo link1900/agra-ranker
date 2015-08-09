@@ -27,7 +27,7 @@ greyhoundController.exportCSV = function(req, res){
     var findOptions = expressService.parseSearchParams(req);
     findOptions.query = expressService.buildQueryFromRequest(req, greyhoundController.searchFields);
     findOptions.limit = null;
-    expressService.streamCollectionToCSVResponse(res, findOptions, greyhoundService, "greyhound_export", greyhoundService.greyhoundExportTransformer);
+    expressService.streamCollectionToCSVResponse(res, findOptions, greyhoundService, "greyhound_export", greyhoundService.greyhoundToExportFormat);
 };
 
 greyhoundController.exportJSON = function(req, res){

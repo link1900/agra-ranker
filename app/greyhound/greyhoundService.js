@@ -343,14 +343,6 @@ greyhoundService.findExistingOld = function(greyhound) {
     return deferred.promise;
 };
 
-greyhoundService.greyhoundExportTransformer = function(greyhoundRecord, callback){
-    greyhoundService.convertGreyhoundRecordIntoRow(greyhoundRecord).then(function(processing){
-        callback(null, processing.row);
-    }, function(error){
-        callback(error);
-    });
-};
-
 greyhoundService.greyhoundToExportFormat = function(greyhound){
     var exportFormat = {};
     exportFormat.name = greyhound.name;
@@ -363,38 +355,9 @@ greyhoundService.greyhoundToExportFormat = function(greyhound){
     return exportFormat;
 };
 
-greyhoundService.convertGreyhoundRecordIntoRow = function(greyhoundRecord){
-    var processing = {record: greyhoundRecord, row: {name: greyhoundRecord.name}};
-    return greyhoundService.addSireName(processing).then(greyhoundService.addDamName);
-};
-
-greyhoundService.addSireName = function(processing){
-    if (processing.record.sireRef != null){
-        return mongoService.findOneById(Greyhound, processing.record.sireRef).then(function(found){
-            processing.row.sireName = found.name;
-            return processing;
-        });
-    } else {
-        processing.row.sireName = "";
-        return q(processing);
-    }
-};
-
-greyhoundService.addDamName = function(processing){
-    if (processing.record.damRef != null){
-        return mongoService.findOneById(Greyhound, processing.record.damRef).then(function(found){
-            processing.row.damName = found.name;
-            return processing;
-        });
-    } else {
-        processing.row.damName = "";
-        return q(processing);
-    }
-};
-
 greyhoundService.exportGreyhoundCSV = function(batchJob){
     var startedAt = new Date();
-    return fileService.streamCollectionToFile(Greyhound, batchJob.metadata.fileName, {}, greyhoundService.greyhoundExportTransformer).then(function(result){
+    return fileService.streamCollectionToFile(Greyhound, batchJob.metadata.fileName, {}, greyhoundService.greyhoundToExportFormat).then(function(result){
         if (result != null){
             if (batchJob.metadata == null){
                 batchJob.metadata = {};
