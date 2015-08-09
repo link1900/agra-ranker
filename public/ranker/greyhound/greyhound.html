@@ -6,8 +6,6 @@
         <div class="panel-body">
             <a href="#/greyhound/create" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Add</a>
             <span data-ng-include="'ranker/greyhound/greyhoundImport.html'"></span>
-            <a href="/greyhound.csv?sort_direction=asc&sort_field=name" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down"></span> Export as csv</a>
-            <a href="/greyhound.json?sort_direction=asc&sort_field=name" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down"></span> Export as json</a>
         </div>
     </div>
     <div id="greyhoundList" data-ng-controller="GreyhoundCtrl">
@@ -15,6 +13,7 @@
              data-table-name="greyhound"
              data-model-service="greyhoundSvr"
              data-message-empty="No greyhounds found"
+             data-export-link="'/greyhound.csv'"
              data-column-info="columnInfo"
              data-search-fields="searchInfo">
         </div>
