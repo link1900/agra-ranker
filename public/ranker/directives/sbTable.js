@@ -1,7 +1,6 @@
 angular.module('directives')
     .directive('sbTable', function(headerHelperService, $filter, localStorageService, $q) {
         function linkBody(scope, element, attrs) {
-
             scope.noRecords = true;
             scope.showSearch = true;
             if (scope.hideSearch != null && scope.hideSearch === "true"){
@@ -91,7 +90,14 @@ angular.module('directives')
                 scope.setSearchFieldsDefaults();
             };
 
+            scope.updateExportUrl = function(){
+                if(scope.exportLink != null){
+                    scope.exportUrl = scope.exportLink + "?" + $.param(scope.searchParams);
+                }
+            };
+
             scope.loadModels = function() {
+                scope.updateExportUrl();
                 scope.modelService.query(scope.searchParams, function(resultModels, headers) {
                     scope.models = resultModels;
                     scope.noRecords = scope.models.length == 0;
