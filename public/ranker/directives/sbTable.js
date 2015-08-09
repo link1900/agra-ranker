@@ -92,7 +92,14 @@ angular.module('directives')
 
             scope.updateExportUrl = function(){
                 if(scope.exportLink != null){
-                    scope.exportUrl = scope.exportLink + "?" + $.param(scope.searchParams);
+                    var params = _.cloneDeep(scope.searchParams);
+                    _.keys(params).forEach(function(k) {
+                        if (!params[k]) {
+                            delete params[k];
+                        }
+                    });
+
+                    scope.exportUrl = scope.exportLink + "?" + $.param(params);
                 }
             };
 
