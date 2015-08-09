@@ -78,6 +78,7 @@ module.exports = function(app) {
 
     //race routes
     app.get('/race', raceController.find);
+    app.get('/race.csv', raceController.exportCSV);
     app.get('/race/:raceId', raceController.getOne);
     app.post('/race', securityController.checkAuthentication, raceController.create);
     app.put('/race/:raceId', securityController.checkAuthentication, raceController.update);

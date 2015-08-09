@@ -7,4 +7,16 @@
         <span data-ng-include="'ranker/race/raceImport.html'"></span>
     </div>
 </div>
-<div data-ng-include="'ranker/race/raceList.html'"></div>
+<div id="raceList" data-ng-controller="RaceCtrl">
+    <div data-sb-table
+         data-table-name="race"
+         data-model-service="raceSvr"
+         data-message-empty="No races found"
+         data-column-info="columnInfo"
+         data-search-fields="searchInfo"
+         data-export-link="'/race.csv'"
+         data-per-page="15"
+         data-sort-field="date"
+         data-sort-direction="desc">
+    </div>
+</div>

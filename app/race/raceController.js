@@ -10,8 +10,10 @@ var expressService = require('../expressService');
 
 expressService.addStandardMethods(raceController, raceService);
 
+raceController.searchFields = ['name=name','name~like', 'date>=startDate', 'date<=endDate'];
+
 raceController.find = function(req, res){
-    expressService.standardSearch(req, res, raceService, ['name=name','name~like', 'date>=startDate', 'date<=endDate']);
+    expressService.standardSearch(req, res, raceService, raceController.searchFields);
 };
 
 raceController.getDistinctForDistance = function(req, res){
@@ -28,4 +30,11 @@ raceController.update = function(req, res) {
 
 raceController.destroy = function(req, res) {
     expressService.promToRes(raceService.remove(req.model), res);
+};
+
+raceController.exportCSV = function(req, res){
+    var findOptions = expressService.parseSearchParams(req);
+    findOptions.query = expressService.buildQueryFromRequest(req, raceController.searchFields);
+    findOptions.limit = null;
+    expressService.streamCollectionToCSVResponse(res, findOptions, raceService, "race_export", raceService.toExportFormat);
 };

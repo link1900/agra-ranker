@@ -319,3 +319,12 @@ eventService.addListener("race group level delete","Deleted GroupLevel", functio
         return q();
     }
 });
+
+raceService.toExportFormat = function(raceRecord){
+    var exportRecord = {};
+    exportRecord.name = raceRecord.name;
+    exportRecord.date = moment(raceRecord.date).format('LLL');
+    exportRecord.group = raceRecord.groupLevel.name;
+    exportRecord.length = raceRecord.distanceMeters;
+    return exportRecord;
+};
