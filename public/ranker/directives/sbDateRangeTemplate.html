@@ -1,7 +1,7 @@
 <div id="sbDateRange" class="row">
     <button class="btn btn-default" ng-class="{active:showDateRangeDetails}" ng-click="showDateRangeDetails=!showDateRangeDetails">
         <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-        <span ng-hide="sbModel.startDate == null && sbModel.endDate == null">{{sbModel.startDate | date:'MMMM yyyy'}} - {{sbModel.endDate | date:'MMMM yyyy'}}</span><span ng-show="sbModel.startDate == null && sbModel.endDate == null">All</span> <b class="caret"></b>
+        <span ng-hide="sbModel.startDate == null && sbModel.endDate == null">{{sbModel.startDate | date:'MMMM yyyy'}} - {{sbModel.endDate | date:'MMMM yyyy'}}</span><span ng-show="sbModel.startDate == null && sbModel.endDate == null">All time</span> <b class="caret"></b>
     </button>
 </div>
 <div ng-show="showDateRangeDetails">
@@ -15,6 +15,7 @@
     </div>
     <div class="row">
         <div class="col-md-3">
+            <button type="button" class="btn btn-default btn-xs" ng-click="setToAllTime()">All time</button>
             <button type="button" class="btn btn-default btn-xs" ng-click="setToThisYear()">This year</button>
             <button type="button" class="btn btn-default btn-xs" ng-click="setToLastYear()">Last year</button>
             <div class="btn-group">

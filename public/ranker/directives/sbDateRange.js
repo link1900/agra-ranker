@@ -72,11 +72,24 @@ angular.module('directives')
             };
 
             scope.setModelStartDate = function(start){
-                scope.sbModel.startDate = moment(start).toDate();
+                if (start != null){
+                    scope.sbModel.startDate = moment(start).toDate();
+                } else {
+                    scope.sbModel.startDate = null;
+                }
+
             };
 
             scope.setModelEndDate = function(end){
-                scope.sbModel.endDate = moment(end).toDate();
+                if (end != null){
+                    scope.sbModel.endDate = moment(end).toDate();
+                } else {
+                    scope.sbModel.endDate = null;
+                }
+            };
+
+            scope.setToAllTime = function(){
+                scope.setModelDateFromRange({start: null, end:null});
             };
 
             scope.setToThisYear = function(){
