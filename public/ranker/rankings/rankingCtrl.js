@@ -1,4 +1,4 @@
-angular.module('controllers').controller('rankingCtrl', function($scope, rankingSvr, rankingSystemSvr, $q) {
+angular.module('controllers').controller('rankingCtrl', function($scope, rankingSvr, rankingSystemSvr) {
     $scope.rankingService = rankingSvr;
     $scope.selected = {};
     $scope.columnInfo = [
