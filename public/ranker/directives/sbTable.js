@@ -3,6 +3,7 @@ angular.module('directives')
         function linkBody(scope, element, attrs) {
             scope.noRecords = true;
             scope.showSearch = true;
+            scope.exportUrls = null;
             if (scope.hideSearch != null && scope.hideSearch === "true"){
                 scope.showSearch = false;
             }
@@ -91,15 +92,21 @@ angular.module('directives')
             };
 
             scope.updateExportUrl = function(){
-                if(scope.exportLink != null){
+                if(scope.exportCsvLink != null || scope.exportPdfLink != null){
                     var params = _.cloneDeep(scope.searchParams);
                     _.keys(params).forEach(function(k) {
                         if (!params[k]) {
                             delete params[k];
                         }
                     });
+                    scope.exportUrls = {};
+                    if (scope.exportCsvLink != null){
+                        scope.exportUrls.csv = scope.exportCsvLink + "?" + $.param(params);
+                    }
+                    if (scope.exportPdfLink != null){
+                        scope.exportUrls.pdf = scope.exportPdfLink + "?" + $.param(params);
+                    }
 
-                    scope.exportUrl = scope.exportLink + "?" + $.param(params);
                 }
             };
 
@@ -246,7 +253,8 @@ angular.module('directives')
                 columnInfo: '=',
                 searchFields: '=',
                 postProcess: '=',
-                exportLink: '=',
+                exportCsvLink: '=',
+                exportPdfLink: '=',
                 tableName: '@',
                 hideSearch : '@',
                 hideOnEmpty: '@'

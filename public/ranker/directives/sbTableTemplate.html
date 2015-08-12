@@ -43,7 +43,16 @@
             </div>
             <div class="col-md-2 pull-right">
                 <span>Show <label><select id="perPageCountSelection" class="form-control input-sm" data-ng-model="searchParams.per_page" ng-options="perPageOption.value as perPageOption.name for perPageOption in perPageOptions"></select></label> items</span>
-                <a download ng-show="exportUrl" ng-href="{{exportUrl}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-download-alt"></span> Export</a>
+                <div ng-if="exportUrls" class="btn-group">
+                    <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-download-alt"></span> Export
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="(key, val) in exportUrls">
+                            <a download ng-href="{{val}}">{{key}}</a>
+                        </li>
+                    </ul>
+                </div>
                 <button type="button" ng-click="resetSearch()" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-refresh"></span> Reset</button>
             </div>
         </div>
