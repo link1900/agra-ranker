@@ -263,6 +263,15 @@ expressService.streamCollectionToJSONResponse = function(req, res, service, fiel
     stream.pipe(jsonStream).pipe(res);
 };
 
+expressService.streamPdfToResponse = function(res, pdfStream, fileName){
+    res.setHeader('Content-disposition', 'attachment; filename='+expressService.generateFileName(fileName, "pdf"));
+    res.writeHead(200, {
+        'Content-Type': "application/pdf"
+    });
+
+    pdfStream.pipe(res);
+};
+
 expressService.generateFileName = function(prefix, extention){
     return prefix + "_" + moment().format('YYYYMMDDHHmmss').toString() + "." + extention;
 };
