@@ -10,7 +10,6 @@ var mongoService = require('../mongoService');
 var RankingSystem = require('./rankingSystem').model;
 var Ranking = require('./ranking').model;
 var scoreService = require('./scoreService');
-var rankingSystemService = require('./rankingSystemService');
 var eventService = require('../event/eventService');
 var batchService = require('../batch/batchService');
 var baseService = require('../baseService');
