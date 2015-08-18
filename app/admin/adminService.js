@@ -54,6 +54,10 @@ adminService.removeAllGroupLevels = function(){
     return mongoService.dropCollection(GroupLevel);
 };
 
+adminService.removeAllRankings = function(){
+    return mongoService.dropCollection(Ranking);
+};
+
 adminService.setupGroupLevel = function(){
     return mongoService.saveAll([
         new GroupLevel({name:"Group 1"}),
