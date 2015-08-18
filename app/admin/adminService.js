@@ -8,6 +8,7 @@ var raceService = require('../race/raceService');
 var greyhoundService = require('../greyhound/greyhoundService');
 var placingService = require('../placing/placingService');
 var Ranking = mongoose.model('Ranking');
+var Score = mongoose.model('Score');
 var User = require('../user/user').model;
 var RankingSystem = mongoose.model('RankingSystem');
 var GroupLevel = require('../groupLevel/groupLevel').model;
@@ -55,7 +56,9 @@ adminService.removeAllGroupLevels = function(){
 };
 
 adminService.removeAllRankings = function(){
-    return mongoService.dropCollection(Ranking);
+    return mongoService.dropCollection(Score).then(function(){
+        return mongoService.dropCollection(Ranking);
+    });
 };
 
 adminService.setupGroupLevel = function(){
