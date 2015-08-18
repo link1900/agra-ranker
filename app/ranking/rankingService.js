@@ -148,3 +148,31 @@ rankingService.transformCSV = function(ranking){
     exportFormat.points = ranking.totalPoints;
     return exportFormat;
 };
+
+rankingService.toCSVGrid = function(rankings){
+    var colSize = 34;
+    var results = [];
+    for (var i=0; i<colSize;i++){
+        var result = {};
+        var col1 = rankings[i];
+        var col2 = rankings[i+colSize];
+        var col3 = rankings[i+colSize*2];
+        if (col1 != null){
+            result.rank1 = col1.rank;
+            result.name1 = col1.greyhoundName;
+            result.pts1 = col1.totalPoints;
+        }
+        if (col2 != null){
+            result.rank2 = col2.rank;
+            result.name2 = col2.greyhoundName;
+            result.pts2 = col2.totalPoints;
+        }
+        if (col3 != null){
+            result.rank3 = col3.rank;
+            result.name3 = col3.greyhoundName;
+            result.pts3 = col3.totalPoints;
+        }
+        results.push(result);
+    }
+    return results;
+};

@@ -4,6 +4,8 @@ var _ = require('lodash');
 var q = require('q');
 var moment = require('moment');
 var mongoose = require('mongoose');
+var highland = require('highland');
+
 var Ranking = require('./ranking').model;
 var helper = require('../helper');
 var mongoService = require('../mongoService');
@@ -59,3 +61,22 @@ rankingController.exportCSV = function(req, res){
     });
 };
 
+rankingController.exportCSVGrid = function(req, res){
+    var params = rankingController.getDefaultParams(req);
+
+    rankingService.createRankingsIfRequired(params.periodStart, params.periodEnd, params.rankingSystemRef).then(function(rankingsFingerPrint){
+        var query = {"fingerPrint": rankingsFingerPrint};
+        var searchParams = expressService.parseSearchParams(req);
+        return expressService.setTotalHeader(res, rankingService, query).then(function(){
+            rankingService.find(query, searchParams.limit, searchParams.offset, searchParams.sort).then(function(results){
+                expressService.streamToCSVResponse(res, "rankingsGrid", highland(rankingService.toCSVGrid(results)));
+            },function(error){
+                helper.errorResponse(res, error);
+            });
+        },function(error){
+            helper.errorResponse(res, error);
+        });
+    },function(error){
+        helper.errorResponse(res, error);
+    });
+};

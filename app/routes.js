@@ -108,6 +108,7 @@ module.exports = function(app) {
     //rankings
     app.get('/ranking', rankingController.getRankings);
     app.get('/ranking.csv', rankingController.exportCSV);
+    app.get('/ranking.grid.csv', rankingController.exportCSVGrid);
     app.param('rankingId', rankingController.setModel);
 
     //file routes
