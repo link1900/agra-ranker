@@ -219,12 +219,6 @@ expressService.standardSearch = function(req, res, service, fields){
 expressService.streamCollectionToCSVResponse = function(res, findOptions, service, fileName, transformFunction){
     var dbStream = service.findAsStream(findOptions.query, findOptions.limit, findOptions.offset, findOptions.sort);
     var transformer = csv.transform(transformFunction);
-    var stringifier = csv.stringify();
-
-    res.setHeader('Content-disposition', 'attachment; filename='+expressService.generateFileName(fileName, "csv"));
-    res.writeHead(200, {
-        'Content-Type': 'text/csv'
-    });
 
     dbStream.on('error', function (err) {
         expressService.errorResponse(res, err);
@@ -234,11 +228,22 @@ expressService.streamCollectionToCSVResponse = function(res, findOptions, servic
         expressService.errorResponse(res, err);
     });
 
+    expressService.streamToCSVResponse(res, fileName, dbStream.pipe(transformer));
+};
+
+expressService.streamToCSVResponse = function(res, fileName, stream){
+    var stringifier = csv.stringify();
+
+    res.setHeader('Content-disposition', 'attachment; filename='+expressService.generateFileName(fileName, "csv"));
+    res.writeHead(200, {
+        'Content-Type': 'text/csv'
+    });
+
     stringifier.on('error', function (err) {
         expressService.errorResponse(res, err);
     });
 
-    dbStream.pipe(transformer).pipe(stringifier).pipe(res);
+    stream.pipe(stringifier).pipe(res);
 };
 
 expressService.streamCollectionToJSONResponse = function(req, res, service, fields, fileName, mapFunction){
