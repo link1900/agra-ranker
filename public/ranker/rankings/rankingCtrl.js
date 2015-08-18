@@ -6,6 +6,11 @@ angular.module('controllers').controller('rankingCtrl', function($scope, ranking
         {title: "Greyhound", field:"greyhoundName", type:"link", baseLink:"#/greyhound/view/", linkField: "greyhoundRef"},
         {title: "Points", field:"totalPoints", type: "template", template:"/ranker/rankings/pointDetails.html" }
     ];
+    $scope.exportInfo = [
+        {label: "csv", link: "/ranking.csv"},
+        {label: "csv in columns", link: "/ranking.grid.csv"}
+    ];
+
     $scope.rankingSystems = [];
     $scope.periods = [];
     $scope.rankingSystemSearch = {

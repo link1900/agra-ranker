@@ -25,6 +25,10 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             {"name":"Name", field:"like", type:"text"}
         ];
 
+        $scope.exportInfo = [
+            {label: "csv", link: "/greyhound.csv"}
+        ];
+
         $scope.findOne = function() {
             greyhoundSvr.get({
                 greyhoundId: $routeParams.id

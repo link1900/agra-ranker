@@ -89,6 +89,10 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
             {"name":"Date Range", type:"dateRange"}
         ];
 
+        $scope.exportInfo = [
+            {label: "csv", link: "/race.csv"}
+        ];
+
         $scope.create = function(){
             if ($scope.race.disqualified == undefined){
                 $scope.race.disqualified = false;
