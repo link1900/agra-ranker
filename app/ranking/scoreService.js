@@ -45,7 +45,8 @@ scoreService.createScore = function(rankingSystem, pipeline, rankingsFingerPrint
                 points: result.points,
                 placingRef: result.placingRef,
                 position: result.position,
-                raceName: result.raceName
+                raceName: result.raceName,
+                raceRef: result.raceRef
             });
             return scoreService.create(score);
         });
@@ -61,7 +62,7 @@ scoreService.sumScoresIntoRankings = function(rankingSystem, rankingsFingerPrint
     var pipeline = [
         {$match: {"fingerPrint": rankingsFingerPrint}},
         {$group:  { _id : {"ref":"$ref", "name":"$name"}, "totalPoints": { $sum: "$points" },
-            "scores":{$push: {"points" : "$points", "placingRef":"$placingRef", "position" :"$position", "raceName":"$raceName"}} }}
+            "scores":{$push: {"points" : "$points", "placingRef":"$placingRef", "position" :"$position", "raceName":"$raceName", "raceRef":"$raceRef"}} }}
     ];
 
     return scoreService.aggregate(pipeline).then(function(results){
@@ -100,6 +101,7 @@ scoreService.getScoreCreationQuery = function(groupBy, pointAllotment){
         "points":{$literal: pointAllotment.points},
         "placingRef":"$_id",
         "position" :"$placing",
+        "raceRef" : "$raceRef",
         "raceName":"$race.name"
     };
     return [

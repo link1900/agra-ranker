@@ -8,7 +8,8 @@ ranking.scoreSchema = {
     points: {type: Number},
     placingRef: {type: String},
     position: {type: String},
-    raceName: {type: String}
+    raceName: {type: String},
+    raceRef: {type: String}
 };
 
 ranking.definition = {

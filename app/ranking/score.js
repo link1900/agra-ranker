@@ -12,7 +12,8 @@ scores.definition = {
     points: {type: Number},
     placingRef: {type: String},
     position: {type: String},
-    raceName: {type: String}
+    raceName: {type: String},
+    raceRef: {type: String}
 };
 
 scores.schema = new Schema(scores.definition);
