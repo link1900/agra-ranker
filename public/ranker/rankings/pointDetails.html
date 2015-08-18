@@ -9,7 +9,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="score in model.scores | orderBy:'-points'">
-            <td>{{score.raceName}}</td><td>{{score.position}}</td><td>{{score.points}}</td>
+            <td><a ng-href="#/race/view/{{score.raceRef}}">{{score.raceName}}</a></td><td>{{score.position}}</td><td>{{score.points}}</td>
         </tr>
         <tr><td></td><td><b>Total points:</b></td><td>{{model.totalPoints}}</td></tr>
         </tbody>
