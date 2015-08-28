@@ -254,13 +254,12 @@
 
 ## 6.1.0 - Getting to Ranker 6 Level
 - (DONE) list all rankings on the home screen
-- Export rankings in overlapping grid format csv
-- Export rankings as csv
+- (DONE) Export rankings as csv
 - (DONE) Export greyhounds as csv
-- Export greyhounds as JSON
-- Export Races as CSV
-- Contributing races should say group and distance of the race
-- Contributing races should link to the race
+- (DONE) Export greyhounds as JSON
+- (DONE) Export Races as CSV
+- (DONE) Export rankings in overlapping grid format csv
+- (DONE) Contributing races should link to the race
 - Expose the ability to make a ranking a default ranking for the system
 - Add points to a greyhounds record
 - Add the ability to get default points and ranking
@@ -289,7 +288,6 @@
     - Filter by year
     - Filter by financial year
     - Filter between dates
-
 - List greyhounds
     - Filter by month
     - Filter by year
@@ -333,6 +331,7 @@
 - export greyhound json
 - export races json
 - add a news section
+- export pdf for media releases
 - auto retrieve sire and dam for a greyhound from authority site (with confirm prompt)
 - refactor the admin service to import the models once and do all operations of that list
 - add protactor tests for the major flows like greyhound crud, race crud placing crud, rankings and score check
