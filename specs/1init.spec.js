@@ -3,7 +3,7 @@ process.env.MONGO_URL='mongodb://localhost/ranker-test';
 process.env.PORT = 3001;
 process.env.NODE_ENV='test';
 process.env.testUrl='http://localhost:3001';
-process.env.BOOTSTRAP='teststart';
+process.env.FIRST_USER_PASSCODE='teststart';
 require("../server.js");
 
 describe("Server", function() {

@@ -95,7 +95,7 @@ userService.cleanUser = function(user){
 
 userService.checkForPasscode = function(user, bootstrap){
     if (bootstrap != null){
-        if (bootstrap == process.env.BOOTSTRAP){
+        if (bootstrap == process.env.FIRST_USER_PASSCODE){
             return userService.systemRequiresUsers().then(function(requiresUsers){
                 if (requiresUsers != null && requiresUsers.result != null && requiresUsers.result){
                     user.state = userStates.active;

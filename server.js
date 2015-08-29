@@ -21,6 +21,7 @@ main.start = _.once(function(){
     return main.setupExceptionHandling(mainConfig)
         .then(main.setupLogging)
         .then(main.loadConfig)
+        .then(main.checkEnvs)
         .then(main.setupDatabaseConnection)
         .then(main.setupSecurity)
         .then(main.setupHTTP)
@@ -34,14 +35,30 @@ main.start = _.once(function(){
 });
 
 main.setupExceptionHandling = function(mainConfig){
-    if (process.env.NODE_ENV != 'test'){
-        process.on('uncaughtException', function(ex) {
-            logger.error('Uncaught exception ' + ex);
-            process.exit(1);
-        });
-    }
+    process.on('uncaughtException', function(ex) {
+        logger.error('Uncaught exception ' + ex);
+        process.exit(1);
+    });
 
     return q(mainConfig);
+};
+
+main.checkEnvs = function(mainConfig){
+    var requiredEnv = [
+        'MONGO_URL',
+        'SESSION_SECRET',
+        'FIRST_USER_PASSCODE'];
+
+    requiredEnv.forEach(main.checkEnv);
+
+    return q(mainConfig);
+};
+
+main.checkEnv = function(envName){
+    if (process.env[envName] == null){
+        logger.log('error',envName + ' environment variable is not set');
+        process.exit(1);
+    }
 };
 
 main.setupLogging = function(mainConfig){
