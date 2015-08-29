@@ -123,7 +123,9 @@ describe("scoreService", function(){
                     "points":{$literal: 20},
                     "placingRef":"$_id",
                     "position" :"$placing",
-                    "raceName":"$race.name"}}
+                    "raceName":"$race.name",
+                    "raceRef": "$raceRef"
+                }}
 
             ];
             var result = scoreService.getScoreCreationQuery(group,pa);
@@ -156,7 +158,9 @@ describe("scoreService", function(){
                     "points":{$literal: 20},
                     "placingRef":"$_id",
                     "position" :"$placing",
-                    "raceName":"$race.name"}}
+                    "raceName":"$race.name",
+                    "raceRef": "$raceRef"
+                }}
 
             ]];
             var result = scoreService.getScoreCreationQueries(rs);
