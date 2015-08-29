@@ -60,7 +60,7 @@ main.loadConfig = function(mainConfig){
 
 main.setupDatabaseConnection = function(mainConfig){
     var deferred = q.defer();
-    var db = mongoose.connect(process.env.MONGOHQ_URL, function (err) {
+    var db = mongoose.connect(process.env.MONGO_URL, function (err) {
         if (err) {
             error.log('Unable to connect at startup, exiting', err);
             deferred.resolve(mainConfig);
