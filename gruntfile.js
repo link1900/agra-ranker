@@ -50,14 +50,6 @@ module.exports = function(grunt) {
                 logConcurrentOutput: true
             }
         },
-        mochaTest: {
-            test: {
-                options: {
-                    reporter: 'spec'
-                },
-                src: ['specs/**/*.spec.js', 'app/**/*Spec.js']
-            }
-        },
         'string-replace': {
             version: {
                 files: {
@@ -89,7 +81,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-concurrent');
-    grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks('grunt-include-source');
 
@@ -100,7 +91,4 @@ module.exports = function(grunt) {
 
     //Default task(s).
     grunt.registerTask('default', ['includeSource','string-replace:version','concurrent']);
-
-    //Test task.
-    grunt.registerTask('test', ['includeSource','string-replace:version','mochaTest']);
 };
