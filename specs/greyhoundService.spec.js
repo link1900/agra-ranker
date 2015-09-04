@@ -1,7 +1,6 @@
 var request = require('supertest');
 var mongoose = require('mongoose');
-var chai = require('chai');
-var assert = chai.assert;
+var assert = require('assert');
 var Placing = require('../app/placing/placing').model;
 var Greyhound = require('../app/greyhound/greyhound').model;
 var Race = require('../app/race/race').model;
@@ -50,7 +49,7 @@ describe("greyhoundService", function(){
     describe("#findGreyhoundByName", function(){
         it("find greyhound bob using different case", function(done){
             greyhoundService.findGreyhoundByName("boB").then(function(result){
-                assert.isNotNull(result);
+                assert(result != null);
                 assert.equal(result.name, "bob");
                 done();
             },done).then(function(){}, done);
@@ -58,14 +57,14 @@ describe("greyhoundService", function(){
 
         it("do not find greyhound bob using bo", function(done){
             greyhoundService.findGreyhoundByName("bo").then(function(result){
-                assert.isNull(result);
+                assert(result == null);
                 done();
             },done).then(function(){}, done);
         });
 
         it("find greyhound deed using deed", function(done){
             greyhoundService.findGreyhoundByName("deed").then(function(result){
-                assert.isNotNull(result);
+                assert(result != null);
                 assert.equal(result.name, "deed");
                 done();
             },done).then(function(){}, done);
@@ -76,7 +75,7 @@ describe("greyhoundService", function(){
         it("should validate a greyhounds sire ref", function (done) {
             var grey = new Greyhound({"name":"james", "sireRef": "54a32fbee39b345cff5841b8"});
             greyhoundService.validateSireRef(grey).then(function (result) {
-                assert.isNotNull(result);
+                assert(result != null);
                 assert.equal(result.name, "james");
                 done();
             }, done).then(function () {}, done);
@@ -115,7 +114,7 @@ describe("greyhoundService", function(){
         it("should validate a greyhounds dam ref", function (done) {
             var grey = new Greyhound({"name":"james", "damRef": "54a32fbee39b345cff5841b8"});
             greyhoundService.validateDamRef(grey).then(function (result) {
-                assert.isNotNull(result);
+                assert(result != null);
                 assert.equal(result.name, "james");
                 done();
             }, done).then(function () {}, done);
@@ -174,7 +173,7 @@ describe("greyhoundService", function(){
         it("should pass if it is new", function (done) {
             var grey = new Greyhound({"name": "totes new"});
             greyhoundService.validateGreyhoundIsNew(grey).then(function (result) {
-                assert.isNotNull(result);
+                assert(result != null);
                 assert.equal(result.name, "totes new");
                 done();
             }, done).then(function () {
@@ -185,7 +184,7 @@ describe("greyhoundService", function(){
     describe("#createGreyhoundFromJson", function() {
         it("should pass if it is new", function (done) {
             greyhoundService.createGreyhoundFromJson({"name": "really new"}).then(function (result) {
-                assert.isNotNull(result);
+                assert(result != null);
                 assert.equal(result.name, "REALLY NEW");
                 done();
             }, done).then(function () {
@@ -205,7 +204,7 @@ describe("greyhoundService", function(){
     describe("#updateGreyhoundFromJson", function() {
         it("should change the name", function (done) {
             greyhoundService.updateGreyhoundFromJson(changeModel, {"name": "new name"}).then(function (result) {
-                assert.isNotNull(result);
+                assert(result != null);
                 assert.equal(result.name, "NEW NAME");
                 done();
             }, done).then(function () {}, done);
@@ -213,7 +212,7 @@ describe("greyhoundService", function(){
 
         it("set sire to bob", function (done) {
             greyhoundService.updateGreyhoundFromJson(changeModel, {"name": "new name", sireRef: "54a32fbee39b345cff5841b8"}).then(function (result) {
-                assert.isNotNull(result);
+                assert(result != null);
                 assert.equal(result.name, "NEW NAME");
                 assert.equal(result.sireRef, "54a32fbee39b345cff5841b8");
                 done();
@@ -263,7 +262,6 @@ describe("greyhoundService", function(){
             eventService.removeListenerByName("testBatch");
         });
     });
-
 
     after(function (done) {
         Greyhound.remove({}, function(res) {

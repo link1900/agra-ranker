@@ -1,8 +1,6 @@
 var request = require('supertest');
 var mongoose = require('mongoose');
-var chai = require('chai');
-chai.should();
-var expect = chai.expect;
+var assert = require('assert');
 var Greyhound = mongoose.model('Greyhound');
 var testHelper = require('./testHelper');
 
@@ -24,7 +22,7 @@ describe("Greyhound", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.length.should.be.above(2);
+                    assert(res.body.length > 2);
                     done();
                 });
         });
@@ -37,8 +35,7 @@ describe("Greyhound", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("grey1");
+                    assert(res.body.name === 'grey1');
                     done();
                 });
         });
@@ -65,8 +62,7 @@ describe("Greyhound", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("CREATEDGREY");
+                    assert(res.body.name === "CREATEDGREY");
                     done();
                 });
         });
@@ -81,8 +77,7 @@ describe("Greyhound", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("CREATEDGREY");
+                    assert(res.body.name === "CREATEDGREY");
                     done();
                 });
         });
@@ -229,8 +224,7 @@ describe("Greyhound", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("UPDATEGREY");
+                    assert(res.body.name === "UPDATEGREY");
                     done();
                 });
         });
@@ -245,8 +239,7 @@ describe("Greyhound", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("UPDATEGREY");
+                    assert(res.body.name === "UPDATEGREY");
                     done();
                 });
         });
@@ -315,9 +308,9 @@ describe("Greyhound", function(){
                             if (err) {
                                 throw err;
                             }
-                            res.body.should.have.property("name");
-                            res.body.name.should.equal("grey4");
-                            expect(res.body.sireRef).to.equal(null);
+
+                            assert(res.body.name === 'grey4');
+                            assert(res.body.sireRef == null);
                             done();
                         });
                 });
@@ -339,9 +332,9 @@ describe("Greyhound", function(){
                             if (err) {
                                 throw err;
                             }
-                            res.body.should.have.property("name");
-                            res.body.name.should.equal("grey4");
-                            expect(res.body.damRef).to.equal(null);
+
+                            assert(res.body.name === "grey4");
+                            assert(res.body.damRef == null);
                             done();
                         });
                 });

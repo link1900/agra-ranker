@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var _ = require('lodash');
-var chai = require('chai');
-var assert = chai.assert;
+var assert = require('assert');
 var testHelper = require('./testHelper');
 var mongoService = require('../app/mongoService');
 
@@ -50,7 +49,7 @@ describe("mongoService", function() {
                 { $sort: { "total": 1 } }
             ];
             mongoService.aggregatePromise(TestSchema, pipeline).then(function(result){
-                assert.isNotNull(result);
+                assert(result != null);
                 assert.equal(result[0].total, 25);
                 done();
             },done).catch(function(err){

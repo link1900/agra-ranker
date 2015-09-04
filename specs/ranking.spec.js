@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var chai = require('chai');
 chai.should();
 var expect = chai.expect;
-var assert = chai.assert;
+var assert = require('assert');
 var testHelper = require('./testHelper');
 
 

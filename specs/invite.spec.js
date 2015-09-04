@@ -1,7 +1,7 @@
 var request = require('supertest');
 var mongoose = require('mongoose');
 var testHelper = require('./testHelper');
-var assert = require('chai').assert;
+var assert = require('assert');
 
 describe("Invite", function() {
     before(function (done) {
@@ -43,8 +43,6 @@ describe("Invite", function() {
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    assert.property(res.body, "email");
-                    assert.notProperty(res.body, "token");
                     assert.equal(res.body.email, "lilly@gmail.com");
                     done();
                 });

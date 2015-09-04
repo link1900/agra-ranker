@@ -2,7 +2,7 @@ var request = require('supertest');
 var mongoose = require('mongoose');
 var chai = require('chai');
 chai.should();
-var assert = require('chai').assert;
+var assert = require('assert');
 var expect = chai.expect;
 var Placing = require('../app/placing/placing').model;
 var testHelper = require('./testHelper');
@@ -211,10 +211,8 @@ describe("Placing", function(){
                     res.body.greyhoundRef.should.equal("531d1f74e407586c214773df");
                     res.body.should.have.property("raceRef");
                     res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
-                    assert.property(res.body, 'race');
                     assert.notEqual(res.body.race, null);
                     assert.equal(res.body.race._id, "531d1f72e407586c21476ea8");
-                    assert.property(res.body, 'greyhound');
                     assert.notEqual(res.body.greyhound, null);
                     assert.equal(res.body.greyhound._id, "531d1f74e407586c214773df");
                     done();
@@ -309,10 +307,8 @@ describe("Placing", function(){
                     res.body.greyhoundRef.should.equal("531d1f74e407586c2147737b");
                     res.body.should.have.property("raceRef");
                     res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
-                    assert.property(res.body, 'race');
                     assert.notEqual(res.body.race, null);
                     assert.equal(res.body.race._id, "531d1f72e407586c21476ea8");
-                    assert.property(res.body, 'greyhound');
                     assert.notEqual(res.body.greyhound, null);
                     assert.equal(res.body.greyhound._id, "531d1f74e407586c2147737b");
                     done();
@@ -335,7 +331,6 @@ describe("Placing", function(){
                     res.body.greyhoundRef.should.equal("531d1f72e407586c21476e49");
                     res.body.should.have.property("raceRef");
                     res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
-                    assert.property(res.body, 'greyhound');
                     assert.notEqual(res.body.greyhound, null);
                     assert.equal(res.body.greyhound.name, "grey4");
                     assert.equal(res.body.greyhound._id, "531d1f72e407586c21476e49");
@@ -377,7 +372,6 @@ describe("Placing", function(){
                     res.body.should.have.property("greyhoundRef");
                     res.body.should.have.property("raceRef");
                     res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
-                    assert.property(res.body, 'greyhound');
                     assert.notEqual(res.body.greyhound, null);
                     assert.equal(res.body.greyhound.name, "grey2");
                     done();

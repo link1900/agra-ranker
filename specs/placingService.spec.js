@@ -1,7 +1,5 @@
 var request = require('supertest');
 var mongoose = require('mongoose');
-var chai = require('chai');
-var assert = chai.assert;
 var Placing = require('../app/placing/placing').model;
 var Greyhound = require('../app/greyhound/greyhound').model;
 var Race = require('../app/race/race').model;

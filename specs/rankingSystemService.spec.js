@@ -2,7 +2,7 @@ var request = require('supertest');
 var mongoose = require('mongoose');
 var _ = require('lodash');
 var chai = require('chai');
-var assert = chai.assert;
+var assert = require('assert');
 var testHelper = require('./testHelper');
 var Placing = require('../app/placing/placing').model;
 var RankingSystem = require('../app/ranking/rankingSystem').model;
@@ -23,8 +23,6 @@ describe("rankingService", function(){
         it("get correct financial year (13-14) for start of 2014", function(done){
             var date = new Date(2014, 3, 3);
             var result = rankingSystemService.getFinancialYearForDate(date);
-            assert.property(result,'start');
-            assert.property(result,'end');
             assert(_.isDate(result.start));
             assert(_.isDate(result.end));
             assert.equal(result.start.getFullYear(), 2013);
@@ -42,8 +40,6 @@ describe("rankingService", function(){
         it("get correct financial year (14-15) for end of 2014", function(done){
             var date = new Date(2014, 8, 8);
             var result = rankingSystemService.getFinancialYearForDate(date);
-            assert.property(result,'start');
-            assert.property(result,'end');
             assert(_.isDate(result.start));
             assert(_.isDate(result.end));
             assert.equal(result.start.getFullYear(), 2014);

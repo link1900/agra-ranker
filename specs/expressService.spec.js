@@ -1,5 +1,4 @@
-var chai = require('chai');
-var assert = chai.assert;
+var assert = require('assert');
 var expressService = require('../app/expressService');
 
 describe("expressService", function(){

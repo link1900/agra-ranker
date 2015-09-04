@@ -2,7 +2,7 @@ var request = require('supertest');
 var mongoose = require('mongoose');
 var _ = require('lodash');
 var chai = require('chai');
-var assert = chai.assert;
+var assert = require('assert');
 var testHelper = require('./testHelper');
 var Placing = require('../app/placing/placing').model;
 var Greyhound = require('../app/greyhound/greyhound').model;
@@ -94,7 +94,7 @@ describe("rankingService", function(){
         it("update the rankings with the correct ranks", function(done){
             rankingService.addRankToRankingSet("123fakestreet").then(function(){
                 return rankingService.find({}, 10,0,{rank:1}).then(function(rankings){
-                    assert.isNotNull(rankings);
+                    assert(rankings != null);
                     assert.equal(rankings.length,4);
                     assert.equal(rankings[0].totalPoints,30);
                     assert.equal(rankings[0].greyhoundName,"john");
@@ -128,11 +128,11 @@ describe("rankingService", function(){
     describe("#getCompleteRankingSystem", function(){
         it("merge all criteria into ranking system", function(done){
             rankingService.getCompleteRankingSystem(new Date(), new Date(), "54ac8b031ee51022d545c8fc").then(function(rsc){
-                assert.isNotNull(rsc.commonCriteria[1]);
-                assert.isNotNull(rsc.commonCriteria[2]);
-                assert.isNotNull(rsc.pointAllotments[0].criteria[3]);
-                assert.isNotNull(rsc.pointAllotments[0].criteria[4]);
-                assert.isNotNull(rsc.pointAllotments[0].criteria[5]);
+                assert(rsc.commonCriteria[1] != null);
+                assert(rsc.commonCriteria[2] != null);
+                assert(rsc.pointAllotments[0].criteria[3] != null);
+                assert(rsc.pointAllotments[0].criteria[4] != null);
+                assert(rsc.pointAllotments[0].criteria[5] != null);
                 done();
             });
         });
@@ -146,15 +146,15 @@ describe("rankingService", function(){
                 ]
             };
             var updatedRankingSystem = rankingService.addPeriodCriteria(new Date(), new Date(), rankingSystem);
-            assert.isNotNull(updatedRankingSystem.commonCriteria[1]);
-            assert.isNotNull(updatedRankingSystem.commonCriteria[2]);
+            assert(updatedRankingSystem.commonCriteria[1]!= null);
+            assert(updatedRankingSystem.commonCriteria[2]!= null);
         });
     });
 
     describe("#getRankingSystem", function(){
         it("find a ranking system or get the default", function(done){
             rankingService.getRankingSystem("54ac8b031ee51022d545c8fc").then(function(rankingSystem){
-                assert.isNotNull(rankingSystem);
+                assert(rankingSystem!= null);
                 done();
             });
         });

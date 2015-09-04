@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var chai = require('chai');
 chai.should();
 var expect = chai.expect;
+var assert = require('assert');
 var RankingSystem = mongoose.model('RankingSystem');
 var testHelper = require('./testHelper');
 

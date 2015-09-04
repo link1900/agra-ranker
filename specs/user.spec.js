@@ -4,7 +4,7 @@ var User = require('../app/user/user').model;
 var Invite = require('../app/invite/invite').model;
 var testHelper = require('./testHelper');
 var siteUrl = process.env.testUrl;
-var assert = require('chai').assert;
+var assert = require('assert');
 
 describe("User", function() {
     before(function (done) {
@@ -52,7 +52,7 @@ describe("User", function() {
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    assert.lengthOf(res.body, 5);
+                    assert(res.body.length === 5);
                     done();
                 });
         });
@@ -73,8 +73,6 @@ describe("User", function() {
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    assert.property(res.body, "email");
-                    assert.notProperty(res.body, "password");
                     assert.equal(res.body.email, "link1900@gmail.com");
                     done();
                 });
@@ -232,11 +230,6 @@ describe("User", function() {
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    assert.property(res.body, "email");
-                    assert.property(res.body, "settings");
-                    assert.property(res.body.settings, "notifications");
-                    assert.property(res.body, "_id");
-                    assert.notProperty(res.body, "password");
                     assert.equal(res.body.email, "nbrown99@gmail.com");
                     var url = '/user/' + res.body._id;
                     testHelper.authSession
@@ -246,7 +239,6 @@ describe("User", function() {
                         .expect(200)
                         .end(function(err, res){
                             if (err){ throw err; }
-                            assert.property(res.body, "email");
                             assert.equal(res.body.email, "nbrown99@gmail.com");
                             assert.equal(res.body.state, "Active");
                             done();
@@ -389,9 +381,6 @@ describe("User", function() {
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    assert.property(res.body, "email");
-                    assert.property(res.body, "_id");
-                    assert.notProperty(res.body, "password");
                     assert.equal(res.body.email, "link1704@hotmail.com");
                     var url = '/user/' + res.body._id;
                     testHelper.authSession
@@ -401,7 +390,6 @@ describe("User", function() {
                         .expect(200)
                         .end(function(err, res){
                             if (err){ throw err; }
-                            assert.property(res.body, "email");
                             assert.equal(res.body.email, "link1704@hotmail.com");
                             done();
                         });
@@ -434,7 +422,6 @@ describe("User", function() {
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    assert.property(res.body, "state");
                     assert.equal(res.body.state, "Active");
                     done();
                 });
@@ -522,7 +509,6 @@ describe("User", function() {
                 .expect('Content-Type', /json/)
                 .expect(200, function(err, res){
                     if (err){ throw err; }
-                    assert.notProperty(res.body,'passwordReset');
                     done();
                 });
         });

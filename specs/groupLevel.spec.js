@@ -1,8 +1,6 @@
 var request = require('supertest');
 var mongoose = require('mongoose');
-var chai = require('chai');
-chai.should();
-var expect = chai.expect;
+var assert = require('assert');
 var GroupLevel = mongoose.model('GroupLevel');
 var testHelper = require('./testHelper');
 
@@ -24,7 +22,7 @@ describe("Group Level", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.length.should.be.above(2);
+                    assert(res.body.length > 2);
                     done();
                 });
         });
@@ -37,8 +35,7 @@ describe("Group Level", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("Group 1");
+                    assert(res.body.name === "Group 1");
                     done();
                 });
         });
@@ -65,8 +62,7 @@ describe("Group Level", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("Group Created");
+                    assert(res.body.name === "Group Created");
                     done();
                 });
         });
@@ -103,8 +99,7 @@ describe("Group Level", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("Group Updated");
+                    assert(res.body.name === "Group Updated");
                     done();
                 });
         });
