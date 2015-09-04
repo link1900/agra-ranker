@@ -2,52 +2,12 @@ module.exports = function(grunt) {
     // Project Configuration
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        watch: {
-            js: {
-                files: ['gruntfile.js', 'server.js', 'app/**/*.js', 'public/**', 'test/**/*.js'],
-                options: {
-                    livereload: true
-                }
-            },
-            html: {
-                files: ['templates/**'],
-                tasks: ['includeSource','string-replace:version'],
-                options: {
-                    livereload: true
-                }
-            },
-            css: {
-                files: ['public/css/**'],
-                options: {
-                    livereload: true
-                }
-            }
-        },
         jshint: {
             all: {
-                src: ['gruntfile.js', 'server.js', 'app/**/*.js', 'public/js/**', 'test/**/*.js'],
+                src: ['server.js', 'app/**/*.js', 'public/js/**', 'test/**/*.js'],
                 options: {
                     jshintrc: true
                 }
-            }
-        },
-        nodemon: {
-            dev: {
-                options: {
-                    file: 'server.js',
-                    args: [],
-                    ignoredFiles: ['public/**'],
-                    watchedExtensions: ['js'],
-                    nodeArgs: ['--debug'],
-                    delayTime: 1,
-                    cwd: __dirname
-                }
-            }
-        },
-        concurrent: {
-            tasks: ['nodemon', 'watch'],
-            options: {
-                logConcurrentOutput: true
             }
         },
         'string-replace': {
@@ -77,10 +37,7 @@ module.exports = function(grunt) {
     });
 
     //Load NPM tasks
-    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-nodemon');
-    grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks('grunt-include-source');
 
@@ -90,5 +47,5 @@ module.exports = function(grunt) {
     grunt.registerTask('build', ['includeSource','string-replace:version']);
 
     //Default task(s).
-    grunt.registerTask('default', ['includeSource','string-replace:version','concurrent']);
+    grunt.registerTask('default', ['build']);
 };
