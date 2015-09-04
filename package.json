@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "node node_modules/grunt-cli/bin/grunt",
-    "test": "./node_modules/mocha/bin/mocha ./app/**/*Test.js",
+    "test": "./node_modules/mocha/bin/mocha ./specs/*.js ./app/**/*Test.js",
     "postinstall": "node node_modules/bower/bin/bower install; node node_modules/grunt-cli/bin/grunt build"
   },
   "dependencies": {

@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var BatchJob = require('../app/batch/batchJob').model;
 var BatchResult = require('../app/batch/batchResult').model;
 var testHelper = require('./testHelper');
-var assert = require('chai').assert;
+var assert = require('assert');
 
 describe("BatchJob", function() {
     before(function (done) {
