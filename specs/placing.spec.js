@@ -1,9 +1,6 @@
 var request = require('supertest');
 var mongoose = require('mongoose');
-var chai = require('chai');
-chai.should();
 var assert = require('assert');
-var expect = chai.expect;
 var Placing = require('../app/placing/placing').model;
 var testHelper = require('./testHelper');
 
@@ -25,7 +22,7 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.length.should.be.above(2);
+                    assert(res.body.length > 2);
                     done();
                 });
         });
@@ -38,7 +35,7 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.length.should.equal(1);
+                    assert(res.body.length  === 1);
                     done();
                 });
         });
@@ -51,7 +48,7 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.length.should.be.above(2);
+                    assert(res.body.length > 2);
                     done();
                 });
         });
@@ -64,7 +61,7 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.length.should.equal(1);
+                    assert(res.body.length === 1);
                     done();
                 });
         });
@@ -77,8 +74,7 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("placing");
-                    res.body.placing.should.equal("2");
+                    assert(res.body.placing === '2');
                     done();
                 });
         });
@@ -205,12 +201,9 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("placing");
-                    res.body.placing.should.equal("5");
-                    res.body.should.have.property("greyhoundRef");
-                    res.body.greyhoundRef.should.equal("531d1f74e407586c214773df");
-                    res.body.should.have.property("raceRef");
-                    res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
+                    assert(res.body.placing === "5");
+                    assert(res.body.greyhoundRef === "531d1f74e407586c214773df");
+                    assert(res.body.raceRef === "531d1f72e407586c21476ea8");
                     assert.notEqual(res.body.race, null);
                     assert.equal(res.body.race._id, "531d1f72e407586c21476ea8");
                     assert.notEqual(res.body.greyhound, null);
@@ -229,12 +222,9 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("placing");
-                    res.body.placing.should.equal("2");
-                    res.body.should.have.property("greyhoundRef");
-                    res.body.greyhoundRef.should.equal("531d1f74e407586c214773df");
-                    res.body.should.have.property("raceRef");
-                    res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
+                    assert.equal(res.body.placing, "2");
+                    assert.equal(res.body.greyhoundRef, "531d1f74e407586c214773df");
+                    assert.equal(res.body.raceRef, "531d1f72e407586c21476ea8");
                     done();
                 });
         });
@@ -249,12 +239,9 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("placing");
-                    res.body.placing.should.equal("DNF");
-                    res.body.should.have.property("greyhoundRef");
-                    res.body.greyhoundRef.should.equal("531d1f74e407586c214773df");
-                    res.body.should.have.property("raceRef");
-                    res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
+                    assert.equal(res.body.placing, "DNF");
+                    assert.equal(res.body.greyhoundRef, "531d1f74e407586c214773df");
+                    assert.equal(res.body.raceRef, "531d1f72e407586c21476ea8");
                     done();
                 });
         });
@@ -269,12 +256,9 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("placing");
-                    res.body.placing.should.equal("disqualified");
-                    res.body.should.have.property("greyhoundRef");
-                    res.body.greyhoundRef.should.equal("531d1f74e407586c214773df");
-                    res.body.should.have.property("raceRef");
-                    res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
+                    assert.equal(res.body.placing, "disqualified");
+                    assert.equal(res.body.greyhoundRef, "531d1f74e407586c214773df");
+                    assert.equal(res.body.raceRef, "531d1f72e407586c21476ea8");
                     done();
                 });
         });
@@ -301,12 +285,9 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("placing");
-                    res.body.placing.should.equal("4");
-                    res.body.should.have.property("greyhoundRef");
-                    res.body.greyhoundRef.should.equal("531d1f74e407586c2147737b");
-                    res.body.should.have.property("raceRef");
-                    res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
+                    assert.equal(res.body.placing, "4");
+                    assert.equal(res.body.greyhoundRef, "531d1f74e407586c2147737b");
+                    assert.equal(res.body.raceRef, "531d1f72e407586c21476ea8");
                     assert.notEqual(res.body.race, null);
                     assert.equal(res.body.race._id, "531d1f72e407586c21476ea8");
                     assert.notEqual(res.body.greyhound, null);
@@ -325,12 +306,9 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("placing");
-                    res.body.placing.should.equal("2");
-                    res.body.should.have.property("greyhoundRef");
-                    res.body.greyhoundRef.should.equal("531d1f72e407586c21476e49");
-                    res.body.should.have.property("raceRef");
-                    res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
+                    assert.equal(res.body.placing, "2");
+                    assert.equal(res.body.greyhoundRef, "531d1f72e407586c21476e49");
+                    assert.equal(res.body.raceRef, "531d1f72e407586c21476ea8");
                     assert.notEqual(res.body.greyhound, null);
                     assert.equal(res.body.greyhound.name, "grey4");
                     assert.equal(res.body.greyhound._id, "531d1f72e407586c21476e49");
@@ -348,10 +326,8 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("placing");
-                    res.body.placing.should.equal("2");
-                    res.body.should.have.property("raceRef");
-                    res.body.raceRef.should.equal("531d1f72e407586c21476ec4");
+                    assert.equal(res.body.placing, "2");
+                    assert.equal(res.body.raceRef, "531d1f72e407586c21476ec4");
                     assert.equal(res.body.race.name, "Race2");
                     done();
                 });
@@ -367,11 +343,8 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("placing");
-                    res.body.placing.should.equal("2");
-                    res.body.should.have.property("greyhoundRef");
-                    res.body.should.have.property("raceRef");
-                    res.body.raceRef.should.equal("531d1f72e407586c21476ea8");
+                    assert.equal(res.body.placing, "2");
+                    assert.equal(res.body.raceRef, "531d1f72e407586c21476ea8");
                     assert.notEqual(res.body.greyhound, null);
                     assert.equal(res.body.greyhound.name, "grey2");
                     done();
@@ -388,12 +361,9 @@ describe("Placing", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("placing");
-                    res.body.placing.should.equal("2");
-                    res.body.should.have.property("greyhoundRef");
-                    res.body.greyhoundRef.should.equal("531d1f74e407586c2147737b");
-                    res.body.should.have.property("raceRef");
-                    res.body.raceRef.should.equal("531d1f72e407586c21476ec4");
+                    assert.equal(res.body.placing, "2");
+                    assert.equal(res.body.greyhoundRef, "531d1f74e407586c2147737b");
+                    assert.equal(res.body.raceRef, "531d1f72e407586c21476ec4");
                     done();
                 });
         });

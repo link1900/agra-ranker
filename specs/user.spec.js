@@ -22,8 +22,7 @@ describe("User", function() {
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("email");
-                    res.body.email.should.equal("link1900@gmail.com");
+                    assert(res.body.email,"link1900@gmail.com");
                     done();
                 });
         });

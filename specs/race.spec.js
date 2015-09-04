@@ -1,9 +1,6 @@
 var request = require('supertest');
 var mongoose = require('mongoose');
-var chai = require('chai');
-chai.should();
 var assert = require('assert');
-var expect = chai.expect;
 var Race = mongoose.model('Race');
 var testHelper = require('./testHelper');
 
@@ -42,7 +39,7 @@ describe("Race", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.length.should.be.above(1);
+                    assert(res.body.length > 1);
                     done();
                 });
         });
@@ -55,7 +52,7 @@ describe("Race", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    expect(res.body.length).equal(1);
+                    assert.equal(res.body.length, 1);
                     done();
                 });
         });
@@ -68,7 +65,7 @@ describe("Race", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    expect(res.body.length).equal(1);
+                    assert(res.body.length === 1);
                     done();
                 });
         });
@@ -81,7 +78,7 @@ describe("Race", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    expect(res.body.length).equal(1);
+                    assert(res.body.length === 1);
                     done();
                 });
         });
@@ -94,14 +91,11 @@ describe("Race", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("race1");
-                    res.body.should.have.property("groupLevelRef");
-                    res.body.groupLevelRef.should.equal("531d1f72e407586c21476ef7");
-                    res.body.should.have.property("distanceMeters");
-                    res.body.distanceMeters.should.equal(515);
-                    res.body.should.have.property("disqualified");
-                    res.body.disqualified.should.equal(false);
+
+                    assert.equal(res.body.name,"race1");
+                    assert.equal(res.body.groupLevelRef,"531d1f72e407586c21476ef7");
+                    assert.equal(res.body.distanceMeters,515);
+                    assert.equal(res.body.disqualified,false);
                     done();
                 });
         });
@@ -129,17 +123,12 @@ describe("Race", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                //.expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("raceCreated");
-                    res.body.should.have.property("groupLevelRef");
-                    res.body.groupLevelRef.should.equal("531d1f72e407586c21476ef7");
-                    res.body.should.have.property("distanceMeters");
-                    res.body.distanceMeters.should.equal(515);
-                    res.body.should.have.property("disqualified");
-                    res.body.disqualified.should.equal(false);
+                    assert.equal(res.body.name,"raceCreated");
+                    assert.equal(res.body.groupLevelRef,"531d1f72e407586c21476ef7");
+                    assert.equal(res.body.distanceMeters,515);
+                    assert.equal(res.body.disqualified,false);
                     assert.equal(res.body.groupLevel.name, "Group 1");
                     done();
                 });
@@ -205,14 +194,10 @@ describe("Race", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("raceUpdated");
-                    res.body.should.have.property("groupLevelRef");
-                    res.body.groupLevelRef.should.equal("531d1f72e407586c21476ef7");
-                    res.body.should.have.property("distanceMeters");
-                    res.body.distanceMeters.should.equal(515);
-                    res.body.should.have.property("disqualified");
-                    res.body.disqualified.should.equal(false);
+                    assert.equal(res.body.name,"raceUpdated");
+                    assert.equal(res.body.groupLevelRef,"531d1f72e407586c21476ef7");
+                    assert.equal(res.body.distanceMeters,515);
+                    assert.equal(res.body.disqualified,false);
                     done();
                 });
         });

@@ -1,8 +1,5 @@
 var request = require('supertest');
 var mongoose = require('mongoose');
-var chai = require('chai');
-chai.should();
-var expect = chai.expect;
 var assert = require('assert');
 var RankingSystem = mongoose.model('RankingSystem');
 var testHelper = require('./testHelper');
@@ -25,7 +22,7 @@ describe("Ranking System", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.length.should.be.above(0);
+                    assert(res.body.length > 0);
                     done();
                 });
         });
@@ -38,9 +35,7 @@ describe("Ranking System", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("Test Ranking System");
-                    res.body.should.have.property("description");
+                    assert.equal(res.body.name,"Test Ranking System");
                     done();
                 });
         });
@@ -84,10 +79,7 @@ describe("Ranking System", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ console.log(res.body); throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("Another Test Ranking System");
-                    res.body.should.have.property("description");
-                    res.body.description.should.equal("just another ranking system");
+                    assert.equal(res.body.name,"Another Test Ranking System");
                     done();
                 });
         });
@@ -368,9 +360,7 @@ describe("Ranking System", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("name");
-                    res.body.name.should.equal("Changed Ranking System");
-                    res.body.should.have.property("description");
+                    assert.equal(res.body.name,"Changed Ranking System");
                     done();
                 });
         });
@@ -385,8 +375,7 @@ describe("Ranking System", function(){
                 .expect(200)
                 .end(function(err, res){
                     if (err){ throw err; }
-                    res.body.should.have.property("description");
-                    res.body.description.should.equal("a different description");
+                    assert.equal(res.body.description,"a different description");
                     done();
                 });
         });
