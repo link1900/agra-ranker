@@ -14,7 +14,7 @@
     "npm": "2.x.x"
   },
   "scripts": {
-    "start": "node node_modules/grunt-cli/bin/grunt build; node server.js",
+    "start": "node node_modules/grunt-cli/bin/grunt build; gulp serve",
     "test": "./node_modules/mocha/bin/mocha ./specs/*.js ./app/**/*Test.js",
     "postinstall": "node node_modules/bower/bin/bower install; node node_modules/grunt-cli/bin/grunt build"
   },
@@ -55,6 +55,8 @@
     "ws": "^0.7.2"
   },
   "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-live-server": "0.0.25",
     "mocha": "^2.3.0",
     "supertest": "0.10.0"
   }
