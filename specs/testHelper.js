@@ -290,7 +290,6 @@ testHelper.setupRankingTestData = function(done){
         "name": "Test ranking system",
         "description": "Test ranking system",
         equalPositionResolution: "splitPoints",
-        defaultRanking: true,
         groupBy: {
             label: "greyhound.name",
             field: "greyhoundRef"

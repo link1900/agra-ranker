@@ -21,7 +21,6 @@ rankingSystem.schema = new Schema({
     name: { type: String },
     description: {type: String},
     equalPositionResolution: {type: String, default: 'splitPoints'},
-    defaultRanking: {type: Boolean, default: false},
     groupBy : {type: {
         label: {type : String},
         field: {type: String}

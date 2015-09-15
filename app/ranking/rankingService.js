@@ -122,9 +122,15 @@ rankingService.getRankingSystem = function(rankingSystemRef){
             }
         });
     } else {
-        return mongoService.findOne(RankingSystem, {'defaultRanking': true}).then(function(rankingSystem){
-            if (rankingSystem != null){
-                return q(rankingSystem);
+        return mongoService.findOne(Setting, {settingType: "system"}).then(function(systemSettings){
+            if (systemSettings != null && systemSettings.defaultRankingSystem != null){
+                return mongoService.findOneById(RankingSystem, systemSettings.defaultRankingSystem).then(function(rankingSystem){
+                    if (rankingSystem != null){
+                        return q(rankingSystem);
+                    } else {
+                        return q.reject("cannot find any default ranking systems");
+                    }
+                });
             } else {
                 return q.reject("cannot find any default ranking systems");
             }

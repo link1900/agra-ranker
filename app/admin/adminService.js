@@ -75,7 +75,6 @@ adminService.setupRankingSystemDefaults = function(){
         name: "Greyhounds",
         description: "The main ranking system for agra",
         equalPositionResolution: "splitPoints",
-        defaultRanking: true,
         groupBy:{
             label: "greyhound.name",
             field: "greyhoundRef"
@@ -109,7 +108,6 @@ adminService.setupRankingSystemDefaults = function(){
         name: "Sire",
         description: "Sire based rankings",
         equalPositionResolution: "splitPoints",
-        defaultRanking: false,
         groupBy:{
             label: "greyhound.sireName",
             field: "greyhound.sireRef"
@@ -134,7 +132,6 @@ adminService.setupRankingSystemDefaults = function(){
         name: "Dam",
         description: "Dam based rankings",
         equalPositionResolution: "splitPoints",
-        defaultRanking: false,
         groupBy:{
             label: "greyhound.damName",
             field: "greyhound.damRef"
