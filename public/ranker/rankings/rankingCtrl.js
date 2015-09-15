@@ -16,7 +16,7 @@ angular.module('controllers').controller('rankingCtrl', function($scope, ranking
     $scope.rankingSystemSearch = {
         page : 1,
         per_page : 15,
-        sort_field: 'name',
+        sort_field: 'createdAt',
         sort_direction: 'asc'
     };
 
