@@ -10,7 +10,8 @@ gulp.task('serve', function() {
     gulp.watch([
         'public/ranker/**/*.css',
         'public/ranker/**/*.js',
-        'public/ranker/**/*.html'
+        'public/ranker/**/*.html',
+        'app/**/*.js'
     ], function (file) {
         server.notify.apply(server, [file]);
     });
