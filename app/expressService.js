@@ -194,7 +194,7 @@ expressService.addStandardMethods = function(controller, service){
     };
 
     controller.update = function(req, res) {
-        expressService.promToRes(service.updateFromJson(req.body), res);
+        expressService.promToRes(service.updateFromJson(req.model, req.body), res);
     };
 };
 
