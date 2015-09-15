@@ -13,6 +13,7 @@ var scoreService = require('./scoreService');
 var eventService = require('../event/eventService');
 var batchService = require('../batch/batchService');
 var baseService = require('../baseService');
+var Setting = require('../setting/setting').model;
 
 baseService.addStandardServiceMethods(rankingService, Ranking);
 
