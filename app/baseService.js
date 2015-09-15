@@ -26,6 +26,16 @@ baseService.addStandardServiceMethods = function(service, dao){
             .then(eventService.logCreateEntity);
     };
 
+    service.createFromJson = function(json){
+        return service.jsonToModel(json)
+            .then(service.create);
+    };
+
+    service.updateFromJson = function(existingModel, updatedBody){
+        return service.mergeWithExisting(existingModel, updatedBody)
+            .then(service.update);
+    };
+
     service.update = function(entity){
         return mongoService.savePromise(entity)
             .then(eventService.logUpdateEntity);

@@ -188,6 +188,14 @@ expressService.addStandardMethods = function(controller, service){
     controller.destroy = function(req, res) {
         expressService.promToRes(service.remove(req.model), res);
     };
+
+    controller.create = function(req, res) {
+        expressService.promToRes(service.createFromJson(req.body), res);
+    };
+
+    controller.update = function(req, res) {
+        expressService.promToRes(service.updateFromJson(req.body), res);
+    };
 };
 
 expressService.promToRes = function(promise, res){
