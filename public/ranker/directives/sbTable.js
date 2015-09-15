@@ -123,13 +123,15 @@ angular.module('directives')
 
             scope.loadSearchFieldsOptions = function(){
                 if (scope.searchFields != null){
-                    var optionProms = _.chain(scope.searchFields).filter(function(field){
+                    var filteredOptions = _.filter(scope.searchFields, function(field){
                         return field.type === "select" || field.type === "selectRangeSingle";
-                    }).map(function(field){
+                    });
+
+                    var optionProms = _.map(filteredOptions,function(field){
                         if (field.loadOptions != null){
                             return field.loadOptions().then(function(options){
                                 field.options = options;
-                            })
+                            });
                         } else {
                             return $q.when();
                         }
