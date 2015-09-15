@@ -17,6 +17,7 @@ var BatchResult = require('../batch/batchResult').model;
 var Invite = require('../invite/invite').model;
 var File = require('../file/file').model;
 var Chunk = require('../file/file').chunkModel;
+var Setting = require('../setting/setting').model;
 var mongoService = require('../mongoService');
 var Schema = mongoose.Schema;
 
@@ -153,12 +154,29 @@ adminService.setupRankingSystemDefaults = function(){
     damRanking.pointAllotments = damRanking.pointAllotments.concat(adminService.generateAllotmentSet([4, 3, 2, 1, 1, 1, 1, 1], group2Dam));
     damRanking.pointAllotments = damRanking.pointAllotments.concat(adminService.generateAllotmentSet([4, 3, 2, 1, 1, 1, 1, 1], group3Dam));
 
-    return adminService.removeAllRankingSystems().then(function(){
+    return adminService.removeAllRankingSystems().then(function () {
         return mongoService.saveAll([
             new RankingSystem(agraRanker),
             new RankingSystem(sireRanking),
             new RankingSystem(damRanking)
         ]);
+    }).then(function(){
+        return adminService.setupDefaultSettings();
+    });
+};
+
+adminService.setupDefaultSettings = function(){
+    var settings ={settingType : "system"};
+
+    return mongoService.findOne(RankingSystem, {name: "Greyhounds"}).then(function(one){
+        if (one != null && one._id != null){
+            settings.defaultRankingSystem = one._id.toString();
+            return mongoService.dropCollection(Setting).then(function() {
+                return mongoService.saveAll([new Setting(settings)]);
+            });
+        } else {
+            return q();
+        }
     });
 };
 
