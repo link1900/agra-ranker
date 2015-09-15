@@ -12,6 +12,7 @@ var adminController = require('./admin/adminController');
 var fileController = require('./file/fileController');
 var inviteController = require('./invite/inviteController');
 var exportController = require('./export/exportController');
+var settingController = require('./setting/settingController');
 var helper = require('./helper');
 var rateLimiter = require('./rateLimiter');
 
@@ -135,4 +136,13 @@ module.exports = function(app) {
     app.get('/event', eventController.find);
     app.get('/event/:eventId', eventController.getOne);
     app.param('eventId', eventController.setModel);
+
+    //setting
+    app.get('/setting', settingController.find);
+    app.get('/setting/:settingId', settingController.getOne);
+    app.post('/setting', securityController.checkAuthentication, settingController.create);
+    app.put('/setting/:settingId', securityController.checkAuthentication, settingController.update);
+    app.del('/setting/:settingId',securityController.checkAuthentication, settingController.destroy);
+    app.param('settingId', settingController.setModel);
+
 };

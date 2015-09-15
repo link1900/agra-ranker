@@ -4,8 +4,8 @@ var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 
 setting.definition = {
-    type: { type: String },
-    options: {type: [Mixed]}
+    settingType : {type: String},
+    defaultRankingSystem : { type: String }
 };
 
 setting.schema = new Schema(setting.definition);
