@@ -1,0 +1,80 @@
+<div ng-show="user" ng-controller="adminCtrl">
+    <div class="page-header">
+        <h2>Site Administration</h2>
+    </div>
+    <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Configuration</h3>
+        </div>
+        <div class="panel-body">
+            <form name="settingsForm" data-ng-controller="settingCtrl" novalidate>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <label class="control-label">Default ranking system</label>
+                        <select id="settingDefaultRankingSystem" class="form-control" data-ng-model="settings.defaultRankingSystem" ng-options="rankingSystem._id as rankingSystem.name for rankingSystem in rankingSystems"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <button data-ng-click="saveSettings()" class="btn btn-success">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Record counts</h3>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal-wide">
+                <dt>Total users</dt>
+                <dd>{{counts.user}}</dd>
+                <dt>Total greyhounds</dt>
+                <dd>{{counts.greyhound}}</dd>
+                <dt>Total placings</dt>
+                <dd>{{counts.placing}}</dd>
+                <dt>Total group levels</dt>
+                <dd>{{counts.groupLevel}}</dd>
+                <dt>Total invites</dt>
+                <dd>{{counts.invite}}</dd>
+                <dt>Total races</dt>
+                <dd>{{counts.race}}</dd>
+                <dt>Total ranking systems</dt>
+                <dd>{{counts.rankingSystem}}</dd>
+                <dt>Total batch jobs</dt>
+                <dd>{{counts.batchJob}}</dd>
+                <dt>Total batch result</dt>
+                <dd>{{counts.batchResult}}</dd>
+                <dt>Total files stored</dt>
+                <dd>{{counts.file}}</dd>
+                <dt>Total size of files stored</dt>
+                <dd>{{counts.fileSize | bytes}}</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Setup records</h3>
+        </div>
+        <div class="panel-body">
+            <button data-ng-click="setupDefaults('groupLevel')" class="btn btn-primary">Setup group levels</button>
+            <button data-ng-click="setupDefaults('rankingSystem')" class="btn btn-primary">Setup ranking systems</button>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Remove records</h3>
+        </div>
+        <div class="panel-body">
+            <table>
+                <tr ng-repeat="collection in removeCollections">
+                    <td>
+                        <button data-ng-click="removeAll(collection)" class="btn btn-danger">Remove all {{collection}}</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

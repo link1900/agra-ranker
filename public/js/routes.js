@@ -68,9 +68,6 @@ angular.module('core').config(function($routeProvider) {
         .when('/file/view/:id', {
             templateUrl : '/ranker/file/fileView.html'
         })
-        .when('/data', {
-            templateUrl : '/ranker/admin/data.html'
-        })
         .otherwise({
             redirectTo : '/'
         });

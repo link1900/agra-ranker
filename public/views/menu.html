@@ -17,9 +17,8 @@
                 <li ng-show="user" ui-route="#/groupLevel.*" class="visible-lg" ng-class="{active: $uiRoute}" ><a data-ng-href="#/groupLevel">Group Levels</a></li>
                 <li ng-show="user" ui-route="#/rankingSystem.*" class="visible-lg" ng-class="{active: $uiRoute}"><a data-ng-href="#/rankingSystem">Ranking Systems</a></li>
                 <li ng-show="user" class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings</a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li class="dropdown-header">Administration</li>
                         <li><a href="#/groupLevel">Group Levels</a></li>
                         <li><a href="#/rankingSystem">Ranking Systems</a></li>
                         <li><a href="#/user">Users</a></li>
@@ -27,7 +26,7 @@
                         <li><a href="#/batch">Batch Jobs</a></li>
                         <li><a href="#/file">Files</a></li>
                         <li><a href="#/event">Event Log</a></li>
-                        <li><a href="#/data">Data management</a></li>
+                        <li><a href="#/admin">Configuration</a></li>
                     </ul>
                 </li>
             </ul>
