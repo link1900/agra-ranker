@@ -22,7 +22,8 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         ];
 
         $scope.searchInfo = [
-            {"name":"Name", field:"like", type:"text"}
+            {"name":"Name", field:"like", type:"text"},
+            {"name":"Date range", type:"dateRange"}
         ];
 
         $scope.exportInfo = [

@@ -9,7 +9,7 @@ var greyhoundService = require('./greyhoundService');
 
 expressService.addStandardMethods(greyhoundController, greyhoundService);
 
-greyhoundController.searchFields = ['name=name','name~like','sireRef=parentRef||damRef=parentRef'];
+greyhoundController.searchFields = ['name=name','name~like','sireRef=parentRef||damRef=parentRef', 'createdAt>=startDate', 'createdAt<=endDate'];
 
 greyhoundController.find = function(req, res){
     expressService.standardSearch(req, res, greyhoundService, greyhoundController.searchFields);
