@@ -15,41 +15,13 @@
                 <div class="form-group row">
                     <div class="col-md-6">
                         <label class="control-label" style="width: 100%;">Sire</label>
-                        <ui-select ng-model="greyhound.sireRef"
-                                   theme="select2"
-                                   ng-disabled="disabled"
-                                   reset-search-input="false" style="width: 300px;">
-                            <ui-select-match placeholder="Select a sire">
-                                {{$select.selected.name || greyhound.sireName}}
-                            </ui-select-match>
-                            <ui-select-choices repeat="greyhound._id as greyhound in searchGreyhounds track by $index"
-                                               refresh="refreshGreyhoundSearch($select.search)"
-                                               refresh-delay="0">
-                                <div ng-bind-html="greyhound.name | highlight: $select.search"></div>
-                            </ui-select-choices>
-                        </ui-select>
-                        <button class="btn btn-default" data-ng-click="clearSire()">Clear</button>
-                        <a data-ng-href="#/greyhound/create" class="btn btn-primary">Create New</a>
+                        <div sb-greyhound-name-field data-sb-model="sireName"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-md-6">
                         <label class="control-label" style="width: 100%;">Dam</label>
-                        <ui-select ng-model="greyhound.damRef"
-                                   theme="select2"
-                                   ng-disabled="disabled"
-                                   reset-search-input="false" style="width: 300px;">
-                            <ui-select-match placeholder="Select a dam">
-                                {{$select.selected.name || greyhound.damName}}
-                            </ui-select-match>
-                            <ui-select-choices repeat="greyhound._id as greyhound in searchGreyhounds track by $index"
-                                               refresh="refreshGreyhoundSearch($select.search)"
-                                               refresh-delay="0">
-                                <div ng-bind-html="greyhound.name | highlight: $select.search"></div>
-                            </ui-select-choices>
-                        </ui-select>
-                        <button class="btn btn-default" data-ng-click="clearDam()">Clear</button>
-                        <a data-ng-href="#/greyhound/create" class="btn btn-primary">Create New</a>
+                        <div sb-greyhound-name-field data-sb-model="damName"></div>
                     </div>
                 </div>
                 <div class="form-group row">
