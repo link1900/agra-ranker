@@ -1,10 +1,6 @@
-<div class="form-group">
-        <input id="greyhoundField"
-               type="text"
-               placeholder="Greyhound Name"
-               data-ng-model="sbModel"
-               data-typeahead="item for item in greyhoundSearch($viewValue)"
-               data-typeahead-loading="true"
-               autocomplete="off"
-               class="form-control bigText" />
-</div>
+<input id="greyhoundField"
+ type="text"
+ data-ng-model="sbModel"
+ data-typeahead="greyhound.name for greyhound in greyhoundSearch($viewValue)"
+ autocomplete="off"
+ class="form-control bigText" />

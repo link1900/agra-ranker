@@ -6,21 +6,16 @@ angular.module('directives')
                 allowClear:true
             };
 
-            scope.searchParamsGreyhoundField = {
-                page : 1,
-                per_page : 15,
-                like : '',
-                sort_field: 'name',
-                sort_direction: 'asc'
-            };
-
             scope.greyhoundSearch = function(val) {
-                scope.searchParamsGreyhoundField.like = val;
-                return greyhoundSvr.query(scope.searchParamsGreyhoundField).$promise.then(function(result){
-                    return _.map(result, function(r){
-                        return r.name;
-                    });
-                });
+                var searchParams = {
+                    page : 1,
+                    per_page : 10,
+                    sort_field: 'name',
+                    sort_direction: 'asc',
+                    like : val
+                };
+
+                return greyhoundSvr.query(searchParams).$promise;
             };
         }
 
