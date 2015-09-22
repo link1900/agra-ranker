@@ -6,29 +6,14 @@
         <div class="panel-body">
             <div data-alert data-ng-repeat="alert in placingAlerts" data-type="alert.type">{{alert.msg}}</div>
             <div id="placingControls" class="row">
-                <div ng-hide="formMode != 'view'" class="col-md-4">
-                    <button data-ng-click="showAdd()" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Add</button>
-                    <button data-ng-click="showEdit()" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+                <div class="col-md-3 form-group">
+                    <span sb-greyhound-name-field ng-keyup="keyUp($event)" data-sb-model="selection.newGreyhoundName"></span>
                 </div>
-                <div ng-show="formMode == 'edit'" class="col-md-1">
-                    <button data-ng-click="finishEditing()" class="btn btn-success">Save</button>
-                </div>
-                <div ng-show="formMode == 'add'" class="col-md-6">
-                    <ui-select ng-model="selection.greyhound"
-                               theme="select2"
-                               ng-disabled="disabled"
-                               reset-search-input="false" style="width: 300px;">
-                        <ui-select-match placeholder="Select a greyhound">
-                            {{$select.selected.name}}
-                        </ui-select-match>
-                        <ui-select-choices repeat="greyhound in searchGreyhounds track by $index"
-                                           refresh="refreshGreyhoundSearch($select.search)"
-                                           refresh-delay="0">
-                            <div ng-bind-html="greyhound.name | highlight: $select.search"></div>
-                        </ui-select-choices>
-                    </ui-select>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
                     <button data-ng-click="addGreyhound()" class="btn btn-success">Add</button>
-                    <button data-ng-click="showView()" class="btn btn-default">Cancel</button>
+                    <button data-ng-click="showView()" class="btn btn-default">Clear</button>
                 </div>
             </div>
             <div class="row placing-row" ng-repeat="placing in placings">
@@ -36,7 +21,7 @@
                 <div data-ng-model="placing" id="placingSet-{{$index}}" ui-sortable="sortableOptions" class="placing-container col-md-7">
                     <div id="placing-{{$parent.$index}}-{{$index}}" class="row" style="margin-bottom: 5px; margin-top: 5px;" ng-repeat="greyhound in placing">
                         <span class="placing-greyhound col-md-4">{{greyhound.name}}</span>
-                        <span class="col-md-2"><button data-ng-click="removePlacing($parent.$index, $index)" ng-show="formMode == 'edit'" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-minus-sign"></span> Remove</button></span>
+                        <span class="col-md-2"><button data-ng-click="removePlacing($parent.$index, $index)" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-minus-sign"></span> Remove</button></span>
                     </div>
                 </div>
             </div>

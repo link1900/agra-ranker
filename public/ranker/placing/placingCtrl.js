@@ -16,8 +16,6 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
 
     $scope.formMode = 'view';
 
-    $scope.newGreyhoundName = "";
-
     $scope.placingDefinitions = [
         {"displayIndex":0, "placingValue": "1", "placingLabel": "1st", "style": "placing-number"},
         {"displayIndex":1, "placingValue": "2", "placingLabel": "2nd", "style": "placing-number"},
@@ -104,7 +102,7 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
     $scope.savePlacingModel = function(placingModel){
         return placingSvr.savePlacing(placingModel).then(function(savedPlacing){
             return savedPlacing._id;
-        }, function(err){
+        }, function(){
             $scope.placingAlerts.push({ type: 'danger', msg: "Failed to save placing."});
             return null;
         });
@@ -189,22 +187,10 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
         $scope.savePlacingModels(placingModels);
     };
 
-    $scope.showAdd = function(){
-        $scope.formMode = 'add';
-    };
-
     $scope.showView = function(){
-        $scope.formMode = 'view';
         $scope.clearNewGreyhound();
     };
 
-    $scope.showEdit = function(){
-        $scope.formMode = 'edit';
-    };
-
-    $scope.finishEditing = function(){
-        $scope.showView();
-    };
 
     $scope.validateGreyhoundName = function(greyhoundName){
         //validate the name
@@ -219,23 +205,24 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
 
     $scope.addGreyhound = function(){
         $scope.placingAlerts = [];
-        var done = false;
+        if ($scope.selection.newGreyhoundName != null && $scope.selection.newGreyhoundName.length > 0){
+            greyhoundSvr.findOrCreateGreyhound($scope.selection.newGreyhoundName).then(function(newGreyhound){
+                if (newGreyhound != null){
+                    $scope.addPlacing(newGreyhound);
+                } else {
+                    $scope.placingAlerts.push({ type: 'danger', msg: "Failed to create placing"});
+                }
+            });
+        }
+    };
 
+    $scope.addPlacing = function(newGreyhound){
         var newPlacing = {
-            name: $scope.selection.greyhound.name,
-            greyhoundRef : $scope.selection.greyhound._id
+            name: newGreyhound.name,
+            greyhoundRef : newGreyhound._id
         };
 
-        //calculate display position
-        var displayIndex = 0;
-        for(var i = 0; i < $scope.placings.length; i++){
-            if ($scope.placings[i].length == 0 && done == false){
-                displayIndex = i;
-                done = true;
-            }
-        }
-
-        //save the new placing
+        var displayIndex = $scope.getNextPlacingPosition();
         var placingPosition = $scope.placingValueLookUp(displayIndex);
         var newPlacingModel = $scope.convertDisplayModelToPlacingModel(placingPosition, newPlacing);
         $scope.savePlacingModel(newPlacingModel).then(function(placingId){
@@ -245,10 +232,17 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
                 //insert the new name into the correct position on the placing sets
                 $scope.placings[displayIndex].push(newPlacing);
                 $scope.showView();
-            } else {
-
             }
         });
+    };
+
+    $scope.getNextPlacingPosition = function(){
+        for(var i = 0; i < $scope.placings.length; i++){
+            if ($scope.placings[i].length == 0){
+                return i;
+            }
+        }
+        return i;
     };
 
     $scope.inPlacings = function(greyhoundName){
@@ -260,24 +254,7 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
         return result != null;
     };
 
-    $scope.searchGreyhounds = [];
-
-    $scope.refreshGreyhoundSearch = function(val){
-        var searchParams = {
-            page : 1,
-            per_page : 10,
-            sort_field: 'name',
-            sort_direction: 'asc',
-            like : val
-        };
-
-        greyhoundSvr.query(searchParams, function(resultModels) {
-            $scope.searchGreyhounds = resultModels;
-        });
-    };
-
     $scope.clearNewGreyhound = function(){
         $scope.selection = {};
     };
-
 });
