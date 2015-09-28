@@ -32,9 +32,7 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             }, function(greyhound) {
                 $scope.loadGreyhound(greyhound);
             }, function(){
-                $scope.alerts = [
-                    { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
-                ];
+                $scope.loadGreyhound({});
             });
         };
 
@@ -48,8 +46,8 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
             }
         };
 
-        $scope.create = function(){
-            greyhoundSvr.save({}, $scope.greyhound).$promise.then(function(result){
+        $scope.createGreyhound = function(greyhound){
+            greyhoundSvr.save({}, greyhound).$promise.then(function(result){
                 $location.path('greyhound/edit/'+ result._id);
             }, function(error){
                 $scope.alerts = [
@@ -71,9 +69,15 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         };
 
         $scope.save = function(){
-            $scope.saveSire($scope.greyhound)
-                .then($scope.saveDam)
-                .then($scope.saveGreyhound);
+            if ($scope.greyhound._id != null){
+                $scope.saveSire($scope.greyhound)
+                    .then($scope.saveDam)
+                    .then($scope.saveGreyhound);
+            } else {
+                $scope.saveSire($scope.greyhound)
+                    .then($scope.saveDam)
+                    .then($scope.createGreyhound);
+            }
         };
 
         $scope.saveSire = function(greyhound){

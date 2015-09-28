@@ -1,4 +1,4 @@
-<div data-ng-controller="GreyhoundCtrl">
+<div id="greyhoundForm" data-ng-controller="GreyhoundCtrl" data-ng-init="findOne()">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Greyhound Creation</h3>
@@ -14,11 +14,12 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-2">
-                        <button data-ng-click="create()" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Save</button>
+                        <button data-ng-click="save()" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Save</button>
                         <a ng-href="#/greyhound" class="btn btn-default">Cancel</a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <a data-ng-href="#/greyhound">Back to Greyhounds</a>
 </div>
