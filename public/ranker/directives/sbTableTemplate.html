@@ -34,7 +34,10 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="SearchTextField{{searchField.name}}">{{searchField.name}}</label>
-                                    <input id="SearchTextField{{searchField.name}}" class="form-control" type="text" data-ng-model="searchParams[searchField.field]" autocomplete="off"/>
+                                    <div class="form-group has-feedback has-clear">
+                                        <input id="SearchTextField{{searchField.name}}" class="form-control" type="text" data-ng-model="searchParams[searchField.field]" autocomplete="off"/>
+                                        <a ng-show="searchParams[searchField.field] != null && searchParams[searchField.field].length > 0" class="glyphicon glyphicon-remove form-control-feedback form-control-clear" ng-click="searchParams[searchField.field] = ''" style="pointer-events: auto; text-decoration: none;cursor: pointer;"></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
