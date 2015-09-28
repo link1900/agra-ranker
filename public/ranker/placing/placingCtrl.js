@@ -154,7 +154,9 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
     $scope.greyhoundPlacingColumns =[
         {title: "Placing", field:"placing"},
         {title: "Race", field:"race.name", type:"link", baseLink:"#/race/view/", linkField: "raceRef"},
-        {title: "Race Date", field:"race.date", filter: "date", filterFormat: 'dd MMMM yyyy'}
+        {title: "Race Date", field:"race.date", filter: "date", filterFormat: 'dd MMMM yyyy'},
+        {title: "Group Level", field:"race.groupLevel.name"},
+        {title: "Distance (meters)", field:"race.distanceMeters"}
     ];
 
     $scope.greyhoundSearchFields = [
