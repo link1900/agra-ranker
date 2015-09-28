@@ -3,13 +3,13 @@ angular.module('core').config(function($routeProvider) {
         templateUrl : '/views/rankings.html'
         })
         .when('/greyhound/edit/:id', {
-            templateUrl : '/ranker/greyhound/greyhoundEditForm.html'
+            templateUrl : '/ranker/greyhound/greyhoundForm.html'
         })
         .when('/greyhound/view/:id', {
             templateUrl : '/ranker/greyhound/greyhoundView.html'
         })
         .when('/greyhound/create', {
-            templateUrl : '/ranker/greyhound/greyhoundCreateForm.html'
+            templateUrl : '/ranker/greyhound/greyhoundForm.html'
         })
         .when('/greyhound', {
             templateUrl : '/ranker/greyhound/greyhound.html'
