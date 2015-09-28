@@ -66,7 +66,11 @@
     <table ng-hide="noRecords" border="0" class="table table-striped table-bordered">
         <thead>
         <tr>
-            <th data-ng-repeat="column in columnInfo">{{column.title}}</th>
+            <th data-ng-repeat="column in columnInfo" data-ng-click="setSort(column.field)">
+                {{column.title}}
+                <span data-ng-show="searchParams.sort_field == column.field && searchParams.sort_direction == 'asc'" class="glyphicon glyphicon-triangle-bottom"></span>
+                <span data-ng-show="searchParams.sort_field == column.field && searchParams.sort_direction == 'desc'" class="glyphicon glyphicon-triangle-top"></span>
+            </th>
         </tr>
         </thead>
         <tbody>

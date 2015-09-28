@@ -203,6 +203,19 @@ angular.module('directives')
                 }
             };
 
+            scope.setSort = function(columnField){
+                if (scope.searchParams.sort_field == columnField){
+                    if (scope.searchParams.sort_direction == 'desc'){
+                        scope.searchParams.sort_direction = 'asc';
+                    } else {
+                        scope.searchParams.sort_direction = 'desc';
+                    }
+                } else {
+                    scope.searchParams.sort_field = columnField;
+                    scope.searchParams.sort_direction = 'desc';
+                }
+            };
+
             scope.setSearchFieldsFromSearchParams = function(){
                 if (scope.searchFields != null){
                     _.forEach(scope.searchFields, function(field){
