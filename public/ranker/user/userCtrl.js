@@ -3,8 +3,7 @@ angular.module('controllers').controller('userCtrl', function($scope,
                                                               userService,
                                                               rankerEventBus,
                                                               securityService,
-                                                              $location,
-                                                              $window) {
+                                                              $location) {
         $scope.findOne = function() {
             userService.get({
                 userId: $routeParams.id
