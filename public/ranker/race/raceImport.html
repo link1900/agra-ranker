@@ -1,5 +1,5 @@
 <span ng-controller="UploadCtrl">
-    <button data-ng-hide="uploadingFile" data-ng-click="openFileSelect('race')" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up"></span> Import</button>
+    <button data-ng-hide="uploadingFile" data-ng-click="openFileSelect('race')" class="btn btn-primary"><span class="glyphicon glyphicon-import"></span> Import</button>
     <input id="hiddenFileOpen" type="file" style="display:none" ng-file-select="onFileSelect($files)">
     <span data-ng-show="isUploading">
         Uploading file...
