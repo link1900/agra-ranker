@@ -3,6 +3,7 @@ var rankingService = module.exports = {};
 var _ = require('lodash');
 var q = require('q');
 var moment = require('moment');
+var logger = require('winston');
 
 var placingService = require('../placing/placingService');
 var greyhoundService = require('../greyhound/greyhoundService');
@@ -23,12 +24,15 @@ baseService.addStandardServiceMethods(rankingService, Ranking);
 rankingService.createRankingsIfRequired = function(periodStart, periodEnd, rankingSystemRef){
     //get complete ranking system
     return rankingService.getCompleteRankingSystem(periodStart, periodEnd, rankingSystemRef).then(function(rankingSystem){
+        logger.info("found ranking system:" + JSON.stringify(rankingSystem, null, 2));
         //get ranking finger print
         return rankingService.getRankingsFingerPrint(periodStart, periodEnd, rankingSystem).then(function(rankingsFingerPrint){
             return rankingService.distinctField("fingerPrint", {"fingerPrint": rankingsFingerPrint}).then(function(fingerPrints){
                 if (fingerPrints != null && fingerPrints.length > 0){
+                    logger.info("already ranked with:" + rankingsFingerPrint);
                     return rankingsFingerPrint;
                 } else {
+                    logger.info("not ranked yet starting calculation");
                     return rankingService.calculateAndStoreRankings(rankingsFingerPrint, rankingSystem);
                 }
             });

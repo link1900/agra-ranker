@@ -49,6 +49,10 @@ main.checkEnvs = function(mainConfig){
         'SESSION_SECRET',
         'FIRST_USER_PASSCODE'];
 
+    if (!process.env.LOGGING_LEVEL){
+        process.env.LOGGING_LEVEL = 'warn';
+    }
+
     requiredEnv.forEach(main.checkEnv);
 
     return q(mainConfig);
@@ -63,7 +67,7 @@ main.checkEnv = function(envName){
 
 main.setupLogging = function(mainConfig){
     winston.remove(winston.transports.Console);
-    winston.add(winston.transports.Console, {timestamp: true});
+    winston.add(winston.transports.Console, { level: process.env.LOGGING_LEVEL,timestamp: true});
     return q(mainConfig);
 };
 

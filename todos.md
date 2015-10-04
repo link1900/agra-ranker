@@ -260,78 +260,42 @@
 - (DONE) Export Races as CSV
 - (DONE) Export rankings in overlapping grid format csv
 - (DONE) Contributing races should link to the race
-- Expose the ability to make a ranking a default ranking for the system
-- Add points to a greyhounds record
-- Add the ability to get default points and ranking
-- Display a greyhounds rank and points on the greyhound view
-- When adding a greyhound to a race have the ability for it to be a new greyhound
-- Greyhounds listed in the placings on a race should display its points
-- Have the ability to add many greyhounds at once
-- When setting a sire of a greyhound it should be a modal or link back to the sire and same for dam
-- Greyhound placings should display group and race length (and default points)
-- List all placings
-- Stats menu
-  - Greyhound count
-  - rankings greyhounds
-  - races
-  - placings
-  - ranked greyhounds this month
-  - 3 races this month
-  - last changed date
-  - group 1 races
-  - group 2 races
-  - group 3 race
-  - sprint dogs
-  - distance dogs
-- List races
-    - Filter by month
-    - Filter by year
-    - Filter by financial year
-    - Filter between dates
-- List greyhounds
-    - Filter by month
-    - Filter by year
-    - Filter by financial year
-    - Filter between dates
-- About section explaining the site
-- Search greyhound by name
-- Search race by name
-- Get point calculations for each ranking
-- Upgrade grid to have good search controls for races
-- Hide extra search options if none are defined
-- Save the advanced search options on a grid (in the panel is open or closed and the details)
-- Advanced search options have a clear button which clears all settings
-- Switch basic like search to use mongo full text search
-- allow race search to be done by two dates
-- update the read me with the .example_env and what each config does
-- put in proper action logging
-- save the history log to the database
-- export races csv
-- race upload section
-- placing upload section
-- table pick the page size
-- table sort
-- table export to csv
-- rankings export to special csv
-- Sire and dam edit should be a select2 with new option
-- Placing new greyhound should be a select 2 with new option
-- Add prompts for delete actions
-- inline create form on greyhound
-- inline edit form on greyhound
-- search on keydown for tables search box
-- race & placing csv import api
+- (DONE) Expose the ability to make a ranking a default ranking for the system
+- (DONE) List greyhounds
+    - (DONE) Filter by month
+    - (DONE) Filter by year
+    - (DONE) Filter by financial year
+    - (DONE) Filter between dates
+    
+- (DONE) When adding a greyhound to a race have the ability for it to be a new greyhound
+- (DONE) When setting a sire of a greyhound it should be a modal or link back to the sire and same for dam
+- (DONE) Greyhound placings should display group and race length (and default points)
+- (DONE) Ranking placing display needs some padding
+- (DONE) table sort
+- (DONE) investigate an issue with the race dates
 - deploy and perform PVT online
-- confirm main ranking system by doing a system compare
-- confirm sire and dam ranking system by doing a system compare
+- (DONE) fix template typos
+- (DONE) bug with direct user creation
+- bug with the date formats not be parsed correctly
+- bug with a greyhound being missing
+- bug with the rankings not being displayed
+- bug invite emails where not sent
 
 ## 6.1.1 - Beyond the ranker 6 first steps
 
 ## Backlog - Beyond the ranker 6
+- Add prompts for delete actions
+- Have the ability to add many greyhounds at once
+- Add the ability to get default points and ranking
+- Display a greyhounds rank and points on the greyhound view
+- Greyhounds listed in the placings on a race should display its points
 - Have the ability to rank by prize money
 - export greyhound json
+- Switch basic like search to use mongo full text search
 - export races json
 - add a news section
 - export pdf for media releases
+- About section explaining the site
 - auto retrieve sire and dam for a greyhound from authority site (with confirm prompt)
 - refactor the admin service to import the models once and do all operations of that list
 - add protactor tests for the major flows like greyhound crud, race crud placing crud, rankings and score check
