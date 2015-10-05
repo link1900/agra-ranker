@@ -24,7 +24,6 @@ baseService.addStandardServiceMethods(rankingService, Ranking);
 rankingService.createRankingsIfRequired = function(periodStart, periodEnd, rankingSystemRef){
     //get complete ranking system
     return rankingService.getCompleteRankingSystem(periodStart, periodEnd, rankingSystemRef).then(function(rankingSystem){
-        logger.info("found ranking system:" + JSON.stringify(rankingSystem, null, 2));
         //get ranking finger print
         return rankingService.getRankingsFingerPrint(periodStart, periodEnd, rankingSystem).then(function(rankingsFingerPrint){
             return rankingService.distinctField("fingerPrint", {"fingerPrint": rankingsFingerPrint}).then(function(fingerPrints){
@@ -62,7 +61,8 @@ rankingService.calculateAndStoreRankings = function(rankingsFingerPrint, ranking
             });
         });
     } else {
-        q.reject("ranking system by have valid group by fields");
+        log.warn("ranking system must have a valid group by field");
+        q.reject("ranking system must have a valid group by field");
     }
 };
 

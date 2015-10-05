@@ -3,6 +3,7 @@ var scoreService = module.exports = {};
 var _ = require('lodash');
 var q = require('q');
 var moment = require('moment');
+var logger = require('winston');
 
 var placingService = require('../placing/placingService');
 var rankingService = require('./rankingService');
@@ -16,6 +17,7 @@ baseService.addStandardServiceMethods(scoreService, Score);
 
 scoreService.generateRankingsFromScores = function(rankingsFingerPrint, rankingSystem){
     var scoreCreationQueries = scoreService.getScoreCreationQueries(rankingSystem);
+    logger.info("score queries: " + JSON.stringify(scoreCreationQueries, null, 2));
     return scoreService.createScores(rankingSystem, scoreCreationQueries, rankingsFingerPrint).then(function(){
         return scoreService.sumScoresIntoRankings(rankingSystem, rankingsFingerPrint).then(function(){
             return scoreService.removeAll({fingerPrint: rankingsFingerPrint});
