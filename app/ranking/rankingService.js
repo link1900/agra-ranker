@@ -28,10 +28,8 @@ rankingService.createRankingsIfRequired = function(periodStart, periodEnd, ranki
         return rankingService.getRankingsFingerPrint(periodStart, periodEnd, rankingSystem).then(function(rankingsFingerPrint){
             return rankingService.distinctField("fingerPrint", {"fingerPrint": rankingsFingerPrint}).then(function(fingerPrints){
                 if (fingerPrints != null && fingerPrints.length > 0){
-                    logger.info("already ranked with:" + rankingsFingerPrint);
                     return rankingsFingerPrint;
                 } else {
-                    logger.info("not ranked yet starting calculation");
                     return rankingService.calculateAndStoreRankings(rankingsFingerPrint, rankingSystem);
                 }
             });

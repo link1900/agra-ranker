@@ -280,6 +280,10 @@
 - bug with a greyhound being missing
 - bug with the rankings not being displayed
 - bug invite emails where not sent
+- bug where the batch job will think its completed when its not
+- Real time batch updates
+- Run the site through the gooogle performance detector
+- Minifiy the site
 
 ## 6.1.1 - Beyond the ranker 6 first steps
 

@@ -17,7 +17,6 @@ baseService.addStandardServiceMethods(scoreService, Score);
 
 scoreService.generateRankingsFromScores = function(rankingsFingerPrint, rankingSystem){
     var scoreCreationQueries = scoreService.getScoreCreationQueries(rankingSystem);
-    logger.info("score queries: " + JSON.stringify(scoreCreationQueries, null, 2));
     return scoreService.createScores(rankingSystem, scoreCreationQueries, rankingsFingerPrint).then(function(){
         return scoreService.sumScoresIntoRankings(rankingSystem, rankingsFingerPrint).then(function(){
             return scoreService.removeAll({fingerPrint: rankingsFingerPrint});
