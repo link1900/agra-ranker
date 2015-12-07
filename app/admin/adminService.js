@@ -70,39 +70,7 @@ adminService.setupGroupLevel = function(){
     ]);
 };
 
-adminService.setupRankingSystemDefaults = function(){
-    var agraRanker = {
-        name: "Greyhounds",
-        description: "The main ranking system for agra",
-        equalPositionResolution: "splitPoints",
-        groupBy:{
-            label: "greyhound.name",
-            field: "greyhoundRef"
-        },
-        pointAllotments:[],
-        commonCriteria: [
-            {field: "race.disqualified", "comparator": "=", "value": false, type: "Boolean"}
-        ]
-    };
-
-    //sprint group
-    var baseSprint = [{field: "race.distanceMeters", "comparator": "<", "value": 595, type: "Number"}];
-    var group1Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}].concat(baseSprint);
-    var group2Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}].concat(baseSprint);
-    var group3Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}].concat(baseSprint);
-    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([70, 35, 20, 15, 10, 8, 7, 6], group1Sprint));
-    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sprint));
-    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([25, 16, 12, 8, 6, 5, 4, 3], group3Sprint));
-
-    //stay groups
-    var baseStay = [{field: "race.distanceMeters", "comparator": ">=", "value": 595, type: "Number"}];
-    var group1Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}].concat(baseStay);
-    var group2Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}].concat(baseStay);
-    var group3Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}].concat(baseStay);
-    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([50, 25, 16, 12, 8, 6, 4, 2], group1Stay));
-    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([30, 20, 12, 8, 6, 4, 2, 1], group2Stay));
-    agraRanker.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([20, 14, 10, 6, 4, 3, 2, 1], group3Stay));
-
+adminService.setupSireRankingSystem = function(){
     //sire
     var sireRanking = {
         name: "Sire",
@@ -123,10 +91,15 @@ adminService.setupRankingSystemDefaults = function(){
     var group1Sire = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}];
     var group2Sire = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}];
     var group3Sire = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}];
-    sireRanking.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([70, 35, 20, 15, 10, 8, 7, 6], group1Sire));
-    sireRanking.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sire));
-    sireRanking.pointAllotments = agraRanker.pointAllotments.concat(adminService.generateAllotmentSet([25, 16, 12, 8, 6, 5, 4, 3], group3Sire));
+    sireRanking.pointAllotments = sireRanking.pointAllotments
+        .concat(adminService.generateAllotmentSet([70, 35, 20, 15, 10, 8, 7, 6], group1Sire))
+        .concat(adminService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sire))
+        .concat(adminService.generateAllotmentSet([25, 16, 12, 8, 6, 5, 4, 3], group3Sire));
 
+    return mongoService.saveAll([new RankingSystem(sireRanking)]);
+};
+
+adminService.setupDamRankingSystem = function(){
     //dam
     var damRanking = {
         name: "Dam",
@@ -147,17 +120,57 @@ adminService.setupRankingSystemDefaults = function(){
     var group1Dam = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}];
     var group2Dam = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}];
     var group3Dam = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}];
-    damRanking.pointAllotments = damRanking.pointAllotments.concat(adminService.generateAllotmentSet([6, 4, 3, 1, 1, 1, 1, 1], group1Dam));
-    damRanking.pointAllotments = damRanking.pointAllotments.concat(adminService.generateAllotmentSet([4, 3, 2, 1, 1, 1, 1, 1], group2Dam));
-    damRanking.pointAllotments = damRanking.pointAllotments.concat(adminService.generateAllotmentSet([4, 3, 2, 1, 1, 1, 1, 1], group3Dam));
+    damRanking.pointAllotments = damRanking.pointAllotments
+        .concat(adminService.generateAllotmentSet([6, 4, 3, 1, 1, 1, 1, 1], group1Dam))
+        .concat(adminService.generateAllotmentSet([4, 3, 2, 1, 1, 1, 1, 1], group2Dam))
+        .concat(adminService.generateAllotmentSet([4, 3, 2, 1, 1, 1, 1, 1], group3Dam));
+    return mongoService.saveAll([new RankingSystem(damRanking)]);
+};
 
-    return adminService.removeAllRankingSystems().then(function () {
-        return mongoService.saveAll([
-            new RankingSystem(agraRanker),
-            new RankingSystem(sireRanking),
-            new RankingSystem(damRanking)
-        ]);
-    }).then(function(){
+adminService.setupDefaultRankingSystem = function(){
+    var agraRanker = {
+        name: "Greyhounds",
+        description: "The main ranking system for agra",
+        equalPositionResolution: "splitPoints",
+        groupBy:{
+            label: "greyhound.name",
+            field: "greyhoundRef"
+        },
+        pointAllotments:[],
+        commonCriteria: [
+            {field: "race.disqualified", "comparator": "=", "value": false, type: "Boolean"}
+        ]
+    };
+
+    //sprint group
+    var baseSprint = [{field: "race.distanceMeters", "comparator": "<", "value": 595, type: "Number"}];
+    var group1Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}].concat(baseSprint);
+    var group2Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}].concat(baseSprint);
+    var group3Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}].concat(baseSprint);
+    agraRanker.pointAllotments = agraRanker.pointAllotments
+        .concat(adminService.generateAllotmentSet([70, 35, 20, 15, 10, 8, 7, 6], group1Sprint))
+        .concat(adminService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sprint))
+        .concat(adminService.generateAllotmentSet([25, 16, 12, 8, 6, 5, 4, 3], group3Sprint));
+
+    //stay groups
+    var baseStay = [{field: "race.distanceMeters", "comparator": ">=", "value": 595, type: "Number"}];
+    var group1Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}].concat(baseStay);
+    var group2Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}].concat(baseStay);
+    var group3Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}].concat(baseStay);
+    agraRanker.pointAllotments = agraRanker.pointAllotments
+        .concat(adminService.generateAllotmentSet([50, 25, 16, 12, 8, 6, 4, 2], group1Stay))
+        .concat(adminService.generateAllotmentSet([30, 20, 12, 8, 6, 4, 2, 1], group2Stay))
+        .concat(adminService.generateAllotmentSet([20, 14, 10, 6, 4, 3, 2, 1], group3Stay));
+
+    return mongoService.saveAll([new RankingSystem(agraRanker)]);
+};
+
+adminService.setupRankingSystemDefaults = function(){
+    return adminService.removeAllRankingSystems()
+        .then(adminService.setupDefaultRankingSystem)
+        .then(adminService.setupSireRankingSystem)
+        .then(adminService.setupDamRankingSystem)
+        .then(function(){
         return adminService.setupDefaultSettings();
     });
 };
