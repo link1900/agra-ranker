@@ -9,7 +9,6 @@ var winston = require('winston');
 var logger = require('winston');
 var dotenv = require('dotenv');
 var mongoose = require('mongoose');
-var primus = require('primus');
 
     /**
  * Main application entry file.
@@ -25,7 +24,6 @@ main.start = _.once(function(){
         .then(main.setupDatabaseConnection)
         .then(main.setupSecurity)
         .then(main.setupHTTP)
-        .then(main.setupWebSocketServer)
         .then(main.setupBatchService).then(function(){
             logger.info("Started system successfully");
         }, function(err){
@@ -138,20 +136,6 @@ main.setupHTTP = function(mainConfig){
 
     server.listen(port);
     logger.info('Express app started on port ' + port);
-    return deferred.promise;
-};
-
-main.setupWebSocketServer = function(mainConfig){
-    var deferred = q.defer();
-    if (mainConfig.server != null){
-        var webSocketServer = new primus(mainConfig.server);
-        mainConfig.webSocketServer = mainConfig;
-        deferred.resolve(mainConfig);
-    } else {
-        var error = "cannot start web socket server not passed active web server";
-        logger.error(error);
-        deferred.reject(error);
-    }
     return deferred.promise;
 };
 
