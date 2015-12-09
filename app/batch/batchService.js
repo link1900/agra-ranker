@@ -43,7 +43,7 @@ batchService.startBatchProcessors = function(){
         setInterval(batchService.processorTick, 5000, process);
     });
 
-    logger.log("info","[failed batch job checker]" + " has been started");
+    logger.log("info","[Batch job checker]" + " has been started");
     setInterval(batchService.failedBatchJobChecker, 10000);
 };
 
@@ -60,21 +60,21 @@ batchService.failedCheckerState = batchService.states.standby;
 batchService.failedBatchJobChecker = function(){
     if (batchService.failedCheckerState == batchService.states.standby){
         batchService.failedCheckerState = batchService.states.processing;
-        logger.log('debug',"[failed batch job checker] started looking for stuck batch jobs");
+        logger.log('debug',"[Batch job checker] started looking for stuck batch jobs");
         mongoService.find(BatchJob, {status: batchService.batchStatuses.inProgress}).then(function(batchesInProgress){
             var proms = batchesInProgress.map(function(batchInProgress){
                 if(!batchService.doesAnyProcessContainBatch(batchInProgress)){
                     //batch in progress that is not in a processor. mark it as failed
                     batchInProgress.status = batchService.batchStatuses.failed;
                     return mongoService.savePromise(batchInProgress).then(function(result){
-                        logger.log("info","[failed batch job checker] has marked batch job " +
+                        logger.log("info","[Batch job checker] has marked batch job " +
                             " id: " + batchInProgress._id +
                             " name: " + batchInProgress.type +
                             " as Failed because nothing is processing it");
                         return result;
                     }, function(updateFailure){
                         batchService.failedCheckerState = batchService.states.standby;
-                        logger.log("info","[failed batch job checker] had an error trying to update a batch job to failed", updateFailure);
+                        logger.log("info","[Batch job checker] had an error trying to update a batch job to failed", updateFailure);
                     });
                 } else {
                     return q(true);
@@ -82,17 +82,17 @@ batchService.failedBatchJobChecker = function(){
             });
             q.all(proms).then(function(){
                 batchService.failedCheckerState = batchService.states.standby;
-                logger.log('debug',"[failed batch job checker] finished looking for stuck batch jobs");
+                logger.log('debug',"[Batch job checker] finished looking for stuck batch jobs");
             }, function(someError){
-                logger.log("info","[failed batch job checker] has had an error", someError);
+                logger.log("info","[Batch job checker] has had an error", someError);
                 batchService.failedCheckerState = batchService.states.standby;
             });
         }, function(err){
-            logger.log("info","[failed batch job checker] has had an error", err);
+            logger.log("info","[Batch job checker] has had an error", err);
             batchService.failedCheckerState = batchService.states.standby;
         });
     } else {
-        logger.log("info","[failed batch job checker] is busy did not fire at this time");
+        logger.log("info","[Batch job checker] is busy did not fire at this time");
     }
 };
 
