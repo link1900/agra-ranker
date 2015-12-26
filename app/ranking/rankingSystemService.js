@@ -186,6 +186,9 @@ rankingSystemService.getQueryForPointAllotment = function(pointAllotment){
             case "!=":
                 rankingSystemService.addField(query, criteria.field, {"$ne": criteria.value});
                 break;
+            case "exists" :
+                rankingSystemService.addField(query, criteria.field, {"$exists": criteria.value});
+                break;
             default:
                 query[criteria.field] = criteria.value;
                 break;

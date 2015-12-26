@@ -181,7 +181,8 @@ angular.module('controllers').controller('RankingSystemCtrl',
 
         $scope.criteriaCompareBoolean = [
             {name: "Equals", value:"="},
-            {name: "Not Equals", value:"!="}
+            {name: "Not Equals", value:"!="},
+            {name: "Exists", value:"exists"}
         ];
 
         $scope.criteriaTypes = [
