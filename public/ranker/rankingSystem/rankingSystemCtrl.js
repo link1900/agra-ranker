@@ -295,6 +295,7 @@ angular.module('controllers').controller('RankingSystemCtrl',
             $scope.rankingSystem.commonCriteria.push({});
             $scope.editCommonCriteria($scope.rankingSystem.commonCriteria.length-1);
         };
+
         $scope.editCommonCriteriaEnabled = false;
         $scope.editCommonCriteria = function(change){
             $scope.editCommonCriteriaEnabled = change;
