@@ -2,7 +2,7 @@
 .sass-cache/
 .bower-*/
 node_modules/
-public/lib
+client/lib
 test/coverage/
 .idea
 .idea_modules
@@ -12,6 +12,6 @@ target/
 lib_managed/
 src_managed/
 test-output/
-public/index.html
-public/views/footer.html
+client/index.html
+client/views/footer.html
 .env
