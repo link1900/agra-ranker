@@ -83,7 +83,7 @@ adminService.setupSireRankingSystem = function(){
         pointAllotments:[],
         commonCriteria: [
             {field: "race.disqualified", "comparator": "=", "value": false, type: "Boolean"},
-            {field: "greyhound.sireRef", "comparator": "!=", "value": "", type: "Text"}
+            {field: "greyhound.sireRef", "comparator": "exists", "value": true, type: "Boolean"}
         ]
     };
 
@@ -112,7 +112,7 @@ adminService.setupDamRankingSystem = function(){
         pointAllotments:[],
         commonCriteria: [
             {field: "race.disqualified", "comparator": "=", "value": false, type: "Boolean"},
-            {field: "greyhound.damRef", "comparator": "!=", "value": "", type: "Text"}
+            {field: "greyhound.damRef", "comparator": "exists", "value": true, type: "Boolean"}
         ]
     };
 
