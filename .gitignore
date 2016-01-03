@@ -12,6 +12,5 @@ target/
 lib_managed/
 src_managed/
 test-output/
-client/index.html
 .env
 dist
