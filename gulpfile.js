@@ -2,7 +2,6 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var templateCache = require('gulp-angular-templatecache');
 var gulpSequence = require('gulp-sequence');
-var nodemon = require('gulp-nodemon');
 var del = require('del');
 
 var paths = {
