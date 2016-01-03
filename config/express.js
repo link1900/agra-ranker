@@ -78,7 +78,7 @@ module.exports = function(app, passport, db) {
         app.use(app.router);
 
         // Setting static folder
-        var staticPath = path.normalize(__dirname + '/../public');
+        var staticPath = path.normalize(__dirname + '/../dist');
         app.use(express.static(staticPath));
 
     });

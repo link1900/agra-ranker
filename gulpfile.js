@@ -1,19 +1,44 @@
 var gulp = require('gulp');
-var gls = require('gulp-live-server');
+var concat = require('gulp-concat');
+var templateCache = require('gulp-angular-templatecache');
+var gulpSequence = require('gulp-sequence');
+var nodemon = require('gulp-nodemon');
+var del = require('del');
 
-gulp.task('serve', function() {
-    //1. run your script as a server
-    var server = gls.new('server.js');
-    server.start();
+var paths = {
+    scripts: ['client/ranker/**/*.js'],
+    html: ['client/ranker/**/*.html','client/views/*.html'],
+    copy: [
+        'client/lib/**/*',
+        'client/js/**/*',
+        'client/template/**/*',
+        'client/css/**/*',
+        'client/img/**/*',
+        'client/ranker/**/*.html',
+        'client/views/**/*',
+        'client/index.html',
+        'client/ranker/**/*.js'
+    ]
+};
 
-    //use gulp.watch to trigger server actions(notify, start or stop)
-    gulp.watch([
-        'public/ranker/**/*.css',
-        'public/ranker/**/*.js',
-        'public/ranker/**/*.html',
-        'app/**/*.js'
-    ], function (file) {
-        server.notify.apply(server, [file]);
-    });
-    gulp.watch('server.js', server.start.bind(server)); //restart my server
+gulp.task('clean', function() {
+    return del(['dist']);
 });
+
+gulp.task('html', function () {
+    return gulp.src(paths.html)
+        .pipe(templateCache())
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('scripts', function() {
+    return gulp.src(paths.scripts)
+        .pipe(concat('all.min.js'))
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('copy', function(){
+    return gulp.src(paths.copy,{"base": "client"}).pipe(gulp.dest('dist'));
+});
+
+gulp.task('build', gulpSequence('clean', 'copy', 'scripts'));

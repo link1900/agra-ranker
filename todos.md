@@ -279,3 +279,10 @@
 - (DONE) bug with the date formats not be parsed correctly
 - (DONE) bug with a greyhound being missing
 - (DONE)bug with the rankings not being displayed
+
+
+## rewrite ranking engine v3 ##
+- add placings to greyhounds
+- remove all routes for placings
+- create a simple ranking module
+- remove ranker modual
