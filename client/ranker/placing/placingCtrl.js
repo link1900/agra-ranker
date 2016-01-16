@@ -169,7 +169,9 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
 
     $scope.racePlacingColumns =[
         {title: "Placing", field:"placing"},
-        {title: "Greyhound Name", field:"greyhound.name", type:"link", baseLink:"#/greyhound/view/", linkField: "greyhoundRef"}
+        {title: "Name", field:"greyhound.name", type:"link", baseLink:"#/greyhound/view/", linkField: "greyhoundRef"},
+        {title: "Sire", field:"greyhound.sireName", type:"link", baseLink:"#/greyhound/view/", linkField: "sireRef"},
+        {title: "Dam", field:"greyhound.damName", type:"link", baseLink:"#/greyhound/view/", linkField: "damRef"}
     ];
 
     $scope.raceSearchFields = [
