@@ -84,6 +84,10 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
                         greyhoundId: placingDisplay.greyhoundRef
                     }, function(model) {
                         placingDisplay.name = model.name;
+                        placingDisplay.sireName = model.sireName;
+                        placingDisplay.damName = model.damName;
+                        placingDisplay.sireRef =model.sireRef;
+                        placingDisplay.damRef = model.damRef;
                     }, function(){
                         $scope.placingAlerts = [
                             { type: 'danger', msg: "Failed load using the id " + placingDisplay.greyhoundRef }
