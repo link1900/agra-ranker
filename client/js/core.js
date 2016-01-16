@@ -3,7 +3,8 @@ var core = angular.module('core',
          'ngResource',
          'ngSanitize',
          'ui.bootstrap',
-         'angulartics', 'angulartics.google.analytics',
+         'angulartics',
+            'angulartics.google.analytics',
          'ui.select2',
          'angularFileUpload',
          'ui.sortable',
@@ -16,7 +17,8 @@ var core = angular.module('core',
          'controllers',
          'services',
          'directives',
-         'filters','ui.select']);
+         'filters',
+            'ui.select']);
 
 angular.module('controllers', []);
 angular.module('services', []);

@@ -6,20 +6,17 @@ angular.module('directives')
                 allowClear:true
             };
 
-            scope.searchParamsRaceField = {
-                page : 1,
-                per_page : 15,
-                like : '',
-                sort_field: 'name',
-                sort_direction: 'asc'
-            };
+            scope.raceSearch = function(val) {
+                var searchParams = {
+                    page : 1,
+                    per_page : 20,
+                    sort_field: 'name',
+                    sort_direction: 'asc',
+                    like : val
+                };
 
-            scope.search = function(val) {
-                scope.searchParamsRaceField.like = val;
-                return raceSvr.query(scope.searchParamsRaceField).$promise.then(function(result){
-                    return _.map(result, function(r){
-                        return r.name;
-                    });
+                return raceSvr.query(searchParams).$promise.then(function(results){
+                    return _.unique(results, 'name');
                 });
             };
         }
