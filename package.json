@@ -14,9 +14,9 @@
     "npm": "2.x.x"
   },
   "scripts": {
-    "start": "node node_modules/gulp/bin/gulp build && node node_modules/nodemon/bin/nodemon.js ./server.js",
+    "start": "node node_modules/gulp/bin/gulp",
     "test": "./node_modules/mocha/bin/mocha ./specs/*.js ./app/**/*Test.js",
-    "postinstall": "node node_modules/bower/bin/bower install && node node_modules/gulp/bin/gulp build"
+    "postinstall": "node node_modules/bower/bin/bower install && node node_modules/gulp/bin/gulp js"
   },
   "dependencies": {
     "JSONStream": "^1.0.4",
@@ -36,7 +36,6 @@
     "gulp": "^3.9.0",
     "gulp-angular-templatecache": "^1.8.0",
     "gulp-concat": "^2.6.0",
-    "gulp-sequence": "^0.4.4",
     "handlebars": "^2.0.0",
     "highland": "^2.5.1",
     "lodash": "~2.4.1",
@@ -53,6 +52,7 @@
     "winston": "^0.8.3"
   },
   "devDependencies": {
+    "browser-sync": "^2.11.0",
     "mocha": "^2.3.0",
     "nodemon": "^1.8.1",
     "supertest": "0.10.0"
