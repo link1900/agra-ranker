@@ -14,7 +14,6 @@
     "angular-bootstrap": "0.10.0",
     "angular-ui-utils": "0.1.0",
     "angular-ui-sortable": "0.13.4",
-    "lodash": "latest",
     "select2": "3.4.5",
     "angular-ui-select2": "0.0.5",
     "ng-file-upload": "1.2.8",
