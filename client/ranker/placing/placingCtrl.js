@@ -230,6 +230,11 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
             greyhoundRef : newGreyhound._id
         };
 
+        newPlacing.sireName = newGreyhound.sireName;
+        newPlacing.damName = newGreyhound.damName;
+        newPlacing.sireRef = newGreyhound.sireRef;
+        newPlacing.damRef = newGreyhound.damRef;
+
         var displayIndex = $scope.getNextPlacingPosition();
         var placingPosition = $scope.placingValueLookUp(displayIndex);
         var newPlacingModel = $scope.convertDisplayModelToPlacingModel(placingPosition, newPlacing);
