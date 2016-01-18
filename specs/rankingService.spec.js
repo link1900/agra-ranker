@@ -1,16 +1,9 @@
-var request = require('supertest');
-var mongoose = require('mongoose');
-var _ = require('lodash');
 var assert = require('assert');
 var testHelper = require('./testHelper');
 var Placing = require('../app/placing/placing').model;
-var Greyhound = require('../app/greyhound/greyhound').model;
-var BatchJob = require('../app/batch/batchJob').model;
-var Race = require('../app/race/race').model;
 var RankingSystem = require('../app/ranking/rankingSystem').model;
 var Ranking = require('../app/ranking/ranking').model;
 var rankingService = null;
-var eventService = require('../app/event/eventService');
 
 describe("rankingService", function(){
 

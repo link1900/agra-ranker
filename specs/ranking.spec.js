@@ -1,6 +1,3 @@
-var request = require('supertest');
-var mongoose = require('mongoose');
-var assert = require('assert');
 var testHelper = require('./testHelper');
 
 
@@ -25,8 +22,8 @@ describe("Ranking", function(){
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
-                .end(function(err, res){
-                    if (err){console.log(res.body); throw err; }
+                .end(function(err){
+                    if (err){ throw err; }
                     done();
                 });
         });

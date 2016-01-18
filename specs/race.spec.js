@@ -1,7 +1,4 @@
-var request = require('supertest');
-var mongoose = require('mongoose');
 var assert = require('assert');
-var Race = mongoose.model('Race');
 var testHelper = require('./testHelper');
 
 describe("Race", function(){
@@ -348,7 +345,7 @@ describe("Race", function(){
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
-                .end(function(err, res){
+                .end(function(err){
                     if (err){ throw err; }
                     testHelper.publicSession
                         .get('/race/531d1f72e407586c21476ea8')

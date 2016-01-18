@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var _ = require('lodash');
 var assert = require('assert');
 var testHelper = require('./testHelper');
 var mongoService = require('../app/mongoService');

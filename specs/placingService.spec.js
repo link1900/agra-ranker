@@ -1,5 +1,3 @@
-var request = require('supertest');
-var mongoose = require('mongoose');
 var Placing = require('../app/placing/placing').model;
 var Greyhound = require('../app/greyhound/greyhound').model;
 var Race = require('../app/race/race').model;
@@ -135,7 +133,7 @@ describe("placingService", function(){
     });
 
     afterEach(function(done){
-        Placing.remove({}, function(res){
+        Placing.remove({}, function(){
             done();
         });
     });

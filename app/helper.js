@@ -64,7 +64,7 @@ helper.responseFromPromise = function(res, promise){
     },function(error){
         helper.errorResponse(res, error);
     }).catch(function(ex){
-        helper.errorResponse(res, error);
+        helper.errorResponse(res, ex);
     });
 };
 

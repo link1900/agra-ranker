@@ -1,7 +1,4 @@
-var request = require('supertest');
-var mongoose = require('mongoose');
 var q = require('q');
-var _ = require('lodash');
 var testHelper = require('./testHelper');
 var eventService = null;
 

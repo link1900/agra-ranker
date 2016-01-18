@@ -1,7 +1,6 @@
 var expressService = module.exports = {};
 
 var _ = require('lodash');
-var q = require('q');
 var csv = require('csv');
 var moment = require('moment');
 var JSONStream = require('JSONStream');

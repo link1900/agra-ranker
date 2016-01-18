@@ -1,7 +1,4 @@
-var request = require('supertest');
-var mongoose = require('mongoose');
 var assert = require('assert');
-var GroupLevel = mongoose.model('GroupLevel');
 var testHelper = require('./testHelper');
 
 describe("Group Level", function(){

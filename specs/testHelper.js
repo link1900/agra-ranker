@@ -8,7 +8,6 @@ process.env.FIRST_USER_PASSCODE='teststart';
 
 var request = require('supertest');
 var siteUrl = process.env.testUrl;
-var mongoose = require('mongoose');
 var moment = require('moment');
 var mongoService = require('../app/mongoService');
 var User = require('../app/user/user').model;
@@ -20,7 +19,7 @@ var Placing = require('../app/placing/placing').model;
 var Invite = require('../app/invite/invite').model;
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
-server = require("../server.js");
+var server = require("../server.js");
 
 testHelper.login = function(agent , done){
     var cred = {email: 'link1900@gmail.com', password: 'tester'};
@@ -385,15 +384,6 @@ testHelper.setupRankingTestData = function(done){
         "greyhoundRef": john._id
     };
 
-    var johnRankingRace1Ref = {
-        "placingRef": "54aca1da1ee51022d545c909",
-        "points": 20,
-        "position": "1",
-        "race": {
-            "name": rankingRace1.name
-        }
-    };
-
     var sallyRankingRace1 = {
         "greyhound": sally,
         "race": rankingRace1,
@@ -401,15 +391,6 @@ testHelper.setupRankingTestData = function(done){
         _id:"54aca2661ee51022d545c90a",
         "raceRef": rankingRace1._id,
         "greyhoundRef": sally._id
-    };
-
-    var sallyRankingRace1Ref = {
-        "placingRef": "54aca2661ee51022d545c90a",
-        "points": 10,
-        "position": "2",
-        "race": {
-            "name": rankingRace1.name
-        }
     };
 
     var mollyRankingRace1 = {
@@ -421,15 +402,6 @@ testHelper.setupRankingTestData = function(done){
         "greyhoundRef": molly._id
     };
 
-    var mollyRankingRace1Ref = {
-        "placingRef": "54aca2721ee51022d545c90b",
-        "points": 5,
-        "position": "3",
-        "race": {
-            "name": rankingRace1.name
-        }
-    };
-
     var johnRankingRace2 = {
         "greyhound": john,
         "race": rankingRace2,
@@ -437,15 +409,6 @@ testHelper.setupRankingTestData = function(done){
         "placing": "1",
         "raceRef": rankingRace2._id,
         "greyhoundRef": john._id
-    };
-
-    var johnRankingRace2Ref = {
-        "placingRef": "54aca27e1ee51022d545c90c",
-        "points": 20,
-        "position": "1",
-        "race": {
-            "name": rankingRace2.name
-        }
     };
 
     var janeRankingRace2 = {
@@ -457,15 +420,6 @@ testHelper.setupRankingTestData = function(done){
         "greyhoundRef": jane._id
     };
 
-    var janeRankingRace2Ref = {
-        "placingRef": "54aca28f1ee51022d545c90d",
-        "points": 10,
-        "position": "2",
-        "race": {
-            "name": rankingRace2.name
-        }
-    };
-
     var johnRankingRace3 = {
         "greyhound": john,
         "race": rankingRace3,
@@ -475,14 +429,6 @@ testHelper.setupRankingTestData = function(done){
         "greyhoundRef": john._id
     };
 
-    var johnRankingRace3Ref = {
-        "placingRef": "54aca29d1ee51022d545c90e",
-        "points": 20,
-        "position": "1",
-        "race": {
-            "name": rankingRace3.name
-        }
-    };
     Placing.remove({}, function(){
         new Placing(johnRankingRace1).save(function(){
             new Placing(sallyRankingRace1).save(function(){

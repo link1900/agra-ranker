@@ -1,7 +1,4 @@
-var request = require('supertest');
-var mongoose = require('mongoose');
 var assert = require('assert');
-var RankingSystem = mongoose.model('RankingSystem');
 var testHelper = require('./testHelper');
 
 describe("Ranking System", function(){
@@ -78,7 +75,7 @@ describe("Ranking System", function(){
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end(function(err, res){
-                    if (err){ console.log(res.body); throw err; }
+                    if (err){ throw err; }
                     assert.equal(res.body.name,"Another Test Ranking System");
                     done();
                 });

@@ -1,7 +1,4 @@
-var request = require('supertest');
-var mongoose = require('mongoose');
 var assert = require('assert');
-var Greyhound = mongoose.model('Greyhound');
 var testHelper = require('./testHelper');
 
 describe("Greyhound", function(){

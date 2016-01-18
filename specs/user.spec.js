@@ -1,6 +1,4 @@
 var request = require('supertest');
-var mongoose = require('mongoose');
-var User = require('../app/user/user').model;
 var Invite = require('../app/invite/invite').model;
 var testHelper = require('./testHelper');
 var siteUrl = process.env.testUrl;
@@ -506,7 +504,7 @@ describe("User", function() {
                 .post('/user/resetPassword/532675365d68bab8234c7e7f')
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(200, function(err, res){
+                .expect(200, function(err){
                     if (err){ throw err; }
                     done();
                 });
@@ -523,7 +521,7 @@ describe("User", function() {
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
-                .end(function(err, res){
+                .end(function(err){
                     if (err){ throw err; }
                     request(siteUrl)
                         .post('/login')
@@ -536,7 +534,6 @@ describe("User", function() {
 
         it("doesnt work with unknown token", function (done) {
             var body = {newPassword : "tester2"};
-            var cred = {email: 'needpassword@gmail.com', password: 'tester2'};
             testHelper.publicSession
                 .post('/user/changePasswordToken/fakeToken')
                 .send(body)

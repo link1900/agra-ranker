@@ -2,15 +2,12 @@ var raceService = module.exports = {};
 
 var _ = require('lodash');
 var q = require('q');
-var mongoose = require('mongoose');
 var moment = require('moment');
 var logger = require('winston');
 var validator = require('validator');
 var Race = require('./race').model;
 var GroupLevel = require('../groupLevel/groupLevel').model;
 var mongoService = require('../mongoService');
-var BatchJob = require('../batch/batchJob').model;
-var BatchResult = require('../batch/batchResult').model;
 var batchService = require('../batch/batchService');
 var placingService = require('../placing/placingService');
 var baseService = require('../baseService');

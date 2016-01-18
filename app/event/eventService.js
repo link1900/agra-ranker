@@ -1,8 +1,6 @@
 var eventService = module.exports = {};
 
-var _ = require('lodash');
 var q = require('q');
-var mongoose = require('mongoose');
 var logger = require('winston');
 var mongoService = require('../mongoService');
 var EventModel = require('./event').model;

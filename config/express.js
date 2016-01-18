@@ -7,7 +7,6 @@ var express = require('express');
 var mongoStore = require('connect-mongo')(express);
 var flash = require('connect-flash');
 var path = require('path');
-var rootPath = path.normalize(__dirname + '/../..');
 
 module.exports = function(app, passport, db) {
     app.set('showStackError', true);

@@ -3,7 +3,6 @@ var mongoService = module.exports = {};
 var _ = require('lodash');
 var q = require('q');
 var mongoose = require('mongoose');
-var eventService = require('./event/eventService');
 
 mongoService.find = function(dao, search, limit, offset, sort){
     var deferred = q.defer();
