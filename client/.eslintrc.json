@@ -1,0 +1,14 @@
+{
+    "extends": "eslint:recommended",
+    "env": {
+        "node": true,
+        "mocha": true,
+        "browser": true
+    },
+    "globals":{
+        "angular": true,
+        "moment": true,
+        "$": true,
+        "_" : true
+    }
+}

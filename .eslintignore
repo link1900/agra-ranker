@@ -1,0 +1,3 @@
+client/lib/**/*.js
+client/all.min.js
+client/js/other/**/*.js
