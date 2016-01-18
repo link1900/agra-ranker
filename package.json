@@ -15,7 +15,8 @@
   },
   "scripts": {
     "start": "node node_modules/gulp/bin/gulp",
-    "test": "./node_modules/mocha/bin/mocha ./specs/*.js ./app/**/*Test.js",
+    "lint": "./node_modules/eslint/bin/eslint.js ./**/*.js",
+    "test": "./node_modules/eslint/bin/eslint.js ./**/*.js && ./node_modules/mocha/bin/mocha ./specs/*.js ./app/**/*Test.js",
     "postinstall": "node node_modules/bower/bin/bower install && node node_modules/gulp/bin/gulp js"
   },
   "dependencies": {
@@ -54,6 +55,7 @@
     "winston": "^0.8.3"
   },
   "devDependencies": {
+    "eslint": "^1.10.3",
     "mocha": "^2.3.0",
     "supertest": "0.10.0"
   }
