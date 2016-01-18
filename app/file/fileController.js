@@ -1,12 +1,9 @@
 var fileController = module.exports = {};
 
-var q = require('q');
-var _ = require('lodash');
 var logger = require('winston');
 var File = require('./file').model;
 var fileService = require('./fileService');
 var helper = require('../helper');
-var mongoService = require('../mongoService');
 var Busboy = require('busboy');
 var mongoose = require('mongoose');
 var grid = require('gridfs-stream');

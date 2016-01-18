@@ -1,11 +1,6 @@
 var raceController = module.exports = {};
 
-var _ = require('lodash');
-var q = require('q');
-var mongoose = require('mongoose');
-
 var raceService = require('./raceService');
-var mongoService = require('../mongoService');
 var expressService = require('../expressService');
 
 expressService.addStandardMethods(raceController, raceService);

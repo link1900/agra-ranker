@@ -3,7 +3,6 @@ var greyhoundService = module.exports = {};
 var csv = require('csv');
 var q = require('q');
 var _ = require('lodash');
-var mongoose = require('mongoose');
 var logger = require('winston');
 
 var Greyhound = require('./greyhound').model;

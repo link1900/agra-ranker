@@ -1,14 +1,12 @@
 'use strict';
 var batchController = module.exports = {};
 
-var mongoose = require('mongoose');
 var BatchJob = require('./batchJob').model;
 var BatchResult = require('./batchResult').model;
 
 var _ = require('lodash');
 var helper = require('../helper');
 var mongoService = require('../mongoService');
-var q = require('q');
 var batchService = require('./batchService');
 
 

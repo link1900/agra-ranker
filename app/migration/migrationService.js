@@ -3,7 +3,6 @@ var migrationService = module.exports = {};
 var q = require('q');
 var path = require('path');
 var fs = require('fs');
-var mongoose = require('mongoose');
 var _ = require('lodash');
 var logger = require('winston');
 
@@ -25,7 +24,7 @@ migrationService.applyMigrations = function(migrationDir) {
         return migrationService.getAppliedMigrations().then(function(migrationsOnDatabase){
             var migrationsToRun = migrationService.getMigrationsToBeRun(migrationsOnDatabase, migrations);
             if (migrationsToRun.length > 0){
-                console.log("Applying " + migrationsToRun.length + " migrations");
+                logger.log("Applying " + migrationsToRun.length + " migrations");
 
                 var finalPromiseOfChain = _.reduce(migrationsToRun, function(previousResult, currentValue) {
                         return previousResult.then(function(){
@@ -36,14 +35,14 @@ migrationService.applyMigrations = function(migrationDir) {
                 );
 
                 return finalPromiseOfChain.then(function(){
-                    console.log("Finished applying migrations");
+                    logger.log("Finished applying migrations");
                     return q(true);
                 }).fail(function(error){
-                    console.error("Migration process failed: " + error);
+                    logger.error("Migration process failed: " + error);
                     return q(false);
                 });
             } else {
-                console.log("No outstanding migrations");
+                logger.log("No outstanding migrations");
                 return q(true);
             }
         }, function(){return false});

@@ -1,14 +1,9 @@
 var rankingController = module.exports = {};
 
-var _ = require('lodash');
-var q = require('q');
 var moment = require('moment');
-var mongoose = require('mongoose');
 var highland = require('highland');
 
-var Ranking = require('./ranking').model;
 var helper = require('../helper');
-var mongoService = require('../mongoService');
 var rankingService = require('./rankingService');
 var expressService = require('../expressService');
 

@@ -1,9 +1,5 @@
 var groupLevelController = module.exports = {};
 
-var _ = require('lodash');
-var q = require('q');
-var mongoose = require('mongoose');
-
 var groupLevelService = require('../groupLevel/groupLevelService');
 var expressService = require('../expressService');
 

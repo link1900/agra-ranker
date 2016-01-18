@@ -1,6 +1,5 @@
 var adminController = module.exports = {};
 
-var q = require('q');
 var adminService = require('./adminService');
 var helper = require('../helper');
 

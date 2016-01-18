@@ -1,7 +1,5 @@
 var placingController = module.exports = {};
 
-var _ = require('lodash');
-var q = require('q');
 var placingService = require('./placingService');
 var expressService = require('../expressService');
 

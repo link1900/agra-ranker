@@ -1,7 +1,5 @@
 var batchResultController = module.exports = {};
 
-var mongoose = require('mongoose');
-
 var expressService = require('../expressService');
 var batchResultService = require('./batchResultService');
 

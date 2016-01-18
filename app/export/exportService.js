@@ -1,12 +1,7 @@
 var exportService = module.exports = {};
 
-var _ = require('lodash');
-var q = require('q');
-var mongoose = require('mongoose');
 var moment = require('moment');
-var mongoService = require('../mongoService');
 var batchService = require('../batch/batchService');
-var create = require('../mongoService');
 
 exportService.createExportJob = function(exportCollectionName, exportType){
     var upperCollectionName = exportService.capitaliseFirstLetter (exportCollectionName);

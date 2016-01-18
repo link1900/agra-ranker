@@ -5,7 +5,6 @@ var q = require('q');
 var logger = require('winston');
 var uuid = require('node-uuid');
 var csv = require('csv');
-var mongoose = require('mongoose');
 var BatchJob = require('./batchJob').model;
 var BatchResult = require('./batchResult').model;
 var mongoService = require('../mongoService');

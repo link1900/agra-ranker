@@ -1,74 +1,74 @@
-angular.module('core').config(function($routeProvider) {
+angular.module('core').config(function declareRoutes($routeProvider) {
     $routeProvider.when('/', {
-        templateUrl : '/views/rankings.html'
+            templateUrl: '/views/rankings.html'
         })
         .when('/greyhound/edit/:id', {
-            templateUrl : '/ranker/greyhound/greyhoundForm.html'
+            templateUrl: '/ranker/greyhound/greyhoundForm.html'
         })
         .when('/greyhound/view/:id', {
-            templateUrl : '/ranker/greyhound/greyhoundView.html'
+            templateUrl: '/ranker/greyhound/greyhoundView.html'
         })
         .when('/greyhound/create', {
-            templateUrl : '/ranker/greyhound/greyhoundForm.html'
+            templateUrl: '/ranker/greyhound/greyhoundForm.html'
         })
         .when('/greyhound', {
-            templateUrl : '/ranker/greyhound/greyhound.html'
+            templateUrl: '/ranker/greyhound/greyhound.html'
         })
         .when('/greyhound/import', {
-            templateUrl : '/ranker/greyhound/greyhoundUpload.html'
+            templateUrl: '/ranker/greyhound/greyhoundUpload.html'
         })
         .when('/race/create', {
-            templateUrl : '/ranker/race/raceCreate.html'
+            templateUrl: '/ranker/race/raceCreate.html'
         })
         .when('/race/edit/:id', {
-            templateUrl : '/ranker/race/raceEdit.html'
+            templateUrl: '/ranker/race/raceEdit.html'
         })
         .when('/race/view/:id', {
-            templateUrl : '/ranker/race/raceView.html'
+            templateUrl: '/ranker/race/raceView.html'
         })
         .when('/race', {
-            templateUrl : '/ranker/race/race.html'
+            templateUrl: '/ranker/race/race.html'
         })
         .when('/rankingSystem/create', {
-            templateUrl : '/ranker/rankingSystem/rankingSystemCreate.html'
+            templateUrl: '/ranker/rankingSystem/rankingSystemCreate.html'
         })
         .when('/rankingSystem/edit/:id', {
-            templateUrl : '/ranker/rankingSystem/rankingSystemEdit.html'
+            templateUrl: '/ranker/rankingSystem/rankingSystemEdit.html'
         })
         .when('/rankingSystem/view/:id', {
-            templateUrl : '/ranker/rankingSystem/rankingSystemView.html'
+            templateUrl: '/ranker/rankingSystem/rankingSystemView.html'
         })
         .when('/rankingSystem', {
-            templateUrl : '/ranker/rankingSystem/rankingSystem.html'
+            templateUrl: '/ranker/rankingSystem/rankingSystem.html'
         })
         .when('/groupLevel/create', {
-            templateUrl : '/ranker/groupLevel/groupLevelCreate.html'
+            templateUrl: '/ranker/groupLevel/groupLevelCreate.html'
         })
         .when('/groupLevel/edit/:id', {
-            templateUrl : '/ranker/groupLevel/groupLevelEdit.html'
+            templateUrl: '/ranker/groupLevel/groupLevelEdit.html'
         })
         .when('/groupLevel/view/:id', {
-            templateUrl : '/ranker/groupLevel/groupLevelView.html'
+            templateUrl: '/ranker/groupLevel/groupLevelView.html'
         })
         .when('/groupLevel', {
-            templateUrl : '/ranker/groupLevel/groupLevel.html'
+            templateUrl: '/ranker/groupLevel/groupLevel.html'
         })
         .when('/batch', {
-            templateUrl : '/ranker/batch/batch.html'
+            templateUrl: '/ranker/batch/batch.html'
         })
         .when('/batch/view/:id', {
-            templateUrl : '/ranker/batch/batchView.html'
+            templateUrl: '/ranker/batch/batchView.html'
         })
         .when('/batchResult/view/:id', {
-            templateUrl : '/ranker/batch/batchResultView.html'
+            templateUrl: '/ranker/batch/batchResultView.html'
         })
         .when('/file', {
-            templateUrl : '/ranker/file/file.html'
+            templateUrl: '/ranker/file/file.html'
         })
         .when('/file/view/:id', {
-            templateUrl : '/ranker/file/fileView.html'
+            templateUrl: '/ranker/file/fileView.html'
         })
         .otherwise({
-            redirectTo : '/'
+            redirectTo: '/'
         });
 });

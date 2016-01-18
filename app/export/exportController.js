@@ -1,12 +1,7 @@
 var exportController = module.exports = {};
 
-var _ = require('lodash');
-var q = require('q');
-var mongoose = require('mongoose');
-var mongoService = require('../mongoService');
 var helper = require('../helper');
 var exportService = require('./exportService');
-
 
 exportController.exportCollection = function(req, res){
     var promise = exportService.createExportJob(req.exportCollectionName, req.exportType);

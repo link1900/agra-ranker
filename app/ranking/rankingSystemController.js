@@ -2,7 +2,6 @@ var rankingSystemController = module.exports = {};
 
 var _ = require('lodash');
 var q = require('q');
-var mongoose = require('mongoose');
 var RankingSystem = require('./rankingSystem').model;
 var helper = require('../helper');
 var mongoService = require('../mongoService');

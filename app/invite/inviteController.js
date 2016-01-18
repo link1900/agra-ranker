@@ -1,8 +1,6 @@
 var inviteController = module.exports = {};
 
-var _ = require('lodash');
 var q = require('q');
-var mongoose = require('mongoose');
 var Invite = require('./invite').model;
 var mongoService = require('../mongoService');
 var helper = require('../helper');

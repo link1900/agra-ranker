@@ -1,9 +1,5 @@
 var greyhoundController = module.exports = {};
 
-var mongoose = require('mongoose');
-var q = require('q');
-var _ = require('lodash');
-
 var expressService = require('../expressService');
 var greyhoundService = require('./greyhoundService');
 

@@ -19,8 +19,6 @@ var File = require('../file/file').model;
 var Chunk = require('../file/file').chunkModel;
 var Setting = require('../setting/setting').model;
 var mongoService = require('../mongoService');
-var Schema = mongoose.Schema;
-
 
 adminService.removeAllGreyhounds = function(){
     return placingService.removeAll({}).then(function(){

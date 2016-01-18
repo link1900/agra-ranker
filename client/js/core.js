@@ -25,7 +25,6 @@ angular.module('services', []);
 angular.module('directives', []);
 angular.module('filters', []);
 
-core.factory('socket', function (socketFactory) {
+core.factory('socket', function coreSetup(socketFactory) {
     return socketFactory();
 });
-

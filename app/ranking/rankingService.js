@@ -2,17 +2,12 @@ var rankingService = module.exports = {};
 
 var _ = require('lodash');
 var q = require('q');
-var moment = require('moment');
-var logger = require('winston');
 
 var placingService = require('../placing/placingService');
-var greyhoundService = require('../greyhound/greyhoundService');
 var mongoService = require('../mongoService');
 var RankingSystem = require('./rankingSystem').model;
 var Ranking = require('./ranking').model;
 var scoreService = require('./scoreService');
-var eventService = require('../event/eventService');
-var batchService = require('../batch/batchService');
 var baseService = require('../baseService');
 var Setting = require('../setting/setting').model;
 

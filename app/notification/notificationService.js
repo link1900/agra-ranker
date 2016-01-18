@@ -1,6 +1,5 @@
 var notificationService = module.exports = {};
 
-var _ = require('lodash');
 var q = require('q');
 var async = require('async');
 var logger = require('winston');
@@ -109,7 +108,7 @@ notificationService.parseTemplate = function(email){
 };
 
 notificationService.queueMailForSending = function(email){
-    notificationService.mailQueue.push(email, function (err) {
+    notificationService.mailQueue.push(email, function () {
     });
 };
 
