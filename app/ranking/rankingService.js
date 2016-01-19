@@ -54,7 +54,6 @@ rankingService.calculateAndStoreRankings = function(rankingsFingerPrint, ranking
             });
         });
     } else {
-        log.warn("ranking system must have a valid group by field");
         q.reject("ranking system must have a valid group by field");
     }
 };

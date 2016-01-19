@@ -1,13 +1,9 @@
 var scoreService = module.exports = {};
 
-var _ = require('lodash');
 var q = require('q');
-var moment = require('moment');
-var logger = require('winston');
 
 var placingService = require('../placing/placingService');
 var rankingService = require('./rankingService');
-var RankingSystem = require('./rankingSystem').model;
 var Ranking = require('./ranking').model;
 var Score = require('./score').model;
 var rankingSystemService = require('./rankingSystemService');

@@ -1,6 +1,5 @@
 var eventController = module.exports = {};
 
-var _ = require('lodash');
 var eventService = require('./eventService');
 var expressService = require('../expressService');
 

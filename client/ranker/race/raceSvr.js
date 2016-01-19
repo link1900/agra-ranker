@@ -1,5 +1,5 @@
 angular.module('services').factory('raceSvr', ['$resource', '$http',
-    function($resource, $http){
+    function($resource){
         var service = $resource(
             'race/:raceId',
             {

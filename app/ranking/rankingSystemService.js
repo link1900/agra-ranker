@@ -4,7 +4,6 @@ var _ = require('lodash');
 var q = require('q');
 var moment = require('moment');
 
-var greyhoundService = require('../greyhound/greyhoundService');
 var mongoService = require('../mongoService');
 var RankingSystem = require('./rankingSystem').model;
 var baseService = require('../baseService');

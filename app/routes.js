@@ -30,7 +30,6 @@ module.exports = function(app) {
     app.post('/user/grantAccess/:userId', securityController.checkAuthentication, userController.grantAccess);
     app.post('/user/resetPassword/:userId', securityController.checkAuthentication, userController.resetPassword);
     app.post('/user/changePasswordToken/:userResetToken', rateLimiter.limitedAccess.prevent, userController.changePasswordWithToken);
-    app.get('/user/token/:userResetToken', userController.findUserToken);
     app.post('/user/forgotten', rateLimiter.limitedAccess.prevent, userController.forgottenPasswordRequest);
 
     app.get('/bootstrap', userController.getBootstrap);

@@ -1,5 +1,5 @@
 angular.module('services').factory('rankingSvr',
-    function($resource, $http){
+    function($resource){
 
     var service = $resource(
         'ranking/:rankingId',

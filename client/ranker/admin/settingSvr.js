@@ -1,5 +1,5 @@
 angular.module('services').factory('settingSvr',
-    function($resource, $http){
+    function($resource){
 
         var service = $resource(
             'setting/:settingId',

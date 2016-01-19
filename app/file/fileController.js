@@ -54,7 +54,7 @@ fileController.uploadFile = function(req, res){
 
         fileWriteStream.on('error', function(gridfsError){
             logger.log('error',"error saving file to gridfs", gridfsError);
-            res.jsonp(400, {'error':err});
+            res.jsonp(400, {'error':gridfsError});
         });
 
         fileWriteStream.on('close', function(file){

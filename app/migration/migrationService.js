@@ -52,7 +52,6 @@ migrationService.applyMigrations = function(migrationDir) {
 };
 
 migrationService.getAppliedMigrations = function(){
-    var query = Migration.find({});
     return mongoService.find(Migration, {});
 };
 
@@ -111,10 +110,10 @@ migrationService.runMigration = function(migration, migrationDir){
     var migrationRefPath = path.join(migrationDir, migration.file);
     var migrationCode = require(migrationRefPath);
     return migrationCode.up().then(function(){
-        console.log("Applying migration: " + migration.file);
+        logger.log("Applying migration: " + migration.file);
         return mongoService.savePromise(new Migration(migration));
     }).fail(function(){
-        console.error("migration " + migration + " failed");
+        logger.error("migration " + migration + " failed");
         process.exit(1);
     });
 };

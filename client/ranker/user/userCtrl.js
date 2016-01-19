@@ -75,14 +75,14 @@ angular.module('controllers').controller('userCtrl', function($scope,
             userService.findToken($routeParams.token).then(function(){
                     $scope.tokenStatus = 'valid';
                 },
-                function(failedResponse){
+                function(){
                     $scope.tokenStatus = 'invalid';
                 }
             );
         };
         $scope.passwordResetSent = false;
         $scope.sendForgotPasswordRequest = function(){
-            userService.forgotPassword($scope.forgot).then(function(data){
+            userService.forgotPassword($scope.forgot).then(function(){
                     $scope.alerts = [
                         { type: 'primary', msg: "We have sent an email to " + $scope.forgot.email + " with further instructions" }
                     ];
@@ -130,7 +130,6 @@ angular.module('controllers').controller('userCtrl', function($scope,
                     $scope.selectedUser = data;
                 },
                 function(error){
-                    console.log(error.data);
                     $scope.alerts = [
                         { type: 'danger', msg: error.data.error }
                     ];
@@ -173,7 +172,7 @@ angular.module('controllers').controller('userCtrl', function($scope,
         };
 
         $scope.resetPassword = function(user){
-            userService.resetPassword(user).then(function(data){
+            userService.resetPassword(user).then(function(){
                     $scope.alerts = [
                         { type: 'success', msg: "Sent password reset email to " + user.email }
                     ];

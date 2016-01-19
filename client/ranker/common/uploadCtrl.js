@@ -1,5 +1,5 @@
 angular.module('controllers').controller('UploadCtrl', ['$scope', '$upload', 'rankerEventBus',
-    function($scope, $upload,rankerEventBus) {
+    function($scope, $upload, rankerEventBus) {
 
         $scope.openFileSelect = function(type){
             if (type == 'greyhound'){
@@ -22,13 +22,13 @@ angular.module('controllers').controller('UploadCtrl', ['$scope', '$upload', 'ra
                     // withCredentials: true,
                     file: $scope.uploadingFile
                 })
-                .success(function(data, status, headers, config) {
+                .success(function(data) {
                     $scope.isUploading = false;
                     $scope.uploadResult = data;
                     rankerEventBus.broadcastEvent(rankerEventBus.EVENTS.ENTITY_BATCH_CREATED, data);
 
                 })
-                .error(function(data, status, headers, config) {
+                .error(function(data) {
                     $scope.isUploading = false;
                     $scope.errorResult = data;
                 });

@@ -1,8 +1,6 @@
 var userController = module.exports = {};
 
-var _ = require('lodash');
 var q = require('q');
-var mongoose = require('mongoose');
 var User = require('./user').model;
 var userStates = require('./user').states;
 var mongoService = require('../mongoService');
@@ -133,15 +131,6 @@ userController.resetPassword = function(req, res){
 };
 userController.getBootstrap = function(req, res) {
     helper.responseFromPromise(res, userService.systemRequiresUsers());
-};
-
-userController.findUserToken = function(){
-    var token = req.param('userResetToken');
-    if (token != null){
-        helper.responseFromPromise(res, userService.getUserForToken(token));
-    } else {
-        res.jsonp(400, {"error":'required fields are missing'});
-    }
 };
 
 userController.forgottenPasswordRequest = function(req, res){

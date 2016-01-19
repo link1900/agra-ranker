@@ -2,7 +2,6 @@ var userService = module.exports = {};
 
 var _ = require('lodash');
 var q = require('q');
-var mongoose = require('mongoose');
 var uuid = require('node-uuid');
 var moment = require('moment');
 var User = require('./user').model;

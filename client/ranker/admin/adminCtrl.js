@@ -8,8 +8,7 @@ angular.module('controllers').controller('adminCtrl', function($scope, $http) {
             if (result != null && result.data != null){
                 $scope.counts = result.data;
             }
-        }, function(res){
-            console.log("failed to load counts" + res);
+        }, function(){
         });
     };
 

@@ -1,4 +1,4 @@
-angular.module('controllers').controller('FileCtrl', function($scope, $routeParams, fileService, $http) {
+angular.module('controllers').controller('FileCtrl', function($scope, $routeParams, $location, fileService) {
 
     $scope.findOne = function() {
         fileService.get({

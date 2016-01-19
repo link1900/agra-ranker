@@ -1,5 +1,5 @@
 angular.module('controllers').controller('RankingSystemCtrl',
-    function($scope, $routeParams, headerHelperService, rankingSystemSvr, $location, rankingSvr) {
+    function($scope, $routeParams, headerHelperService, rankingSystemSvr, $location) {
 
         $scope.findOne = function() {
             rankingSystemSvr.get({
@@ -43,7 +43,7 @@ angular.module('controllers').controller('RankingSystemCtrl',
             if ($files.length == 1) {
                 var r = new FileReader();
                 var f = $files[0];
-                r.onload = (function (f) {
+                r.onload = (function () {
                     return function (e) {
                         try{
                             $scope.importPointDefinitions(JSON.parse(e.target.result));
@@ -204,7 +204,7 @@ angular.module('controllers').controller('RankingSystemCtrl',
         $scope.loadForm = function(){
         };
 
-        $scope.postProcess = function(model) {
+        $scope.postProcess = function() {
         };
 
         $scope.postProcessingCollection = function(entities){

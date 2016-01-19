@@ -181,9 +181,9 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
     $scope.removePlacing = function(placingSetIndex, greyhoundIndex){
         var placingToRemove = $scope.placings[placingSetIndex][greyhoundIndex];
 
-        placingSvr.deletePlacing(placingToRemove).then(function(result){
+        placingSvr.deletePlacing(placingToRemove).then(function(){
             $scope.placings[placingSetIndex].splice(greyhoundIndex, 1);
-        },function(error){
+        },function(){
             $scope.placingAlerts = [
                 { type: 'danger', msg: "Failed to delete placing" }
             ];

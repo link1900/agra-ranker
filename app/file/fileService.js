@@ -4,8 +4,6 @@ var q = require('q');
 var _ = require('lodash');
 var csv = require('csv');
 
-var mongoService = require('../mongoService');
-var File = require('./file').model;
 var mongoose = require('mongoose');
 var grid = require('gridfs-stream');
 var gfs = grid(mongoose.connection.db);
@@ -72,7 +70,7 @@ fileService.streamCollectionToFile = function(dao, fileName, query, transformFun
         deferred.reject(err);
     });
 
-    fileWriteStream.on('close', function (err) {
+    fileWriteStream.on('close', function () {
         deferred.resolve({fileId: fileId.toString()});
     });
 

@@ -34,12 +34,6 @@ angular.module('services').service('userService',  function($http,$resource) {
         });
     };
 
-    userService.findToken = function(token){
-        return $http.get("/user/token/" + token).then(function(result){
-            return result.data;
-        });
-    };
-
     userService.forgotPassword = function(forgotten){
         return $http.post("/user/forgotten", forgotten).then(function(result){
             return result.data;

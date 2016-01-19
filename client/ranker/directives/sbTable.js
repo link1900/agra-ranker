@@ -1,6 +1,6 @@
 angular.module('directives')
     .directive('sbTable', function(headerHelperService, $filter, localStorageService, $q) {
-        function linkBody(scope, element, attrs) {
+        function linkBody(scope) {
             scope.noRecords = true;
             scope.showSearch = true;
             scope.exportUrls = null;
@@ -73,7 +73,6 @@ angular.module('directives')
             };
 
             scope.getFieldValue = function(model, column) {
-                var field = column.field;
                 var finalResult = scope.getValueFromModel(model,  column.field);
 
                 //filter final result

@@ -1,9 +1,7 @@
 'use strict';
 var securityController = module.exports = {};
 
-var mongoose = require('mongoose');
 var passport = require('passport');
-var User = require('./user').model;
 var userStates = require('./user').states;
 
 securityController.login = function(req, res, next){
