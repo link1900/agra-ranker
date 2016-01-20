@@ -13,5 +13,5 @@ lib_managed/
 src_managed/
 test-output/
 .env
-client/all.min.jså
+client/all.min.js
 coverage
