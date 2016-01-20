@@ -16,7 +16,8 @@
   "scripts": {
     "start": "node node_modules/gulp/bin/gulp",
     "lint": "node ./node_modules/eslint/bin/eslint.js ./app ./client",
-    "test": "npm run lint && ./node_modules/mocha/bin/mocha ./specs/*.js ./app/**/*Test.js",
+    "spec" : "./node_modules/.bin/istanbul cover _mocha ./specs/*.js ./app/**/*Test.js",
+    "test": "npm run lint && npm run spec",
     "postinstall": "node node_modules/bower/bin/bower install && node node_modules/gulp/bin/gulp js"
   },
   "dependencies": {
@@ -57,6 +58,7 @@
   "devDependencies": {
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^3.1.0",
+    "istanbul": "^0.4.2",
     "mocha": "^2.3.0",
     "supertest": "0.10.0"
   }
