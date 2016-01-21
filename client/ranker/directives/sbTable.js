@@ -192,6 +192,10 @@ angular.module('directives')
                                 scope.searchParams[field.fieldEnd] = field.options[0]._id[field.selectedEnd];
                             }
                         }
+                        if (field.type === "dateRange"){
+                            scope.searchParams['startDate'] = field.defaultStartDate;
+                            scope.searchParams['endDate'] = field.defaultEndDate;
+                        }
                         if (field.type === "text"){
                             scope.searchParams[field.field] = "";
                         }
