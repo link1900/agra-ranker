@@ -15,7 +15,7 @@
     </div>
     <div class="row">
         <div class="col-md-3">
-            <button type="button" class="btn btn-default btn-xs" ng-click="setToAllTime()">All time</button>
+            <button type="button" ng-show="user" class="btn btn-default btn-xs" ng-click="setToAllTime()">All time</button>
             <button type="button" class="btn btn-default btn-xs" ng-click="setToThisYear()">This year</button>
             <button type="button" class="btn btn-default btn-xs" ng-click="setToLastYear()">Last year</button>
             <div class="btn-group">

@@ -2,7 +2,7 @@ angular.module('directives')
     .directive('sbDateRange', function() {
         function linkBody(scope) {
 
-            scope.fromYear = scope.fromYear ? scope.fromYear : 2010;
+            scope.fromYear = scope.fromYear ? scope.fromYear : 2012;
             scope.showDateRangeDetails = false;
             scope.showRankingYearHelp = false;
 
