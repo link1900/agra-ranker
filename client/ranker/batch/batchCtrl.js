@@ -1,13 +1,4 @@
 angular.module('controllers').controller('BatchCtrl', function($scope, $routeParams, headerHelperService, batchService, rankerEventBus) {
-//    socket.forward('batchInfo', $scope);
-//
-//    $scope.$on('socket:batchInfo', function(event, batchInfo) {
-//        if (batchInfo != null){
-//            $scope.batchInfo = batchInfo;
-//        }
-//    });
-//
-//    socket.emit('requestBatchInfo');
 
     $scope.findOne = function() {
         batchService.get({

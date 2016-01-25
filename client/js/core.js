@@ -1,4 +1,4 @@
-var core = angular.module('core',
+angular.module('core',
         ['ngRoute',
          'ngResource',
          'ngSanitize',
@@ -9,7 +9,6 @@ var core = angular.module('core',
          'angularFileUpload',
          'ui.sortable',
          'angular-loading-bar',
-         'btford.socket-io',
          'ui.route',
          'filter.duration',
          'LocalStorageModule',
@@ -25,6 +24,4 @@ angular.module('services', []);
 angular.module('directives', []);
 angular.module('filters', []);
 
-core.factory('socket', function coreSetup(socketFactory) {
-    return socketFactory();
-});
+

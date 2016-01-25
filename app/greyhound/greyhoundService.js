@@ -68,7 +68,7 @@ greyhoundService.validateGreyhound = function(greyhound){
     }
 
     var validGender = ["dog","bitch"];
-    if (!_.contains(validGender,greyhound.gender)){
+    if (greyhound.gender && !_.contains(validGender,greyhound.gender)){
         return q.reject("greyhound gender was " + greyhound.gender + " and must be one of " + validGender);
     }
 
