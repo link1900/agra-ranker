@@ -9,9 +9,7 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
             }, function(model) {
                 $scope.loadRace(model);
             }, function(){
-                $scope.alerts = [
-                    { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
-                ];
+                $scope.loadRace({});
             });
         };
 
@@ -120,6 +118,14 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
         };
 
         $scope.save = function(){
+            if ($scope.race._id){
+                $scope.update();
+            } else {
+                $scope.create();
+            }
+        };
+
+        $scope.update = function(){
             $scope.race.$update(function(data){
                     $scope.alerts = [
                         { type: 'success', msg: "Updated " + data.name }

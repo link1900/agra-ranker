@@ -18,10 +18,10 @@ angular.module('core').config(function declareRoutes($routeProvider) {
             templateUrl: '/ranker/greyhound/greyhoundUpload.html'
         })
         .when('/race/create', {
-            templateUrl: '/ranker/race/raceCreate.html'
+            templateUrl: '/ranker/race/raceForm.html'
         })
         .when('/race/edit/:id', {
-            templateUrl: '/ranker/race/raceEdit.html'
+            templateUrl: '/ranker/race/raceForm.html'
         })
         .when('/race/view/:id', {
             templateUrl: '/ranker/race/raceView.html'

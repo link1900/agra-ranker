@@ -1,7 +1,7 @@
 <div data-ng-controller="RaceCtrl" data-ng-init="findOne()">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Race Edit</h3>
+            <h3 class="panel-title">Race</h3>
         </div>
         <div class="panel-body">
             <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
@@ -9,15 +9,9 @@
             <form name="createForm" novalidate>
                 <div class="form-group row">
                     <div class="col-md-6">
-                        <label class="control-label" for="raceNameField" >Name</label>
-                        <input id="raceNameField"
-                               type="text"
-                               class="form-control"
-                               name="raceNameField"
-                               data-ng-model="race.name"
-                               autocomplete="off"
-                               required />
-                        <span class="help-block error" data-ng-show="createForm.raceNameField.$dirty && createForm.raceNameField.$invalid">race name is required</span>
+                    <label class="control-label">Name</label>
+                    <div sb-race-name-field data-sb-model="race.name"></div>
+                    <span class="help-block error" data-ng-show="createForm.raceNameField.$dirty && createForm.raceNameField.$invalid">Race name is required</span>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -69,10 +63,10 @@
                 <div class="form-group">
                     <button data-ng-click="save()" data-ng-disabled="isInvalid(createForm)" class="btn btn-success"><span data-ng-show="isValid(createForm)" class="glyphicon glyphicon-ok"></span> Save</button>
                     <a ng-href="#/race" class="btn btn-default">Back</a>
-                    <a data-ng-href="#/race/create" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Create race</a>
+                    <a data-ng-show="race._id" data-ng-href="#/race/create" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Create race</a>
                 </div>
             </form>
         </div>
     </div>
-    <div data-ng-include="'ranker/placing/placingEdit.html'"></div>
+    <div data-ng-show="race._id" data-ng-include="'ranker/placing/placingEdit.html'"></div>
 </div>
