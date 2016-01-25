@@ -8,10 +8,31 @@
                 <dl class="dl-horizontal">
                     <dt>Name</dt>
                     <dd>{{greyhound.name}}</dd>
-                    <dt ng-show="greyhound.sireName">Sire</dt>
-                    <dd ng-show="greyhound.sireName"><a data-ng-href="#/greyhound/view/{{greyhound.sireRef}}">{{greyhound.sireName}}</a></dd>
-                    <dt ng-show="greyhound.damName">Dam</dt>
-                    <dd ng-show="greyhound.damName"><a data-ng-href="#/greyhound/view/{{greyhound.damRef}}">{{greyhound.damName}}</a></dd>
+                    <dt>Sire</dt>
+                    <dd>
+                        <a data-ng-show="greyhound.sireName" data-ng-href="#/greyhound/view/{{greyhound.sireRef}}">{{greyhound.sireName}}</a>
+                        <span data-ng-hide="greyhound.sireName" class="off-grey">None</span>
+                    </dd>
+                    <dt>Dam</dt>
+                    <dd>
+                        <a data-ng-show="greyhound.damName" data-ng-href="#/greyhound/view/{{greyhound.damRef}}">{{greyhound.damName}}</a>
+                        <span data-ng-hide="greyhound.damName" class="off-grey">None</span>
+                    </dd>
+                    <dt>Color</dt>
+                    <dd>
+                        <span data-ng-show="greyhound.color">{{greyhound.color}}</span>
+                        <span data-ng-hide="greyhound.color" class="off-grey">None</span>
+                    </dd>
+                    <dt>Sex</dt>
+                    <dd>
+                        <span data-ng-show="greyhound.gender" class="capitalize">{{greyhound.gender}}</span>
+                        <span data-ng-hide="greyhound.gender" class="off-grey">None</span>
+                    </dd>
+                    <dt>Date of birth</dt>
+                    <dd>
+                        <span data-ng-show="greyhound.dateOfBirth">{{greyhound.dateOfBirth | date:'dd MMMM yyyy'}}</span>
+                        <span data-ng-hide="greyhound.dateOfBirth" class="off-grey">None</span>
+                    </dd>
                     <dt ng-show="user">Created</dt>
                     <dd ng-show="user">{{greyhound.createdAt | fromNow}}</dd>
                     <dt ng-show="user">Last updated</dt>

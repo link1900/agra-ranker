@@ -169,3 +169,19 @@ body {
 .pagination-no-margin {
     margin: 0;
 }
+
+.off-grey {
+    color: rgba(0,0,0,0.26);
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.lowercase {
+    text-transform: lowercase;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}

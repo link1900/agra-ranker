@@ -67,6 +67,11 @@ greyhoundService.validateGreyhound = function(greyhound){
         return q.reject("name cannot be blank");
     }
 
+    var validGender = ["dog","bitch"];
+    if (!_.contains(validGender,greyhound.gender)){
+        return q.reject("greyhound gender was " + greyhound.gender + " and must be one of " + validGender);
+    }
+
     return q(greyhound);
 };
 
