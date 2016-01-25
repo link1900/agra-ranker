@@ -7,20 +7,30 @@
             <div data-alert data-ng-repeat="alert in alerts" data-type="alert.type">{{alert.msg}}</div>
             <div data-ng-show="race.name">
                 <dl class="dl-horizontal">
-                    <dt ng-show="race.name">Name</dt>
-                    <dd ng-show="race.name">{{race.name}}</dd>
-                    <dt ng-show="race.date">Date</dt>
-                    <dd ng-show="race.date">{{race.date | date:'dd MMMM yyyy'}}</dd>
-                    <dt ng-show="race.groupLevel.name">Group Level</dt>
-                    <dd ng-show="race.groupLevel.name">{{race.groupLevel.name}}</dd>
-                    <dt ng-show="race.distanceMeters">Distance Meters</dt>
-                    <dd ng-show="race.distanceMeters">{{race.distanceMeters}} meters</dd>
-                    <dt ng-show="user">Created </dt>
-                    <dd ng-show="user">{{race.createdAt | fromNow}}</dd>
-                    <dt ng-show="user">Last updated</dt>
-                    <dd ng-show="user">{{race.updatedAt | fromNow}}</dd>
+                    <dt>Name</dt>
+                    <dd>{{race.name}}</dd>
+                    <dt>Date</dt>
+                    <dd>{{race.date | date:'dd MMMM yyyy'}}</dd>
+                    <dt>Group Level</dt>
+                    <dd>{{race.groupLevel.name}}</dd>
+                    <dt>Distance Meters</dt>
+                    <dd>{{race.distanceMeters}} meters</dd>
+                    <dt>Track</dt>
+                    <dd>
+                        <span data-ng-show="race.track">{{race.track}}</span>
+                        <span data-ng-hide="race.track" class="off-grey">None</span>
+                    </dd>
+                    <dt>Club</dt>
+                    <dd>
+                        <span data-ng-show="race.club">{{race.club}}</span>
+                        <span data-ng-hide="race.club" class="off-grey">None</span>
+                    </dd>
+                    <dt data-ng-show="user">Created </dt>
+                    <dd data-ng-show="user">{{race.createdAt | fromNow}}</dd>
+                    <dt data-ng-show="user">Last updated</dt>
+                    <dd data-ng-show="user">{{race.updatedAt | fromNow}}</dd>
                 </dl>
-                <div ng-show="race.disqualified" class="panel panel-danger">
+                <div data-ng-show="race.disqualified" class="panel panel-danger">
                     <div class="panel-heading">
                         <h3 class="panel-title">Note</h3>
                     </div>
@@ -28,7 +38,7 @@
                         This has been marked as a disqualified. The results do not count towards rankings of any kind.
                     </div>
                 </div>
-                <div ng-controller="PlacingCtrl">
+                <div data-ng-controller="PlacingCtrl">
                     <div data-sb-table
                          data-title="Placings"
                          data-model-service="placingSvr"
@@ -42,8 +52,8 @@
                          data-sort-direction="asc">
                     </div>
                 </div>
-                <a ng-show="user" data-ng-href="#/race/edit/{{race._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
-                <button ng-show="user" data-ng-click="deleteEntity()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+                <a data-ng-show="user" data-ng-href="#/race/edit/{{race._id}}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                <button data-ng-show="user" data-ng-click="deleteEntity()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
             </div>
         </div>
     </div>

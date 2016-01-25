@@ -8,28 +8,26 @@
 
             <form name="createForm" novalidate>
                 <div class="form-group row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                     <label class="control-label">Name</label>
                     <div sb-race-name-field data-sb-model="race.name"></div>
                     <span class="help-block error" data-ng-show="createForm.raceNameField.$dirty && createForm.raceNameField.$invalid">Race name is required</span>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="control-label" for="raceDateField">Date</label>
-                        <div class="input-group">
-                            <input id="raceDateField" class="form-control" type="text" ng-model="race.date" bs-datepicker data-date-format="dd MMM yyyy" data-container="body" data-autoclose="true" ng-required="true" />
-                        </div>
+                        <input id="raceDateField" class="form-control" type="text" ng-model="race.date" bs-datepicker data-date-format="dd MMM yyyy" data-container="body" data-autoclose="true" ng-required="true" />
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <label class="control-label" for="raceGroupLevelField">Group Level</label>
                         <select id="raceGroupLevelField" class="form-control" data-ng-model="race.groupLevelRef" ng-options="groupLevel._id as groupLevel.name for groupLevel in groupLevels"></select>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <label class="control-label" for="raceDistanceField">Distance</label>
                         <div class="input-group">
                             <input id="raceDistanceField"
@@ -47,12 +45,24 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-4">
+                        <label for="track-field" class="control-label">Track</label>
+                        <input id="track-field" class="form-control" type="text" data-ng-model="race.track" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <label for="club-field" class="control-label">Club</label>
+                        <input id="club-field" class="form-control" type="text" data-ng-model="race.club" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" data-ng-model="race.disqualified"> Disqualified race
                             </label>
-                            <span ng-click="showNoRaceInfo = !showNoRaceInfo" class="glyphicon glyphicon-question-sign"></span>
-                            <div ng-show="showNoRaceInfo" class="alert alert-info" role="alert">
+                            <span data-ng-click="showNoRaceInfo = !showNoRaceInfo" class="glyphicon glyphicon-question-sign"></span>
+                            <div data-ng-show="showNoRaceInfo" class="alert alert-info" role="alert">
                                 A disqualified race is race that has been judged as not counting towards to the rankings.
                                 This maybe because of an something completely disrupting the race.
                                 I.e a lure break down, not enough runners, etc.
@@ -62,7 +72,7 @@
                 </div>
                 <div class="form-group">
                     <button data-ng-click="save()" data-ng-disabled="isInvalid(createForm)" class="btn btn-success"><span data-ng-show="isValid(createForm)" class="glyphicon glyphicon-ok"></span> Save</button>
-                    <a ng-href="#/race" class="btn btn-default">Back</a>
+                    <a data-ng-href="#/race" class="btn btn-default">Back</a>
                     <a data-ng-show="race._id" data-ng-href="#/race/create" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Create race</a>
                 </div>
             </form>
