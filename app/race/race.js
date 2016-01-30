@@ -2,13 +2,11 @@ var race = module.exports = {};
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
-var GroupLevelSchema = require('../groupLevel/groupLevel').definition;
 
 race.definition = {
     name: {type: String},
     date: {type: Date},
-    groupLevelRef: {type: Schema.Types.ObjectId},
-    groupLevel: {type: GroupLevelSchema},
+    groupLevelName: {type:String},
     distanceMeters: {type: Number},
     disqualified: {type: Boolean, default: false},
     track: {type: String},

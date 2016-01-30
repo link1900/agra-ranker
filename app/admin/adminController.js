@@ -22,9 +22,6 @@ adminController.dropCollection = function(req, res){
         case 'file' :
             helper.responseFromPromise(res, adminService.removeAllFiles());
             break;
-        case 'groupLevel' :
-            helper.responseFromPromise(res, adminService.removeAllGroupLevels());
-            break;
         case 'rankingSystem' :
             helper.responseFromPromise(res, adminService.removeAllRankingSystems());
             break;
@@ -39,9 +36,6 @@ adminController.dropCollection = function(req, res){
 
 adminController.setupCollection = function(req, res){
     switch(req.collectionName){
-        case 'groupLevel' :
-            helper.responseFromPromise(res, adminService.setupGroupLevel());
-            break;
         case 'rankingSystem' :
             helper.responseFromPromise(res, adminService.setupRankingSystemDefaults());
             break;

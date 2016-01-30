@@ -14,9 +14,7 @@ describe("scoreService", function(){
         "race" : {
             "distanceMeters" : 500,
             "date" :new Date(),
-            "groupLevel" : {
-                "name" : "Group 3"
-            },
+            "groupLevelName": "Group 3",
             "name" : "race1",
             "disqualified" : false
         },
@@ -32,9 +30,7 @@ describe("scoreService", function(){
         "race" : {
             "distanceMeters" : 500,
             "date" :new Date(),
-            "groupLevel" : {
-                "name" : "Group 3"
-            },
+            "groupLevelName": "Group 3",
             "name" : "race2",
             "disqualified" : false
         },
@@ -50,9 +46,7 @@ describe("scoreService", function(){
         "race" : {
             "distanceMeters" : 500,
             "date" :new Date(),
-            "groupLevel" : {
-                "name" : "Group 3"
-            },
+            "groupLevelName": "Group 3",
             "name" : "race3",
             "disqualified" : false
         },
@@ -95,7 +89,7 @@ describe("scoreService", function(){
             var pa = {
                 criteria: [
                     {field: "placing", "comparator": "=", "value": "1"},
-                    {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
+                    {field: "race.groupLevelName", "comparator": "=", "value": "Group 3"},
                     {field: "race.distanceMeters", "comparator": "<", "value": 715}
                 ],
                 points: 20
@@ -104,7 +98,7 @@ describe("scoreService", function(){
                 label: "fieldName", field:"fieldField"
             };
             var expected = [
-                { $match :{ 'race.groupLevel.name': 'Group 3',
+                { $match :{ 'race.groupLevelName': 'Group 3',
                     'race.distanceMeters': { '$lt': 715 },
                     placing: '1'}},
                 {$project :{"race": "$race",
@@ -129,7 +123,7 @@ describe("scoreService", function(){
             var pa = {
                 criteria: [
                     {field: "placing", "comparator": "=", "value": "1"},
-                    {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
+                    {field: "race.groupLevelName", "comparator": "=", "value": "Group 3"},
                     {field: "race.distanceMeters", "comparator": "<", "value": 715}
                 ],
                 points: 20
@@ -139,7 +133,7 @@ describe("scoreService", function(){
             };
             var rs = { pointAllotments: [pa], groupBy: group};
             var expected = [[
-                { $match :{ 'race.groupLevel.name': 'Group 3',
+                { $match :{ 'race.groupLevelName': 'Group 3',
                     'race.distanceMeters': { '$lt': 715 },
                     placing: '1'}},
                 {$project :{"race": "$race",
@@ -171,7 +165,7 @@ describe("scoreService", function(){
             var rs = {};
             var fp = "createScoreTest";
             var pipeline = [
-                { $match :{ 'race.groupLevel.name': 'Group 3', 'placing':"3"}},
+                { $match :{ 'race.groupLevelName': 'Group 3', 'placing':"3"}},
                 {$project :{"race": "$race",
                     "placing": "$placing",
                     "name":"$greyhound.name",
@@ -208,7 +202,7 @@ describe("scoreService", function(){
             var fp = "createScoreTest";
             var pipelines = [
                 [
-                { $match :{ 'race.groupLevel.name': 'Group 3', "placing": "3"}},
+                { $match :{ 'race.groupLevelName': 'Group 3', "placing": "3"}},
                 {$project :{"race": "$race",
                     "placing": "$placing",
                     "name":"$greyhound.name",
@@ -219,7 +213,7 @@ describe("scoreService", function(){
                     "raceName":"$race.name"}}
                     ],
                 [
-                    { $match :{ 'race.groupLevel.name': 'Group 3', "placing": "4"}},
+                    { $match :{ 'race.groupLevelName': 'Group 3', "placing": "4"}},
                     {$project :{"race": "$race",
                         "placing": "$placing",
                         "name":"$greyhound.name",

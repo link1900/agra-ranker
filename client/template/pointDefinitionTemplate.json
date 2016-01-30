@@ -1,3 +1,3 @@
 [
-    { "points": 70, "series": "Group 1 Sprint", "criteria": [{"type": "Text", "field":"placing", "comparator": "=", "value":"1"},{"type": "Number", "field":"race.distanceMeters", "comparator": "<", "value":"595"},{"type": "Text", "field":"race.groupLevel.name", "comparator": "=", "value":"Group 1"}]}
+    { "points": 70, "series": "Group 1 Sprint", "criteria": [{"type": "Text", "field":"placing", "comparator": "=", "value":"1"},{"type": "Number", "field":"race.distanceMeters", "comparator": "<", "value":"595"},{"type": "Text", "field":"race.groupLevelName", "comparator": "=", "value":"Group 1"}]}
 ]

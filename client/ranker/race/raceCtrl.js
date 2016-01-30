@@ -1,5 +1,5 @@
-angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 'headerHelperService', 'raceSvr', '$location', 'groupLevelService', 'generalService',
-    function($scope, $routeParams, headerHelperService, raceSvr, $location, groupLevelService, generalService) {
+angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 'headerHelperService', 'raceSvr', '$location', 'generalService',
+    function($scope, $routeParams, headerHelperService, raceSvr, $location, generalService) {
 
         $scope.showNoRaceInfo = false;
 
@@ -15,25 +15,10 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
 
         $scope.loadRace = function(model){
             $scope.race = model;
-            $scope.postProcess($scope.race);
         };
 
-        /**
-         * Loads default form fields
-         */
         $scope.loadForm = function(){
-            $scope.loadGroupLevels();
-        };
-
-        $scope.loadGroupLevels = function(){
-            groupLevelService.query({
-                page : 1,
-                per_page : 50,
-                sort_field: 'name',
-                sort_direction: 'asc'
-            }, function(groupLevels){
-                $scope.groupLevels = groupLevels;
-            });
+            $scope.groupLevels = ["Group 1", "Group 2", "Group 3", "Listed"];
         };
 
         $scope.distanceSearch = function(val) {
@@ -50,35 +35,12 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
             })
         };
 
-        $scope.postProcess = function(model) {
-            if ($scope.groupLevels) {
-                model.groupLevel = $scope.groupLevelNameLookup(model.groupLevelRef, $scope.groupLevel);
-            }
-        };
-
-        $scope.groupLevelNameLookup = function(id, groupLevels){
-            var groupLevel = _.find(groupLevels, function(groupLevel){
-                return groupLevel._id == id;
-            });
-            if (groupLevel){
-                return groupLevel.name;
-            } else {
-                return "";
-            }
-        };
-
-        $scope.postProcessingCollection = function(entities){
-            _.each(entities, function(entity){
-                $scope.postProcess(entity);
-            });
-        };
-
         $scope.raceSvr = raceSvr;
 
         $scope.columnInfo = [
             {title: "Name", field:"name", type:"link", baseLink:"#/race/view/", linkField: "_id"},
             {title: "Date", field:"date", filter: "date", filterFormat: 'dd MMMM yyyy'},
-            {title: "Group Level", field:"groupLevel.name"},
+            {title: "Group Level", field:"groupLevelName"},
             {title: "Distance (meters)", field:"distanceMeters"}
         ];
 

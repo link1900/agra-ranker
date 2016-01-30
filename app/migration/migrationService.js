@@ -14,7 +14,7 @@ migrationService.applyMigrations = function(migrationDir) {
     var migrations = migrationIndex.index;
     logger.log('info',"Checking for migrations");
     if (migrations.length <= 0){
-        logger.log('info',"No outstanding migrations");
+        logger.log('info',"No migrations");
         return q(true);
     }
 
@@ -109,11 +109,12 @@ migrationService.validateMigrations = function(migrations, migrationDir){
 migrationService.runMigration = function(migration, migrationDir){
     var migrationRefPath = path.join(migrationDir, migration.file);
     var migrationCode = require(migrationRefPath);
+    logger.log('info',"Applying migration: " + migration.file);
     return migrationCode.up().then(function(){
-        logger.log("Applying migration: " + migration.file);
+        logger.log('info',"Applied migration: " + migration.file);
         return mongoService.savePromise(new Migration(migration));
-    }).fail(function(){
-        logger.error("migration " + migration + " failed");
+    }).fail(function(err){
+        logger.error("migration " + migration.file + " failed", err);
         process.exit(1);
     });
 };

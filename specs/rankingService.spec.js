@@ -161,7 +161,7 @@ describe("rankingService", function(){
                 pointAllotments: [{
                     criteria: [
                         {field: "placing", "comparator": "=", "value": "1"},
-                        {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
+                        {field: "race.groupLevelName", "comparator": "=", "value": "Group 3"},
                         {field: "race.distanceMeters", "comparator": "<", "value": 715}
                     ],
                     points: 20

@@ -19,8 +19,7 @@ describe("raceService", function(){
                 race5 = new Race({"_id" : "54e7beb64751d30120fe63b5",
                     "name" : "race5",
                     "date": new Date(),
-                    "groupLevelRef":"531f1f72e407586c21476ef7",
-                    "groupLevel" : {"name" : "Group 1", "level":1},
+                    "groupLevelName":"Group 1",
                     "distanceMeters": 515,
                     "disqualified":false});
                 race5.save(function(){
@@ -34,7 +33,7 @@ describe("raceService", function(){
         it("should create a race", function(done){
             var body = {name:"raceCreated",
                 date: new Date(),
-                "groupLevelRef": "531d1f72e407586c21476ef7",
+                "groupLevelName":"Group 1",
                 "distanceMeters": 515,
                 "disqualified":false};
             raceService.createRaceFromJson(body).then(function(result){
@@ -49,7 +48,7 @@ describe("raceService", function(){
         it("should update a race", function(done){
             var body = {name:"raceUpdated",
                 date: new Date(),
-                "groupLevelRef": "531d1f72e407586c21476ef7",
+                "groupLevelName":"Group 1",
                 "distanceMeters": 515,
                 "disqualified":false};
             raceService.updateRaceFromJson(race5, body).then(function(result){
@@ -119,7 +118,7 @@ describe("raceService", function(){
             });
             var body = {name:"raceCreated",
                 date: new Date(),
-                "groupLevelRef": "531d1f72e407586c21476ef7",
+                "groupLevelName":"Group 1",
                 "distanceMeters": 515,
                 "disqualified":false};
             raceService.createRaceFromJson(body).then(function(){}, done);
@@ -131,7 +130,7 @@ describe("raceService", function(){
             });
             var body = {name:"raceUpdated",
                 date: new Date(),
-                "groupLevelRef": "531d1f72e407586c21476ef7",
+                "groupLevelName":"Group 1",
                 "distanceMeters": 515,
                 "disqualified":false};
             raceService.updateRaceFromJson(race5, body).then(function(){}, done);
@@ -164,33 +163,6 @@ describe("raceService", function(){
                     "FRATTINI","8"
                 ];
             raceService.processRaceCsvRow(record).then(function(){}, done);
-        });
-
-        it("should delete race if group level is deleted", function(done){
-            var event = {type: "Deleted GroupLevel", data: {entity: {"_id": "531f1f72e407586c21476ef7"}}};
-            eventService.logEvent(event, true).then(function(){
-                Race.find({_id: "54e7beb64751d30120fe63b5"}, function(err, res){
-                    if (res.length > 0){
-                        done(new Error("found races when I should not have"));
-                    } else {
-                        done();
-                    }
-                });
-            });
-        });
-
-        it("should update group level flyweight of race if group level is updated", function(done){
-            var event = {type: "Updated GroupLevel", data: {entity: {"_id": "531f1f72e407586c21476ef7", name: "Group 5"}}};
-            eventService.logEvent(event, true).then(function(){
-                Race.find({_id: "54e7beb64751d30120fe63b5"}, function(err, res){
-                    if (res.length > 0){
-                        assert.equal(res[0].groupLevel.name, "Group 5");
-                        done();
-                    } else {
-                        done(new Error("no race found"));
-                    }
-                });
-            });
         });
 
         afterEach(function(){

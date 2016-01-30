@@ -59,7 +59,7 @@ describe("rankingService", function(){
                     {field: "placing", "comparator": "=", "value": "1"},
                     {field: "someField", "comparator": ">=", "value": "55"},
                     {field: "beforeMe", "comparator": "<=", "value":22},
-                    {field: "race.groupLevel.name", "comparator": "=", "value": "Group 1"},
+                    {field: "race.groupLevelName", "comparator": "=", "value": "Group 1"},
                     {field: "distanceMeters", "comparator": "<", "value": "715"},
                     {field: "distanceMeters", "comparator": ">", "value": "515"},
                     {field: "race.date", "comparator": ">=", "value": new Date(2011,5,5)},
@@ -69,7 +69,7 @@ describe("rankingService", function(){
             };
             var expectedQuery = {
                 'placing': '1',
-                'race.groupLevel.name': 'Group 1',
+                'race.groupLevelName': 'Group 1',
                 'someField': { '$gte': "55"},
                 'beforeMe': { '$lte': 22},
                 'distanceMeters': { '$lt': '715', '$gt': '515' },

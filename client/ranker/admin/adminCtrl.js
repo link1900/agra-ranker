@@ -1,7 +1,6 @@
 angular.module('controllers').controller('adminCtrl', function($scope, $http) {
     $scope.counts = {};
-    $scope.removeCollections = ['greyhound', 'batch', 'file', 'groupLevel', 'race', 'rankingSystem', 'ranking'];
-    $scope.setupCollections = ['groupLevel'];
+    $scope.removeCollections = ['greyhound', 'batch', 'file', 'race', 'rankingSystem', 'ranking'];
 
     $scope.loadCounts = function(){
         $http.get('/admin/count').then(function(result){

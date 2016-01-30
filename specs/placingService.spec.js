@@ -28,11 +28,7 @@ describe("placingService", function(){
         var raceShootOut = {
             "_id": "54a32fc7e39b345cff5857d1",
             "distanceMeters": 500,
-            "groupLevel": {
-                "name": "Group 2",
-                "_id": "547db17c81beea000004f398"
-            },
-            "groupLevelRef": "547db17c81beea000004f398",
+            "groupLevelName": "Group 2",
             "name": "SHOOT OUT",
             "disqualified": false
         };

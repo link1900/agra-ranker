@@ -16,7 +16,7 @@
   "scripts": {
     "start": "node node_modules/gulp/bin/gulp",
     "lint": "node ./node_modules/eslint/bin/eslint.js ./app ./client",
-    "spec" : "./node_modules/.bin/istanbul cover _mocha ./specs/*.js ./app/**/*Test.js",
+    "spec" : "./node_modules/.bin/istanbul cover _mocha ./specs/*.js",
     "test": "npm run lint && npm run spec",
     "postinstall": "node node_modules/bower/bin/bower install && node node_modules/gulp/bin/gulp js"
   },

@@ -11,7 +11,6 @@ var Ranking = mongoose.model('Ranking');
 var Score = mongoose.model('Score');
 var User = require('../user/user').model;
 var RankingSystem = mongoose.model('RankingSystem');
-var GroupLevel = require('../groupLevel/groupLevel').model;
 var BatchJob = require('../batch/batchJob').model;
 var BatchResult = require('../batch/batchResult').model;
 var Invite = require('../invite/invite').model;
@@ -50,22 +49,10 @@ adminService.removeAllFiles = function(){
     });
 };
 
-adminService.removeAllGroupLevels = function(){
-    return mongoService.dropCollection(GroupLevel);
-};
-
 adminService.removeAllRankings = function(){
     return mongoService.dropCollection(Score).then(function(){
         return mongoService.dropCollection(Ranking);
     });
-};
-
-adminService.setupGroupLevel = function(){
-    return mongoService.saveAll([
-        new GroupLevel({name:"Group 1"}),
-        new GroupLevel({name:"Group 2"}),
-        new GroupLevel({name:"Group 3"})
-    ]);
 };
 
 adminService.setupSireRankingSystem = function(){
@@ -86,9 +73,9 @@ adminService.setupSireRankingSystem = function(){
     };
 
     //sprint group
-    var group1Sire = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}];
-    var group2Sire = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}];
-    var group3Sire = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}];
+    var group1Sire = [{field: "race.groupLevelName", "comparator": "=", "value": "Group 1", type: "Text"}];
+    var group2Sire = [{field: "race.groupLevelName", "comparator": "=", "value": "Group 2", type: "Text"}];
+    var group3Sire = [{field: "race.groupLevelName", "comparator": "=", "value": "Group 3", type: "Text"}];
     sireRanking.pointAllotments = sireRanking.pointAllotments
         .concat(adminService.generateAllotmentSet([70, 35, 20, 15, 10, 8, 7, 6], group1Sire))
         .concat(adminService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sire))
@@ -115,9 +102,9 @@ adminService.setupDamRankingSystem = function(){
     };
 
     //dam group
-    var group1Dam = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}];
-    var group2Dam = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}];
-    var group3Dam = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}];
+    var group1Dam = [{field: "race.groupLevelName", "comparator": "=", "value": "Group 1", type: "Text"}];
+    var group2Dam = [{field: "race.groupLevelName", "comparator": "=", "value": "Group 2", type: "Text"}];
+    var group3Dam = [{field: "race.groupLevelName", "comparator": "=", "value": "Group 3", type: "Text"}];
     damRanking.pointAllotments = damRanking.pointAllotments
         .concat(adminService.generateAllotmentSet([6, 4, 3, 1, 1, 1, 1, 1], group1Dam))
         .concat(adminService.generateAllotmentSet([4, 3, 2, 1, 1, 1, 1, 1], group2Dam))
@@ -142,9 +129,9 @@ adminService.setupDefaultRankingSystem = function(){
 
     //sprint group
     var baseSprint = [{field: "race.distanceMeters", "comparator": "<", "value": 595, type: "Number"}];
-    var group1Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}].concat(baseSprint);
-    var group2Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}].concat(baseSprint);
-    var group3Sprint = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}].concat(baseSprint);
+    var group1Sprint = [{field: "race.groupLevelName", "comparator": "=", "value": "Group 1", type: "Text"}].concat(baseSprint);
+    var group2Sprint = [{field: "race.groupLevelName", "comparator": "=", "value": "Group 2", type: "Text"}].concat(baseSprint);
+    var group3Sprint = [{field: "race.groupLevelName", "comparator": "=", "value": "Group 3", type: "Text"}].concat(baseSprint);
     agraRanker.pointAllotments = agraRanker.pointAllotments
         .concat(adminService.generateAllotmentSet([70, 35, 20, 15, 10, 8, 7, 6], group1Sprint))
         .concat(adminService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sprint))
@@ -152,9 +139,9 @@ adminService.setupDefaultRankingSystem = function(){
 
     //stay groups
     var baseStay = [{field: "race.distanceMeters", "comparator": ">=", "value": 595, type: "Number"}];
-    var group1Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"}].concat(baseStay);
-    var group2Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 2", type: "Text"}].concat(baseStay);
-    var group3Stay = [{field: "race.groupLevel.name", "comparator": "=", "value": "Group 3", type: "Text"}].concat(baseStay);
+    var group1Stay = [{field: "race.groupLevelName", "comparator": "=", "value": "Group 1", type: "Text"}].concat(baseStay);
+    var group2Stay = [{field: "race.groupLevelName", "comparator": "=", "value": "Group 2", type: "Text"}].concat(baseStay);
+    var group3Stay = [{field: "race.groupLevelName", "comparator": "=", "value": "Group 3", type: "Text"}].concat(baseStay);
     agraRanker.pointAllotments = agraRanker.pointAllotments
         .concat(adminService.generateAllotmentSet([50, 25, 16, 12, 8, 6, 4, 2], group1Stay))
         .concat(adminService.generateAllotmentSet([30, 20, 12, 8, 6, 4, 2, 1], group2Stay))
@@ -209,9 +196,6 @@ adminService.getAllCounts = function(){
         }),
         placingService.count().then(function(count){
             return {"placing": count};
-        }),
-        mongoService.getCollectionCount(GroupLevel).then(function(count){
-            return {"groupLevel": count};
         }),
         raceService.count().then(function(count){
             return {"race": count};

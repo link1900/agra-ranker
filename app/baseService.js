@@ -41,6 +41,10 @@ baseService.addStandardServiceMethods = function(service, dao){
             .then(eventService.logUpdateEntity);
     };
 
+    service.updateNoLog = function(entity){
+        return mongoService.savePromise(entity);
+    };
+
     service.remove = function(entity){
         return mongoService.removePromise(entity)
             .then(eventService.logDeleteEntity);

@@ -41,18 +41,6 @@ angular.module('core').config(function declareRoutes($routeProvider) {
         .when('/rankingSystem', {
             templateUrl: '/ranker/rankingSystem/rankingSystem.html'
         })
-        .when('/groupLevel/create', {
-            templateUrl: '/ranker/groupLevel/groupLevelCreate.html'
-        })
-        .when('/groupLevel/edit/:id', {
-            templateUrl: '/ranker/groupLevel/groupLevelEdit.html'
-        })
-        .when('/groupLevel/view/:id', {
-            templateUrl: '/ranker/groupLevel/groupLevelView.html'
-        })
-        .when('/groupLevel', {
-            templateUrl: '/ranker/groupLevel/groupLevel.html'
-        })
         .when('/batch', {
             templateUrl: '/ranker/batch/batch.html'
         })

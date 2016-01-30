@@ -4,7 +4,6 @@ var batchResultController = require('./batch/batchResultController');
 var userController = require('./user/userController');
 var securityController = require('./user/securityController');
 var raceController = require('./race/raceController');
-var groupLevelController = require('./groupLevel/groupLevelController');
 var placingController = require('./placing/placingController');
 var rankingSystemController = require('./ranking/rankingSystemController');
 var rankingController = require('./ranking/rankingController');
@@ -67,14 +66,6 @@ module.exports = function(app) {
     app.put('/greyhound/:greyhoundId', securityController.checkAuthentication, greyhoundController.update);
     app.del('/greyhound/:greyhoundId',securityController.checkAuthentication, greyhoundController.destroy);
     app.param('greyhoundId', greyhoundController.setModel);
-
-    // group level routes
-    app.get('/groupLevel', groupLevelController.find);
-    app.get('/groupLevel/:groupLevelId', groupLevelController.getOne);
-    app.post('/groupLevel', securityController.checkAuthentication, groupLevelController.create);
-    app.put('/groupLevel/:groupLevelId', securityController.checkAuthentication, groupLevelController.update);
-    app.del('/groupLevel/:groupLevelId',securityController.checkAuthentication, groupLevelController.destroy);
-    app.param('groupLevelId', groupLevelController.setModel);
 
     //race routes
     app.get('/race', raceController.find);

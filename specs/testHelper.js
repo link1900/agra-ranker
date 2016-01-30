@@ -11,7 +11,6 @@ var siteUrl = process.env.testUrl;
 var moment = require('moment');
 var mongoService = require('../app/mongoService');
 var User = require('../app/user/user').model;
-var GroupLevel = require('../app/groupLevel/groupLevel').model;
 var RankingSystem = require('../app/ranking/rankingSystem').model;
 var Race = require('../app/race/race').model;
 var Greyhound = require('../app/greyhound/greyhound').model;
@@ -163,22 +162,6 @@ testHelper.clearUsers = function(done){
     User.remove({}, done);
 };
 
-testHelper.loadGroupLevels = function(done){
-    GroupLevel.remove({}, function(){
-        new GroupLevel({"_id" : "531d1f72e407586c21476ef7",
-            "name" : "Group 1",
-            "level":1}).save(function(){
-                new GroupLevel({"_id" : "531d1f72e407586c21476f0c",
-                    "name" : "Group 2",
-                    "level": 2}).save(function(){
-                        new GroupLevel({"_id" : "531d1f72e407586c21476f0d",
-                            "name" : "Group 3",
-                            "level": 2}).save(done);
-                    });
-            });
-    });
-};
-
 testHelper.loadRankingSystem = function(done){
     RankingSystem.remove({}, function(){
         new RankingSystem({"_id" : "5340bfc15c4ac1fdcd47816d",
@@ -210,42 +193,33 @@ testHelper.clearRankingSystems = function(done){
     RankingSystem.remove({}, done);
 };
 
-testHelper.clearGroupLevels = function(done){
-    GroupLevel.remove({}, done);
-};
-
 testHelper.loadRaces = function(done){
-    testHelper.loadGroupLevels(function(){
-        Race.remove({}, function(){
-            new Race({"_id" : "531d1f72e407586c21476ea8",
-                "name" : "race1",
+    Race.remove({}, function(){
+        new Race({"_id" : "531d1f72e407586c21476ea8",
+            "name" : "race1",
+            "date": new Date(),
+            "groupLevelName":"Group 1",
+            "distanceMeters": 515,
+            "disqualified":false}).save(function(){
+            new Race({"_id" : "531d1f72e407586c21476ec4",
+                "name" : "Race2",
                 "date": new Date(),
-                "groupLevelRef":"531d1f72e407586c21476ef7",
-                "groupLevel" : {"name" : "Group 1", "level":1},
-                "distanceMeters": 515,
+                "groupLevelName":"Group 2",
+                "distanceMeters": 715,
                 "disqualified":false}).save(function(){
-                    new Race({"_id" : "531d1f72e407586c21476ec4",
-                        "name" : "Race2",
-                        "date": new Date(),
-                        "groupLevelRef":"531d1f72e407586c21476f0c",
-                        "distanceMeters": 715,
-                        "disqualified":false}).save(function(){
-                            new Race({"_id" : "531d1f72e407586c21476e52",
-                                "name" : "Race3",
-                                "date": new Date(2014,5,5),
-                                "groupLevelRef":"531d1f72e407586c21476f0c",
-                                "distanceMeters": 715,
-                                "disqualified":false}).save(done);
-                        });
-                });
+                new Race({"_id" : "531d1f72e407586c21476e52",
+                    "name" : "Race3",
+                    "date": new Date(2014,5,5),
+                    "groupLevelName":"Group 2",
+                    "distanceMeters": 715,
+                    "disqualified":false}).save(done);
+            });
         });
     });
 };
 
 testHelper.clearRaces = function(done){
-    testHelper.clearGroupLevels(function(){
-        Race.remove({}, done);
-    });
+    Race.remove({}, done);
 };
 
 testHelper.loadGreyhounds = function(done){
@@ -300,21 +274,21 @@ testHelper.setupRankingTestData = function(done){
         pointAllotments: [{
             criteria: [
                 {field: "placing", "comparator": "=", "value": "1"},
-                {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
+                {field: "race.groupLevelName", "comparator": "=", "value": "Group 3"},
                 {field: "race.distanceMeters", "comparator": "<", "value": 715}
             ],
             points: 20
         },{
             criteria: [
                 {field: "placing", "comparator": "=", "value": "2"},
-                {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
+                {field: "race.groupLevelName", "comparator": "=", "value": "Group 3"},
                 {field: "race.distanceMeters", "comparator": "<", "value": 715}
             ],
             points: 10
         },{
             criteria: [
                 {field: "placing", "comparator": "=", "value": "3"},
-                {field: "race.groupLevel.name", "comparator": "=", "value": "Group 3"},
+                {field: "race.groupLevelName", "comparator": "=", "value": "Group 3"},
                 {field: "race.distanceMeters", "comparator": "<", "value": 715}
             ],
             points: 5
@@ -341,11 +315,7 @@ testHelper.setupRankingTestData = function(done){
     var rankingRace1 = {
         "_id": "54ac8e011ee51022d545c904",
         "distanceMeters": 500,
-        "groupLevel": {
-            "name": "Group 3",
-            "_id": "54ac8dce1ee51022d545c903"
-        },
-        "groupLevelRef": "54ac8dce1ee51022d545c903",
+        "groupLevelName": "Group 3",
         "name": "rankingRace1",
         date: new Date(2014,8,8),
         "disqualified": false
@@ -353,11 +323,7 @@ testHelper.setupRankingTestData = function(done){
     var rankingRace2 = {
         "_id": "54ac8e1a1ee51022d545c905",
         "distanceMeters": 500,
-        "groupLevel": {
-            "name": "Group 3",
-            "_id": "54ac8dce1ee51022d545c903"
-        },
-        "groupLevelRef": "54ac8dce1ee51022d545c903",
+        "groupLevelName": "Group 3",
         "name": "rankingRace1",
         date: new Date(2014,8,8),
         "disqualified": false
@@ -365,11 +331,7 @@ testHelper.setupRankingTestData = function(done){
     var rankingRace3 = {
         "_id": "54ac8e221ee51022d545c906",
         "distanceMeters": 500,
-        "groupLevel": {
-            "name": "Group 3",
-            "_id": "54ac8dce1ee51022d545c903"
-        },
-        "groupLevelRef": "54ac8dce1ee51022d545c903",
+        "groupLevelName": "Group 3",
         "name": "rankingRace1",
         date: new Date(2012,8,8),
         "disqualified": false

@@ -10,6 +10,8 @@ var logger = require('winston');
 var dotenv = require('dotenv');
 var mongoose = require('mongoose');
 
+var migrationService = require('./app/migration/migrationService');
+
     /**
  * Main application entry file.
  * Please note that the order of loading is important.
@@ -23,6 +25,7 @@ main.start = _.once(function(){
         .then(main.checkEnvs)
         .then(main.setupDatabaseConnection)
         .then(main.setupSecurity)
+        .then(main.applyMigrations)
         .then(main.setupHTTP)
         .then(main.setupBatchService).then(function(){
             logger.info("Started system successfully");
@@ -145,10 +148,15 @@ main.setupBatchService = function(mainConfig){
     return q(mainConfig);
 };
 
+main.applyMigrations = function(mainConfig){
+    var migrationDir = path.join(__dirname, '/app/migrations');
+
+    return migrationService.applyMigrations(migrationDir).then(function(){
+        return q(mainConfig);
+    });
+};
+
 main.start();
 
 
-//apply migrations
-//var migrationDir = path.join(__dirname, '/app/migrations');
-//var migrationService = require('./app/migration/migrationService');
-//migrationService.applyMigrations(migrationDir).then(function(){
+

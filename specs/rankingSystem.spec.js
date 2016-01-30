@@ -61,7 +61,7 @@ describe("Ranking System", function(){
                             {field: "placing", "comparator": "=", "value": "1", type: "Text"},
                             {field: "race.date", "comparator": ">=", "value": "currentFinancialYearStart", type: "Preset"},
                             {field: "race.date", "comparator": "<=", "value": "currentFinancialYearEnd", type: "Preset"},
-                            {field: "race.groupLevel.name", "comparator": "=", "value": "Group 1", type: "Text"},
+                            {field: "race.groupLevelName", "comparator": "=", "value": "Group 1", type: "Text"},
                             {field: "distanceMeters", "comparator": "<", "value": 715, type: "Number"},
                             {field: "disqualified", "comparator": "=", "value": false, type: "Boolean"}
                         ]
