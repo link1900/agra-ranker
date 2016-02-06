@@ -25,7 +25,7 @@ angular.module('services').factory('placingSvr', ['$resource', '$http',
         };
 
         service.deletePlacing = function(placing){
-            return $http.delete("/placing/"+placing.id).then(function(result){
+            return $http.delete("/placing/"+placing._id).then(function(result){
                 return result.data;
             });
         };

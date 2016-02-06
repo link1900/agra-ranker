@@ -33,90 +33,135 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
         placeholder: "placing-greyhound-placeholder",
         connectWith: ".placing-container",
         update: function(){
-            $scope.savePlacings();
+            $scope.updatePlacingsIfNeeded();
         }
     };
 
-    $scope.convertDisplayArrayToPlacingModel = function(displayArray){
-        var newPlacings = [];
-        _.forEach(displayArray, function(placingDisplaySet, index){
-            var placingPosition = $scope.placingValueLookUp(index);
-            _.forEach(placingDisplaySet, function(placingDisplay){
-                newPlacings.push($scope.convertDisplayModelToPlacingModel(placingPosition, placingDisplay));
-            });
-        });
-        return newPlacings;
-    };
+    $scope.greyhoundPlacingColumns =[
+        {title: "Placing", field:"placing"},
+        {title: "Race", field:"race.name", type:"link", baseLink:"#/race/view/", linkField: "raceRef"},
+        {title: "Race Date", field:"race.date", filter: "date", filterFormat: 'dd MMMM yyyy'},
+        {title: "Group Level", field:"race.groupLevelName"},
+        {title: "Distance (meters)", field:"race.distanceMeters"}
+    ];
 
-    $scope.convertDisplayModelToPlacingModel = function(placingPosition, displayModel){
-        var newPlacing = {};
-        newPlacing._id = displayModel.id;
-        newPlacing.placing = placingPosition;
-        newPlacing.greyhoundRef = displayModel.greyhoundRef;
-        newPlacing.raceRef = $scope.raceRef;
-        return newPlacing;
-    };
+    $scope.greyhoundSearchFields = [
+        {"name":"greyhoundRef", field:"greyhoundRef", value:$routeParams.id, type:"hidden"}
+    ];
 
-    $scope.placingValueLookUp = function(displayIndex){
-        return _.find($scope.placingDefinitions, function(pd){
-          return pd.displayIndex == displayIndex;
-      }).placingValue;
-    };
+    $scope.racePlacingColumns =[
+        {title: "Placing", field:"placing"},
+        {title: "Name", field:"greyhound.name", type:"link", baseLink:"#/greyhound/view/", linkField: "greyhoundRef"},
+        {title: "Sire", field:"greyhound.sireName", type:"link", baseLink:"#/greyhound/view/", linkField: "sireRef"},
+        {title: "Dam", field:"greyhound.damName", type:"link", baseLink:"#/greyhound/view/", linkField: "damRef"}
+    ];
 
-    $scope.convertPlacingModelsToDisplayArray = function(placingModels){
-        var displayArray = [];
-        var groupedPlacings = _.groupBy(placingModels, 'placing');
-        _.forEach($scope.placingDefinitions, function(placingDefinition){
-            var placingArray = groupedPlacings[placingDefinition.displayIndex+1];
-            placingArray = _.map(placingArray, function(placing){
-                return {"id": placing._id, "greyhoundRef":placing.greyhoundRef};
-            });
-            displayArray[placingDefinition.displayIndex] = placingArray;
-        });
-        return displayArray;
-    };
+    $scope.raceSearchFields = [
+        {"name":"raceRef", field:"raceRef", value:$routeParams.id, type:"hidden"}
+    ];
 
-    $scope.displayModelPostProcessing = function(){
-        _.forEach($scope.placings, function(placingSet){
-            _.forEach(placingSet, function(placingDisplay){
-                if(!placingDisplay.name){
-                    greyhoundSvr.get({
-                        greyhoundId: placingDisplay.greyhoundRef
-                    }, function(model) {
-                        placingDisplay.name = model.name;
-                        placingDisplay.sireName = model.sireName;
-                        placingDisplay.damName = model.damName;
-                        placingDisplay.sireRef =model.sireRef;
-                        placingDisplay.damRef = model.damRef;
-                    }, function(){
-                        $scope.placingAlerts = [
-                            { type: 'danger', msg: "Failed load using the id " + placingDisplay.greyhoundRef }
-                        ];
-                    });
+    $scope.loadPlacingsForRace = function(){
+        placingSvr.query({raceRef: $routeParams.id}, function(placings) {
+            $scope.placings = placings;
+            var groupedPlacings = _.groupBy(placings, 'placing');
+            $scope.placingSets = _.map($scope.placingDefinitions, function(placingSet){
+                if (groupedPlacings[placingSet.placingValue]){
+                    placingSet.placings = groupedPlacings[placingSet.placingValue];
+                } else {
+                    placingSet.placings = [];
                 }
+
+                return placingSet;
             });
         });
     };
 
-    $scope.savePlacingModels = function(placingModels){
-        $scope.placingAlerts = [];
-        _.each(placingModels, $scope.savePlacingModel);
+    $scope.clearNewGreyhound = function(){
+        $scope.selection = {};
+    };
+
+    $scope.removePlacing = function(placingSet, placing){
+        placingSvr.deletePlacing(placing).then(function(){
+            placingSet.placings.splice(placingSet.placings.indexOf(placing), 1);
+        },function(){
+            $scope.placingAlerts = [
+                { type: 'danger', msg: "Failed to delete placing" }
+            ];
+        });
     };
 
     $scope.savePlacingModel = function(placingModel){
         return placingSvr.savePlacing(placingModel).then(function(savedPlacing){
-            return savedPlacing._id;
+            return savedPlacing;
         }, function(){
             $scope.placingAlerts.push({ type: 'danger', msg: "Failed to save placing."});
             return null;
         });
     };
 
-    $scope.loadPlacingsForRace = function(){
-        placingSvr.query({raceRef: $routeParams.id}, function(resultModels) {
-            $scope.placings = $scope.convertPlacingModelsToDisplayArray(resultModels);
-            $scope.displayModelPostProcessing();
+    $scope.updatePlacingsIfNeeded = function(){
+        var toUpdate = [];
+        _.each($scope.placingSets, function(placingSet){
+            _.each(placingSet.placings, function(placing){
+                if (placing.placing !== placingSet.placingValue){
+                    placing.placing = placingSet.placingValue;
+                    toUpdate.push(placing);
+                }
+            })
         });
+
+        if (toUpdate.length > 0){
+            _.each(toUpdate, $scope.savePlacingModel);
+        }
+    };
+
+    $scope.addPlacing = function(){
+        $scope.placingAlerts = [];
+        if ($scope.selection.newGreyhoundName && $scope.selection.newGreyhoundName.length > 0){
+            greyhoundSvr.findOrCreateGreyhound($scope.selection.newGreyhoundName).then(function(newGreyhound){
+                if (newGreyhound){
+                    var newPlacing = {};
+                    var nextPlacingPosition = $scope.getNextPlacingPosition();
+                    newPlacing.placing = nextPlacingPosition;
+                    newPlacing.greyhoundRef = newGreyhound._id;
+                    newPlacing.raceRef = $scope.raceRef;
+
+                    $scope.savePlacingModel(newPlacing).then(function(createdPlacing){
+                        if (createdPlacing){
+                            var placingSetToInsertInto = $scope.getPlacingSetForPlacingValue(nextPlacingPosition);
+                            if (placingSetToInsertInto && placingSetToInsertInto.placings){
+                                placingSetToInsertInto.placings.push(createdPlacing);
+                                $scope.clearNewGreyhound();
+                            } else {
+                                $scope.placingAlerts.push({ type: 'danger', msg: "Failed to create placing"});
+                            }
+                        } else {
+                            $scope.placingAlerts.push({ type: 'danger', msg: "Failed to create placing"});
+                        }
+                    });
+                } else {
+                    $scope.placingAlerts.push({ type: 'danger', msg: "Failed to create placing"});
+                }
+            });
+        }
+    };
+
+    $scope.getPlacingSetForPlacingValue = function(placingValue){
+        return _.find($scope.placingSets, function(placingSet){
+            return placingSet.placingValue === placingValue;
+        });
+    };
+
+    $scope.getNextPlacingPosition = function(){
+        var found = _.find($scope.placingSets, function(placingSet){
+            return placingSet.placings.length == 0;
+        });
+
+        if (found){
+            return found.placingValue;
+        } else {
+            return "1";
+        }
     };
 
     $scope.postProcessingCollectionRace = function(placings){
@@ -153,121 +198,5 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
                 { type: 'danger', msg: "Failed load using the id " + $routeParams.id }
             ];
         });
-    };
-
-    $scope.greyhoundPlacingColumns =[
-        {title: "Placing", field:"placing"},
-        {title: "Race", field:"race.name", type:"link", baseLink:"#/race/view/", linkField: "raceRef"},
-        {title: "Race Date", field:"race.date", filter: "date", filterFormat: 'dd MMMM yyyy'},
-        {title: "Group Level", field:"race.groupLevelName"},
-        {title: "Distance (meters)", field:"race.distanceMeters"}
-    ];
-
-    $scope.greyhoundSearchFields = [
-        {"name":"greyhoundRef", field:"greyhoundRef", value:$routeParams.id, type:"hidden"}
-    ];
-
-    $scope.racePlacingColumns =[
-        {title: "Placing", field:"placing"},
-        {title: "Name", field:"greyhound.name", type:"link", baseLink:"#/greyhound/view/", linkField: "greyhoundRef"},
-        {title: "Sire", field:"greyhound.sireName", type:"link", baseLink:"#/greyhound/view/", linkField: "sireRef"},
-        {title: "Dam", field:"greyhound.damName", type:"link", baseLink:"#/greyhound/view/", linkField: "damRef"}
-    ];
-
-    $scope.raceSearchFields = [
-        {"name":"raceRef", field:"raceRef", value:$routeParams.id, type:"hidden"}
-    ];
-
-    $scope.removePlacing = function(placingSetIndex, greyhoundIndex){
-        var placingToRemove = $scope.placings[placingSetIndex][greyhoundIndex];
-
-        placingSvr.deletePlacing(placingToRemove).then(function(){
-            $scope.placings[placingSetIndex].splice(greyhoundIndex, 1);
-        },function(){
-            $scope.placingAlerts = [
-                { type: 'danger', msg: "Failed to delete placing" }
-            ];
-        });
-    };
-
-    $scope.savePlacings = function(){
-        var placingModels = $scope.convertDisplayArrayToPlacingModel($scope.placings);
-        $scope.savePlacingModels(placingModels);
-    };
-
-    $scope.showView = function(){
-        $scope.clearNewGreyhound();
-    };
-
-
-    $scope.validateGreyhoundName = function(greyhoundName){
-        //validate the name
-        if (greyhoundName == null || greyhoundName == undefined || greyhoundName.length == 0){
-            $scope.placingAlerts = [
-                { type: 'danger', msg: "Cannot add empty greyhound" }
-            ];
-            return false;
-        }
-        return true;
-    };
-
-    $scope.addGreyhound = function(){
-        $scope.placingAlerts = [];
-        if ($scope.selection.newGreyhoundName != null && $scope.selection.newGreyhoundName.length > 0){
-            greyhoundSvr.findOrCreateGreyhound($scope.selection.newGreyhoundName).then(function(newGreyhound){
-                if (newGreyhound != null){
-                    $scope.addPlacing(newGreyhound);
-                } else {
-                    $scope.placingAlerts.push({ type: 'danger', msg: "Failed to create placing"});
-                }
-            });
-        }
-    };
-
-    $scope.addPlacing = function(newGreyhound){
-        var newPlacing = {
-            name: newGreyhound.name,
-            greyhoundRef : newGreyhound._id
-        };
-
-        newPlacing.sireName = newGreyhound.sireName;
-        newPlacing.damName = newGreyhound.damName;
-        newPlacing.sireRef = newGreyhound.sireRef;
-        newPlacing.damRef = newGreyhound.damRef;
-
-        var displayIndex = $scope.getNextPlacingPosition();
-        var placingPosition = $scope.placingValueLookUp(displayIndex);
-        var newPlacingModel = $scope.convertDisplayModelToPlacingModel(placingPosition, newPlacing);
-        $scope.savePlacingModel(newPlacingModel).then(function(placingId){
-            if (placingId != null){
-                newPlacing.id = placingId;
-
-                //insert the new name into the correct position on the placing sets
-                $scope.placings[displayIndex].push(newPlacing);
-                $scope.showView();
-            }
-        });
-    };
-
-    $scope.getNextPlacingPosition = function(){
-        for(var i = 0; i < $scope.placings.length; i++){
-            if ($scope.placings[i].length == 0){
-                return i;
-            }
-        }
-        return i;
-    };
-
-    $scope.inPlacings = function(greyhoundName){
-        var result = _.find($scope.placings, function(placingSet){
-            return _.find(placingSet, function(greyhound){
-                return _.isEqual(greyhoundName, greyhound.name);
-            });
-        });
-        return result != null;
-    };
-
-    $scope.clearNewGreyhound = function(){
-        $scope.selection = {};
     };
 });

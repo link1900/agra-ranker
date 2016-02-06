@@ -12,29 +12,29 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <button data-ng-click="addGreyhound()" class="btn btn-success">Add</button>
-                    <button data-ng-click="showView()" class="btn btn-default">Clear</button>
+                    <button data-ng-click="addPlacing()" class="btn btn-success">Add</button>
+                    <button data-ng-click="clearNewGreyhound()" class="btn btn-default">Clear</button>
                 </div>
             </div>
-            <div class="row placing-row" ng-repeat="placing in placings">
-                <div class="col-md-1" ng-class="placingDefinitions[$index].style">{{placingDefinitions[$index].placingLabel}}</div>
-                <div data-ng-model="placing" id="placingSet-{{$index}}" ui-sortable="sortableOptions" class="placing-container col-md-11">
-                    <div id="placing-{{$parent.$index}}-{{$index}}" class="row" style="margin-bottom: 5px; margin-top: 5px;" ng-repeat="greyhound in placing">
-                        <span class="placing-greyhound col-md-3">{{greyhound.name}}</span>
+            <div class="row placing-row" ng-repeat="placingSet in placingSets">
+                <div class="col-md-1" ng-class="placingSet.style">{{placingSet.placingLabel}}</div>
+                <div data-ng-model="placingSet.placings" id="placingSet-{{$index}}" ui-sortable="sortableOptions" class="placing-container col-md-11">
+                    <div id="placing-{{$parent.$index}}-{{$index}}" class="row" style="margin-bottom: 5px; margin-top: 5px;" ng-repeat="placing in placingSet.placings">
+                        <span class="placing-greyhound col-md-3">{{placing.greyhound.name}}</span>
                         <div>
                             <span class="col-md-2">
-                                <a data-ng-href="#/greyhound/view/{{greyhound.sireRef}}">{{greyhound.sireName}}</a>
-                                <a ng-show="!greyhound.sireName" data-ng-href="#/greyhound/edit/{{greyhound.greyhoundRef}}" class="btn btn-success btn-sm">Add sire</a>
+                                <a data-ng-href="#/greyhound/view/{{placing.greyhound.sireRef}}">{{placing.greyhound.sireName}}</a>
+                                <a ng-show="!placing.greyhound.sireName" data-ng-href="#/greyhound/edit/{{placing.greyhound.greyhoundRef}}" class="btn btn-success btn-sm">Add sire</a>
                             </span>
                             <span class="col-md-2">
-                                <a data-ng-href="#/greyhound/view/{{greyhound.damRef}}">{{greyhound.damName}}</a>
-                                <a ng-show="!greyhound.damName" data-ng-href="#/greyhound/edit/{{greyhound.greyhoundRef}}" class="btn btn-success btn-sm">Add dam</a>
+                                <a data-ng-href="#/greyhound/view/{{placing.greyhound.damRef}}">{{placing.greyhound.damName}}</a>
+                                <a ng-show="!placing.greyhound.damName" data-ng-href="#/greyhound/edit/{{placing.greyhound.greyhoundRef}}" class="btn btn-success btn-sm">Add dam</a>
                             </span>
                             <span class="col-md-3">
-                                <button data-ng-click="removePlacing($parent.$index, $index)" class="btn btn-danger btn-sm">
+                                <button data-ng-click="removePlacing(placingSet, placing)" class="btn btn-danger btn-sm">
                                     <span class="glyphicon glyphicon-minus-sign"></span> Remove
                                 </button>
-                                <a data-ng-href="#/greyhound/view/{{greyhound.greyhoundRef}}" class="btn btn-default btn-sm">View</a>
+                                <a data-ng-href="#/greyhound/view/{{placing.greyhound._id}}" class="btn btn-default btn-sm">View</a>
                             </span>
                         </div>
                     </div>
