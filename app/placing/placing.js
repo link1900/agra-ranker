@@ -11,7 +11,10 @@ placing.definition = {
     raceRef: {type: String},
     race : {type: RaceSchema},
     greyhoundRef: {type: String},
-    greyhound : {type: GreyhoundDefinition}
+    greyhound : {type: GreyhoundDefinition},
+    prizeMoney : {type: Number},
+    time: {type: Number},
+    margin: {type: String }
 };
 
 placing.schema = new Schema(placing.definition);

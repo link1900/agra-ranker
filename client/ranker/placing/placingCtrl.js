@@ -3,7 +3,7 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
                                                                  headerHelperService,
                                                                  $location,
                                                                  placingSvr,
-                                                                 greyhoundSvr,
+                                                                 greyhoundSvr, $q,
                                                                  raceSvr) {
 
     $scope.placingSvr = placingSvr;
@@ -15,6 +15,8 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
     $scope.greyhoundRef = $routeParams.id;
 
     $scope.formMode = 'view';
+    $scope.showEditForm = false;
+    $scope.placingToEdit = null;
 
     $scope.placingDefinitions = [
         {"displayIndex":0, "placingValue": "1", "placingLabel": "1st", "style": "placing-number"},
@@ -95,7 +97,7 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
             return savedPlacing;
         }, function(){
             $scope.placingAlerts.push({ type: 'danger', msg: "Failed to save placing."});
-            return null;
+            return $q.reject(null);
         });
     };
 
@@ -144,6 +146,24 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
                 }
             });
         }
+    };
+
+    $scope.editPlacing = function(placing){
+        $scope.placingAlerts = [];
+        $scope.placingToEdit = placingSvr.get({placingId:placing._id});
+        $scope.showEditForm = true;
+    };
+
+    $scope.clearPlacingEdit = function(){
+        $scope.placingAlerts = [];
+        $scope.showEditForm = false;
+        $scope.placingToEdit = null;
+    };
+
+    $scope.savePlacingEdit = function(){
+        $scope.savePlacingModel($scope.placingToEdit).then(function(){
+            $scope.clearPlacingEdit();
+        });
     };
 
     $scope.getPlacingSetForPlacingValue = function(placingValue){

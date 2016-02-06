@@ -3,7 +3,7 @@
         <div class="panel-heading">
             <h3 class="panel-title">Placings</h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" ng-hide="showEditForm">
             <div data-alert data-ng-repeat="alert in placingAlerts" data-type="alert.type">{{alert.msg}}</div>
             <div id="placingControls" class="row">
                 <div class="col-md-3 form-group">
@@ -24,22 +24,66 @@
                         <div>
                             <span class="col-md-2">
                                 <a data-ng-href="#/greyhound/view/{{placing.greyhound.sireRef}}">{{placing.greyhound.sireName}}</a>
-                                <a ng-show="!placing.greyhound.sireName" data-ng-href="#/greyhound/edit/{{placing.greyhound.greyhoundRef}}" class="btn btn-success btn-sm">Add sire</a>
+                                <a ng-show="!placing.greyhound.sireName" data-ng-href="#/greyhound/edit/{{placing.greyhound._id}}" class="btn btn-success btn-sm">Add sire</a>
                             </span>
                             <span class="col-md-2">
                                 <a data-ng-href="#/greyhound/view/{{placing.greyhound.damRef}}">{{placing.greyhound.damName}}</a>
-                                <a ng-show="!placing.greyhound.damName" data-ng-href="#/greyhound/edit/{{placing.greyhound.greyhoundRef}}" class="btn btn-success btn-sm">Add dam</a>
+                                <a ng-show="!placing.greyhound.damName" data-ng-href="#/greyhound/edit/{{placing.greyhound._id}}" class="btn btn-success btn-sm">Add dam</a>
                             </span>
                             <span class="col-md-3">
+                                <a data-ng-href="#/greyhound/view/{{placing.greyhound._id}}" class="btn btn-default btn-sm">View</a>
+                                <button data-ng-click="editPlacing(placing)" class="btn btn-primary btn-sm">
+                                    <span class="glyphicon glyphicon-pencil"></span> Edit
+                                </button>
                                 <button data-ng-click="removePlacing(placingSet, placing)" class="btn btn-danger btn-sm">
                                     <span class="glyphicon glyphicon-minus-sign"></span> Remove
                                 </button>
-                                <a data-ng-href="#/greyhound/view/{{placing.greyhound._id}}" class="btn btn-default btn-sm">View</a>
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="panel-body" data-ng-show="showEditForm">
+            <div data-alert data-ng-repeat="alert in placingAlerts" data-type="alert.type">{{alert.msg}}</div>
+            <form name="placingForm" novalidate>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <label class="control-label">Placing</label>
+                        <div>{{placingToEdit.placing}}</div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <label class="control-label">Greyhound Name</label>
+                        <div>{{placingToEdit.greyhound.name}}</div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <label class="control-label" for="placing-prize-money">Prize money</label>
+                        <input id="placing-prize-money" class="form-control" type="text" data-ng-model="placingToEdit.prizeMoney" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <label class="control-label" for="placing-time">Time</label>
+                        <input id="placing-time" class="form-control" type="text" data-ng-model="placingToEdit.time" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <label class="control-label" for="placing-time">Margin</label>
+                        <input id="placing-margin" class="form-control" type="text" data-ng-model="placingToEdit.margin" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button data-ng-click="savePlacingEdit()" class="btn btn-success">
+                        <span class="glyphicon glyphicon-ok"></span> Save
+                    </button>
+                    <a data-ng-click="clearPlacingEdit()" class="btn btn-default">Cancel</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>

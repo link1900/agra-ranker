@@ -131,6 +131,14 @@ placingService.validatePlacing = function(placing){
         return q.reject("greyhound flyweight does not match greyhoundRef");
     }
 
+    if (placing.prizeMoney && !_.isNumber(placing.prizeMoney)){
+        return q.reject("prize money must be a valid number");
+    }
+
+    if (placing.time && !_.isNumber(placing.time)){
+        return q.reject("time must be a valid number");
+    }
+
     return placingService.checkRaceRefExists(placing)
         .then(placingService.checkGreyhoundRefExists)
         .then(placingService.checkGreyhoundRefNotAlreadyUsed);
