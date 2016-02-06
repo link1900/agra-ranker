@@ -150,8 +150,11 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
 
     $scope.editPlacing = function(placing){
         $scope.placingAlerts = [];
-        $scope.placingToEdit = placingSvr.get({placingId:placing._id});
-        $scope.showEditForm = true;
+        placingSvr.get({placingId:placing._id}).$promise.then(function(placing){
+            $scope.placingToEdit = placing;
+            $scope.formatMoney();
+            $scope.showEditForm = true;
+        });
     };
 
     $scope.clearPlacingEdit = function(){
@@ -160,7 +163,24 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
         $scope.placingToEdit = null;
     };
 
+    var moneyFormatSettings = {
+        symbol : "$",
+        decimal : ".",
+        thousand: ",",
+        precision : 2,
+        format: "%v"
+    };
+
+    $scope.formatMoney = function(){
+        if ($scope.placingToEdit.prizeMoney){
+            $scope.placingToEdit.prizeMoney = accounting.format($scope.placingToEdit.prizeMoney, moneyFormatSettings);
+        }
+    };
+
     $scope.savePlacingEdit = function(){
+        if ($scope.placingToEdit.prizeMoney){
+            $scope.placingToEdit.prizeMoney = accounting.unformat($scope.placingToEdit.prizeMoney);
+        }
         $scope.savePlacingModel($scope.placingToEdit).then(function(){
             $scope.clearPlacingEdit();
         });

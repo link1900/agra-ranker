@@ -62,7 +62,10 @@
                 <div class="form-group row">
                     <div class="col-md-4">
                         <label class="control-label" for="placing-prize-money">Prize money</label>
-                        <input id="placing-prize-money" class="form-control" type="text" data-ng-model="placingToEdit.prizeMoney" />
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input id="placing-prize-money" class="form-control" type="text" data-ng-blur="formatMoney()" data-ng-model="placingToEdit.prizeMoney" />
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
