@@ -2,6 +2,7 @@ var greyhoundController = module.exports = {};
 
 var expressService = require('../expressService');
 var greyhoundService = require('./greyhoundService');
+var greyhoundIngestService = require('./greyhoundIngestService');
 
 expressService.addStandardMethods(greyhoundController, greyhoundService);
 
@@ -29,4 +30,8 @@ greyhoundController.exportCSV = function(req, res){
 greyhoundController.exportJSON = function(req, res){
     expressService.streamCollectionToJSONResponse(
         req, res, greyhoundService, greyhoundController.searchFields, "greyhound_export", greyhoundService.greyhoundToExportFormat);
+};
+
+greyhoundController.lookup = function(req, res){
+    expressService.promToRes(greyhoundIngestService.getExternalGreyhoundInfo(req.model), res);
 };

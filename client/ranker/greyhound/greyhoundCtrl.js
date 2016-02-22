@@ -135,5 +135,19 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
                 }
             );
         };
+
+        $scope.getExternalGreyhoundInfo = function(){
+            if ($scope.greyhound){
+                greyhoundSvr.lookupExternalData($scope.greyhound._id).then(function(result){
+                    if (!$scope.greyhound.sireRef){
+                        $scope.sireName = result.sireName;
+                    }
+                    if(!$scope.greyhound.damRef){
+                        $scope.damName = result.damName;
+                    }
+                    return result;
+                });
+            }
+        }
     }
 ]);

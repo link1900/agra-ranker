@@ -11,6 +11,16 @@ angular.module('services').factory('greyhoundSvr', ['$resource', '$http',
             }
         );
 
+        service.lookupExternalData = function(greyhoundId){
+            return $http.get("/greyhound/" + greyhoundId + "/externalLookUp").then(function(result){
+                if (result != null){
+                    return result.data;
+                } else {
+                    return null;
+                }
+            });
+        };
+
         service.findOrCreateGreyhound = function(newGreyhoundName){
             return service.query({name: newGreyhoundName}).$promise.then(function(results){
                 if (results.length != null){
