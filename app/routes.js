@@ -62,6 +62,7 @@ module.exports = function(app) {
     app.get('/greyhound.csv', greyhoundController.exportCSV);
     app.get('/greyhound.json', greyhoundController.exportJSON);
     app.get('/greyhound/:greyhoundId', greyhoundController.getOne);
+    app.get('/greyhound/:greyhoundId/externalLookUp', securityController.checkAuthentication, greyhoundController.lookup);
     app.post('/greyhound', securityController.checkAuthentication,greyhoundController.create);
     app.put('/greyhound/:greyhoundId', securityController.checkAuthentication, greyhoundController.update);
     app.del('/greyhound/:greyhoundId',securityController.checkAuthentication, greyhoundController.destroy);
