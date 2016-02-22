@@ -16,7 +16,7 @@
   "scripts": {
     "start": "node node_modules/gulp/bin/gulp",
     "lint": "node ./node_modules/eslint/bin/eslint.js ./app ./client",
-    "spec": "./node_modules/.bin/istanbul cover _mocha ./specs/*.js",
+    "spec": "./node_modules/.bin/istanbul cover _mocha ./specs/*.js ./app/**/*Test.js",
     "test": "npm run lint && npm run spec",
     "postinstall": "node node_modules/bower/bin/bower install && node node_modules/gulp/bin/gulp js"
   },
@@ -28,6 +28,7 @@
     "busboy": "0.2.1",
     "connect-flash": "~0.1.1",
     "connect-mongo": "~0.4.0",
+    "countryjs": "^1.5.0",
     "csv": "0.4.0",
     "del": "^2.2.0",
     "dotenv": "^0.4.0",
