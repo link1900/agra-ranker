@@ -45,6 +45,7 @@
     "highland": "^2.5.1",
     "lodash": "~2.4.1",
     "moment": "~2.8.3",
+    "moment-timezone": "^0.5.3",
     "mongoose": "3.8.35",
     "mongoose-concrete-timestamps": "0.1.0",
     "node-uuid": "^1.4.1",
@@ -52,10 +53,12 @@
     "nodemailer-smtp-transport": "^0.1.13",
     "passport": "~0.1.18",
     "passport-local": "~0.1.6",
-    "q": "1.0.1",
+    "q": "^1.4.1",
+    "request": "^2.69.0",
     "validator": "^3.22.1",
     "winston": "^0.8.3",
-    "x-ray": "^2.0.3"
+    "x-ray": "^2.0.3",
+    "xml2js": "^0.4.16"
   },
   "devDependencies": {
     "eslint": "^1.10.3",
