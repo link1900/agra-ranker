@@ -145,6 +145,15 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
                     if(!$scope.greyhound.damRef){
                         $scope.damName = result.damName;
                     }
+                    if(!$scope.greyhound.color){
+                        $scope.greyhound.color = result.color;
+                    }
+                    if(!$scope.greyhound.gender){
+                        $scope.greyhound.gender = result.gender;
+                    }
+                    if(!$scope.greyhound.dateOfBirth){
+                        $scope.greyhound.dateOfBirth = result.dateOfBirth;
+                    }
                     return result;
                 });
             }

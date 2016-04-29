@@ -64,7 +64,7 @@ migrationService.getMigrationsToBeRun = function(appliedMigrations, definedMigra
         return seq > lastAppliedMigration;
     });
     return _.filter(definedMigrations, function(migration){
-        return _.contains(migrationsSeqToBeRun, migration.sequence);
+        return _.includes(migrationsSeqToBeRun, migration.sequence);
     });
 };
 

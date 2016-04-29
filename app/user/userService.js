@@ -141,7 +141,7 @@ userService.clearAllInvites = function(user){
 };
 
 userService.validateUserIsEditable = function(user){
-    if (!_.contains(['Active','Inactive'], user.state)){
+    if (!_.includes(['Active','Inactive'], user.state)){
         return q.reject("can only edit a user that is active or inactive");
     }
 
@@ -195,7 +195,7 @@ userService.validateUser = function(user){
         return q.reject("must provide an last name");
     }
 
-    if (!_.contains(_.values(userStates), user.state)){
+    if (!_.includes(_.values(userStates), user.state)){
         return q.reject("unknown user status of type: " + user.state);
     }
 

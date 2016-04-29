@@ -44,7 +44,7 @@ raceService.validateRace = function (race) {
     }
 
     var validGroupLevels = ["Group 1", "Group 2", "Group 3", "Listed"];
-    if (race.groupLevelName && !_.contains(validGroupLevels, race.groupLevelName)) {
+    if (race.groupLevelName && !_.includes(validGroupLevels, race.groupLevelName)) {
         return q.reject("race group level was " + race.groupLevelName + " and must be one of " + validGroupLevels);
     }
 
