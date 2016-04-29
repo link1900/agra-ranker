@@ -3,6 +3,12 @@ var mongoose = require('mongoose');
 var timestamps = require('mongoose-concrete-timestamps');
 var Schema = mongoose.Schema;
 
+greyhound.refDefinition = {
+    id: {type: String},
+    source: {type: String},
+    url : {type: String}
+};
+
 greyhound.definition = {
     name: {type: String},
     sireRef: {type: String},
@@ -11,7 +17,8 @@ greyhound.definition = {
     damName: {type: String},
     dateOfBirth: {type: Date},
     color: {type: String},
-    gender: {type: String}
+    gender: {type: String},
+    externalReference : {type: greyhound.refDefinition}
 };
 
 greyhound.schema = new Schema(greyhound.definition);

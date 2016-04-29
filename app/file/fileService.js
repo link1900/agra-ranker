@@ -16,7 +16,7 @@ fileService.createPostUploadHandler = function(uploadType, handler){
 };
 
 fileService.processPostUpload = function(req, file, uploadType){
-    if (_.contains(_.keys(fileService.postUploadHandlers), uploadType)){
+    if (_.includes(_.keys(fileService.postUploadHandlers), uploadType)){
         return fileService.postUploadHandlers[uploadType](req, file);
     } else {
         return q.reject("Upload of type '" + uploadType + "' is not a valid.");

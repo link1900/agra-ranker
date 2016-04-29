@@ -21,6 +21,10 @@ angular.module('services').factory('greyhoundSvr', ['$resource', '$http',
             });
         };
 
+        service.greyhoundUpdate = function(greyhound){
+            return $http.put("/greyhound/" + greyhound._id,greyhound);
+        };
+
         service.findOrCreateGreyhound = function(newGreyhoundName){
             return service.query({name: newGreyhoundName}).$promise.then(function(results){
                 if (results.length != null){

@@ -161,7 +161,7 @@ batchService.clearProcessor = function(processor){
 };
 
 batchService.processBatch = function(batchJob){
-    if (_.contains(_.keys(batchService.batchHandlers), batchJob.type)){
+    if (_.includes(_.keys(batchService.batchHandlers), batchJob.type)){
         return batchService.batchHandlers[batchJob.type](batchJob);
     } else {
         return q.reject("unknown batch of type: " + batchJob.type);

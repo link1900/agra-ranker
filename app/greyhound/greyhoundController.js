@@ -33,5 +33,5 @@ greyhoundController.exportJSON = function(req, res){
 };
 
 greyhoundController.lookup = function(req, res){
-    expressService.promToRes(greyhoundIngestService.getExternalGreyhoundInfo(req.model), res);
+    expressService.promToRes(greyhoundIngestService.getExternalGreyhoundInfo(req.model.name), res);
 };

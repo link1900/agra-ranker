@@ -1,29 +1,11 @@
-var greyhoundIngestService = module.exports = {};
-
-var q = require('q');
-var _ = require('lodash');
 var Xray = require('x-ray');
 var xray = Xray();
-var logger = require('winston');
+var fs = require('fs');
+var q = require('q');
+var _ = require('lodash');
 var moment = require('moment-timezone');
 
-greyhoundIngestService.grvUrl = "https://fasttrack.grv.org.au";
-
-greyhoundIngestService.getExternalGreyhoundInfo = function(greyhoundName){
-    if (greyhoundName){
-        var url = greyhoundIngestService.buildGRVGreyhoundUrl(greyhoundName);
-        return greyhoundIngestService.downloadInfo(url)
-            .then(greyhoundIngestService.postProcess);
-    } else {
-        q.reject("cannot retrieve info on invalid greyhound or greyhound name")
-    }
-};
-
-greyhoundIngestService.buildGRVGreyhoundUrl = function(name){
-    return greyhoundIngestService.grvUrl +"/Dog/Search?Dog=" + encodeURI(name) + "&ExactMatch=true&Search=Search";
-};
-
-greyhoundIngestService.postProcess = function(scrapResult){
+function ap(scrapResult){
     var fields = scrapResult.fields.map(function(field){
         field.value = field.value.replace(/\s/g, '');
         return field;
@@ -53,31 +35,23 @@ greyhoundIngestService.postProcess = function(scrapResult){
     postProcess.ref = ref;
 
     return q(postProcess);
-};
+}
 
-greyhoundIngestService.addRef = function(result){
-    var ref = {};
-    ref.source = "fasttrack";
-    if (result.url){
-        ref.url = result.url;
-        ref.id = result.id.replace('https://fasttrack.grv.org.au/Dog/Details/','');
-    }
-    result.ref = ref;
-    return q(result);
-};
 
-greyhoundIngestService.downloadInfo = function(url){
-    var deferred = q.defer();
-    logger.info("API request [" + url + "]");
-    xray(url, {
+
+fs.readFile('./scripts/testpage.html', {encoding: 'utf8'}, function(err, data) {
+    if (err) throw err;
+    xray(data, {
         url: "a[rel='dog-details']@href",
         fields: xray('.field', [{
             label: 'label',
             value: ".display-value"
         }])
     })(function(err, result) {
-        if (err) throw deferred.reject(err);
-        deferred.resolve(result);
+        if (err) throw err;
+        ap(result).then(function(out){
+            console.log(out);
+        })
     });
-    return deferred.promise;
-};
+});
+
