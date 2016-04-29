@@ -316,7 +316,7 @@ mongoService.collectionExists = function(collectionName){
             var collectionNames = _.map(collections, function(collection){
                 return collection.collectionName;
             });
-            var result = _.contains(collectionNames, collectionName);
+            var result = _.includes(collectionNames, collectionName);
             deferred.resolve(result);
         }
     });

@@ -111,7 +111,7 @@ placingService.validatePlacing = function(placing){
     }
 
     var validPlacings = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","DNF","disqualified"];
-    if (!_.contains(validPlacings,placing.placing)){
+    if (!_.includes(validPlacings,placing.placing)){
         return q.reject("placing was " +placing.placing + " and must be one of " + validPlacings);
     }
 

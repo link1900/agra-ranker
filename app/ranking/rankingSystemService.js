@@ -50,7 +50,7 @@ rankingSystemService.validateAllotmentCriteria = function(criteria){
 
     if (criteria.comparator != null){
         var validSet = ["=",">","<",">=","<="];
-        if (!_.contains(validSet,criteria.comparator)){
+        if (!_.includes(validSet,criteria.comparator)){
             return q.reject("comparator must be one of the following: " + validSet.join(","));
         }
     }
@@ -65,7 +65,7 @@ rankingSystemService.validateAllotmentCriteria = function(criteria){
 
     if (criteria.type != null){
         var validTypeSet = ["Text","Number","Date","Boolean","Preset"];
-        if (!_.contains(validTypeSet,criteria.type)){
+        if (!_.includes(validTypeSet,criteria.type)){
             return q.reject("criteria type must be one of the following: " + validTypeSet.join(","));
         }
 
@@ -132,7 +132,7 @@ rankingSystemService.validate = function(entityRequest){
 
     if (model.equalPositionResolution != null){
         var validResolutions = ["splitPoints","samePoints"];
-        if (!_.contains(validResolutions,model.equalPositionResolution)){
+        if (!_.includes(validResolutions,model.equalPositionResolution)){
             return q.reject("equalPositionResolution must be one of the following: " + validResolutions.join(","));
         }
     }
@@ -205,7 +205,7 @@ rankingSystemService.addField = function(query, field, statement){
 };
 
 rankingSystemService.convertPlaceHolder = function(placeholder){
-    if (_.contains(_.keys(rankingSystemService.presetCriteriaFields), placeholder)){
+    if (_.includes(_.keys(rankingSystemService.presetCriteriaFields), placeholder)){
         return rankingSystemService.presetCriteriaFields[placeholder].value;
     } else {
         return placeholder;
