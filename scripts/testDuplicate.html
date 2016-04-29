@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <script type="text/javascript">window.NREUM||(NREUM={});NREUM.info = {"beacon":"bam.nr-data.net","errorBeacon":"bam.nr-data.net","licenseKey":"336cf21b95","applicationID":"1090809","transactionName":"NgBSNUBSXBADV0IKXg9KdA5GfVcXIVtYF0MOCVwEQBx2DAUbZQZQEwZY","queueTime":0,"applicationTime":20,"ttGuid":"57D245A2404286D8","agent":""}</script><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"VgcPUVdQGwIAXVFaBwg="};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o||e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({1:[function(t,e,n){function r(t){try{s.console&&console.log(t)}catch(e){}}var o,i=t("ee"),a=t(14),s={};try{o=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,-1!==o.indexOf("dev")&&(s.dev=!0),-1!==o.indexOf("nr_dev")&&(s.nrDev=!0))}catch(c){}s.nrDev&&i.on("internal-error",function(t){r(t.stack)}),s.dev&&i.on("fn-err",function(t,e,n){r(n.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,o){try{d?d-=1:i("err",[o||new UncaughtException(t,e,n)])}catch(s){try{i("ierr",[s,(new Date).getTime(),!0])}catch(c){}}return"function"==typeof f?f.apply(this,a(arguments)):!1}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function o(t){i("err",[t,(new Date).getTime()])}var i=t("handle"),a=t(15),s=t("ee"),c=t("loader"),f=window.onerror,u=!1,d=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(l){"stack"in l&&(t(8),t(7),"addEventListener"in window&&t(5),c.xhrWrappable&&t(9),u=!0)}s.on("fn-start",function(t,e,n){u&&(d+=1)}),s.on("fn-err",function(t,e,n){u&&(this.thrown=!0,o(n))}),s.on("fn-end",function(){u&&!this.thrown&&d>0&&(d-=1)}),s.on("internal-error",function(t){i("ierr",[t,(new Date).getTime(),!0])})},{}],3:[function(t,e,n){t("loader").features.ins=!0},{}],4:[function(t,e,n){function r(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var o=t("ee"),i=t("handle"),a=t(8),s=t(7);t("loader").features.stn=!0,t(6);var c=NREUM.o.EV;o.on("fn-start",function(t,e){var n=t[0];n instanceof c&&(this.bstStart=Date.now())}),o.on("fn-end",function(t,e){var n=t[0];n instanceof c&&i("bst",[n,e,this.bstStart,Date.now()])}),a.on("fn-start",function(t,e,n){this.bstStart=Date.now(),this.bstType=n}),a.on("fn-end",function(t,e){i("bstTimer",[e,this.bstStart,Date.now(),this.bstType])}),s.on("fn-start",function(){this.bstStart=Date.now()}),s.on("fn-end",function(t,e){i("bstTimer",[e,this.bstStart,Date.now(),"requestAnimationFrame"])}),o.on("pushState-start",function(t){this.time=Date.now(),this.startPath=location.pathname+location.hash}),o.on("pushState-end",function(t){i("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),"addEventListener"in window.performance&&(window.performance.clearResourceTimings?window.performance.addEventListener("resourcetimingbufferfull",function(t){i("bstResource",[window.performance.getEntriesByType("resource")]),window.performance.clearResourceTimings()},!1):window.performance.addEventListener("webkitresourcetimingbufferfull",function(t){i("bstResource",[window.performance.getEntriesByType("resource")]),window.performance.webkitClearResourceTimings()},!1)),document.addEventListener("scroll",r,!1),document.addEventListener("keypress",r,!1),document.addEventListener("click",r,!1)}},{}],5:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(u);)e=Object.getPrototypeOf(e);e&&o(e)}function o(t){s.inPlace(t,[u,d],"-",i)}function i(t,e){return t[1]}var a=t("ee").get("events"),s=t(16)(a),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(o(window),o(f.prototype)),a.on(u+"-start",function(t,e){if(t[1]){var n=t[1];if("function"==typeof n){var r=c(n,"nr@wrapped",function(){return s(n,"fn-",null,n.name||"anonymous")});this.wrapped=t[1]=r}else"function"==typeof n.handleEvent&&s.inPlace(n,["handleEvent"],"fn-")}}),a.on(d+"-start",function(t){var e=this.wrapped;e&&(t[1]=e)})},{}],6:[function(t,e,n){var r=t("ee").get("history"),o=t(16)(r);e.exports=r,o.inPlace(window.history,["pushState","replaceState"],"-")},{}],7:[function(t,e,n){var r=t("ee").get("raf"),o=t(16)(r);e.exports=r,o.inPlace(window,["requestAnimationFrame","mozRequestAnimationFrame","webkitRequestAnimationFrame","msRequestAnimationFrame"],"raf-"),r.on("raf-start",function(t){t[0]=o(t[0],"fn-")})},{}],8:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function o(t,e,n){this.method=n,this.timerDuration="number"==typeof t[1]?t[1]:0,t[0]=a(t[0],"fn-",this,n)}var i=t("ee").get("timer"),a=t(16)(i);e.exports=i,a.inPlace(window,["setTimeout","setImmediate"],"setTimer-"),a.inPlace(window,["setInterval"],"setInterval-"),a.inPlace(window,["clearTimeout","clearImmediate"],"clearTimeout-"),i.on("setInterval-start",r),i.on("setTimer-start",o)},{}],9:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",s)}function o(){var t=this,e=u.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,v,"fn-",s)}function i(t){w.push(t),h&&(g=-g,b.data=g)}function a(){for(var t=0;t<w.length;t++)r([],w[t]);w.length&&(w=[])}function s(t,e){return e}function c(t,e){for(var n in t)e[n]=t[n];return e}t(5);var f=t("ee"),u=f.get("xhr"),d=t(16)(u),l=NREUM.o,p=l.XHR,h=l.MO,m="readystatechange",v=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],w=[];e.exports=u;var y=window.XMLHttpRequest=function(t){var e=new p(t);try{u.emit("new-xhr",[e],e),e.addEventListener(m,o,!1)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}return e};if(c(p,y),y.prototype=p.prototype,d.inPlace(y.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,e){r(t,e),i(e)}),u.on("open-xhr-start",r),h){var g=1,b=document.createTextNode(g);new h(a).observe(b,{characterData:!0})}else f.on("fn-end",function(t){t[0]&&t[0].type===m||a()})},{}],10:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;l>r;r++)t.removeEventListener(d[r],this.listener,!1);if(!e.aborted){if(n.duration=(new Date).getTime()-this.startTime,4===t.readyState){e.status=t.status;var i=o(t,this.lastSize);if(i&&(n.rxSize=i),this.sameOrigin){var a=t.getResponseHeader("X-NewRelic-App-Data");a&&(e.cat=a.split(", ").pop())}}else e.status=0;n.cbTime=this.cbTime,u.emit("xhr-done",[t],t),c("xhr",[e,n,this.startTime])}}}function o(t,e){var n=t.responseType;if("json"===n&&null!==e)return e;var r="arraybuffer"===n||"blob"===n||"json"===n?t.response:t.responseText;return i(r)}function i(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}function a(t,e){var n=f(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.sameOrigin=n.sameOrigin}var s=t("loader");if(s.xhrWrappable){var c=t("handle"),f=t(11),u=t("ee"),d=["load","error","abort","timeout"],l=d.length,p=t("id"),h=t(13),m=window.XMLHttpRequest;s.features.xhr=!0,t(9),u.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,h&&(h>34||10>h)||window.opera||t.addEventListener("progress",function(t){e.lastSize=t.loaded},!1)}),u.on("open-xhr-start",function(t){this.params={method:t[0]},a(this,t[1]),this.metrics={}}),u.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid)}),u.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],o=this;if(n&&r){var a=i(r);a&&(n.txSize=a)}this.startTime=(new Date).getTime(),this.listener=function(t){try{"abort"===t.type&&(o.params.aborted=!0),("load"!==t.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof e.onload))&&o.end(e)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}};for(var s=0;l>s;s++)e.addEventListener(d[s],this.listener,!1)}),u.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),u.on("xhr-load-added",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),u.on("xhr-load-removed",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),u.on("addEventListener-end",function(t,e){e instanceof m&&"load"===t[0]&&u.emit("xhr-load-added",[t[1],t[2]],e)}),u.on("removeEventListener-end",function(t,e){e instanceof m&&"load"===t[0]&&u.emit("xhr-load-removed",[t[1],t[2]],e)}),u.on("fn-start",function(t,e,n){e instanceof m&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=(new Date).getTime()))}),u.on("fn-end",function(t,e){this.xhrCbStart&&u.emit("xhr-cb-time",[(new Date).getTime()-this.xhrCbStart,this.onload,e],e)})}},{}],11:[function(t,e,n){e.exports=function(t){var e=document.createElement("a"),n=window.location,r={};e.href=t,r.port=e.port;var o=e.href.split("://");!r.port&&o[1]&&(r.port=o[1].split("/")[0].split("@").pop().split(":")[1]),r.port&&"0"!==r.port||(r.port="https"===o[0]?"443":"80"),r.hostname=e.hostname||n.hostname,r.pathname=e.pathname,r.protocol=o[0],"/"!==r.pathname.charAt(0)&&(r.pathname="/"+r.pathname);var i=!e.protocol||":"===e.protocol||e.protocol===n.protocol,a=e.hostname===document.domain&&e.port===n.port;return r.sameOrigin=i&&(!e.hostname||a),r}},{}],12:[function(t,e,n){function r(t,e){return function(){o(t,[(new Date).getTime()].concat(a(arguments)),null,e)}}var o=t("handle"),i=t(14),a=t(15);"undefined"==typeof window.newrelic&&(newrelic=NREUM);var s=["setPageViewName","addPageAction","setCustomAttribute","finished","addToTrace","inlineHit"],c=["addPageAction"],f="api-";i(s,function(t,e){newrelic[e]=r(f+e,"api")}),i(c,function(t,e){newrelic[e]=r(f+e)}),e.exports=newrelic,newrelic.noticeError=function(t){"string"==typeof t&&(t=new Error(t)),o("err",[t,(new Date).getTime()])}},{}],13:[function(t,e,n){var r=0,o=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);o&&(r=+o[1]),e.exports=r},{}],14:[function(t,e,n){function r(t,e){var n=[],r="",i=0;for(r in t)o.call(t,r)&&(n[i]=e(r,t[r]),i+=1);return n}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],15:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(0>o?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=r},{}],16:[function(t,e,n){function r(t){return!(t&&"function"==typeof t&&t.apply&&!t[a])}var o=t("ee"),i=t(15),a="nr@original",s=Object.prototype.hasOwnProperty,c=!1;e.exports=function(t){function e(t,e,n,o){function nrWrapper(){var r,a,s,c;try{a=this,r=i(arguments),s="function"==typeof n?n(r,a):n||{}}catch(u){d([u,"",[r,a,o],s])}f(e+"start",[r,a,o],s);try{return c=t.apply(a,r)}catch(l){throw f(e+"err",[r,a,l],s),l}finally{f(e+"end",[r,a,c],s)}}return r(t)?t:(e||(e=""),nrWrapper[a]=t,u(t,nrWrapper),nrWrapper)}function n(t,n,o,i){o||(o="");var a,s,c,f="-"===o.charAt(0);for(c=0;c<n.length;c++)s=n[c],a=t[s],r(a)||(t[s]=e(a,f?s+o:o,i,s))}function f(e,n,r){if(!c){c=!0;try{t.emit(e,n,r)}catch(o){d([o,e,n,r])}c=!1}}function u(t,e){if(Object.defineProperty&&Object.keys)try{var n=Object.keys(t);return n.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(r){d([r])}for(var o in t)s.call(t,o)&&(e[o]=t[o]);return e}function d(e){try{t.emit("internal-error",e)}catch(n){}}return t||(t=o),e.inPlace=n,e.flag=a,e}},{}],ee:[function(t,e,n){function r(){}function o(t){function e(t){return t&&t instanceof r?t:t?s(t,a,i):i()}function n(n,r,o){t&&t(n,r,o);for(var i=e(o),a=l(n),s=a.length,c=0;s>c;c++)a[c].apply(i,r);var u=f[v[n]];return u&&u.push([w,n,r,i]),i}function d(t,e){m[t]=l(t).concat(e)}function l(t){return m[t]||[]}function p(t){return u[t]=u[t]||o(n)}function h(t,e){c(t,function(t,n){e=e||"feature",v[n]=e,e in f||(f[e]=[])})}var m={},v={},w={on:d,emit:n,get:p,listeners:l,context:e,buffer:h};return w}function i(){return new r}var a="nr@context",s=t("gos"),c=t(14),f={},u={},d=e.exports=o();d.backlog=f},{}],gos:[function(t,e,n){function r(t,e,n){if(o.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return t[e]=r,r}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){o.buffer([t],r),o.emit(t,e,n)}var o=t("ee").get("handle");e.exports=r,r.ee=o},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,i,function(){return o++})}var o=1,i="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!m++){var t=h.info=NREUM.info,e=u.getElementsByTagName("script")[0];if(t&&t.licenseKey&&t.applicationID&&e){c(l,function(e,n){t[e]||(t[e]=n)});var n="https"===d.split(":")[0]||t.sslForHttp;h.proto=n?"https://":"http://",s("mark",["onload",a()],null,"api");var r=u.createElement("script");r.src=h.proto+t.agent,e.parentNode.insertBefore(r,e)}}}function o(){"complete"===u.readyState&&i()}function i(){s("mark",["domContent",a()],null,"api")}function a(){return(new Date).getTime()}var s=t("handle"),c=t(14),f=window,u=f.document;NREUM.o={ST:setTimeout,CT:clearTimeout,XHR:f.XMLHttpRequest,REQ:f.Request,EV:f.Event,PR:f.Promise,MO:f.MutationObserver},t(12);var d=""+location,l={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-918.min.js"},p=window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&!/CriOS/.test(navigator.userAgent),h=e.exports={offset:a(),origin:d,features:{},xhrWrappable:p};u.addEventListener?(u.addEventListener("DOMContentLoaded",i,!1),f.addEventListener("load",r,!1)):(u.attachEvent("onreadystatechange",o),f.attachEvent("onload",r)),s("mark",["firstbyte",a()],null,"api");var m=0},{}]},{},["loader",2,10,4,3]);</script>
+    <!--[if lt IE 9]>
+    <script src="https://fasttrack.blob.core.windows.net/webcontent/Scripts/html5shiv.js" type="text/javascript"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="https://fasttrack.blob.core.windows.net/webcontent/images/favicon.ico?b=70000042202" />
+    <link rel="apple-touch-icon" href="https://fasttrack.blob.core.windows.net/webcontent/images/grv_profile.jpg?b=70000042202" />
+    <link rel="stylesheet" href="https://fasttrack.blob.core.windows.net/webcontent/jquery-ui/jquery-ui-1.8.14.custom.css?b=70000042202"/>
+    <link rel="stylesheet" href="https://fasttrack.blob.core.windows.net/webcontent/Site.css?b=70000042202"/>
+
+    <script src="https://fasttrack.blob.core.windows.net/webcontent/Scripts/all.js?b=70000042202" type="text/javascript"></script>
+
+
+
+
+
+
+
+    <title>Search for a Dog</title>
+    <!-- Google Analytics -->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-9122960-20', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <!-- End Google Analytics -->
+</head>
+
+<body class="portal">
+
+<div id="flash"></div>
+<div class="skipLink"><a href="#loginLogout"><span>Skip to log in</span></a></div>
+<div class="skipLink"><a href="#contentContainer"><span>Skip to content</span></a></div>
+<div id="nonFooter">
+    <!-- Build No: 7.0.0.42202 -->
+    <div id="header">
+        <div class="centralHeaderContent">
+            <a id="logo" href="/"><img alt="FastTrack Logo" src="https://fasttrack.blob.core.windows.net/webcontent/images/FastTrackLogo.png" width="171px" height="60px" /></a>
+
+            <div id="corporate-navigation">
+                <ul>
+
+                    <li class="first">
+                        <a href="/Meeting/Calendar" rel="Calendar">Calendar</a>
+                    </li>
+                    <li>
+                        <a href="/Statistics/ViewTrackRecords" rel="Statistics">Statistics</a>
+                        <ul>
+                            <li class="first"><a href="/Statistics/ViewTrackRecords">Track records &amp; winning boxes</a></li>
+                            <li><a href="/Statistics/LeadingTrainers">Leading trainer</a></li>
+                            <li><a href="/Statistics/LeadingSireDam">Winning sire or dam</a></li>
+                            <li><a href="/Statistics/ViewTrackRecords">Split records</a></li>
+                            <li><a href="/Statistics">Club statistics</a></li>
+                            <li><a href="/ViewLitters">Litter Search</a></li>
+                            <li><a href="/ViewServices/StudServiceSearch">Stud Dog Service Search</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/StewardsHearing/StewardsInquiry" rel="stewardsinquiry">Stewards</a>
+                        <ul>
+                            <li class="first"><a href="/StewardsHearing/GeneralAlert" rel="generalalert">General Alerts</a></li>
+                            <li><a href="/StewardsHearing/StewardsInquiry" rel="stewardsinquiry">Stewards Inquiries</a></li>
+                            <li><a href="/StewardsHearing/RadbHearing" rel="radbhearing">RADB Hearings &amp; Appeals</a></li>
+                            <li><a rel="Links" href="/Home/RuleBook"  onclick="this.blur()">RuleBook</a></li>
+                            <li><a rel="Links" href="https://fasttrack.blob.core.windows.net/webcontent/documents/RAD Board GRV_Notice of Appeal 201406.pdf"  target="_blank"">Notice of Appeal to the Racing Appeals and Disciplinary Board</a></li>
+                            <li><a rel="Links" href="https://fasttrack.blob.core.windows.net/webcontent/documents/GRV Appeals Process.docx"  target="_blank"">Appeal Process</a></li>
+                            <li><a href="/StewardsHearing/TreatmentRecord">Treatment Record</a></li>
+                            <li><a href="/StewardsHearing/ElectiveSwabKits">Elective Swab Kits</a></li>
+                            <li><a rel="Links" href="https://fasttrack.blob.core.windows.net/webcontent/documents/RADB Handbook 2014 - Final.doc"  target="_blank"">RADB Handbook 2014</a></li>
+                            <li><a rel="Links" href="https://fasttrack.blob.core.windows.net/webcontent/documents/RADB Handbook Appendices 2014  Final.pdf"  target="_blank"">RADB Appendices 2014</a></li>
+                            <li><a href="/StewardsHearing/IntegrityCouncil">Integrity Council</a></li>
+                            <li><a href="http://www.grv.org.au/report-suspicious-activity/" target="_blank">Report Suspicious Activities</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/Watchdog/FormGuides" rel="Watchdog">Watchdog</a>
+                        <ul>
+                            <li class="first"><a href="/Watchdog/FormGuides" onclick="this.blur()" rel="Watchdog">Form Guides</a></li>
+                            <li><a href="/Tracking/Info" onclick="this.blur()" rel="Watchdog">eDog Tracker</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/Racing" rel="Racing">Racing</a>
+                        <ul>
+                            <li><a href="/racing/GradingGuidelines">Grading Guidelines</a> </li>
+                            <li><a href="/racing/Policies">Policies</a> </li>
+                            <li><a href="https://fasttrack.blob.core.windows.net/webcontent/documents/GroupRaceCalendar.pdf" target="_blank" >Group Calendar</a></li>
+                            <li><a href="https://fasttrack.blob.core.windows.net/webcontent/documents/Go Racing Distance Bonus 020712.pdf" target="_blank" >Go Distance Racing</a></li>
+                            <li><a href="https://fasttrack.blob.core.windows.net/webcontent/documents/Ranking System Maiden.pdf" target="_blank" >Order of entry Maiden Events</a></li>
+                            <li><a href="https://fasttrack.blob.core.windows.net/webcontent/documents/VBIS CONDITIONS 150213.pdf" target="_blank" >VBIS</a> </li>
+                            <li><a href="https://fasttrack.blob.core.windows.net/webcontent/documents/Vet List 2012.pdf" target="_blank">Greyhound Vets</a></li>
+                            <li><a href="/Racing/FeeSchedule">Fee Schedule</a></li>
+                            <li><a href="/Racing/GradingQueries">Grading Queries</a></li>
+                            <li><a href="/Racing/ClearanceOfficers">Clearance Officers</a></li>
+                            <li>
+                                <a href="#"> Feature Event Conditions</a>
+                                <ul>
+                                    <li><a href="https://fasttrack.blob.core.windows.net/webcontent/documents/GreatChase.pdf" target="_blank">Great Chase</a></li>
+                                    <li><a href="https://fasttrack.blob.core.windows.net/webcontent/documents/2016LaunchingPadConditions.pdf" target="_blank">2016 Launching Pad</a></li>
+                                    <li><a href="https://fasttrack.blob.core.windows.net/webcontent/documents/Shootout.pdf" target="_blank">Shootout</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="https://fasttrack.blob.core.windows.net/webcontent/documents/GroupRaceGradingPolicy.pdf" target="_blank" >Group Race Grading Policy</a></li>
+                            <li><a href="/Racing/AnimalWelfareInitiatives">Animal Welfare Initiatives</a> </li>
+                            <li><a href="/GMVictoria/GMVictoria" rel="grvinformer">Greyhound Monthly Victoria</a></li>
+                            <li><a href="https://fasttrack.blob.core.windows.net/webcontent/documents/racing/BoxDrawAudit.pdf" target="_blank" >Box Draw Audit</a></li>
+                        </ul>
+                    </li>
+                    <li>
+            <span style="color: #EFEFEF; display: block; font-size: 95%; font-weight: bold; line-height: 26px; padding-right: 2.8em; text-decoration: none; text-transform: uppercase; cursor:pointer">
+                Help
+            </span>
+                        <ul>
+                            <li class="first"><a rel="FastTrack Help" href="/Help">FastTrack Help</a></li>
+                            <li><a rel="Contact Us" href="http://www.grv.org.au/contact-us" target="_blank" onclick="this.blur()">Contact Us</a></li>
+                            <li><a rel="Links" href="http://www.grv.org.au/links" target="_blank" onclick="this.blur()">Links</a></li>
+
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/GAP/Home" rel="GAP" target="_blank">GAP</a>
+                    </li>
+                    <li><a rel="Links" href="http://www.grv.org.au" target="_blank">grv website</a></li>
+                    <li><a rel="Links" href="http://greyhoundcare.grv.org.au" target="_blank">Greyhound Care</a></li>
+                </ul>
+            </div>
+
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    /* Add effects for keyboard navigation */
+                    $("#corporate-navigation ul li").focusin(function () { $(this).addClass("csshover"); });
+                    $("#corporate-navigation ul li").focusout(function () { $(this).removeClass("csshover"); });
+                });
+            </script>
+        </div>
+
+        <div id="fasttrack-navigation-placeholder">
+
+        </div>
+    </div>
+
+    <div id="print-header">
+        <img id="grv-logo" alt="GRV Logo" src="https://fasttrack.blob.core.windows.net/webcontent/images/GRVLogo_Grey.gif" width="162px" height="57px" />
+        <img id="fasttrack-logo" alt="FastTrack Logo" src="https://fasttrack.blob.core.windows.net/webcontent/images/fasttrack-logo-grey.jpg" width="176px" height="30px" />
+    </div>
+    <div class="page-wrapper">
+        <section id="page">
+            <div class="tab"></div>
+            <div id="contentContainer" class="rightNavSpace">
+
+                <div id="mainContent" class="rightNavSpace">
+                    <div id="mainContentHeader" class="">
+                        <h1>Search for a Dog</h1>
+
+
+                        <img src="https://fasttrack.blob.core.windows.net/webcontent/images/banner-racing-dog.png" alt="Racing dogs" class="page-header-image" />
+
+
+
+                        <div class="tab-navigation">
+
+
+
+                            <ul class="tab-container">
+                            </ul>
+                        </div>
+
+
+                    </div>
+                    <div id="mainContentArea" class="">
+
+
+
+
+
+
+
+
+
+
+
+                        <div class="area">
+                            <form action="/Dog/Search" method="get">        <div class="page-info">Enter details below to search for a dog.</div>
+                                <fieldset>
+                                    <legend>Search Criteria</legend>
+                                    <div class="field">
+                                        <div class="editor-label">
+                                            <label for="Dog">Dog</label>
+                                        </div>
+                                        <div class="editor-input">
+                                            <input class="text-box single-line" id="Dog" name="Dog" type="text" value="DEMON BALE" />
+
+                                            <span class="field-validation-valid" data-valmsg-for="Dog" data-valmsg-replace="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="editor-label">
+                                            <label for="Trainer">By Trainer</label>
+                                        </div>
+                                        <div class="editor-input">
+                                            <input class="text-box single-line" id="Trainer" name="Trainer" type="text" value="" />
+
+                                            <span class="field-validation-valid" data-valmsg-for="Trainer" data-valmsg-replace="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="editor-input">
+                                            <input type="checkbox" id="ExactMatch" name="ExactMatch" value="true" checked />
+                                            <label for="ExactMatch">Exact match only</label>
+                                            <div class="input-prompt"><span class="highlight-info">Tip: </span>If you select exact match, only results that exactly match your search will be returned.</div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Actions</legend>
+                                    <div class="actions">
+                                        <button id="Search" type="submit" name="Search" value="Search">Search</button>
+                                    </div>
+                                </fieldset>
+                            </form></div>
+
+                        <div class="area">
+                            <div id="areaTitle">Search Results (2 found)</div>
+                            <table id="results" class="search-results">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Trainer</th>
+                                    <th>Options</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><a href="/Dog/Details/-470995">DEMON BALE</a></td>
+                                    <td></td>
+                                    <td class="link_column">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="/Dog/Details/839590074">DEMON BALE</a></td>
+                                    <td>BLAKE SHILLINGTON</td>
+                                    <td class="link_column">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="trackingOptions" style="display:none;"></div>
+
+
+
+
+
+
+
+                    </div>
+                </div>
+                <!--mainContent-->
+            </div><!--contentContainer-->
+
+            <div id="rightNav">
+                <div id="rightNavContent">
+                    <img id="rightNavLogo" alt="FastTrack" src="https://fasttrack.blob.core.windows.net/webcontent/images/rightnav-logo-fasttrack-noreflect.png" />
+
+
+
+
+                    <div class="rightNavSectionContainer" style="padding-bottom: 10px; overflow:hidden;">
+
+                        <form action="/LocalAuthentication/SignIn" method="post">        <div id="loginLogout" class="rightNavEmbeddedLogin">
+                            <input name="__RequestVerificationToken" type="hidden" value="dLWLcLmPCmEDOVLdRcfE9EquYVIPknf5+yt+5QS4jexJ5ExysX4rPAVVAUJ7dQaZ8SHZ3j2OSZB2NZbUvUwkj3L86oHUDr4S+EaEfGFhqCh+B2VWV1aMMMD7MgPgsqLMolPzJt5bxDJGeBDjLE63oJx69nQ=" />
+                            <div class="sm-login-username">
+                                <div class="sm-login-label">Member number or email</div>
+                                <div class="sm-login-input"><input type="text" name="Username" /></div>
+                            </div>
+                            <div class="sm-login-password">
+                                <div class="sm-login-label">Password</div>
+                                <div class="sm-login-input"><input type="password" name="Password" autocomplete="off" /></div>
+                                <div class="sm-login-forgotpassword"><a href="/Home/ResetPassword">Forgotten your password?</a></div>
+                            </div>
+                            <div class="sm-login-createaccount">
+                                <a class="create-account" href="/CreateAccount/Create" rel="create-account">Create an account</a>
+                            </div>
+                            <div class="sm-login-submit">
+                                <button type="submit">Log in</button>
+                            </div>
+                        </div>
+                        </form>
+                        <div id="createAccountInfo" style="display:none;">
+                            <h1 style="text-align: center;">CREATE A FREE FASTTRACK ACCOUNT NOW</h1>
+                            <h1 class="sub-level" style="text-align: center; ">Accounts can be created online in minutes</h1>
+
+                            <p>A FastTrack account allows you to:</p>
+                            <ul>
+                                <li>Apply to become an Owner or Trainer</li>
+                                <li>Browse your dog information</li>
+                                <li>Nominate for meetings</li>
+                                <li>Retire, transfer ownership and change kennels for your dogs</li>
+                                <li>Manage breeding</li>
+                            </ul>
+                            <p>Plus many more greyhound racing functions.</p>
+                            <p>To open an account, you will need a valid email address.</p>
+                            <fieldset>
+                                <legend>Actions</legend>
+                                <div class="actions">
+                                    <form action="/CreateAccount/Create" method="get">                <button type="submit" value="create"><img alt="Submit" src="https://fasttrack.blob.core.windows.net/webcontent/images/greentick.png" />Create Account</button>
+                                        <a href="#" onclick="$('#createAccountInfo').dialog('close'); return false;">Cancel</a>
+                                    </form>        </div>
+                            </fieldset>
+                        </div>
+
+                        <script type="text/javascript">
+                            var doCreateAccountPopup = true;
+                            var timerId;
+
+                            $(document).ready(function() {
+                                /* Hide sliding logout link */
+                                $("#logout-link").hide();
+
+                                /* Highlight impersonation */
+                                $(".sm-login-impersonating").effect('pulsate', { times: 3 }, 500);
+
+                                /* Slide logout link into view on hover or enter/space keypress */
+                                $("#logout-trigger").hover(function() {
+                                    clearTimeout(timerId);
+                                    $("#logout-link").slideDown();
+                                }, function() {
+                                    timerId = setTimeout(function() { $("#logout-link").slideUp(); }, 700);
+                                });
+                                $("#logout-trigger").keydown(function(e) {
+                                    if (e.keyCode == 13 || e.keyCode == 32) {
+                                        clearTimeout(timerId);
+                                        $("#logout-link").slideDown();
+                                        $("#logout-link a").first().focus();
+                                        return false;
+                                    }
+                                    return true;
+                                });
+                                $("#logout-link").hover(function () {
+                                    clearTimeout(timerId);
+                                }, function () {
+                                    timerId = setTimeout(function() {$("#logout-link").slideUp();}, 700);
+                                });
+                                $("#logout-link a.logout").blur(function() {
+                                    $("#logout-link").slideUp();
+                                });
+
+                                /* Show create account information popup */
+                                if (doCreateAccountPopup) {
+                                    $("#createAccountInfo").dialog({
+                                        autoOpen: false,
+                                        title: 'Create Account',
+                                        width: 500,
+                                        height: 'auto',
+                                        resizable: false,
+                                        modal: true
+                                    });
+
+                                    $(".create-account").click(function() {
+                                        $('#createAccountInfo').dialog('open');
+                                        return false;
+                                    });
+                                }
+
+                            });
+                        </script>
+
+                    </div>
+                    <div class="rightNavSectionContainer">
+                        <div class="rightNavSectionDivider" style="padding-top: 0px; padding-bottom: 0.6em;">
+                            <img src="https://fasttrack.blob.core.windows.net/webcontent/images/right-nav-red-divider.png" alt="" width="170px;"/>
+                        </div>
+                        <a href="http://www.grv.org.au/report-suspicious-activity/" target="_blank"><img src="https://fasttrack.blob.core.windows.net/webcontent/images/GRV_Hotline.png" alt="News"/></a>
+                        <div class="rightNavSectionDivider">
+                            <img src="https://fasttrack.blob.core.windows.net/webcontent/images/right-nav-red-divider.png" alt="" width="170px;"/>
+                        </div>
+                    </div>
+                    <div class="rightNavSectionContainer">
+                        <div class="rightNavSectionHeader"><h2>Upcoming Meetings</h2></div>
+                        <div class="rightNavSectionBody">
+                            <h3>Today (28/04/2016)</h3>
+                            <ul>
+                                <li>
+                                    <a href="/RaceField/ViewRaces/2027150063?raceId=112620795">SAN - Race 11 13m</a>
+                                </li>
+                            </ul>
+
+
+                            <h3 style="padding-top:1ex;">Other Fields</h3>
+
+                            <ul>
+                                <li><a href="/RaceField/ViewRaces/2027150064">Bendigo - Fri 29/04</a></li>
+                                <li><a href="/RaceField/ViewRaces/2027150065">Geelong - Fri 29/04</a></li>
+                                <li><a href="/RaceField/ViewRaces/2027150066">Traralgon - Sat 30/04</a></li>
+                                <li><a href="/RaceField/ViewRaces/2027150067">The Meadows - Sat 30/04</a></li>
+                                <li><a href="/RaceField/ViewRaces/2027150068">Sale - Sun 1/05</a></li>
+                                <li><a href="/RaceField/ViewRaces/2027150069">Sandown (SAP) - Sun 1/05</a></li>
+                                <li><a href="/RaceField/ViewRaces/2135420000">Healesville - Sun 1/05</a></li>
+                                <li><a href="/RaceField/ViewRaces/2135420088">Ballarat - Mon 2/05</a></li>
+                                <li><a href="/RaceField/ViewRaces/2135420099">Traralgon - Mon 2/05</a></li>
+                                <li><a href="/RaceField/ViewRaces/2027150070">Shepparton - Mon 2/05</a></li>
+                                <li><a href="/RaceField/ViewRaces/2027150071">Warragul - Tue 3/05</a></li>
+                                <li><a href="/RaceField/ViewRaces/2135420091">Geelong - Tue 3/05</a></li>
+                                <li><a href="/RaceField/ViewRaces/2135420001">Horsham - Tue 3/05</a></li>
+                            </ul>
+
+                            <script type="text/javascript">
+                                function LinkToPage(sender) {
+                                    var url = sender.value;
+                                    if (url != null && url != '') {
+                                        if (top !== self && parent.childNavigate) {
+                                            /*parent.childNavigate(url);*/
+                                        }
+                                        else {
+                                            window.location.href = url;
+                                        }
+                                    }
+                                }
+                            </script>
+
+                        </div>
+                        <div class="rightNavSectionDivider">
+                            <img src="https://fasttrack.blob.core.windows.net/webcontent/images/right-nav-red-divider.png" alt="" width="170px;" />
+                        </div>
+                    </div>
+                    <div class="rightNavSectionContainer">
+                        <div class="rightNavSectionHeader"><h2>Recent Results</h2></div>
+                        <div class="rightNavSectionBody">
+
+                            <h3>Today (28/04/2016)</h3>
+                            <ul>
+                                <li>
+                                    <a href="/RaceField/ViewRaces/2027150061">Warragul</a>
+                                </li>
+                                <li>
+                                    <a href="/RaceField/ViewRaces/2027150063">Sandown Park</a>
+                                </li>
+                                <li>
+                                    <a href="/RaceField/ViewRaces/2027150083">Ballarat</a>
+                                </li>
+                                <li>
+                                    <a href="/RaceField/ViewRaces/2027150062">Shepparton</a>
+                                </li>
+                            </ul>
+                            <h3 style="padding-top:1ex;">Yesterday (27/04/2016)</h3>
+                            <ul>
+                                <li>
+                                    <a href="/RaceField/ViewRaces/2027150060">Meadows (MEP)</a>
+                                </li>
+                                <li>
+                                    <a href="/RaceField/ViewRaces/2027150059">Cranbourne</a>
+                                </li>
+                                <li>
+                                    <a href="/RaceField/ViewRaces/2027150082">Warrnambool</a>
+                                </li>
+                                <li>
+                                    <a href="/RaceField/ViewRaces/2027150058">Bendigo</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="rightNavSectionDivider">
+                            <img src="https://fasttrack.blob.core.windows.net/webcontent/images/right-nav-red-divider.png" alt="" width="170px;" />
+                        </div>
+                    </div>
+
+                    <div class="rightNavSectionContainer">
+                        <div class="rightNavSectionHeader">
+                            <h2>Greyhounds</h2>
+                        </div>
+                        <div class="rightNavSectionBody">
+                            <div class="pHeader">
+                                <form action="/Dog/Search" method="get">                        <div>
+                                    <input class="query" id="Dog" name="Dog" type="text" value="DEMON BALE" />
+                                    <button type="submit" id="Search" name="Search" value="Search">Search</button>
+                                </div>
+                                </form>                </div>
+                        </div>
+                        <div class="rightNavSectionDivider">
+                            <img src="https://fasttrack.blob.core.windows.net/webcontent/images/right-nav-red-divider.png" alt="" width="170px;"/>
+                        </div>
+                    </div>
+                    <div class="rightNavSectionContainer">
+                        <a href="http://greyhoundcare.grv.org.au/" target="_blank"><img src="https://fasttrack.blob.core.windows.net/webcontent/images/greyhound-care-standards.png" alt="News" /></a>
+                        <div class="rightNavSectionDivider">
+                            <img src="https://fasttrack.blob.core.windows.net/webcontent/images/right-nav-red-divider.png" alt="" width="170px;"/>
+                        </div>
+                    </div>
+
+                    <div class="rightNavSectionContainer">
+                        <a href="http://www.grv.org.au/news" target="_blank"><img src="https://fasttrack.blob.core.windows.net/webcontent/images/grvNewsBut.png" alt="News" /></a>
+                        <div class="rightNavSectionDivider">
+                            <img src="https://fasttrack.blob.core.windows.net/webcontent/images/right-nav-red-divider.png" alt="" width="170px;" />
+                        </div>
+                    </div>
+                    <div class="rightNavSectionContainer">
+                        <a href="http://www.grv.org.au/events/ready-2-race/" target="_blank"><img src="https://fasttrack.blob.core.windows.net/webcontent/images/ready-2-race.png" alt="Ready 2 Race" /></a>
+                        <div class="rightNavSectionDivider">
+                            <img src="https://fasttrack.blob.core.windows.net/webcontent/images/right-nav-red-divider.png" alt="" width="170px;" />
+                        </div>
+                    </div>
+                    <div class="rightNavSectionContainer">
+                        <div class="rightNavSectionHeader">
+                            <h2>Partners</h2>
+                        </div>
+                        <div class="rightNavSectionBody partnerLogos">
+                            <a href="http://www.tab.com.au/racing/default.aspx?State=1" target="_blank" class="first">
+                                <img src="https://fasttrack.blob.core.windows.net/webcontent/images/sponsor-tab.png" alt="TAB" title="TAB Sportsbet" /></a>
+                            <a href="http://www.rsn.net.au" target="_blank" class="third">
+                                <img src="https://fasttrack.blob.core.windows.net/webcontent/images/sponsor-rsn.png" alt="RSN" title="Radio Sport National" /></a>
+                            <a href="http://www.skychannel.com.au" target="_blank" class="second">
+                                <img src="https://fasttrack.blob.core.windows.net/webcontent/images/sponsor-sky.png" alt="SKY" title="Sky Racing" /></a>
+                        </div>
+                    </div>
+                </div>
+            </div>                        <div style="clear:both;"></div>
+        </section>
+    </div>
+</div>
+<footer id="footer">
+    <div id="copyright">
+        <a href="http://www.grv.org.au" target="_blank">GRV home</a><span class="separator">|</span>
+        <a href="/Home/PrivacyPolicy">Privacy policy</a><span class="separator">|</span>
+        <a href="/Home/TermsandConditions">Terms &amp; Conditions</a><span class="separator">|</span>
+        &copy; Copyright <span id="footerYear">2012</span> GRV
+    </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var results = $('#results').dataTable({
+            "aaSorting": [],
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bJQueryUI": true,
+            "bInfo": false,
+            "bAutoWidth": false,
+            "bFilter": false,
+            "aoColumns": [
+                null,
+                null,
+                { "bSortable": false}]
+        });
+
+        // Highlighting
+        $('#results tbody tr:first').addClass('ui-state-active');
+
+        $('#results tbody tr').click(function (event) {
+            var aData = results.fnGetData(this);
+
+            // Highlighting
+            $(results.fnSettings().aoData).each(function () {
+                $(this.nTr).removeClass('ui-state-active');
+            });
+
+            $(event.target.parentNode).addClass('ui-state-active');
+        });
+
+        var trackingOptions = $('#trackingOptions').dialog({
+            autoOpen: false,
+            title: 'Tracking Options',
+            width: 600,
+            height: 'auto',
+            resizable: false,
+            modal: true,
+            draggable: false
+        });
+    });
+
+    function onTrackingOptionsDialog() {
+        $("#trackingOptions").dialog("open");
+    }
+
+    function openPopup(divId) {
+        $("#" + divId).dialog("open");
+    };
+</script>
+
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        fasttrack.postscript.run();
+    });
+
+    function openPopup(divId) {
+        $("#" + divId).dialog("open");
+    };
+
+    function closePopup(divId) {
+        $("#" + divId).dialog("close");
+    };
+
+
+</script>
+
+
+</body>
+</html>
