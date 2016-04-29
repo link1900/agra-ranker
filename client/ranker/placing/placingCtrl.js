@@ -239,4 +239,35 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
             ];
         });
     };
+
+    $scope.getAllGreyhoundInfo = function(){
+        $scope.placingSets.forEach(function(placingSet){
+            placingSet.placings.forEach(function(placing){
+                $scope.getExternalGreyhoundInfo(placing.greyhound);
+            });
+        })
+    };
+
+    $scope.getExternalGreyhoundInfo = function(greyhound){
+        if (greyhound){
+            greyhoundSvr.lookupExternalData(greyhound._id).then(function(result){
+                if (!greyhound.sireRef){
+                    greyhound.sireName = result.sireName;
+                }
+                if(!greyhound.damRef){
+                    greyhound.damName = result.damName;
+                }
+                if(!greyhound.color){
+                    greyhound.color = result.color;
+                }
+                if(!greyhound.gender){
+                    greyhound.gender = result.gender;
+                }
+                if(!greyhound.dateOfBirth){
+                    greyhound.dateOfBirth = result.dateOfBirth;
+                }
+                greyhoundSvr.greyhoundUpdate(greyhound);
+            });
+        }
+    };
 });
