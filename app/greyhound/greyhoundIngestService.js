@@ -25,7 +25,7 @@ greyhoundIngestService.buildGRVGreyhoundUrl = function(name){
 
 greyhoundIngestService.postProcess = function(scrapResult){
     var fields = scrapResult.fields.map(function(field){
-        field.value = field.value.replace(/\s/g, '');
+        field.value = field.value.replace(/\n/g, '').trim();
         return field;
     });
     var postProcess = {};
