@@ -38,8 +38,7 @@ inviteController.createInvite = function(req, res){
     var invite = new Invite(req.body);
     invite.token =  uuid.v4();
     invite.expiry = moment().add(1,'months').toDate();
-    var result = inviteController.clean(invite)
-        .then(inviteController.validate)
+    var result = inviteController.validate(invite)
         .then(inviteController.checkIsNotUser)
         .then(mongoService.savePromise)
         .then(inviteController.sendInviteEmail);

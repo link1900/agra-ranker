@@ -1,7 +1,6 @@
 var notificationService = module.exports = {};
 
 var q = require('q');
-var async = require('async');
 var logger = require('winston');
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
@@ -13,23 +12,26 @@ var emailTemplates = require('email-templates');
 notificationService.from = process.env.EMAIL_FROM || 'noreply@localhost';
 notificationService.siteUrl = process.env.SITE_URL || "http://localhost:3000";
 
-notificationService.mailQueue = async.queue(function(email, callback){
+notificationService.sendMailByTransport = function(email){
     email.from = process.env.EMAIL_FROM;
     if (notificationService.isActive()){
-        notificationService.smtpTransport.sendMail(email, function(error){
-            if(error){
-                logger.error(error);
-                callback(error);
-            }else{
-                logger.info("successfully sent email to " + email.to);
-                callback();
-            }
-        });
+        return new Promise(function(resolve, reject){
+            notificationService.smtpTransport.sendMail(email, function(error){
+                if(error){
+                    logger.error(error);
+                    reject(error);
+                }else{
+                    logger.info("successfully sent email to " + email.to);
+                    resolve();
+                }
+            });
+        })
+
     } else {
         logger.warn("skipping email has email service is not active");
-        callback();
+        Promise.resolve();
     }
-}, 1);
+};
 
 notificationService.getSMTPSettings = function(){
     var settings = {};
@@ -71,7 +73,7 @@ notificationService.sendEmail = function(email){
 
     return notificationService.getTemplate(email)
         .then(notificationService.parseTemplate)
-        .then(notificationService.queueMailForSending);
+        .then(notificationService.sendMailByTransport);
 };
 
 notificationService.getTemplate = function(email){
@@ -105,11 +107,6 @@ notificationService.parseTemplate = function(email){
         }
     });
     return deferred.promise;
-};
-
-notificationService.queueMailForSending = function(email){
-    notificationService.mailQueue.push(email, function () {
-    });
 };
 
 notificationService.parseText = function(text, replacers){
