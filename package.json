@@ -10,8 +10,8 @@
     "url": "https://github.com/link1900/agra-ranker.git"
   },
   "engines": {
-    "node": "6.x.x",
-    "npm": "3.x.x"
+    "node": "0.12.x",
+    "npm": "2.x.x"
   },
   "scripts": {
     "start": "node node_modules/gulp/bin/gulp",
