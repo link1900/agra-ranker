@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var browserSync = require('browser-sync');
 var nodemon = require('gulp-nodemon');
 var concat = require('gulp-concat');
+var del = require('del');
 
 // we'd need a slight delay to reload browsers
 // connected to browser-sync after restarting nodemon
@@ -51,6 +52,12 @@ gulp.task('browser-sync', ['nodemon'], function () {
     });
 });
 
+gulp.task('clean', function () {
+    return del([
+        'all.min.js'
+    ]);
+});
+
 gulp.task('js',  function () {
     return gulp.src('client/ranker/**/*.js')
         .pipe(concat('all.min.js'))
@@ -67,7 +74,7 @@ gulp.task('bs-reload', function () {
 });
 
 gulp.task('default', ['browser-sync'], function () {
-    gulp.watch('client/**/*.js',   ['js', browserSync.reload]);
+    gulp.watch('client/**/*.js',   ['clean', 'js', browserSync.reload]);
     gulp.watch('client/**/*.css',  ['css']);
     gulp.watch('client/**/*.html', ['bs-reload']);
 });
