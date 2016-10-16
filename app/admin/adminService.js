@@ -9,11 +9,9 @@ var greyhoundService = require('../greyhound/greyhoundService');
 var placingService = require('../placing/placingService');
 var Ranking = mongoose.model('Ranking');
 var Score = mongoose.model('Score');
-var User = require('../user/user').model;
 var RankingSystem = mongoose.model('RankingSystem');
 var BatchJob = require('../batch/batchJob').model;
 var BatchResult = require('../batch/batchResult').model;
-var Invite = require('../invite/invite').model;
 var File = require('../file/file').model;
 var Chunk = require('../file/file').chunkModel;
 var Setting = require('../setting/setting').model;
@@ -188,9 +186,6 @@ adminService.generateAllotmentSet = function(pointArray, defaultCriteria){
 
 adminService.getAllCounts = function(){
     var proms = [
-        mongoService.getCollectionCount(User).then(function(count){
-            return {"user": count};
-        }),
         greyhoundService.count().then(function(count){
             return {"greyhound": count};
         }),
@@ -199,9 +194,6 @@ adminService.getAllCounts = function(){
         }),
         raceService.count().then(function(count){
             return {"race": count};
-        }),
-        mongoService.getCollectionCount(Invite).then(function(count){
-            return {"invite": count};
         }),
         mongoService.getCollectionCount(RankingSystem).then(function(count){
             return {"rankingSystem": count};

@@ -8,15 +8,11 @@ process.env.FIRST_USER_PASSCODE='teststart';
 
 var request = require('supertest');
 var siteUrl = process.env.testUrl;
-var moment = require('moment');
 var jwt = require('jsonwebtoken');
-var mongoService = require('../app/mongoService');
-var User = require('../app/user/user').model;
 var RankingSystem = require('../app/ranking/rankingSystem').model;
 var Race = require('../app/race/race').model;
 var Greyhound = require('../app/greyhound/greyhound').model;
 var Placing = require('../app/placing/placing').model;
-var Invite = require('../app/invite/invite').model;
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
 var server = require("../server.js");
@@ -36,16 +32,14 @@ testHelper.createAuthTestToken = function(done){
 
 testHelper.setup = function(done){
     server.start().then(function(){
-        testHelper.loadUsers(function(){
-            testHelper.createAuthTestToken(function(){
-                done();
-            })
+        testHelper.createAuthTestToken(function(){
+            done();
         });
     });
 };
 
 testHelper.tearDown = function(done){
-    testHelper.clearUsers(done);
+    done();
 };
 
 testHelper.letter1000 = "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789" +
@@ -60,101 +54,6 @@ testHelper.letter1000 = "0123456789012345678901234567890123456789012345678901234
     "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789" +
     "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
 
-
-testHelper.loadInvites = function(done){
-    new Invite({
-        "email" : "lilly@gmail.com",
-        "token": "inviteToken1",
-        "expiry" : moment().add(5, 'd').toDate(),
-        "_id" : "5475a85de622166913516271"
-    }).save(function(){
-            new Invite({
-                "email" : "oldinvite@gmail.com",
-                "token": "inviteToken2",
-                "expiry" : moment().subtract(5, 'd').toDate(),
-                "_id" : "5475b7e6e622166913516273"
-            }).save(done);
-        });
-};
-
-testHelper.dropInvites = function(done){
-    Invite.remove({}, function(){
-        done();
-    });
-};
-
-testHelper.loadUsers = function(done){
-    var docs = [];
-    docs.push(new User({
-        "provider" : "local",
-        "email" : "link1900@gmail.com",
-        "firstName": "link",
-        "lastName": "1900",
-        "password" : "tester",
-        "state" : "Active",
-        "_id" : "532675365d68bab8234c7e7f"
-    }));
-
-    docs.push(new User({
-        "provider" : "local",
-        "email" : "joe@gmail.com",
-        "firstName": "joe",
-        "lastName": "doe",
-        "password" : "tester",
-        "state" : "Active",
-        "_id" : "54683fd3daad610cccdd34da"
-    }));
-
-    docs.push(new User({
-        "provider" : "local",
-        "email" : "newuser@gmail.com",
-        "firstName": "new",
-        "lastName": "user",
-        "password" : "tester",
-        "state" : "Requested Access",
-        "_id" : "5469d48ddaad610cccdd34db"
-    }));
-
-    docs.push(new User({
-        "provider" : "local",
-        "email" : "needpassword@gmail.com",
-        "firstName": "need",
-        "lastName": "password",
-        "password" : "tester",
-        "state" : "Active",
-        "passwordReset":{
-            tokenCreated: new Date(),
-            token: "123a",
-            expirationDate: moment().add(5, 'd').toDate()
-        },
-        "_id" : "546ff82ddaad610cccdd34de"
-    }));
-
-    docs.push(new User({
-        "provider" : "local",
-        "email" : "needpasswordexpire@gmail.com",
-        "firstName": "need",
-        "lastName": "password",
-        "password" : "tester",
-        "state" : "Active",
-        "passwordReset":{
-            tokenCreated: new Date(),
-            token: "123b",
-            expirationDate: new Date()
-        },
-        "_id" : "546ff836daad610cccdd34df"
-    }));
-
-    mongoService.createMany(docs).then(function(){
-        done();
-    }, function(err){
-        done(err);
-    });
-};
-
-testHelper.clearUsers = function(done){
-    User.remove({}, done);
-};
 
 testHelper.loadRankingSystem = function(done){
     RankingSystem.remove({}, function(){

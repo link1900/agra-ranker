@@ -1,5 +1,5 @@
-angular.module('controllers').controller('menuCtrl', ['$scope', 'securityService','$location', 'authService',
-    function($scope, securityService, $location, authService) {
+angular.module('controllers').controller('menuCtrl', ['$scope','$location', 'authService',
+    function($scope, $location, authService) {
         $scope.isCollapsed = true;
         $scope.logout = function(){
             if($scope.user){

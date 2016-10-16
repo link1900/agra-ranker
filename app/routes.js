@@ -1,18 +1,15 @@
 var greyhoundController = require('./greyhound/greyhoundController');
 var batchController = require('./batch/batchController');
 var batchResultController = require('./batch/batchResultController');
-var userController = require('./user/userController');
 var raceController = require('./race/raceController');
 var placingController = require('./placing/placingController');
 var rankingSystemController = require('./ranking/rankingSystemController');
 var rankingController = require('./ranking/rankingController');
 var adminController = require('./admin/adminController');
 var fileController = require('./file/fileController');
-var inviteController = require('./invite/inviteController');
 var exportController = require('./export/exportController');
 var settingController = require('./setting/settingController');
 var helper = require('./helper');
-var rateLimiter = require('./rateLimiter');
 var jwtChecker = require('express-jwt');
 
 var checkAuthentication = jwtChecker({
@@ -21,30 +18,6 @@ var checkAuthentication = jwtChecker({
 });
 
 module.exports = function(app) {
-    //user routes
-    app.get('/user', checkAuthentication, userController.prepareQuery,  helper.runQuery);
-    app.get('/user/:userId', checkAuthentication, helper.getOne);
-    app.get('/me', userController.me);
-    app.post('/user', checkAuthentication, userController.createActiveUser);
-    app.post('/user/requestAccess', rateLimiter.limitedAccess.prevent, userController.requestAccess);
-    app.post('/user/grantAccess/:userId', checkAuthentication, userController.grantAccess);
-    app.post('/user/resetPassword/:userId', checkAuthentication, userController.resetPassword);
-    app.post('/user/changePasswordToken/:userResetToken', rateLimiter.limitedAccess.prevent, userController.changePasswordWithToken);
-    app.post('/user/forgotten', rateLimiter.limitedAccess.prevent, userController.forgottenPasswordRequest);
-
-    app.get('/bootstrap', userController.getBootstrap);
-    app.post('/user/changePassword', checkAuthentication, userController.changePassword);
-    app.put('/user/:userId', checkAuthentication, userController.updateUser);
-    app.del('/user/:userId', checkAuthentication, userController.destroy);
-    app.param('userId', userController.setModel);
-
-    app.get('/invite', checkAuthentication, inviteController.prepareQuery,  helper.runQuery);
-    app.get('/invite/:inviteId', checkAuthentication, helper.getOne);
-    app.post('/invite', checkAuthentication, inviteController.createInvite);
-    app.del('/invite/expired', checkAuthentication, inviteController.destroyExpired);
-    app.del('/invite/:inviteId', checkAuthentication, inviteController.destroy);
-    app.param('inviteId', inviteController.setModel);
-
     //batch routes
     app.get('/batch',checkAuthentication, batchController.prepareBatchQuery, helper.runQuery);
     app.get('/batch/:batchId',checkAuthentication, helper.getOne);
