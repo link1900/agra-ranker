@@ -58,6 +58,7 @@ describe("BatchJob", function() {
             var body = {status:'Cancelled'};
             testHelper.authSession
                 .put('/batch/531d1f67e407586c21474b34')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -73,6 +74,7 @@ describe("BatchJob", function() {
             var body = {status:'Cancelled'};
             testHelper.authSession
                 .put('/batch/531d1f67e407586c21474b33')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)

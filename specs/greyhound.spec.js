@@ -53,6 +53,7 @@ describe("Greyhound", function(){
             var body = {name:"createdgrey"};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -68,6 +69,7 @@ describe("Greyhound", function(){
             var body = {name:"CreatedGrey"};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -83,6 +85,7 @@ describe("Greyhound", function(){
             var body = {name:"grey1"};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -93,6 +96,7 @@ describe("Greyhound", function(){
             var body = {name:"createdgrey", sireRef: null};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -103,6 +107,7 @@ describe("Greyhound", function(){
             var body = {name:"createdgrey", sireRef: {}};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -113,6 +118,7 @@ describe("Greyhound", function(){
             var body = {name:"createdgrey", sire: {}};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -123,6 +129,7 @@ describe("Greyhound", function(){
             var body = {name:"createdgrey", sireRef: '53340c2d8e791cd5d7c731d7'};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -133,6 +140,7 @@ describe("Greyhound", function(){
             var body = {name:"createdgrey", sireRef: {"no":"sense"}};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -143,6 +151,7 @@ describe("Greyhound", function(){
             var body = {name:"createdgrey", sireRef: '53340c2d8e791cd5d7c731d7', sire:{"name":"creategreysire"}};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -153,6 +162,7 @@ describe("Greyhound", function(){
             var body = {name:"createdgrey", damRef: null};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -163,6 +173,7 @@ describe("Greyhound", function(){
             var body = {name:"createdgrey", damRef: {}};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -173,6 +184,7 @@ describe("Greyhound", function(){
             var body = {name:"createdgrey", damRef: '53340c2d8e791cd5d7c731d7'};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -183,6 +195,7 @@ describe("Greyhound", function(){
             var body = {name:"createdgrey", damRef: {"no":"sense"}};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -193,6 +206,7 @@ describe("Greyhound", function(){
             var body = {name:"createdgrey", damRef: '53340c2d8e791cd5d7c731d7', dam:{"name":"creategreydam"}};
             testHelper.authSession
                 .post('/greyhound')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -215,6 +229,7 @@ describe("Greyhound", function(){
             var body = {name:"updategrey"};
             testHelper.authSession
                 .put('/greyhound/53340c2d8e791cd5d7c731d7')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -230,6 +245,7 @@ describe("Greyhound", function(){
             var body = {name:"UpdateGrey"};
             testHelper.authSession
                 .put('/greyhound/53340c2d8e791cd5d7c731d7')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -245,6 +261,7 @@ describe("Greyhound", function(){
             var body = {name:"grey3"};
             testHelper.authSession
                 .put('/greyhound/53340c2d8e791cd5d7c731d7')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -255,6 +272,7 @@ describe("Greyhound", function(){
             var body = {name:"updategrey", sireRef: '531d1f74e407586c2147737b'};
             testHelper.authSession
                 .put('/greyhound/53340c2d8e791cd5d7c731d7')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -265,6 +283,7 @@ describe("Greyhound", function(){
             var body = {name:"updategrey", sireRef: '53340c2d8e791cd5d7c731d7'};
             testHelper.authSession
                 .put('/greyhound/53340c2d8e791cd5d7c731d7')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -284,6 +303,7 @@ describe("Greyhound", function(){
         it("delete existing grey1", function (done) {
             testHelper.authSession
                 .del('/greyhound/53340c2d8e791cd5d7c731d7')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200, done);
@@ -292,6 +312,7 @@ describe("Greyhound", function(){
         it("delete grey1 and grey4 sire is removed", function (done) {
             testHelper.authSession
                 .del('/greyhound/53340c2d8e791cd5d7c731d7')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -316,6 +337,7 @@ describe("Greyhound", function(){
         it("delete grey2 and grey4 dam is removed", function (done) {
             testHelper.authSession
                 .del('/greyhound/531d1f74e407586c2147737b')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)

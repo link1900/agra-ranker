@@ -9,6 +9,7 @@ process.env.FIRST_USER_PASSCODE='teststart';
 var request = require('supertest');
 var siteUrl = process.env.testUrl;
 var moment = require('moment');
+var jwt = require('jsonwebtoken');
 var mongoService = require('../app/mongoService');
 var User = require('../app/user/user').model;
 var RankingSystem = require('../app/ranking/rankingSystem').model;
@@ -20,38 +21,31 @@ testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
 var server = require("../server.js");
 
-testHelper.login = function(agent , done){
-    var cred = {email: 'link1900@gmail.com', password: 'tester'};
-    agent
-        .post('/login')
-        .send(cred)
-        .set('Accept', 'application/json')
-        .expect('Content-Type', /json/)
-        .expect(200, done);
-};
-
-testHelper.logout = function(agent , done){
-    var cred = {email: 'link1900@gmail.com', password: 'tester'};
-    agent
-        .post('/logout')
-        .send(cred)
-        .set('Accept', 'application/json')
-        .expect('Content-Type', /json/)
-        .expect(200, done);
+testHelper.createAuthTestToken = function(done){
+    var user = {email: 'link1900@gmail.com'};
+    jwt.sign(user, new Buffer(process.env.AUTH0_CLIENT_SECRET, 'base64'), {
+        expiresIn: 300,
+        issuer: 'https://app23098245.auth0.com/',
+        audience: process.env.AUTH0_CLIENT_ID,
+        subject: 'google-oauth2|100071916930898381238'
+    }, function(error, token){
+        testHelper.authToken = token;
+        done();
+    });
 };
 
 testHelper.setup = function(done){
     server.start().then(function(){
         testHelper.loadUsers(function(){
-            testHelper.login(testHelper.authSession, done);
+            testHelper.createAuthTestToken(function(){
+                done();
+            })
         });
     });
 };
 
 testHelper.tearDown = function(done){
-    testHelper.clearUsers(function(){
-        testHelper.logout(testHelper.authSession, done);
-    });
+    testHelper.clearUsers(done);
 };
 
 testHelper.letter1000 = "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789" +

@@ -117,6 +117,7 @@ describe("Race", function(){
                 "disqualified":false};
             testHelper.authSession
                 .post('/race')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -138,6 +139,7 @@ describe("Race", function(){
                 "disqualified":false};
             testHelper.authSession
                 .post('/race')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -148,6 +150,7 @@ describe("Race", function(){
             var body = {};
             testHelper.authSession
                 .post('/race')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -158,6 +161,7 @@ describe("Race", function(){
             var body = {name:"raceCreated"};
             testHelper.authSession
                 .post('/race')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -184,6 +188,7 @@ describe("Race", function(){
                 "disqualified":false};
             testHelper.authSession
                 .put('/race/531d1f72e407586c21476ea8')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -202,6 +207,7 @@ describe("Race", function(){
             var body = {};
             testHelper.authSession
                 .put('/race/531d1f72e407586c21476ea8')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -212,6 +218,7 @@ describe("Race", function(){
             var body = {name:"raceUpdated"};
             testHelper.authSession
                 .put('/race/531d1f72e407586c21476ea8')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -226,6 +233,7 @@ describe("Race", function(){
                 "disqualified":false};
             testHelper.authSession
                 .put('/race/531d1f72e407586c21476ea8')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -239,6 +247,7 @@ describe("Race", function(){
                 "disqualified":false};
             testHelper.authSession
                 .put('/race/531d1f72e407586c21476ea8')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -253,6 +262,7 @@ describe("Race", function(){
                 "disqualified":false};
             testHelper.authSession
                 .put('/race/531d1f72e407586c21476ea8')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -272,6 +282,7 @@ describe("Race", function(){
         it("delete existing race1", function (done) {
             testHelper.authSession
                 .del('/race/531d1f72e407586c21476ea8')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200, done);

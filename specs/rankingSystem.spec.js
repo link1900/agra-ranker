@@ -70,6 +70,7 @@ describe("Ranking System", function(){
             };
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -90,6 +91,7 @@ describe("Ranking System", function(){
             };
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -100,6 +102,7 @@ describe("Ranking System", function(){
             var body = {name:"Agra Rankings", description: "just another ranking system"};
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -114,6 +117,7 @@ describe("Ranking System", function(){
             };
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -129,6 +133,7 @@ describe("Ranking System", function(){
             };
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -148,6 +153,7 @@ describe("Ranking System", function(){
             };
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -167,6 +173,7 @@ describe("Ranking System", function(){
             };
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -189,6 +196,7 @@ describe("Ranking System", function(){
             };
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -211,6 +219,7 @@ describe("Ranking System", function(){
             };
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -233,6 +242,7 @@ describe("Ranking System", function(){
             };
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -255,6 +265,7 @@ describe("Ranking System", function(){
             };
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -277,6 +288,7 @@ describe("Ranking System", function(){
             };
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -299,6 +311,7 @@ describe("Ranking System", function(){
             };
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -309,6 +322,7 @@ describe("Ranking System", function(){
             var body = { description: "just another ranking system"};
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -319,6 +333,7 @@ describe("Ranking System", function(){
             var body = {name:"Another Test Ranking System"};
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -329,6 +344,7 @@ describe("Ranking System", function(){
             var body = {description:testHelper.letter1000};
             testHelper.authSession
                 .post('/rankingSystem')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -351,6 +367,7 @@ describe("Ranking System", function(){
             var body = {name:"Changed Ranking System"};
             testHelper.authSession
                 .put('/rankingSystem/5340bfc15c4ac1fdcd47816d')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -366,6 +383,7 @@ describe("Ranking System", function(){
             var body = {description:"a different description"};
             testHelper.authSession
                 .put('/rankingSystem/5340bfc15c4ac1fdcd47816d')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -390,6 +408,7 @@ describe("Ranking System", function(){
         it("existing system", function (done) {
             testHelper.authSession
                 .del('/rankingSystem/5340bfc15c4ac1fdcd47816d')
+                .set('Authorization', 'Bearer '+ testHelper.authToken)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200, done);

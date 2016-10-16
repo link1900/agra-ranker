@@ -2,9 +2,7 @@ var main = module.exports = {};
 var q = require('q');
 var _ = require('lodash');
 var express = require('express');
-var fs = require('fs');
 var path = require('path');
-var passport = require('passport');
 var winston = require('winston');
 var logger = require('winston');
 var dotenv = require('dotenv');
@@ -24,7 +22,6 @@ main.start = _.once(function(){
         .then(main.loadConfig)
         .then(main.checkEnvs)
         .then(main.setupDatabaseConnection)
-        .then(main.setupSecurity)
         .then(main.applyMigrations)
         .then(main.setupHTTP)
         .then(main.setupBatchService).then(function(){
@@ -108,17 +105,12 @@ main.setupDatabaseConnection = function(mainConfig){
     return deferred.promise;
 };
 
-main.setupSecurity = function(mainConfig){
-    require('./config/passport')();
-    return q(mainConfig);
-};
-
 main.setupHTTP = function(mainConfig){
     var deferred = q.defer();
     var app = express();
 
     // Express settings
-    require('./config/express')(app, passport, mainConfig.db);
+    require('./config/express')(app);
 
     // Rest routes
     require('./app/routes.js')(app);

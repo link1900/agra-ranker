@@ -4,11 +4,10 @@
  * Module dependencies.
  */
 var express = require('express');
-var mongoStore = require('connect-mongo')(express);
 var flash = require('connect-flash');
 var path = require('path');
 
-module.exports = function(app, passport, db) {
+module.exports = function(app) {
     app.set('showStackError', true);
 
     // Prettify HTML
@@ -35,8 +34,6 @@ module.exports = function(app, passport, db) {
     // Enable jsonp
     app.enable('jsonp callback');
 
-    var sessionSec = process.env.SESSION_SECRET;
-
     app.configure(function() {
         // The cookieParser should be above session
         app.use(express.cookieParser());
@@ -57,24 +54,18 @@ module.exports = function(app, passport, db) {
             });
         });
 
-        // Express/Mongo session storage
-        app.use(express.session({
-            secret: sessionSec,
-            store: new mongoStore({
-                db: db.connection.db,
-                collection: 'sessions'
-            })
-        }));
-
-        // Use passport session
-        app.use(passport.initialize());
-        app.use(passport.session());
-
         // Connect flash for flash messages
         app.use(flash());
 
         // Routes should be at the last
         app.use(app.router);
+
+        app.use(function(err, req, res, next) { // eslint-disable-line no-unused-vars
+            res.status(err.status || 500);
+            res.jsonp({
+                message: err.message
+            });
+        });
 
         // Setting static folder
         var staticPath = path.normalize(__dirname + '/../client');

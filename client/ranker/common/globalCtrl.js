@@ -1,9 +1,6 @@
-angular.module('controllers').controller('globalCtrl', ['$scope', 'rankerEventBus', 'securityService',
-    function($scope, rankerEventBus, securityService) {
+angular.module('controllers').controller('globalCtrl', ['$scope', 'rankerEventBus',
+    function($scope, rankerEventBus) {
         $scope.load = function(){
-            securityService.getCurrentUser().then(function(user){
-                $scope.user = user;
-            })
         };
 
         $scope.$on(rankerEventBus.EVENTS.USER_LOGIN,function(data) {
@@ -13,7 +10,5 @@ angular.module('controllers').controller('globalCtrl', ['$scope', 'rankerEventBu
         $scope.$on(rankerEventBus.EVENTS.USER_LOGOUT,function() {
             delete $scope.user;
         });
-
-        $scope.load();
     }
 ]);

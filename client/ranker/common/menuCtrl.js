@@ -1,18 +1,15 @@
-angular.module('controllers').controller('menuCtrl', ['$scope', 'securityService','$location',
-    function($scope, securityService, $location) {
+angular.module('controllers').controller('menuCtrl', ['$scope', 'securityService','$location', 'authService',
+    function($scope, securityService, $location, authService) {
         $scope.isCollapsed = true;
-
         $scope.logout = function(){
             if($scope.user){
-                securityService.signOut().then(function(){
-                    $location.path('/');
-                    window.location.reload(true);
-                });
+                authService.logout();
+                $scope.user = null;
             }
         };
 
         $scope.login = function(){
-            $location.path('/login');
+            authService.login();
         };
 
         $scope.signUp = function(){
