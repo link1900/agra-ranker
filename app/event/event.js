@@ -9,7 +9,7 @@ event.definition = {
     userRef : {type: String}
 };
 
-event.schema = new Schema(event.definition);
+event.schema = new Schema(event.definition, { capped: 100000 });
 
 event.schema.plugin(timestamps);
 
