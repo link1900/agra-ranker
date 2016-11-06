@@ -4,7 +4,6 @@
  * Module dependencies.
  */
 var express = require('express');
-var flash = require('connect-flash');
 var path = require('path');
 
 module.exports = function(app) {
@@ -53,9 +52,6 @@ module.exports = function(app) {
                 }
             });
         });
-
-        // Connect flash for flash messages
-        app.use(flash());
 
         // Routes should be at the last
         app.use(app.router);
