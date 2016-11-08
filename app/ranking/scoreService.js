@@ -5,7 +5,7 @@ var q = require('q');
 var placingService = require('../placing/placingService');
 var rankingService = require('./rankingService');
 var Ranking = require('./ranking').model;
-var Score = require('./score').model;
+var Score = require('./scoreOld').model;
 var rankingSystemService = require('./rankingSystemService');
 var baseService = require('../baseService');
 

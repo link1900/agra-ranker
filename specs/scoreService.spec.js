@@ -1,7 +1,7 @@
 var assert = require('assert');
 var testHelper = require('./testHelper');
 var Placing = require('../app/placing/placing').model;
-var Score = require('../app/ranking/score').model;
+var Score = require('../app/ranking/scoreOld').model;
 var Ranking = require('../app/ranking/ranking').model;
 var scoreService = null;
 

@@ -20,4 +20,4 @@ scores.schema = new Schema(scores.definition);
 
 scores.schema.plugin(timestamps);
 
-scores.model = mongoose.model('Score', scores.schema);
+scores.model = mongoose.model('ScoreOld', scores.schema);
