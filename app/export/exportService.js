@@ -1,6 +1,6 @@
 var exportService = module.exports = {};
 
-var moment = require('moment');
+var moment = require('moment-timezone');
 var batchService = require('../batch/batchService');
 
 exportService.createExportJob = function(exportCollectionName, exportType){

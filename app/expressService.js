@@ -2,7 +2,7 @@ var expressService = module.exports = {};
 
 var _ = require('lodash');
 var csv = require('csv');
-var moment = require('moment');
+var moment = require('moment-timezone');
 var JSONStream = require('JSONStream');
 var highland = require('highland');
 

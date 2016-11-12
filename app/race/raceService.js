@@ -2,7 +2,7 @@ var raceService = module.exports = {};
 
 var _ = require('lodash');
 var q = require('q');
-var moment = require('moment');
+var moment = require('moment-timezone');
 var logger = require('winston');
 var validator = require('validator');
 var Race = require('./race').model;
