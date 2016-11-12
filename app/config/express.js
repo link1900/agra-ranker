@@ -64,7 +64,7 @@ module.exports = function(app) {
         });
 
         // Setting static folder
-        var staticPath = path.normalize(__dirname + '/../client');
+        var staticPath = path.normalize(__dirname + '/../../client');
         app.use(express.static(staticPath));
 
     });
