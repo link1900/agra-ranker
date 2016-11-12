@@ -188,22 +188,21 @@ greyhoundService.findGreyhoundByName = function(name){
     return mongoService.findOne(Greyhound, {name: {$regex : "^"+name+"$", $options: "i"}});
 };
 
-greyhoundService.createGreyhoundByName = function(greyhoundName){
-    return greyhoundService.findGreyhoundByName(greyhoundName).then(function(possibleGreyhound){
-        if (possibleGreyhound != null){
+greyhoundService.createGreyhoundByName = async function(greyhoundName){
+    const possibleGreyhound = await greyhoundService.findGreyhoundByName(greyhoundName);
+    if (possibleGreyhound != null){
+        return {
+            model : possibleGreyhound,
+            details: "Found existing greyhound \"" + possibleGreyhound.name + "\" skipping greyhound creation"
+        };
+    } else {
+        return greyhoundService.create(new Greyhound({name: greyhoundName})).then(function(saveResult){
             return {
-                model : possibleGreyhound,
-                details: "Found existing greyhound \"" + possibleGreyhound.name + "\" skipping greyhound creation"
+                model : saveResult,
+                details: "Created greyhound \"" + saveResult.name + "\""
             };
-        } else {
-            return greyhoundService.create(new Greyhound({name: greyhoundName})).then(function(saveResult){
-                return {
-                    model : saveResult,
-                    details: "Created greyhound \"" + saveResult.name + "\""
-                };
-            });
-        }
-    });
+        });
+    }
 };
 
 greyhoundService.createStep = function(batchRecord){

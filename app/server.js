@@ -117,8 +117,8 @@ main.setupHTTP = function(mainConfig){
 
 
     // Start the app by listening on <port>
-    var port = process.env.PORT || 3000;
-    var server = require('http').createServer(app);
+    const port = process.env.PORT || 3000;
+    const server = require('http').createServer(app);
 
     server.on('listening', function(){
         mainConfig.server = server;
@@ -135,13 +135,13 @@ main.setupHTTP = function(mainConfig){
 };
 
 main.setupBatchService = function(mainConfig){
-    var batchService = require('./batch/batchService');
+    const batchService = require('./batch/batchService');
     batchService.startBatchProcessors();
     return q(mainConfig);
 };
 
 main.applyMigrations = function(mainConfig){
-    var migrationDir = path.join(__dirname, '/migrations');
+    const migrationDir = path.join(__dirname, '/migrations');
 
     return migrationService.applyMigrations(migrationDir).then(function(){
         return q(mainConfig);
