@@ -53,7 +53,7 @@ helper.promiseToResponse = function(promise, res){
     promise.then(function(entityRequestResult){
         res.jsonp(200, entityRequestResult.savedEntity);
     })
-    .fail(function(error){
+    .catch(function(error){
         res.jsonp(400, {"error":"failed: " + error});
     });
 };
@@ -103,7 +103,7 @@ helper.checkExisting = function(dao, field, entityRequest) {
 helper.promiseResult = function(req, res, promise){
     promise.then(function(result){
         res.jsonp(result.code, result.message);
-    }).fail(function(result){
+    }).catch(function(result){
         res.jsonp(result.code, result.message);
     });
 };

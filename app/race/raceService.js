@@ -70,7 +70,7 @@ raceService.processRaceCsvRow = function (record) {
         .then(raceService.createPlacingsForBatch)
         .then(function (finalBatchRecord) {
             return {isSuccessful: true, stepResults: finalBatchRecord.stepResults};
-        }).fail(function (error) {
+        }).catch(function (error) {
             var errorResults = [];
             if (error == null || error.stepResults == null) {
                 errorResults = [error];

@@ -294,7 +294,7 @@ greyhoundService.processGreyhoundRow = function(record){
         .then(greyhoundService.setDamStep)
         .then(function(finalBatchRecord){
             return {isSuccessful : true, stepResults: finalBatchRecord.stepResults};
-        }).fail(function(importError){
+        }).catch(function(importError){
             logger.log('error',"error importing greyhound csv", importError);
             return q({isSuccessful : false, stepResults: [JSON.stringify(importError)]});
         });
