@@ -16,6 +16,7 @@
   "scripts": {
     "start": "node node_modules/gulp/bin/gulp",
     "dev": "npm start",
+    "build": "babel app -d lib",
     "lint": "eslint ./app ./client",
     "spec": "nyc mocha ./specs/*.js ./app/**/*Test.js",
     "test": "npm run lint && npm run spec",
@@ -52,6 +53,8 @@
     "xml2js": "0.4.16"
   },
   "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-latest": "^6.16.0",
     "eslint": "3.10.0",
     "mocha": "3.1.2",
     "nyc": "^8.4.0",
