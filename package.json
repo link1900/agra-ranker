@@ -14,13 +14,13 @@
     "npm": "3.10.8"
   },
   "scripts": {
-    "start": "node node_modules/gulp/bin/gulp",
+    "start": "node lib/server.js",
     "dev": "npm start",
     "build": "babel app -d lib",
     "lint": "eslint ./app ./client",
     "spec": "nyc mocha --require specs/testStarter.js ./specs/*.js ./app/**/*Test.js",
     "test": "npm run lint && npm run spec",
-    "postinstall": "node node_modules/bower/bin/bower install && node node_modules/gulp/bin/gulp js"
+    "postinstall": "node node_modules/bower/bin/bower install && node node_modules/gulp/bin/gulp js && node node_modules/gulp/bin/gulp css && npm run build"
   },
   "dependencies": {
     "JSONStream": "1.0.4",
