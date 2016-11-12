@@ -2,7 +2,7 @@ var raceService = module.exports = {};
 
 var _ = require('lodash');
 var q = require('q');
-var moment = require('moment');
+var moment = require('moment-timezone');
 var logger = require('winston');
 var validator = require('validator');
 var Race = require('./race').model;
@@ -70,7 +70,7 @@ raceService.processRaceCsvRow = function (record) {
         .then(raceService.createPlacingsForBatch)
         .then(function (finalBatchRecord) {
             return {isSuccessful: true, stepResults: finalBatchRecord.stepResults};
-        }).fail(function (error) {
+        }).catch(function (error) {
             var errorResults = [];
             if (error == null || error.stepResults == null) {
                 errorResults = [error];

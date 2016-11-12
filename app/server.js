@@ -8,7 +8,7 @@ var logger = require('winston');
 var dotenv = require('dotenv');
 var mongoose = require('mongoose');
 
-var migrationService = require('./app/migration/migrationService');
+var migrationService = require('./migration/migrationService');
 
     /**
  * Main application entry file.
@@ -113,12 +113,12 @@ main.setupHTTP = function(mainConfig){
     require('./config/express')(app);
 
     // Rest routes
-    require('./app/routes.js')(app);
+    require('./routes.js')(app);
 
 
     // Start the app by listening on <port>
-    var port = process.env.PORT || 3000;
-    var server = require('http').createServer(app);
+    const port = process.env.PORT || 3000;
+    const server = require('http').createServer(app);
 
     server.on('listening', function(){
         mainConfig.server = server;
@@ -135,13 +135,13 @@ main.setupHTTP = function(mainConfig){
 };
 
 main.setupBatchService = function(mainConfig){
-    var batchService = require('./app/batch/batchService');
+    const batchService = require('./batch/batchService');
     batchService.startBatchProcessors();
     return q(mainConfig);
 };
 
 main.applyMigrations = function(mainConfig){
-    var migrationDir = path.join(__dirname, '/app/migrations');
+    const migrationDir = path.join(__dirname, '/migrations');
 
     return migrationService.applyMigrations(migrationDir).then(function(){
         return q(mainConfig);

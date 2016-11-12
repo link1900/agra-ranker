@@ -2,7 +2,7 @@ var rankingSystemService = module.exports = {};
 
 var _ = require('lodash');
 var q = require('q');
-var moment = require('moment');
+var moment = require('moment-timezone');
 
 var mongoService = require('../mongoService');
 var RankingSystem = require('./rankingSystem').model;

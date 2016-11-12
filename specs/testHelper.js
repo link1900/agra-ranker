@@ -15,7 +15,7 @@ var Greyhound = require('../app/greyhound/greyhound').model;
 var Placing = require('../app/placing/placing').model;
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
-var server = require("../server.js");
+var server = require("../app/server.js");
 
 testHelper.createAuthTestToken = function(done){
     var user = {email: 'link1900@gmail.com'};

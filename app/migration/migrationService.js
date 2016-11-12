@@ -37,7 +37,7 @@ migrationService.applyMigrations = function(migrationDir) {
                 return finalPromiseOfChain.then(function(){
                     logger.log("Finished applying migrations");
                     return q(true);
-                }).fail(function(error){
+                }).catch(function(error){
                     logger.error("Migration process failed: " + error);
                     return q(false);
                 });
@@ -113,7 +113,7 @@ migrationService.runMigration = function(migration, migrationDir){
     return migrationCode.up().then(function(){
         logger.log('info',"Applied migration: " + migration.file);
         return mongoService.savePromise(new Migration(migration));
-    }).fail(function(err){
+    }).catch(function(err){
         logger.error("migration " + migration.file + " failed", err);
         process.exit(1);
     });
