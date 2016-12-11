@@ -28,7 +28,7 @@
         // Set up the logic for when a user authenticates
         // This method is called from app.run.js
         function registerAuthenticationListener() {
-            if (userProfile){
+            if (userProfile && authManager.isAuthenticated()){
                 $rootScope.user = userProfile;
                 $rootScope.$broadcast('userProfileSet', userProfile);
             }
