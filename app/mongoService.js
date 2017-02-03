@@ -4,6 +4,8 @@ var _ = require('lodash');
 var q = require('q');
 var mongoose = require('mongoose');
 
+mongoose.Promise = Promise;
+
 mongoService.find = function(dao, search, limit, offset, sort){
     var deferred = q.defer();
     dao.find(search).limit(limit).skip(limit * offset).sort(sort).exec(function(err, results){
