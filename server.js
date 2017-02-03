@@ -43,9 +43,8 @@ main.setupExceptionHandling = function(mainConfig){
 
 main.checkEnvs = function(mainConfig){
     var requiredEnv = [
-        'MONGO_URL',
-        'SESSION_SECRET',
-        'FIRST_USER_PASSCODE'];
+        'MONGO_URL'
+    ];
 
     if (!process.env.LOGGING_LEVEL){
         process.env.LOGGING_LEVEL = 'warn';
@@ -79,6 +78,7 @@ main.loadConfig = function(mainConfig){
 
 main.setupDatabaseConnection = function(mainConfig){
     var deferred = q.defer();
+    logger.info("Opening mongodb connection");
     var db = mongoose.connect(process.env.MONGO_URL, function (err) {
         if (err) {
             logger.error('Unable to connect at startup, exiting', err);
