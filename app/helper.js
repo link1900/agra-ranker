@@ -125,7 +125,7 @@ helper.runDistinctQuery = function(req, res){
 helper.runQuery = function(req, res) {
     var limit = 30;
     if (req.param('per_page') && req.param('per_page') > 0){
-        limit = req.param('per_page');
+        limit = parseInt(req.param('per_page'));
     }
 
     if (limit > 100) limit = 100;

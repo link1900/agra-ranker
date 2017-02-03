@@ -16,7 +16,7 @@ expressService.parseSearchParams = function(req){
     var parsed = {};
     parsed.limit = 30;
     if (req.param('per_page') && req.param('per_page') > 0){
-        parsed.limit = req.param('per_page');
+        parsed.limit = parseInt(req.param('per_page'));
     }
 
     if (parsed.limit > 100) parsed.limit = 100;
