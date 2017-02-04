@@ -27,13 +27,17 @@ angular.module('controllers').controller('GreyhoundCtrl', ['$scope', '$routePara
         ];
 
         $scope.findOne = function() {
-            greyhoundSvr.get({
-                greyhoundId: $routeParams.id
-            }, function(greyhound) {
-                $scope.loadGreyhound(greyhound);
-            }, function(){
+            if ($routeParams.id) {
+                greyhoundSvr.get({
+                    greyhoundId: $routeParams.id
+                }, function(greyhound) {
+                    $scope.loadGreyhound(greyhound);
+                }, function(){
+                    $scope.loadGreyhound({});
+                });
+            } else {
                 $scope.loadGreyhound({});
-            });
+            }
         };
 
         $scope.loadGreyhound = function(greyhound){

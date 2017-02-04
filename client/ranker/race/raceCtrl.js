@@ -4,13 +4,17 @@ angular.module('controllers').controller('RaceCtrl', ['$scope', '$routeParams', 
         $scope.showNoRaceInfo = false;
 
         $scope.findOne = function() {
-            raceSvr.get({
-                raceId: $routeParams.id
-            }, function(model) {
-                $scope.loadRace(model);
-            }, function(){
+            if ($routeParams.id) {
+                raceSvr.get({
+                    raceId: $routeParams.id
+                }, function(model) {
+                    $scope.loadRace(model);
+                }, function(){
+                    $scope.loadRace({});
+                });
+            } else {
                 $scope.loadRace({});
-            });
+            }
         };
 
         $scope.loadRace = function(model){
