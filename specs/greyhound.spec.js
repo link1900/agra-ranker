@@ -111,18 +111,7 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(200, done);
-        });
-
-        it("with name createdgrey and empty sire object", function(done){
-            var body = {name:"createdgrey", sire: {}};
-            testHelper.authSession
-                .post('/greyhound')
-                .set('Authorization', 'Bearer '+ testHelper.authToken)
-                .send(body)
-                .set('Accept', 'application/json')
-                .expect('Content-Type', /json/)
-                .expect(200, done);
+                .expect(400, done);
         });
 
         it("with name createdgrey and sireRef of existingSire", function(done){
@@ -144,11 +133,11 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(200, done);
+                .expect(400, done);
         });
 
-        it("with name createdgrey and sireRef of grey1 and sire name of creategreysire", function(done){
-            var body = {name:"createdgrey", sireRef: '53340c2d8e791cd5d7c731d7', sire:{"name":"creategreysire"}};
+        it("with name createdgrey and sireRef of grey1", function(done){
+            var body = {name:"createdgrey", sireRef: '53340c2d8e791cd5d7c731d7'};
             testHelper.authSession
                 .post('/greyhound')
                 .set('Authorization', 'Bearer '+ testHelper.authToken)
@@ -177,7 +166,7 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(200, done);
+                .expect(400, done);
         });
 
         it("with name createdgrey and damRef of existingdam", function(done){
@@ -199,11 +188,11 @@ describe("Greyhound", function(){
                 .send(body)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(200, done);
+                .expect(400, done);
         });
 
-        it("with name createdgrey and damRef of grey1 and dam name of creategreydam", function(done){
-            var body = {name:"createdgrey", damRef: '53340c2d8e791cd5d7c731d7', dam:{"name":"creategreydam"}};
+        it("with name createdgrey and damRef of grey1", function(done){
+            var body = {name:"createdgrey", damRef: '53340c2d8e791cd5d7c731d7'};
             testHelper.authSession
                 .post('/greyhound')
                 .set('Authorization', 'Bearer '+ testHelper.authToken)

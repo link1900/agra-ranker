@@ -100,6 +100,9 @@ greyhoundService.validateIfNameIsUsed = function(greyhound){
 
 greyhoundService.validateSireRef = function(greyhound){
     if (greyhound.sireRef != null){
+        if (!mongoService.isObjectId(greyhound.sireRef)) {
+            return q.reject("invalid sire ref");
+        }
         return greyhoundService.findById(greyhound.sireRef).then(function(sire){
             if (sire == null){
                 return q.reject("could not find sire for sire ref");
@@ -128,6 +131,9 @@ greyhoundService.validateSireRef = function(greyhound){
 
 greyhoundService.validateDamRef = function(greyhound){
     if (greyhound.damRef != null){
+        if (!mongoService.isObjectId(greyhound.damRef)) {
+            return q.reject(`invalid dam ref ${greyhound.damRef}`);
+        }
         return greyhoundService.findById(greyhound.damRef).then(function(dam){
             if (dam == null){
                 return q.reject("could not find dam for dam ref");
@@ -317,6 +323,7 @@ greyhoundService.addSireNameFlyweight = function(greyhound){
             return greyhound;
         });
     } else {
+        greyhound.sireName = null;
         return q(greyhound);
     }
 };
@@ -328,6 +335,7 @@ greyhoundService.addDamNameFlyweight = function(greyhound){
             return greyhound;
         });
     } else {
+        greyhound.damName = null;
         return q(greyhound);
     }
 };

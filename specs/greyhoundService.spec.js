@@ -116,7 +116,7 @@ describe("greyhoundService", function(){
             }, done).then(function () {}, done);
         });
 
-        it("should validate a greyhounds dam ref", function (done) {
+        it("should validate a greyhounds dam ref but fail as sire and dam are he same", function (done) {
             var grey = new Greyhound({"name":"james", "sireRef": "54a32fbee39b345cff5841b8", "damRef": "54a32fbee39b345cff5841b8"});
             greyhoundService.validateDamRef(grey).then(function () {
                 done(new Error("this should not pass"));
