@@ -266,8 +266,43 @@ angular.module('controllers').controller('PlacingCtrl', function($scope,
                 if(!greyhound.dateOfBirth){
                     greyhound.dateOfBirth = result.dateOfBirth;
                 }
-                greyhoundSvr.greyhoundUpdate(greyhound);
+
+                return $scope.saveGreyhound(greyhound);
             });
+        }
+    };
+
+    $scope.saveGreyhound = function(greyhound){
+        if (greyhound._id != null){
+            $scope.saveSire(greyhound)
+                .then($scope.saveDam)
+                .then(greyhoundSvr.greyhoundUpdate);
+        }
+    };
+
+    $scope.saveSire = function(greyhound){
+        if (greyhound.sireName != null && greyhound.sireName.length > 0){
+            return greyhoundSvr.findOrCreateGreyhound(greyhound.sireName).then(function(sireGreyhound){
+                greyhound.sireRef = sireGreyhound._id;
+                return greyhound;
+            });
+        } else {
+            greyhound.sireRef = null;
+            greyhound.sireName = null;
+            return $q.when(greyhound);
+        }
+    };
+
+    $scope.saveDam = function(greyhound){
+        if (greyhound.damName != null && greyhound.damName.length > 0){
+            return greyhoundSvr.findOrCreateGreyhound(greyhound.damName).then(function(damGreyhound){
+                greyhound.damRef = damGreyhound._id;
+                return greyhound;
+            });
+        } else {
+            greyhound.damRef = null;
+            greyhound.damName = null;
+            return $q.when(greyhound);
         }
     };
 });
