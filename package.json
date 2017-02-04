@@ -18,7 +18,8 @@
     "dev": "npm start",
     "lint": "node ./node_modules/eslint/bin/eslint.js ./app ./client",
     "spec": "./node_modules/.bin/istanbul cover _mocha ./specs/*.js ./app/**/*Test.js",
-    "test": "npm run lint && npm run spec",
+    "test": "npm run lint && npm run mocha",
+    "mocha": "mocha ./specs/*.js ./app/**/*Test.js",
     "postinstall": "node node_modules/bower/bin/bower install && node node_modules/gulp/bin/gulp js"
   },
   "dependencies": {
