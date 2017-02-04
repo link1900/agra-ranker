@@ -5,6 +5,7 @@ var q = require('q');
 var mongoose = require('mongoose');
 
 mongoose.Promise = Promise;
+const ObjectId = mongoose.Types.ObjectId;
 
 mongoService.find = function(dao, search, limit, offset, sort){
     var deferred = q.defer();
@@ -338,5 +339,13 @@ mongoService.findDistinctByField = function(dao, field, query){
         }
     });
     return deferred.promise;
+};
+
+mongoService.isObjectId = function(objectId) {
+    if (objectId && objectId.toString) {
+        return ObjectId.isValid(objectId.toString());
+    } else {
+        return false;
+    }
 };
 
