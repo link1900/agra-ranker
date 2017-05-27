@@ -1,9 +1,30 @@
 {
-  "extends": "eslint:recommended",
+  "extends": "airbnb-base",
   "env": {
     "node": true,
     "mocha": true,
     "browser": true,
     "es6": true
+  },
+  "rules": {
+    "semi": [2, "always"],
+    "comma-dangle": [2, "never"],
+    "indent": [1, 4, {"SwitchCase": 1}],
+    "import/no-mutable-exports": 0,
+    "import/prefer-default-export": 0,
+    "no-else-return": 0,
+    "no-underscore-dangle": 0,
+    "import/no-extraneous-dependencies": 0,
+    "no-use-before-define": [2, { "functions": false, "classes": true }],
+    "func-names": 0,
+    "arrow-body-style": 0,
+    "max-len": [2, 180, 2],
+    "no-param-reassign": 0,
+    "no-useless-escape": 0,
+    "react/jsx-filename-extension": 0,
+    "no-console": 0,
+    "class-methods-use-this" : 0,
+    "import/no-named-as-default": 0,
+    "no-multi-assign": 0
   }
 }
