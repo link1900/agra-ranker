@@ -16,3 +16,4 @@ test-output/
 client/all.min.js
 coverage
 npm-debug.log
+scripts/database
