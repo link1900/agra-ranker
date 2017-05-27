@@ -88,8 +88,6 @@ main.setupDatabaseConnection = function(mainConfig){
     mongoose.connection.on("open", function () {
         logger.info("Mongoose: open");
         mainConfig.db = db;
-        var grid = require('gridfs-stream');
-        grid.mongo = mongoose.mongo;
         deferred.resolve(mainConfig);
     });
 

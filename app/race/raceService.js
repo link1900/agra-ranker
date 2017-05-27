@@ -4,7 +4,6 @@ var _ = require('lodash');
 var q = require('q');
 var moment = require('moment');
 var logger = require('winston');
-var validator = require('validator');
 var Race = require('./race').model;
 var placingService = require('../placing/placingService');
 var baseService = require('../baseService');
@@ -166,47 +165,6 @@ raceService.createPlacingFromBatch = function (race, placingObject) {
     } else {
         return q.reject("cant create placing without race");
     }
-};
-
-raceService.rawCsvArrayToRaceText = function (rawRow) {
-    var race = {
-        name: rawRow[0],
-        dateText: rawRow[1],
-        groupText: rawRow[2],
-        lengthText: rawRow[3]
-    };
-
-    race.placingObjects = [];
-    var placingArray = rawRow.slice(4);
-    for (var i = 0; i < placingArray.length; i++) {
-        var nextPlacing = {};
-        nextPlacing.greyhoundName = placingArray[i].toUpperCase().trim();
-        if (i + 1 < placingArray.length) {
-            nextPlacing.placing = placingArray[i + 1];
-            i++;
-        }
-        if (!validator.isNull(nextPlacing.greyhoundName) &&
-            validator.isLength(nextPlacing.greyhoundName, 1) && !validator.isNull(nextPlacing.placing) &&
-            validator.isLength(nextPlacing.placing, 1)
-        ) {
-            race.placingObjects.push(nextPlacing);
-        }
-    }
-
-    if (race.name != null) {
-        race.name = race.name.trim();
-    }
-    if (race.dateText) {
-        race.dateText = race.dateText.trim();
-    }
-    if (race.groupText) {
-        race.groupText = race.groupText.trim();
-    }
-    if (race.lengthText) {
-        race.lengthText = race.lengthText.trim();
-    }
-
-    return race;
 };
 
 raceService.checkNameAndDateDoNotExist = function (model) {

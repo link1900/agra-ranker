@@ -59,30 +59,6 @@ describe("raceService", function(){
         });
     });
 
-    describe("#rawCsvArrayToRaceText", function(){
-        it("should return a race object", function(){
-            var raceRow = ["VIC PETERS CLASSIC","1/11/2014 12:00:00 AM","Group 1","Sprint","LUCY LOBSTER","1","JEWEL ACTION","2","ANYTHING LESS","3","XTREME KNOCKA","4","COSMIC ANGEL","5","ALL STRUNG OUT","6","LA GRAND LOGIE","7","FRATTINI","8"];
-            var expectedRace = {
-                name : "VIC PETERS CLASSIC",
-                dateText: "1/11/2014 12:00:00 AM",
-                groupText: "Group 1",
-                lengthText: "Sprint",
-                placingObjects: [
-                    {"greyhoundName": "LUCY LOBSTER","placing": "1"},
-                    {"greyhoundName": "JEWEL ACTION","placing": "2"},
-                    {"greyhoundName": "ANYTHING LESS", "placing": "3"},
-                    {"greyhoundName": "XTREME KNOCKA","placing": "4"},
-                    {"greyhoundName": "COSMIC ANGEL","placing": "5"},
-                    {"greyhoundName": "ALL STRUNG OUT","placing": "6"},
-                    {"greyhoundName": "LA GRAND LOGIE","placing": "7"},
-                    {"greyhoundName": "FRATTINI","placing": "8"}
-                ]
-            };
-            var raceResult = raceService.rawCsvArrayToRaceText(raceRow);
-            assert.deepEqual(raceResult, expectedRace);
-        });
-    });
-
     describe("events", function() {
         it("should issue create event on creation", function(done){
             eventService.addListener("testCreate","Created Race", function(){
