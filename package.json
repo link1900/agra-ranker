@@ -17,7 +17,7 @@
     "start": "node node_modules/gulp/bin/gulp",
     "dev": "npm start",
     "lint": "node ./node_modules/eslint/bin/eslint.js ./app ./client",
-    "lint-fix": "node ./node_modules/eslint/bin/eslint.js ./app ./client --fix",
+    "lint-fix": "node ./node_modules/eslint/bin/eslint.js --fix ./app ./client",
     "spec": "./node_modules/.bin/istanbul cover _mocha ./specs/*.js ./app/**/*Test.js",
     "test": "npm run lint && npm run mocha",
     "mocha": "mocha ./specs/*.js ./app/**/*Test.js",
@@ -49,7 +49,10 @@
   },
   "devDependencies": {
     "eslint": "3.19.0",
-    "eslint-config-airbnb": "15.0.0",
+    "eslint-config-airbnb-base": "11.2.0",
+    "eslint-plugin-import": "2.2.0",
+    "eslint-plugin-jsx-a11y": "5.0.3",
+    "eslint-plugin-react": "7.0.1",
     "istanbul": "0.4.5",
     "mocha": "3.4.2",
     "supertest": "0.10.0"
