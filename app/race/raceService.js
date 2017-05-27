@@ -6,7 +6,6 @@ var moment = require('moment');
 var logger = require('winston');
 var validator = require('validator');
 var Race = require('./race').model;
-var batchService = require('../batch/batchService');
 var placingService = require('../placing/placingService');
 var baseService = require('../baseService');
 
@@ -57,29 +56,6 @@ raceService.validateRace = function (race) {
     }
 
     return q(race);
-};
-
-raceService.processRaceCsvRow = function (record) {
-    var batchRecord = {stepResults: [], record: raceService.rawCsvArrayToRaceText(record)};
-    return raceService.setRaceObject(batchRecord)
-        .then(raceService.setGroupLevel)
-        .then(raceService.setRaceDate)
-        .then(raceService.checkForDuplicateRace)
-        .then(raceService.setRaceLength)
-        .then(raceService.createRaceForBatch)
-        .then(raceService.createPlacingsForBatch)
-        .then(function (finalBatchRecord) {
-            return {isSuccessful: true, stepResults: finalBatchRecord.stepResults};
-        }).fail(function (error) {
-            var errorResults = [];
-            if (error == null || error.stepResults == null) {
-                errorResults = [error];
-            } else {
-                errorResults = error.stepResults;
-            }
-            logger.log("info", "error importing race csv record: " + record + " reason: " + errorResults);
-            return q({isSuccessful: false, stepResults: errorResults});
-        });
 };
 
 raceService.setRaceObject = function (batchRecord) {
@@ -244,12 +220,6 @@ raceService.checkNameAndDateDoNotExist = function (model) {
         }
     });
 };
-
-raceService.importRaceCSV = function (batchJob) {
-    return batchService.processBatchJobFile(batchJob, raceService.processRaceCsvRow);
-};
-
-batchService.loadBatchHandler("importRaceCSV", raceService.importRaceCSV);
 
 raceService.toExportFormat = function (raceRecord) {
     var exportRecord = {};

@@ -1,13 +1,9 @@
 var greyhoundController = require('./greyhound/greyhoundController');
-var batchController = require('./batch/batchController');
-var batchResultController = require('./batch/batchResultController');
 var raceController = require('./race/raceController');
 var placingController = require('./placing/placingController');
 var rankingSystemController = require('./ranking/rankingSystemController');
 var rankingController = require('./ranking/rankingController');
 var adminController = require('./admin/adminController');
-var fileController = require('./file/fileController');
-var exportController = require('./export/exportController');
 var settingController = require('./setting/settingController');
 var helper = require('./helper');
 var jwtChecker = require('express-jwt');
@@ -18,18 +14,6 @@ var checkAuthentication = jwtChecker({
 });
 
 module.exports = function(app) {
-    //batch routes
-    app.get('/batch',checkAuthentication, batchController.prepareBatchQuery, helper.runQuery);
-    app.get('/batch/:batchId',checkAuthentication, helper.getOne);
-    app.get('/batch/:batchId/totals',checkAuthentication, batchController.totalForBatch);
-    app.put('/batch/:batchId',checkAuthentication, helper.mergeBody, batchController.checkFields, helper.save);
-    app.del('/batch/:batchId',checkAuthentication, batchController.destroy);
-    app.param('batchId',checkAuthentication, batchController.setBatch);
-
-    //batch record routes
-    app.get('/batchResult', checkAuthentication, batchResultController.find);
-    app.get('/batchResult/:batchResultId',checkAuthentication, batchResultController.getOne);
-    app.param('batchResultId',checkAuthentication, batchResultController.setModel);
 
     //greyhound routes
     app.get('/greyhound', greyhoundController.find);
@@ -76,20 +60,7 @@ module.exports = function(app) {
     app.get('/ranking.csv', rankingController.exportCSV);
     app.get('/ranking.grid.csv', rankingController.exportCSVGrid);
     app.param('rankingId', rankingController.setModel);
-
-    //file routes
-    app.get('/file', checkAuthentication, fileController.prepareQuery, helper.runQuery);
-    app.get('/file/:fileId', checkAuthentication, helper.getOne);
-    app.get('/file/:fileId/download', checkAuthentication, fileController.downloadFile);
-    app.del('/file/:fileId', checkAuthentication, fileController.destroy);
-    app.post('/file/:uploadType',checkAuthentication, fileController.uploadFile);
-    app.param('uploadType',checkAuthentication, fileController.setUploadType);
-    app.param('fileId', fileController.setModel);
-
-    app.post('/export/:exportCollection/:exportType',checkAuthentication, exportController.exportCollection);
-    app.param('exportCollection', exportController.setExportCollection);
-    app.param('exportType', exportController.setExportType);
-
+    
     //admin
     app.del('/admin/drop/:collectionName', checkAuthentication, adminController.dropCollection);
     app.post('/admin/setup/:collectionName', checkAuthentication, adminController.setupCollection);

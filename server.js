@@ -23,8 +23,7 @@ main.start = _.once(function(){
         .then(main.checkEnvs)
         .then(main.setupDatabaseConnection)
         .then(main.applyMigrations)
-        .then(main.setupHTTP)
-        .then(main.setupBatchService).then(function(){
+        .then(main.setupHTTP).then(function(){
             logger.info("Started system successfully");
         }, function(err){
             logger.log('error', err.message, err.stack);
@@ -132,12 +131,6 @@ main.setupHTTP = function(mainConfig){
     server.listen(port);
     logger.info('Express app started on port ' + port);
     return deferred.promise;
-};
-
-main.setupBatchService = function(mainConfig){
-    var batchService = require('./app/batch/batchService');
-    batchService.startBatchProcessors();
-    return q(mainConfig);
 };
 
 main.applyMigrations = function(mainConfig){

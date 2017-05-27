@@ -10,10 +10,6 @@ var placingService = require('../placing/placingService');
 var Ranking = mongoose.model('Ranking');
 var Score = mongoose.model('Score');
 var RankingSystem = mongoose.model('RankingSystem');
-var BatchJob = require('../batch/batchJob').model;
-var BatchResult = require('../batch/batchResult').model;
-var File = require('../file/file').model;
-var Chunk = require('../file/file').chunkModel;
 var Setting = require('../setting/setting').model;
 var mongoService = require('../mongoService');
 
@@ -29,21 +25,9 @@ adminService.removeAllRaces = function(){
     });
 };
 
-adminService.removeAllBatchJobs = function(){
-    return mongoService.dropCollection(BatchResult).then(function(){
-        return mongoService.dropCollection(BatchJob);
-    });
-};
-
 adminService.removeAllRankingSystems = function(){
     return mongoService.dropCollection(Ranking).then(function(){
         return mongoService.dropCollection(RankingSystem);
-    });
-};
-
-adminService.removeAllFiles = function(){
-    return mongoService.dropCollection(Chunk).then(function(){
-        return mongoService.dropCollection(File);
     });
 };
 
@@ -197,18 +181,6 @@ adminService.getAllCounts = function(){
         }),
         mongoService.getCollectionCount(RankingSystem).then(function(count){
             return {"rankingSystem": count};
-        }),
-        mongoService.getCollectionCount(BatchResult).then(function(count){
-            return {"batchJob": count};
-        }),
-        mongoService.getCollectionCount(BatchJob).then(function(count){
-            return {"batchResult": count};
-        }),
-        mongoService.getCollectionCount(File).then(function(count){
-            return {"file": count};
-        }),
-        mongoService.getCollectionStats(Chunk).then(function(stats){
-            return {"fileSize":stats.size};
         })
     ];
 

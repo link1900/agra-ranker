@@ -1,13 +1,10 @@
 var greyhoundService = module.exports = {};
 
-var csv = require('csv');
 var q = require('q');
 var _ = require('lodash');
 var logger = require('winston');
 
 var Greyhound = require('./greyhound').model;
-var batchService = require('../batch/batchService');
-var fileService = require('../file/fileService');
 var mongoService = require('../mongoService');
 var baseService = require('../baseService');
 var eventService = require('../event/eventService');
@@ -367,79 +364,6 @@ greyhoundService.greyhoundToExportFormat = function(greyhound){
     return exportFormat;
 };
 
-greyhoundService.exportGreyhoundCSV = function(batchJob){
-    var startedAt = new Date();
-    return fileService.streamCollectionToFile(Greyhound, batchJob.metadata.fileName, {}, greyhoundService.greyhoundToExportFormat).then(function(result){
-        if (result != null){
-            if (batchJob.metadata == null){
-                batchJob.metadata = {};
-            }
-            batchJob.metadata.fileId = result.fileId;
-            batchJob.markModified('metadata');
-        }
-        return batchService.updateBatchJob(batchJob).then(function(){
-            return batchService.createBatchResult(batchJob._id,
-                1,
-                batchService.getBatchResultFromBoolean(true),
-                startedAt,
-                "Created file " + batchJob.metadata.fileName + " successfully",
-                []
-            );
-        });
-    });
-};
-
-greyhoundService.processGreyhoundCSV = function(batchJob){
-    var deferred = q.defer();
-    if (batchJob.type != null &&
-        batchJob.type == "importGreyhoundCSV" &&
-        batchJob.metadata != null &&
-        batchJob.metadata.fileId != null){
-        //find the file and stream it in
-        var fileReadStream =  fileService.getFileReadStream(batchJob.metadata.fileId);
-        var recordCount = 0;
-        fileReadStream.on('error', function(fileReadError){
-            logger.log('error', "error streaming from gridfs", fileReadError);
-            deferred.reject(fileReadError);
-        });
-
-        var parser = csv.parse();
-
-        parser.on('data', function(record){
-            parser.pause();
-            recordCount += 1;
-            var index = recordCount;
-            var recordStart = new Date();
-            return greyhoundService.processGreyhoundRow(record).then(function(resultInfo) {
-                var resultType = batchService.getBatchResultFromBoolean(resultInfo.isSuccessful);
-                return batchService.createBatchResult(batchJob._id,
-                    index,
-                    resultType,
-                    recordStart,
-                    record,
-                    resultInfo.stepResults
-                ).then(function(){
-                    parser.resume();
-                });
-            });
-        });
-
-        parser.on('finish', function(){
-            deferred.resolve({results: true});
-        });
-
-        parser.on('error', function(parserError){
-            logger.log('error',"error parsing csv", parserError);
-            deferred.reject(parserError);
-        });
-
-        fileReadStream.pipe(parser);
-    } else {
-        deferred.reject({error: "batch job does not contain enough data to process"});
-    }
-    return deferred.promise;
-};
-
 eventService.addListener("greyhound update listener","Updated Greyhound", function(event){
     if (event != null && event.data != null && event.data.entity != null && event.data.entity._id != null){
         return greyhoundService.find({ $or: [{sireRef: event.data.entity._id}, {damRef: event.data.entity._id}]}).then(function(results){
@@ -491,6 +415,3 @@ eventService.addListener("greyhound deleted listener","Deleted Greyhound", funct
         return q();
     }
 });
-
-batchService.loadBatchHandler("importGreyhoundCSV", greyhoundService.processGreyhoundCSV);
-batchService.loadBatchHandler("exportGreyhoundCSV", greyhoundService.exportGreyhoundCSV);

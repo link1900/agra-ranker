@@ -16,12 +16,6 @@ adminController.dropCollection = function(req, res){
         case 'race' :
             helper.responseFromPromise(res, adminService.removeAllRaces());
             break;
-        case 'batch' :
-            helper.responseFromPromise(res, adminService.removeAllBatchJobs());
-            break;
-        case 'file' :
-            helper.responseFromPromise(res, adminService.removeAllFiles());
-            break;
         case 'rankingSystem' :
             helper.responseFromPromise(res, adminService.removeAllRankingSystems());
             break;

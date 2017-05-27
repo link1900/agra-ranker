@@ -83,34 +83,6 @@ describe("raceService", function(){
         });
     });
 
-    describe("#processRaceCsvRow", function(){
-        it("should create a race and placings", function(done){
-            var record =
-            ["VIC PETERS CLASSIC",
-                "1/11/2014 12:00:00 AM",
-                "Group 1",
-                "Sprint",
-                "LUCY LOBSTER", "1",
-                "JEWEL ACTION", "2",
-                "ANYTHING LESS", "3",
-                "XTREME KNOCKA",  "4",
-                "COSMIC ANGEL", "5",
-                "ALL STRUNG OUT","6",
-                "LA GRAND LOGIE","7",
-                "FRATTINI","8"
-            ];
-            raceService.processRaceCsvRow(record).then(function(result){
-                if (result.isSuccessful){
-                    done();
-                } else {
-                    done(result.stepResults);
-                }
-            }, function(error){
-                done(error);
-            });
-        });
-    });
-
     describe("events", function() {
         it("should issue create event on creation", function(done){
             eventService.addListener("testCreate","Created Race", function(){
@@ -143,33 +115,10 @@ describe("raceService", function(){
             raceService.remove(race5).then(function(){}, done);
         });
 
-        it("should issue create event on batch import", function(done){
-            eventService.addListener("testBatch","Created Race", function(){
-                done();
-            });
-
-            var record =
-                ["VIC PETERS CLASSIC",
-                    "1/11/2014 12:00:00 AM",
-                    "Group 1",
-                    "Sprint",
-                    "LUCY LOBSTER", "1",
-                    "JEWEL ACTION", "2",
-                    "ANYTHING LESS", "3",
-                    "XTREME KNOCKA",  "4",
-                    "COSMIC ANGEL", "5",
-                    "ALL STRUNG OUT","6",
-                    "LA GRAND LOGIE","7",
-                    "FRATTINI","8"
-                ];
-            raceService.processRaceCsvRow(record).then(function(){}, done);
-        });
-
         afterEach(function(){
             eventService.removeListenerByName("testCreate");
             eventService.removeListenerByName("testUpdate");
             eventService.removeListenerByName("testDelete");
-            eventService.removeListenerByName("testBatch");
         });
     });
 
