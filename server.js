@@ -71,7 +71,7 @@ main.setupLogging = function(mainConfig){
 main.loadConfig = function(mainConfig){
     // Load configurations
     dotenv.load();
-    // Set the node enviornment variable if not set before
+    // Set the node env variable if not set before
     process.env.NODE_ENV = process.env.NODE_ENV || 'development';
     return q(mainConfig);
 };

@@ -41,21 +41,6 @@ angular.module('core').config(function declareRoutes($routeProvider) {
         .when('/rankingSystem', {
             templateUrl: '/ranker/rankingSystem/rankingSystem.html'
         })
-        .when('/batch', {
-            templateUrl: '/ranker/batch/batch.html'
-        })
-        .when('/batch/view/:id', {
-            templateUrl: '/ranker/batch/batchView.html'
-        })
-        .when('/batchResult/view/:id', {
-            templateUrl: '/ranker/batch/batchResultView.html'
-        })
-        .when('/file', {
-            templateUrl: '/ranker/file/file.html'
-        })
-        .when('/file/view/:id', {
-            templateUrl: '/ranker/file/fileView.html'
-        })
         .otherwise({
             redirectTo: '/'
         });
