@@ -7,15 +7,16 @@ process.env.testUrl = 'http://localhost:3001';
 process.env.FIRST_USER_PASSCODE = 'teststart';
 
 const request = require('supertest');
-const siteUrl = process.env.testUrl;
 const jwt = require('jsonwebtoken');
 const RankingSystem = require('../app/ranking/rankingSystem').model;
 const Race = require('../app/race/race').model;
 const Greyhound = require('../app/greyhound/greyhound').model;
 const Placing = require('../app/placing/placing').model;
+const server = require('../server.js');
+
+const siteUrl = process.env.testUrl;
 testHelper.publicSession = request.agent(siteUrl);
 testHelper.authSession = request.agent(siteUrl);
-const server = require('../server.js');
 
 testHelper.createAuthTestToken = function (done) {
     const user = { email: 'link1900@gmail.com' };

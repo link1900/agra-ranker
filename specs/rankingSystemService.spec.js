@@ -3,6 +3,7 @@ const assert = require('assert');
 const testHelper = require('./testHelper');
 const Placing = require('../app/placing/placing').model;
 const RankingSystem = require('../app/ranking/rankingSystem').model;
+
 let rankingSystemService = null;
 
 describe('rankingService', () => {

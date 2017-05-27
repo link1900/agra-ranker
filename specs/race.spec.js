@@ -22,8 +22,8 @@ describe('Race', () => {
                 .end((err, res) => {
                     if (err) { throw err; }
                     assert(res.body.length > 0);
-                    assert(res.body.indexOf(515) != -1);
-                    assert(res.body.indexOf(715) != -1);
+                    assert(res.body.indexOf(515) !== -1);
+                    assert(res.body.indexOf(715) !== -1);
                     done();
                 });
         });

@@ -1,8 +1,9 @@
 const assert = require('assert');
 const Greyhound = require('../app/greyhound/greyhound').model;
-let greyhoundService = null;
 const testHelper = require('./testHelper');
 const eventService = require('../app/event/eventService');
+
+let greyhoundService = null;
 
 describe('greyhoundService', () => {
     before((done) => {

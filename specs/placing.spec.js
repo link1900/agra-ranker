@@ -410,8 +410,8 @@ describe('Placing', () => {
                         .set('Accept', 'application/json')
                         .expect('Content-Type', /json/)
                         .expect(200)
-                        .end((err, raceUpdateRes) => {
-                            if (err) { throw err; }
+                        .end((errB, raceUpdateRes) => {
+                            if (errB) { throw errB; }
                             assert.equal(raceUpdateRes.body.name, 'differentRace');
 
                             testHelper.authSession
@@ -420,8 +420,8 @@ describe('Placing', () => {
                                 .set('Accept', 'application/json')
                                 .expect('Content-Type', /json/)
                                 .expect(200)
-                                .end((err, res) => {
-                                    if (err) { throw err; }
+                                .end((errC, res) => {
+                                    if (errC) { throw errC; }
                                     assert.equal(res.body.race._id, '531d1f72e407586c21476ea8');
                                     assert.equal(res.body.race.name, 'differentRace');
                                     done();
@@ -455,8 +455,8 @@ describe('Placing', () => {
                         .set('Accept', 'application/json')
                         .expect('Content-Type', /json/)
                         .expect(200)
-                        .end((err, update2) => {
-                            if (err) { throw err; }
+                        .end((errB, update2) => {
+                            if (errB) { throw errB; }
                             assert.equal(update2.body.name, 'DIFFERENT');
 
                             testHelper.authSession
@@ -465,8 +465,8 @@ describe('Placing', () => {
                                 .set('Accept', 'application/json')
                                 .expect('Content-Type', /json/)
                                 .expect(200)
-                                .end((err, res) => {
-                                    if (err) { throw err; }
+                                .end((errC, res) => {
+                                    if (errC) { throw errC; }
                                     assert.equal(res.body.greyhound._id, '531d1f74e407586c214773df');
                                     assert.equal(res.body.greyhound.name, 'DIFFERENT');
                                     done();

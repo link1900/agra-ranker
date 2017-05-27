@@ -311,9 +311,9 @@ describe('Greyhound', () => {
                     }
                     testHelper.authSession
                         .get('/greyhound/531d1f72e407586c21476e49')
-                        .end((err, res) => {
-                            if (err) {
-                                throw err;
+                        .end((errB, res) => {
+                            if (errB) {
+                                throw errB;
                             }
 
                             assert(res.body.name === 'grey4');
@@ -336,9 +336,9 @@ describe('Greyhound', () => {
                     }
                     testHelper.authSession
                         .get('/greyhound/531d1f72e407586c21476e49')
-                        .end((err, res) => {
-                            if (err) {
-                                throw err;
+                        .end((errB, res) => {
+                            if (errB) {
+                                throw errB;
                             }
 
                             assert(res.body.name === 'grey4');

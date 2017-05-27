@@ -3,6 +3,7 @@ const testHelper = require('./testHelper');
 const Placing = require('../app/placing/placing').model;
 const RankingSystem = require('../app/ranking/rankingSystem').model;
 const Ranking = require('../app/ranking/ranking').model;
+
 let rankingService = null;
 
 describe('rankingService', () => {
