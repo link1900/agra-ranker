@@ -1,6 +1,7 @@
 const setting = module.exports = {};
 const mongoose = require('mongoose');
 const timestamps = require('mongoose-concrete-timestamps');
+
 const Schema = mongoose.Schema;
 
 setting.definition = {

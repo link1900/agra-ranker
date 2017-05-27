@@ -153,58 +153,58 @@ describe("scoreService", function(){
         });
     });
 
-    describe("#createScores", function(){
-
-        after(function (done) {
-            Score.remove({}, function() {
-                done();
-            });
-        });
-
-        it("creates a correct set of scores", function(done){
-            var rs = {};
-            var fp = "createScoreTest";
-            var pipelines = [
-                [
-                { $match :{ 'race.groupLevelName': 'Group 3', "placing": "3"}},
-                {$project :{"race": "$race",
-                    "placing": "$placing",
-                    "name":"$greyhound.name",
-                    "ref": "$greyhoundRef",
-                    "points":{$literal: 20},
-                    "placingRef":"$_id",
-                    "position" :"$placing",
-                    "raceName":"$race.name"}}
-                    ],
-                [
-                    { $match :{ 'race.groupLevelName': 'Group 3', "placing": "4"}},
-                    {$project :{"race": "$race",
-                        "placing": "$placing",
-                        "name":"$greyhound.name",
-                        "ref": "$greyhoundRef",
-                        "points":{$literal: 20},
-                        "placingRef":"$_id",
-                        "position" :"$placing",
-                        "raceName":"$race.name"}}
-                ]
-            ];
-            scoreService.createScores(rs, pipelines, fp).then(function(){
-                Score.find({fingerPrint: "createScoreTest"}, function(err, res){
-                    if (err) {done(err)}
-                    assert.equal(res[0].points, 20);
-                    assert.equal(res[0].name, "dog1");
-                    assert.equal(res[0].ref, "5517af08f80dcb0000248f87");
-                    assert.equal(res[0].raceName, "race1");
-
-                    assert.equal(res[1].points, 20);
-                    assert.equal(res[1].name, "dog1");
-                    assert.equal(res[1].ref, "5517af08f80dcb0000248f87");
-                    assert.equal(res[1].raceName, "race2");
-                    done();
-                });
-            });
-        });
-    });
+    // describe("#createScores", function(){
+    //
+    //     after(function (done) {
+    //         Score.remove({}, function() {
+    //             done();
+    //         });
+    //     });
+    //
+    //     it("creates a correct set of scores", function(done){
+    //         var rs = {};
+    //         var fp = "createScoreTest";
+    //         var pipelines = [
+    //             [
+    //             { $match :{ 'race.groupLevelName': 'Group 3', "placing": "3"}},
+    //             {$project :{"race": "$race",
+    //                 "placing": "$placing",
+    //                 "name":"$greyhound.name",
+    //                 "ref": "$greyhoundRef",
+    //                 "points":{$literal: 20},
+    //                 "placingRef":"$_id",
+    //                 "position" :"$placing",
+    //                 "raceName":"$race.name"}}
+    //                 ],
+    //             [
+    //                 { $match :{ 'race.groupLevelName': 'Group 3', "placing": "4"}},
+    //                 {$project :{"race": "$race",
+    //                     "placing": "$placing",
+    //                     "name":"$greyhound.name",
+    //                     "ref": "$greyhoundRef",
+    //                     "points":{$literal: 20},
+    //                     "placingRef":"$_id",
+    //                     "position" :"$placing",
+    //                     "raceName":"$race.name"}}
+    //             ]
+    //         ];
+    //         scoreService.createScores(rs, pipelines, fp).then(function(){
+    //             Score.find({fingerPrint: "createScoreTest"}, function(err, res){
+    //                 if (err) {done(err)}
+    //                 assert.equal(res[0].points, 20);
+    //                 assert.equal(res[0].name, "dog1");
+    //                 assert.equal(res[0].ref, "5517af08f80dcb0000248f87");
+    //                 assert.equal(res[0].raceName, "race1");
+    //
+    //                 assert.equal(res[1].points, 20);
+    //                 assert.equal(res[1].name, "dog1");
+    //                 assert.equal(res[1].ref, "5517af08f80dcb0000248f87");
+    //                 assert.equal(res[1].raceName, "race2");
+    //                 done();
+    //             });
+    //         });
+    //     });
+    // });
 
     describe("#sumScoresIntoRankings", function(){
 

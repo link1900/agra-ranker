@@ -1,6 +1,7 @@
 const event = module.exports = {};
 const mongoose = require('mongoose');
 const timestamps = require('mongoose-concrete-timestamps');
+
 const Schema = mongoose.Schema;
 
 event.definition = {

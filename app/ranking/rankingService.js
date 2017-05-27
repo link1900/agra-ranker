@@ -68,7 +68,7 @@ rankingService.addRankToRankingSet = function (rankingsFingerPrint) {
         });
         return q.allSettled(proms).then((results) => {
             return results.filter((item) => {
-                return item.state == 'fulfilled';
+                return item.state === 'fulfilled';
             }).map((i) => { return i.value; });
         });
     });
@@ -155,22 +155,22 @@ rankingService.transformCSV = function (ranking) {
 rankingService.toCSVGrid = function (rankings) {
     const colSize = 34;
     const results = [];
-    for (let i = 0; i < colSize; i++) {
+    for (let i = 0; i < colSize; i+=1) {
         const result = {};
         const col1 = rankings[i];
         const col2 = rankings[i + colSize];
-        const col3 = rankings[i + colSize * 2];
-        if (col1 != null) {
+        const col3 = rankings[i + (colSize * 2)];
+        if (col1) {
             result.rank1 = col1.rank;
             result.name1 = col1.greyhoundName;
             result.pts1 = col1.totalPoints;
         }
-        if (col2 != null) {
+        if (col2) {
             result.rank2 = col2.rank;
             result.name2 = col2.greyhoundName;
             result.pts2 = col2.totalPoints;
         }
-        if (col3 != null) {
+        if (col3) {
             result.rank3 = col3.rank;
             result.name3 = col3.greyhoundName;
             result.pts3 = col3.totalPoints;

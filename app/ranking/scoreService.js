@@ -26,7 +26,7 @@ scoreService.createScores = function (rankingSystem, pipelines, rankingsFingerPr
     });
     return q.allSettled(proms).then((results) => {
         return results.filter((item) => {
-            return item.state == 'fulfilled';
+            return item.state === 'fulfilled';
         }).map((i) => { return i.value; });
     });
 };
@@ -47,9 +47,9 @@ scoreService.createScore = function (rankingSystem, pipeline, rankingsFingerPrin
             });
             return scoreService.create(score);
         });
-        return q.allSettled(proms).then((results) => {
-            return results.filter((item) => {
-                return item.state == 'fulfilled';
+        return q.allSettled(proms).then((resultsB) => {
+            return resultsB.filter((item) => {
+                return item.state === 'fulfilled';
             }).map((i) => { return i.value; });
         });
     });
@@ -75,9 +75,9 @@ scoreService.sumScoresIntoRankings = function (rankingSystem, rankingsFingerPrin
             });
             return rankingService.create(ranking);
         });
-        return q.allSettled(proms).then((results) => {
-            return results.filter((item) => {
-                return item.state == 'fulfilled';
+        return q.allSettled(proms).then((resultsB) => {
+            return resultsB.filter((item) => {
+                return item.state === 'fulfilled';
             }).map((i) => { return i.value; });
         });
     });

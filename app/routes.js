@@ -5,6 +5,7 @@ const rankingSystemController = require('./ranking/rankingSystemController');
 const rankingController = require('./ranking/rankingController');
 const adminController = require('./admin/adminController');
 const settingController = require('./setting/settingController');
+const eventController = require('./event/eventController');
 const helper = require('./helper');
 const jwtChecker = require('express-jwt');
 
@@ -67,7 +68,6 @@ module.exports = function (app) {
     app.param('collectionName', adminController.setCollectionName);
 
     // event
-    const eventController = require('./event/eventController');
     app.get('/event', eventController.find);
     app.get('/event/:eventId', eventController.getOne);
     app.param('eventId', eventController.setModel);

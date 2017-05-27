@@ -2,7 +2,7 @@ const raceService = module.exports = {};
 
 const _ = require('lodash');
 const q = require('q');
-const moment = require('moment');
+const moment = require('moment-timezone');
 const logger = require('winston');
 const Race = require('./race').model;
 const placingService = require('../placing/placingService');
@@ -29,7 +29,7 @@ raceService.validateRace = function (race) {
         return q.reject('name field is required');
     }
 
-    if (race.name.length == 0) {
+    if (race.name.length === 0) {
         return q.reject('name cannot be blank');
     }
 
@@ -50,7 +50,7 @@ raceService.validateRace = function (race) {
         return q.reject('must have a distance meters');
     }
 
-    if (race.disqualified == undefined || race.disqualified == null) {
+    if (race.disqualified === undefined || race.disqualified === null) {
         return q.reject('must have a disqualified');
     }
 
@@ -114,7 +114,7 @@ raceService.setRaceDate = function (batchRecord) {
 
 raceService.setRaceLength = function (batchRecord) {
     if (batchRecord.record.lengthText != null) {
-        if (batchRecord.record.lengthText == 'Distance') {
+        if (batchRecord.record.lengthText === 'Distance') {
             batchRecord.race.distanceMeters = 595;
         } else {
             batchRecord.race.distanceMeters = 500;
@@ -141,7 +141,7 @@ raceService.createPlacingsForBatch = function (batchRecord) {
         });
         return q.allSettled(proms).then((results) => {
             let failures = results.filter((i) => {
-                return i.state == 'rejected';
+                return i.state === 'rejected';
             });
             failures = failures.map((i) => {
                 return `failed to create placing: ${i.reason}`;
@@ -169,9 +169,9 @@ raceService.createPlacingFromBatch = function (race, placingObject) {
 
 raceService.checkNameAndDateDoNotExist = function (model) {
     return raceService.find({ name: model.name, date: model.date }).then((results) => {
-        if (results.length == 0) {
+        if (results.length === 0) {
             return q(model);
-        } else if (results.length == 1 && _.isEqual(results[0]._id, model._id)) {
+        } else if (results.length === 1 && _.isEqual(results[0]._id, model._id)) {
             return q(model);
         } else {
             return q.reject('cannot have the same name and date as an existing race');

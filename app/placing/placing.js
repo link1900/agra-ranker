@@ -2,9 +2,11 @@ const placing = module.exports = {};
 
 const mongoose = require('mongoose');
 const timestamps = require('mongoose-concrete-timestamps');
-const Schema = mongoose.Schema;
 const RaceSchema = require('../race/race').definition;
 const GreyhoundDefinition = require('../greyhound/greyhound').definition;
+
+const Schema = mongoose.Schema;
+
 
 placing.definition = {
     placing: { type: String },

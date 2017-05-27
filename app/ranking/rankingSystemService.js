@@ -2,7 +2,7 @@ const rankingSystemService = module.exports = {};
 
 const _ = require('lodash');
 const q = require('q');
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 const mongoService = require('../mongoService');
 const RankingSystem = require('./rankingSystem').model;
@@ -69,25 +69,25 @@ rankingSystemService.validateAllotmentCriteria = function (criteria) {
             return q.reject(`criteria type must be one of the following: ${validTypeSet.join(',')}`);
         }
 
-        if (criteria.type == 'Text') {
+        if (criteria.type === 'Text') {
             if (!_.isString(criteria.value)) {
                 return q.reject('if criteria type is text the value must be a text');
             }
         }
 
-        if (criteria.type == 'Number') {
+        if (criteria.type === 'Number') {
             if (!_.isNumber(criteria.value)) {
                 return q.reject('if criteria type is number the value must be a number');
             }
         }
 
-        if (criteria.type == 'Date') {
+        if (criteria.type === 'Date') {
             if (!_.isDate(criteria.value)) {
                 return q.reject('if criteria type is date the value must be a date');
             }
         }
 
-        if (criteria.type == 'Boolean') {
+        if (criteria.type === 'Boolean') {
             if (!_.isBoolean(criteria.value)) {
                 return q.reject('if criteria type is boolean the value must be a boolean');
             }
@@ -120,7 +120,7 @@ rankingSystemService.validate = function (entityRequest) {
         return q.reject('name field is required');
     }
 
-    if (model.name.length == 0) {
+    if (model.name.length === 0) {
         return q.reject('name cannot be blank');
     }
 
@@ -144,9 +144,9 @@ rankingSystemService.validate = function (entityRequest) {
 
 rankingSystemService.checkNameDoesNotExist = function (model) {
     return mongoService.find(RankingSystem, { name: model.name }).then((results) => {
-        if (results.length == 0) {
+        if (results.length === 0) {
             return q(true);
-        } else if (results.length == 1 && _.isEqual(results[0]._id, model._id)) {
+        } else if (results.length === 1 && _.isEqual(results[0]._id, model._id)) {
             return q(true);
         } else {
             return q.reject('cannot have the same name as an existing ranking system');
@@ -158,7 +158,7 @@ rankingSystemService.getQueryForPointAllotment = function (pointAllotment) {
     const query = {};
     pointAllotment.criteria.forEach((criteria) => {
         // replace placeholders
-        if (criteria.value != null && _.isString(criteria.value) && criteria.value.indexOf('##') == 0) {
+        if (criteria.value != null && _.isString(criteria.value) && criteria.value.indexOf('##') === 0) {
             criteria.value = rankingSystemService.convertPlaceHolder(criteria.value);
         }
     });
@@ -213,15 +213,29 @@ rankingSystemService.convertPlaceHolder = function (placeholder) {
 rankingSystemService.getFinancialYearForDate = function (now) {
     const midYear = moment(now).set('month', 'July').set('date', 1).startOf('day');
     if (midYear.isAfter(now)) {
-        return { start: midYear.clone().subtract(12, 'months').toDate(), end: midYear.subtract(1, 'days').endOf('day').toDate() };
+        const start = midYear.clone().subtract(12, 'months').toDate();
+        const end = midYear.subtract(1, 'days')
+            .endOf('day')
+            .toDate();
+        return { start , end };
     } else {
-        return { start: midYear.toDate(), end: midYear.clone().add(12, 'months').subtract(1, 'days').endOf('day').toDate() };
+        const start = midYear.toDate();
+        const end = midYear.clone()
+            .add(12, 'months')
+            .subtract(1, 'days')
+            .endOf('day')
+            .toDate();
+        return { start, end };
     }
 };
 
 rankingSystemService.getYearForDate = function (now) {
     const startYear = moment(now).set('month', 'Jan').set('date', 1).startOf('day').toDate();
-    const endYear = moment(now).set('month', 'Dec').set('date', 31).endOf('day').toDate();
+    const endYear = moment(now)
+        .set('month', 'Dec')
+        .set('date', 31)
+        .endOf('day')
+        .toDate();
     return { start: startYear, end: endYear };
 };
 

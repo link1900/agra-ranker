@@ -1,6 +1,6 @@
 const rankingController = module.exports = {};
 
-const moment = require('moment');
+const moment = require('moment-timezone');
 const highland = require('highland');
 
 const helper = require('../helper');
