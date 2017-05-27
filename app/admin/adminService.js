@@ -7,11 +7,13 @@ const mongoose = require('mongoose');
 const raceService = require('../race/raceService');
 const greyhoundService = require('../greyhound/greyhoundService');
 const placingService = require('../placing/placingService');
+const Setting = require('../setting/setting').model;
+const mongoService = require('../mongoService');
+
 const Ranking = mongoose.model('Ranking');
 const Score = mongoose.model('Score');
 const RankingSystem = mongoose.model('RankingSystem');
-const Setting = require('../setting/setting').model;
-const mongoService = require('../mongoService');
+
 
 adminService.removeAllGreyhounds = function () {
     return placingService.removeAll({}).then(() => {

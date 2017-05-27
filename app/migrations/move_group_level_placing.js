@@ -1,8 +1,8 @@
 const migration = module.exports = {};
 
 const q = require('q');
-
 const mongoose = require('mongoose');
+
 const db = mongoose.connection.db;
 
 migration.up = function () {

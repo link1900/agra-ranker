@@ -110,11 +110,11 @@ mongoService.removePromise = function (entity) {
 
 mongoService.savePromise = function (entity) {
     const deferred = q.defer();
-    entity.save((err, entity) => {
+    entity.save((err, updatedEntity) => {
         if (err) {
             deferred.reject(err);
         } else {
-            deferred.resolve(entity);
+            deferred.resolve(updatedEntity);
         }
     });
     return deferred.promise;
@@ -137,7 +137,7 @@ mongoService.aggregateSinglePromise = function (dao, aggregations) {
     dao.aggregate(aggregations, (err, entities) => {
         if (err) {
             deferred.reject(err);
-        } else if (entities != null && entities.length == 1) {
+        } else if (entities && entities.length === 1) {
             deferred.resolve(entities[0]);
         } else {
             deferred.resolve(entities);

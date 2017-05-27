@@ -18,7 +18,7 @@ eventService.find = function (query, limit, offset, sort) {
 eventService.logEvent = function (event, requireConfirmation) {
     if (requireConfirmation === true) {
         const proms = eventService.listeners.map((listener) => {
-            if (event.type != null && event.type.match(listener.regexString) && listener.onEvent != null) {
+            if (event.type && event.type.match(listener.regexString) && listener.onEvent) {
                 return q(listener.onEvent(event));
             } else {
                 return q(true);
@@ -28,7 +28,7 @@ eventService.logEvent = function (event, requireConfirmation) {
         return q.allSettled(proms);
     } else {
         eventService.listeners.forEach((listener) => {
-            if (event.type != null && event.type.match(listener.regexString) && listener.onEvent != null) {
+            if (event.type && event.type.match(listener.regexString) && listener.onEvent) {
                 listener.onEvent(event);
             }
         });
@@ -37,7 +37,7 @@ eventService.logEvent = function (event, requireConfirmation) {
 };
 
 eventService.logEntity = function (opType, entity) {
-    if (entity != null && entity.constructor != null) {
+    if (entity && entity.constructor) {
         eventService.logEvent({ type: `${opType} ${entity.constructor.modelName}`, data: { entity } });
     }
     return q(entity);
@@ -73,13 +73,13 @@ eventService.clearListeners = function () {
 
 eventService.removeListenerByName = function (name) {
     eventService.listeners = eventService.listeners.filter((listener) => {
-        return listener.name != name;
+        return listener.name !== name;
     });
 };
 
 eventService.removeListenerByRegex = function (eventNameRegexString) {
     eventService.listeners = eventService.listeners.filter((listener) => {
-        return listener.regexString != eventNameRegexString;
+        return listener.regexString !== eventNameRegexString;
     });
 };
 

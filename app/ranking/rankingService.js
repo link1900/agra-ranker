@@ -54,7 +54,7 @@ rankingService.calculateAndStoreRankings = function (rankingsFingerPrint, rankin
             });
         });
     } else {
-        q.reject('ranking system must have a valid group by field');
+        return q.reject('ranking system must have a valid group by field');
     }
 };
 
@@ -155,7 +155,7 @@ rankingService.transformCSV = function (ranking) {
 rankingService.toCSVGrid = function (rankings) {
     const colSize = 34;
     const results = [];
-    for (let i = 0; i < colSize; i+=1) {
+    for (let i = 0; i < colSize; i += 1) {
         const result = {};
         const col1 = rankings[i];
         const col2 = rankings[i + colSize];

@@ -16,7 +16,7 @@ expressService.parseSearchParams = function (req) {
     const parsed = {};
     parsed.limit = 30;
     if (req.param('per_page') && req.param('per_page') > 0) {
-        parsed.limit = parseInt(req.param('per_page'));
+        parsed.limit = parseInt(req.param('per_page'), 10);
     }
 
     if (parsed.limit > 100) parsed.limit = 100;
@@ -164,7 +164,7 @@ expressService.addStandardMethods = function (controller, service) {
     controller.setModel = function (req, res, next, id) {
         service.findById(id).then((model) => {
             if (model == null) {
-                res.jsonp(404, { error: 'entity not found' });
+                return res.jsonp(404, { error: 'entity not found' });
             } else {
                 req.model = model;
                 return next();

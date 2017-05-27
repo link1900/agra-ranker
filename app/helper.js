@@ -125,7 +125,7 @@ helper.runDistinctQuery = function (req, res) {
 helper.runQuery = function (req, res) {
     let limit = 30;
     if (req.param('per_page') && req.param('per_page') > 0) {
-        limit = parseInt(req.param('per_page'));
+        limit = parseInt(req.param('per_page'), 10);
     }
 
     if (limit > 100) limit = 100;
@@ -150,7 +150,7 @@ helper.runQuery = function (req, res) {
             if (err) {
                 res.jsonp(500, { error: 'failed to run query' });
             } else {
-                req.dao.count(req.searchQuery).exec((err, count) => {
+                req.dao.count(req.searchQuery).exec((err2, count) => {
                     // add header link info for paging
                     res.links(helper.buildPagingLinks(req.url, offset + 1, count / limit));
                     res.set('total', count);

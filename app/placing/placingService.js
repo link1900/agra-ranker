@@ -102,11 +102,11 @@ placingService.setGreyhoundFlyweight = function (placing) {
 };
 
 placingService.validatePlacing = function (placing) {
-    if (placing == null) {
+    if (!placing) {
         return q.reject('could not create a placing from given body');
     }
 
-    if (placing.placing == null) {
+    if (!placing.placing) {
         return q.reject('placing field is required');
     }
 
@@ -115,19 +115,19 @@ placingService.validatePlacing = function (placing) {
         return q.reject(`placing was ${placing.placing} and must be one of ${validPlacings}`);
     }
 
-    if (placing.raceRef == null) {
+    if (!placing.raceRef) {
         return q.reject('raceRef field is required');
     }
 
-    if (placing.race != null && placing.raceRef != placing.race._id) {
+    if (placing.race && placing.raceRef !== placing.race._id.toString()) {
         return q.reject('race flyweight does not match raceRef');
     }
 
-    if (placing.greyhoundRef == null) {
+    if (!placing.greyhoundRef) {
         return q.reject('greyhoundRef field is required');
     }
 
-    if (placing.greyhound != null && placing.greyhoundRef != placing.greyhound._id) {
+    if (placing.greyhound && placing.greyhoundRef !== placing.greyhound._id.toString()) {
         return q.reject('greyhound flyweight does not match greyhoundRef');
     }
 
@@ -146,7 +146,7 @@ placingService.validatePlacing = function (placing) {
 
 placingService.checkRaceRefExists = function (placing) {
     return raceService.findById(placing.raceRef).then((foundRace) => {
-        if (foundRace != null) {
+        if (foundRace) {
             return q(placing);
         } else {
             return q.reject('cannot find race ref for placing');

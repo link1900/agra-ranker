@@ -4,21 +4,21 @@ const _ = require('lodash');
 const eventService = require('./event/eventService');
 const mongoService = require('./mongoService');
 
-baseService.addStandardServiceMethods = function (service, dao) {
+baseService.addStandardServiceMethods = function (service, Dao) {
     service.findById = function (id) {
-        return mongoService.findOneById(dao, id);
+        return mongoService.findOneById(Dao, id);
     };
 
     service.find = function (query, limit, offset, sort) {
-        return mongoService.find(dao, query, limit, offset, sort);
+        return mongoService.find(Dao, query, limit, offset, sort);
     };
 
     service.findAsStream = function (query, limit, offset, sort) {
-        return mongoService.findAsStream(dao, query, limit, offset, sort);
+        return mongoService.findAsStream(Dao, query, limit, offset, sort);
     };
 
     service.count = function (query) {
-        return mongoService.count(dao, query);
+        return mongoService.count(Dao, query);
     };
 
     service.create = function (entity) {
@@ -51,11 +51,11 @@ baseService.addStandardServiceMethods = function (service, dao) {
     };
 
     service.removeAll = function (query) {
-        return mongoService.removeAll(dao, query);
+        return mongoService.removeAll(Dao, query);
     };
 
     service.jsonToModel = function (json) {
-        return q(new dao(json));
+        return q(new Dao(json));
     };
 
     service.mergeWithExisting = function (existingModel, updatedBody) {
@@ -63,11 +63,11 @@ baseService.addStandardServiceMethods = function (service, dao) {
     };
 
     service.distinctField = function (field, query) {
-        return mongoService.findDistinctByField(dao, field, query);
+        return mongoService.findDistinctByField(Dao, field, query);
     };
 
     service.aggregate = function (aggregations) {
-        return mongoService.aggregatePromise(dao, aggregations);
+        return mongoService.aggregatePromise(Dao, aggregations);
     };
 
     service.lastUpdatedRecord = function () {

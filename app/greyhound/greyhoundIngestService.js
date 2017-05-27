@@ -3,10 +3,10 @@ const greyhoundIngestService = module.exports = {};
 const q = require('q');
 const _ = require('lodash');
 const Xray = require('x-ray');
-const xray = Xray();
 const logger = require('winston');
 const moment = require('moment-timezone');
 
+const xray = Xray();
 greyhoundIngestService.grvUrl = 'https://fasttrack.grv.org.au';
 
 greyhoundIngestService.getExternalGreyhoundInfo = function (greyhoundName) {
@@ -14,7 +14,7 @@ greyhoundIngestService.getExternalGreyhoundInfo = function (greyhoundName) {
         const url = greyhoundIngestService.buildGRVGreyhoundUrl(greyhoundName);
         return greyhoundIngestService.downloadGreyhoundInfo(url);
     } else {
-        q.reject('cannot retrieve info on invalid greyhound or greyhound name');
+        return q.reject('cannot retrieve info on invalid greyhound or greyhound name');
     }
 };
 

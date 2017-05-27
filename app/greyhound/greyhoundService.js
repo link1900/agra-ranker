@@ -60,7 +60,7 @@ greyhoundService.validateGreyhound = function (greyhound) {
         return q.reject('name field is required');
     }
 
-    if (greyhound.name.length == 0) {
+    if (greyhound.name.length === 0) {
         return q.reject('name cannot be blank');
     }
 
@@ -74,7 +74,7 @@ greyhoundService.validateGreyhound = function (greyhound) {
 
 greyhoundService.validateGreyhoundIsNew = function (greyhound) {
     return greyhoundService.findById(greyhound._id).then((result) => {
-        if (result != null) {
+        if (result) {
             return q.reject('greyhound with this id already exists');
         } else {
             return greyhoundService.validateIfNameIsUsed(greyhound);
@@ -84,10 +84,10 @@ greyhoundService.validateGreyhoundIsNew = function (greyhound) {
 
 greyhoundService.validateIfNameIsUsed = function (greyhound) {
     return greyhoundService.findGreyhoundByName(greyhound.name).then((result) => {
-        if (result != null &&
-            result._id != null &&
-            greyhound._id != null &&
-            result._id.toString() != greyhound._id.toString()) {
+        if (result &&
+            result._id &&
+            greyhound._id &&
+            result._id.toString() !== greyhound._id.toString()) {
             return q.reject('greyhound already exists with this name');
         } else {
             return q(greyhound);
@@ -96,45 +96,45 @@ greyhoundService.validateIfNameIsUsed = function (greyhound) {
 };
 
 greyhoundService.validateSireRef = function (greyhound) {
-    if (greyhound.sireRef != null) {
-        if (!mongoService.isObjectId(greyhound.sireRef)) {
-            return q.reject('invalid sire ref');
-        }
-        return greyhoundService.findById(greyhound.sireRef).then((sire) => {
-            if (sire == null) {
-                return q.reject('could not find sire for sire ref');
-            } else if (sire._id.toString == greyhound._id.toString()) {
-                return q.reject('cannot be own parent');
-            } else if (greyhound.damRef != null) {
-                return greyhoundService.findById(greyhound.damRef).then((dam) => {
-                    if (sire._id.toString() == dam._id.toString()) {
-                        return q.reject('cannot have the same sire and dam');
-                    } else {
-                        return q(greyhound);
-                    }
-                });
-            } else {
-                return q(greyhound);
-            }
-        });
-    } else {
+    if (!greyhound.sireRef) {
         return q(greyhound);
     }
+
+    if (!mongoService.isObjectId(greyhound.sireRef)) {
+        return q.reject('invalid sire ref');
+    }
+
+    return greyhoundService.findById(greyhound.sireRef).then((sire) => {
+        if (!sire) {
+            return q.reject('could not find sire for sire ref');
+        }
+        if (sire._id.toString() === greyhound._id.toString()) {
+            return q.reject('cannot be own parent');
+        }
+
+        if (greyhound.damRef) {
+            if (sire._id.toString() === greyhound.damRef.toString()) {
+                return q.reject('cannot have the same sire and dam');
+            }
+        }
+
+        return q(greyhound);
+    });
 };
 
 greyhoundService.validateDamRef = function (greyhound) {
-    if (greyhound.damRef != null) {
+    if (greyhound.damRef) {
         if (!mongoService.isObjectId(greyhound.damRef)) {
             return q.reject(`invalid dam ref ${greyhound.damRef}`);
         }
         return greyhoundService.findById(greyhound.damRef).then((dam) => {
-            if (dam == null) {
+            if (!dam) {
                 return q.reject('could not find dam for dam ref');
-            } else if (dam._id.toString == greyhound._id.toString()) {
+            } else if (dam._id.toString() === greyhound._id.toString()) {
                 return q.reject('cannot be own parent');
-            } else if (greyhound.sireRef != null) {
+            } else if (greyhound.sireRef) {
                 return greyhoundService.findById(greyhound.sireRef).then((sire) => {
-                    if (sire._id.toString() == dam._id.toString()) {
+                    if (sire._id.toString() === dam._id.toString()) {
                         return q.reject('cannot have the same sire and dam');
                     } else {
                         return q(greyhound);
@@ -167,13 +167,13 @@ greyhoundService.rawCsvArrayToGreyhound = function (rawRow) {
     }
 
     // check fields
-    if (greyhound.name.length == 0) {
+    if (greyhound.name.length === 0) {
         return null;
     }
-    if (greyhound.sire.name.length == 0) {
+    if (greyhound.sire.name.length === 0) {
         delete greyhound.sire;
     }
-    if (greyhound.dam.name.length == 0) {
+    if (greyhound.dam.name.length === 0) {
         delete greyhound.dam;
     }
     return greyhound;
@@ -185,7 +185,7 @@ greyhoundService.findGreyhoundByName = function (name) {
 
 greyhoundService.createGreyhoundByName = function (greyhoundName) {
     return greyhoundService.findGreyhoundByName(greyhoundName).then((possibleGreyhound) => {
-        if (possibleGreyhound != null) {
+        if (possibleGreyhound) {
             return {
                 model: possibleGreyhound,
                 details: `Found existing greyhound "${possibleGreyhound.name}" skipping greyhound creation`
@@ -214,7 +214,7 @@ greyhoundService.createStep = function (batchRecord) {
 };
 
 greyhoundService.createSireStep = function (batchRecord) {
-    if (batchRecord.greyhoundRecord.sire != null && batchRecord.createdGreyhound != null) {
+    if (batchRecord.greyhoundRecord.sire && batchRecord.createdGreyhound) {
         return greyhoundService.createGreyhoundByName(batchRecord.greyhoundRecord.sire.name).then((sireImportResult) => {
             batchRecord.createdSire = sireImportResult.model;
             batchRecord.stepResults.push(sireImportResult.details);
@@ -230,7 +230,7 @@ greyhoundService.createSireStep = function (batchRecord) {
 };
 
 greyhoundService.setSireStep = function (batchRecord) {
-    if (batchRecord.createdSire != null && batchRecord.createdGreyhound != null) {
+    if (batchRecord.createdSire && batchRecord.createdGreyhound) {
         batchRecord.createdGreyhound.sireRef = batchRecord.createdSire._id;
         batchRecord.createdGreyhound.sireName = batchRecord.createdSire.name;
         return greyhoundService.update(batchRecord.createdGreyhound).then((updatedGreyhound) => {
@@ -248,7 +248,7 @@ greyhoundService.setSireStep = function (batchRecord) {
 };
 
 greyhoundService.createDamStep = function (batchRecord) {
-    if (batchRecord.greyhoundRecord.dam != null && batchRecord.createdGreyhound != null) {
+    if (batchRecord.greyhoundRecord.dam && batchRecord.createdGreyhound) {
         return greyhoundService.createGreyhoundByName(batchRecord.greyhoundRecord.dam.name).then((damImportResult) => {
             batchRecord.createdDam = damImportResult.model;
             batchRecord.stepResults.push(damImportResult.details);
@@ -264,7 +264,7 @@ greyhoundService.createDamStep = function (batchRecord) {
 };
 
 greyhoundService.setDamStep = function (batchRecord) {
-    if (batchRecord.createdDam != null && batchRecord.createdGreyhound != null) {
+    if (batchRecord.createdDam && batchRecord.createdGreyhound) {
         batchRecord.createdGreyhound.damRef = batchRecord.createdDam._id;
         batchRecord.createdGreyhound.damName = batchRecord.createdDam.name;
         return greyhoundService.update(batchRecord.createdGreyhound).then((updatedGreyhound) => {
@@ -306,7 +306,7 @@ greyhoundService.saveOrFindGreyhoundImportObject = function (greyhound) {
 };
 
 greyhoundService.addSireNameFlyweight = function (greyhound) {
-    if (greyhound.sireRef != null) {
+    if (greyhound.sireRef) {
         return mongoService.findOneById(Greyhound, greyhound.sireRef).then((found) => {
             greyhound.sireName = found.name;
             return greyhound;
@@ -318,7 +318,7 @@ greyhoundService.addSireNameFlyweight = function (greyhound) {
 };
 
 greyhoundService.addDamNameFlyweight = function (greyhound) {
-    if (greyhound.damRef != null) {
+    if (greyhound.damRef) {
         return mongoService.findOneById(Greyhound, greyhound.damRef).then((found) => {
             greyhound.damName = found.name;
             return greyhound;
@@ -346,26 +346,26 @@ greyhoundService.findExistingOld = function (greyhound) {
 greyhoundService.greyhoundToExportFormat = function (greyhound) {
     const exportFormat = {};
     exportFormat.name = greyhound.name;
-    if (greyhound.sireName != null) {
+    if (greyhound.sireName) {
         exportFormat.sire = greyhound.sireName;
     }
-    if (greyhound.damName != null) {
+    if (greyhound.damName) {
         exportFormat.dam = greyhound.damName;
     }
     return exportFormat;
 };
 
 eventService.addListener('greyhound update listener', 'Updated Greyhound', (event) => {
-    if (event != null && event.data != null && event.data.entity != null && event.data.entity._id != null) {
+    if (event && event.data && event.data.entity && event.data.entity._id) {
         return greyhoundService.find({ $or: [{ sireRef: event.data.entity._id }, { damRef: event.data.entity._id }] }).then((results) => {
             const proms = results.map((greyhoundToUpdate) => {
                 let updateRequired = false;
-                if (greyhoundToUpdate.sireRef == event.data.entity._id.toString() &&
+                if (greyhoundToUpdate.sireRef.toString() === event.data.entity._id.toString() &&
                     !_.isEqual(greyhoundToUpdate.sireName, event.data.entity.name)) {
                     greyhoundToUpdate.sireName = event.data.entity.name;
                     updateRequired = true;
                 }
-                if (greyhoundToUpdate.damRef == event.data.entity._id.toString()
+                if (greyhoundToUpdate.damRef.toString() === event.data.entity._id.toString()
                     && !_.isEqual(greyhoundToUpdate.damName, event.data.entity.name)) {
                     greyhoundToUpdate.damName = event.data.entity.name;
                     updateRequired = true;
@@ -385,14 +385,14 @@ eventService.addListener('greyhound update listener', 'Updated Greyhound', (even
 });
 
 eventService.addListener('greyhound deleted listener', 'Deleted Greyhound', (event) => {
-    if (event != null && event.data != null && event.data.entity != null && event.data.entity._id != null) {
+    if (event && event.data && event.data.entity && event.data.entity._id) {
         return greyhoundService.find({ $or: [{ sireRef: event.data.entity._id }, { damRef: event.data.entity._id }] }).then((results) => {
             const proms = results.map((greyhoundToUpdate) => {
-                if (greyhoundToUpdate.sireRef == event.data.entity._id.toString()) {
+                if (greyhoundToUpdate.sireRef.toString() === event.data.entity._id.toString()) {
                     greyhoundToUpdate.sireRef = null;
                     greyhoundToUpdate.sireName = null;
                 }
-                if (greyhoundToUpdate.damRef == event.data.entity._id.toString()) {
+                if (greyhoundToUpdate.damRef.toString() === event.data.entity._id.toString()) {
                     greyhoundToUpdate.damRef = null;
                     greyhoundToUpdate.damName = null;
                 }

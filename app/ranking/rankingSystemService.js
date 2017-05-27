@@ -217,7 +217,7 @@ rankingSystemService.getFinancialYearForDate = function (now) {
         const end = midYear.subtract(1, 'days')
             .endOf('day')
             .toDate();
-        return { start , end };
+        return { start, end };
     } else {
         const start = midYear.toDate();
         const end = midYear.clone()
@@ -230,7 +230,11 @@ rankingSystemService.getFinancialYearForDate = function (now) {
 };
 
 rankingSystemService.getYearForDate = function (now) {
-    const startYear = moment(now).set('month', 'Jan').set('date', 1).startOf('day').toDate();
+    const startYear = moment(now)
+        .set('month', 'Jan')
+        .set('date', 1)
+        .startOf('day')
+        .toDate();
     const endYear = moment(now)
         .set('month', 'Dec')
         .set('date', 31)
