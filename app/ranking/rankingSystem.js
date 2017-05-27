@@ -1,32 +1,32 @@
-var rankingSystem = module.exports = {};
+const rankingSystem = module.exports = {};
 
-var mongoose = require('mongoose');
-var timestamps = require('mongoose-concrete-timestamps');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const timestamps = require('mongoose-concrete-timestamps');
+const Schema = mongoose.Schema;
 
-var allotmentCriteriaDefinition = {
-    field: {type: String},
-    comparator:{type: String},
-    value:{type: Schema.Types.Mixed},
-    type:{type: String}
+const allotmentCriteriaDefinition = {
+    field: { type: String },
+    comparator: { type: String },
+    value: { type: Schema.Types.Mixed },
+    type: { type: String }
 };
 
-var pointAllotmentDefinition = {
-    criteria: {type: [allotmentCriteriaDefinition], default: []},
-    series: {type: String},
-    points: {type: Number}
+const pointAllotmentDefinition = {
+    criteria: { type: [allotmentCriteriaDefinition], default: [] },
+    series: { type: String },
+    points: { type: Number }
 };
 
 rankingSystem.schema = new Schema({
     name: { type: String },
-    description: {type: String},
-    equalPositionResolution: {type: String, default: 'splitPoints'},
-    groupBy : {type: {
-        label: {type : String},
-        field: {type: String}
-    }},
-    pointAllotments: {type: [pointAllotmentDefinition], default : []},
-    commonCriteria : {type:[allotmentCriteriaDefinition], default: []}
+    description: { type: String },
+    equalPositionResolution: { type: String, default: 'splitPoints' },
+    groupBy: { type: {
+        label: { type: String },
+        field: { type: String }
+    } },
+    pointAllotments: { type: [pointAllotmentDefinition], default: [] },
+    commonCriteria: { type: [allotmentCriteriaDefinition], default: [] }
 });
 
 rankingSystem.schema.plugin(timestamps);

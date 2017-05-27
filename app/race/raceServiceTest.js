@@ -1,8 +1,8 @@
-var assert = require('assert');
+const assert = require('assert');
 
-describe("raceService", function() {
-    describe("validateRace", function(){
-        it("should pass when is a valid racae", function (done) {
+describe('raceService', () => {
+    describe('validateRace', () => {
+        it('should pass when is a valid racae', (done) => {
             assert(true);
             done();
         });

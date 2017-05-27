@@ -1,22 +1,22 @@
-var placingController = module.exports = {};
+const placingController = module.exports = {};
 
-var placingService = require('./placingService');
-var expressService = require('../expressService');
+const placingService = require('./placingService');
+const expressService = require('../expressService');
 
 expressService.addStandardMethods(placingController, placingService);
 
-placingController.find = function(req, res){
+placingController.find = function (req, res) {
     expressService.standardSearch(req, res, placingService, ['greyhoundRef=greyhoundRef', 'raceRef=raceRef']);
 };
 
-placingController.create = function(req, res) {
+placingController.create = function (req, res) {
     expressService.promToRes(placingService.createPlacing(req.body), res);
 };
 
-placingController.update = function(req, res) {
+placingController.update = function (req, res) {
     expressService.promToRes(placingService.updatePlacing(req.model, req.body), res);
 };
 
-placingController.destroy = function(req, res) {
+placingController.destroy = function (req, res) {
     expressService.promToRes(placingService.remove(req.model), res);
 };

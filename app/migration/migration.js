@@ -1,12 +1,12 @@
-var migration = module.exports = {};
+const migration = module.exports = {};
 
-var mongoose = require('mongoose');
-var timestamps = require('mongoose-concrete-timestamps');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const timestamps = require('mongoose-concrete-timestamps');
+const Schema = mongoose.Schema;
 
 migration.definition = {
-    file: {type: String},
-    sequence: {type: Number}
+    file: { type: String },
+    sequence: { type: Number }
 };
 
 migration.schema = new Schema(migration.definition);

@@ -1,13 +1,13 @@
-var migration = module.exports = {};
+const migration = module.exports = {};
 
-var q = require('q');
+const q = require('q');
 
-var mongoose = require('mongoose');
-var db = mongoose.connection.db;
+const mongoose = require('mongoose');
+const db = mongoose.connection.db;
 
-migration.up = function(){
-    return migration.findPlacings().then(function(placings){
-        var proms = placings.map(function(placing){
+migration.up = function () {
+    return migration.findPlacings().then((placings) => {
+        const proms = placings.map((placing) => {
             placing.race.groupLevelName = placing.race.groupLevel.name;
             delete placing.race.groupLevel;
             delete placing.race.groupLevelRef;
@@ -17,11 +17,11 @@ migration.up = function(){
     });
 };
 
-migration.save = function(doc){
-    var deferred = q.defer();
-    var placingCollection = db.collection('placings');
-    placingCollection.save(doc, function(err, result){
-        if (err){
+migration.save = function (doc) {
+    const deferred = q.defer();
+    const placingCollection = db.collection('placings');
+    placingCollection.save(doc, (err, result) => {
+        if (err) {
             deferred.reject(err);
         } else {
             deferred.resolve(result);
@@ -30,12 +30,12 @@ migration.save = function(doc){
     return deferred.promise;
 };
 
-migration.findPlacings = function(){
-    var deferred = q.defer();
-    var query = { "$and": [{"race.groupLevel.name": {$exists : true}}, {"race.groupLevelName": {$exists : false}}]};
-    var placingCollection = db.collection('placings');
-    placingCollection.find(query).toArray(function(err, results) {
-        if (err){
+migration.findPlacings = function () {
+    const deferred = q.defer();
+    const query = { $and: [{ 'race.groupLevel.name': { $exists: true } }, { 'race.groupLevelName': { $exists: false } }] };
+    const placingCollection = db.collection('placings');
+    placingCollection.find(query).toArray((err, results) => {
+        if (err) {
             deferred.reject(err);
         } else {
             deferred.resolve(results);

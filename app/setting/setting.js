@@ -1,11 +1,11 @@
-var setting = module.exports = {};
-var mongoose = require('mongoose');
-var timestamps = require('mongoose-concrete-timestamps');
-var Schema = mongoose.Schema;
+const setting = module.exports = {};
+const mongoose = require('mongoose');
+const timestamps = require('mongoose-concrete-timestamps');
+const Schema = mongoose.Schema;
 
 setting.definition = {
-    settingType : {type: String},
-    defaultRankingSystem : { type: String }
+    settingType: { type: String },
+    defaultRankingSystem: { type: String }
 };
 
 setting.schema = new Schema(setting.definition);

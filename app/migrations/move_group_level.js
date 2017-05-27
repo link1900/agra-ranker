@@ -1,13 +1,13 @@
-var migration = module.exports = {};
+const migration = module.exports = {};
 
-var q = require('q');
+const q = require('q');
 
-var mongoose = require('mongoose');
-var db = mongoose.connection.db;
+const mongoose = require('mongoose');
+const db = mongoose.connection.db;
 
-migration.up = function(){
-    return migration.findRaces().then(function(races){
-        var proms = races.map(function(race){
+migration.up = function () {
+    return migration.findRaces().then((races) => {
+        const proms = races.map((race) => {
             race.groupLevelName = race.groupLevel.name;
             delete race.groupLevel;
             delete race.groupLevelRef;
@@ -17,11 +17,11 @@ migration.up = function(){
     });
 };
 
-migration.save = function(doc){
-    var deferred = q.defer();
-    var raceCollection = db.collection('races');
-    raceCollection.save(doc, function(err, result){
-        if (err){
+migration.save = function (doc) {
+    const deferred = q.defer();
+    const raceCollection = db.collection('races');
+    raceCollection.save(doc, (err, result) => {
+        if (err) {
             deferred.reject(err);
         } else {
             deferred.resolve(result);
@@ -30,12 +30,12 @@ migration.save = function(doc){
     return deferred.promise;
 };
 
-migration.findRaces = function(){
-    var deferred = q.defer();
-    var query = { "$and": [{"groupLevel.name": {$exists : true}}, {"groupLevelName": {$exists : false}}]};
-    var raceCollection = db.collection('races');
-    raceCollection.find(query).toArray(function(err, results) {
-        if (err){
+migration.findRaces = function () {
+    const deferred = q.defer();
+    const query = { $and: [{ 'groupLevel.name': { $exists: true } }, { groupLevelName: { $exists: false } }] };
+    const raceCollection = db.collection('races');
+    raceCollection.find(query).toArray((err, results) => {
+        if (err) {
             deferred.reject(err);
         } else {
             deferred.resolve(results);

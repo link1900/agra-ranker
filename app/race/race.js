@@ -1,16 +1,16 @@
-var race = module.exports = {};
-var mongoose = require('mongoose');
-var timestamps = require('mongoose-concrete-timestamps');
-var Schema = mongoose.Schema;
+const race = module.exports = {};
+const mongoose = require('mongoose');
+const timestamps = require('mongoose-concrete-timestamps');
+const Schema = mongoose.Schema;
 
 race.definition = {
-    name: {type: String},
-    date: {type: Date},
-    groupLevelName: {type:String},
-    distanceMeters: {type: Number},
-    disqualified: {type: Boolean, default: false},
-    track: {type: String},
-    club: {type: String}
+    name: { type: String },
+    date: { type: Date },
+    groupLevelName: { type: String },
+    distanceMeters: { type: Number },
+    disqualified: { type: Boolean, default: false },
+    track: { type: String },
+    club: { type: String }
 };
 
 race.schema = new Schema(race.definition);

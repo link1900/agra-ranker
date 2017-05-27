@@ -1,24 +1,24 @@
-var eventService = module.exports = {};
+const eventService = module.exports = {};
 
-var q = require('q');
-var logger = require('winston');
-var mongoService = require('../mongoService');
-var EventModel = require('./event').model;
+const q = require('q');
+const logger = require('winston');
+const mongoService = require('../mongoService');
+const EventModel = require('./event').model;
 
 eventService.listeners = [];
 
-eventService.count = function(){
+eventService.count = function () {
     return mongoService.getCollectionCount(EventModel);
 };
 
-eventService.find = function(query, limit, offset, sort){
+eventService.find = function (query, limit, offset, sort) {
     return mongoService.find(EventModel, query, limit, offset, sort);
 };
 
-eventService.logEvent = function(event, requireConfirmation){
-    if (requireConfirmation === true){
-        var proms = eventService.listeners.map(function(listener){
-            if (event.type != null && event.type.match(listener.regexString) && listener.onEvent != null){
+eventService.logEvent = function (event, requireConfirmation) {
+    if (requireConfirmation === true) {
+        const proms = eventService.listeners.map((listener) => {
+            if (event.type != null && event.type.match(listener.regexString) && listener.onEvent != null) {
                 return q(listener.onEvent(event));
             } else {
                 return q(true);
@@ -27,8 +27,8 @@ eventService.logEvent = function(event, requireConfirmation){
 
         return q.allSettled(proms);
     } else {
-        eventService.listeners.forEach(function(listener){
-            if (event.type != null && event.type.match(listener.regexString) && listener.onEvent != null){
+        eventService.listeners.forEach((listener) => {
+            if (event.type != null && event.type.match(listener.regexString) && listener.onEvent != null) {
                 listener.onEvent(event);
             }
         });
@@ -36,52 +36,52 @@ eventService.logEvent = function(event, requireConfirmation){
     }
 };
 
-eventService.logEntity = function(opType, entity){
-    if (entity != null && entity.constructor != null){
-        eventService.logEvent({type:opType+" "+entity.constructor.modelName, data: {entity:entity}});
+eventService.logEntity = function (opType, entity) {
+    if (entity != null && entity.constructor != null) {
+        eventService.logEvent({ type: `${opType} ${entity.constructor.modelName}`, data: { entity } });
     }
     return q(entity);
 };
 
-eventService.logCreateEntity = function(entity){
-    return eventService.logEntity("Created", entity);
+eventService.logCreateEntity = function (entity) {
+    return eventService.logEntity('Created', entity);
 };
 
-eventService.logUpdateEntity = function(entity){
-    return eventService.logEntity("Updated", entity);
+eventService.logUpdateEntity = function (entity) {
+    return eventService.logEntity('Updated', entity);
 };
 
-eventService.logDeleteEntity = function(entity){
-    return eventService.logEntity("Deleted", entity);
+eventService.logDeleteEntity = function (entity) {
+    return eventService.logEntity('Deleted', entity);
 };
 
-eventService.persistEventListener = function(event){
+eventService.persistEventListener = function (event) {
     return mongoService.savePromise(new EventModel(event));
 };
 
-eventService.logEventListener = function(event){
+eventService.logEventListener = function (event) {
     logger.log('info', event.type);
 };
 
-eventService.addListener = function(name, eventNameRegexString, listeningFunction){
-    eventService.listeners.push({name: name,regexString:eventNameRegexString, onEvent : listeningFunction});
+eventService.addListener = function (name, eventNameRegexString, listeningFunction) {
+    eventService.listeners.push({ name, regexString: eventNameRegexString, onEvent: listeningFunction });
 };
 
-eventService.clearListeners = function(){
+eventService.clearListeners = function () {
     eventService.listeners = [];
 };
 
-eventService.removeListenerByName = function(name){
-    eventService.listeners = eventService.listeners.filter(function(listener){
+eventService.removeListenerByName = function (name) {
+    eventService.listeners = eventService.listeners.filter((listener) => {
         return listener.name != name;
     });
 };
 
-eventService.removeListenerByRegex = function(eventNameRegexString){
-    eventService.listeners = eventService.listeners.filter(function(listener){
+eventService.removeListenerByRegex = function (eventNameRegexString) {
+    eventService.listeners = eventService.listeners.filter((listener) => {
         return listener.regexString != eventNameRegexString;
     });
 };
 
-eventService.addListener("persistence listener",".*",eventService.persistEventListener);
-eventService.addListener("log listener",".*",eventService.logEventListener);
+eventService.addListener('persistence listener', '.*', eventService.persistEventListener);
+eventService.addListener('log listener', '.*', eventService.logEventListener);

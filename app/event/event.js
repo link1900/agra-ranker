@@ -1,12 +1,12 @@
-var event = module.exports = {};
-var mongoose = require('mongoose');
-var timestamps = require('mongoose-concrete-timestamps');
-var Schema = mongoose.Schema;
+const event = module.exports = {};
+const mongoose = require('mongoose');
+const timestamps = require('mongoose-concrete-timestamps');
+const Schema = mongoose.Schema;
 
 event.definition = {
-    type: {type: String},
-    data : {type: Schema.Types.Mixed},
-    userRef : {type: String}
+    type: { type: String },
+    data: { type: Schema.Types.Mixed },
+    userRef: { type: String }
 };
 
 event.schema = new Schema(event.definition, { capped: 100000 });

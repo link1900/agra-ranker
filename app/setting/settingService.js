@@ -1,6 +1,6 @@
-var settingService = module.exports = {};
+const settingService = module.exports = {};
 
-var Setting = require('./setting').model;
-var baseService = require('../baseService');
+const Setting = require('./setting').model;
+const baseService = require('../baseService');
 
 baseService.addStandardServiceMethods(settingService, Setting);

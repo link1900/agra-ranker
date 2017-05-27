@@ -1,103 +1,103 @@
-var migrationService = module.exports = {};
+const migrationService = module.exports = {};
 
-var q = require('q');
-var path = require('path');
-var fs = require('fs');
-var _ = require('lodash');
-var logger = require('winston');
+const q = require('q');
+const path = require('path');
+const fs = require('fs');
+const _ = require('lodash');
+const logger = require('winston');
 
-var Migration = require('./migration').model;
-var mongoService = require('../mongoService');
-var migrationIndex = require('../migrations/migrationIndex');
+const Migration = require('./migration').model;
+const mongoService = require('../mongoService');
+const migrationIndex = require('../migrations/migrationIndex');
 
-migrationService.applyMigrations = function(migrationDir) {
-    var migrations = migrationIndex.index;
-    logger.log('info',"Checking for migrations");
-    if (migrations.length <= 0){
-        logger.log('info',"No migrations");
+migrationService.applyMigrations = function (migrationDir) {
+    let migrations = migrationIndex.index;
+    logger.log('info', 'Checking for migrations');
+    if (migrations.length <= 0) {
+        logger.log('info', 'No migrations');
         return q(true);
     }
 
-    migrations = _.sortBy(migrations, function(migration){ return migration.sequence; });
+    migrations = _.sortBy(migrations, (migration) => { return migration.sequence; });
 
-    if (migrationService.validateMigrations(migrations, migrationDir)){
-        return migrationService.getAppliedMigrations().then(function(migrationsOnDatabase){
-            var migrationsToRun = migrationService.getMigrationsToBeRun(migrationsOnDatabase, migrations);
-            if (migrationsToRun.length > 0){
-                logger.log("Applying " + migrationsToRun.length + " migrations");
+    if (migrationService.validateMigrations(migrations, migrationDir)) {
+        return migrationService.getAppliedMigrations().then((migrationsOnDatabase) => {
+            const migrationsToRun = migrationService.getMigrationsToBeRun(migrationsOnDatabase, migrations);
+            if (migrationsToRun.length > 0) {
+                logger.log(`Applying ${migrationsToRun.length} migrations`);
 
-                var finalPromiseOfChain = _.reduce(migrationsToRun, function(previousResult, currentValue) {
-                        return previousResult.then(function(){
-                            return migrationService.runMigration(currentValue, migrationDir);
-                        });
-                    },
+                const finalPromiseOfChain = _.reduce(migrationsToRun, (previousResult, currentValue) => {
+                    return previousResult.then(() => {
+                        return migrationService.runMigration(currentValue, migrationDir);
+                    });
+                },
                     q()
                 );
 
-                return finalPromiseOfChain.then(function(){
-                    logger.log("Finished applying migrations");
+                return finalPromiseOfChain.then(() => {
+                    logger.log('Finished applying migrations');
                     return q(true);
-                }).fail(function(error){
-                    logger.error("Migration process failed: " + error);
+                }).fail((error) => {
+                    logger.error(`Migration process failed: ${error}`);
                     return q(false);
                 });
             } else {
-                logger.log("No outstanding migrations");
+                logger.log('No outstanding migrations');
                 return q(true);
             }
-        }, function(){return false});
+        }, () => { return false; });
     } else {
         return q.reject(false);
     }
 };
 
-migrationService.getAppliedMigrations = function(){
+migrationService.getAppliedMigrations = function () {
     return mongoService.find(Migration, {});
 };
 
-migrationService.getMigrationsToBeRun = function(appliedMigrations, definedMigrations){
-    var appliedSeq = _.map(appliedMigrations, function(migration){return migration.sequence;});
-    var definedSeq = _.map(definedMigrations, function(migration){return migration.sequence;});
-    var lastAppliedMigration = _.max(appliedSeq);
-    var migrationsSeqNotApplied = _.difference(definedSeq,appliedSeq);
-    var migrationsSeqToBeRun = _.filter(migrationsSeqNotApplied, function(seq){
+migrationService.getMigrationsToBeRun = function (appliedMigrations, definedMigrations) {
+    const appliedSeq = _.map(appliedMigrations, (migration) => { return migration.sequence; });
+    const definedSeq = _.map(definedMigrations, (migration) => { return migration.sequence; });
+    const lastAppliedMigration = _.max(appliedSeq);
+    const migrationsSeqNotApplied = _.difference(definedSeq, appliedSeq);
+    const migrationsSeqToBeRun = _.filter(migrationsSeqNotApplied, (seq) => {
         return seq > lastAppliedMigration;
     });
-    return _.filter(definedMigrations, function(migration){
+    return _.filter(definedMigrations, (migration) => {
         return _.includes(migrationsSeqToBeRun, migration.sequence);
     });
 };
 
-migrationService.validateMigrations = function(migrations, migrationDir){
-    //check that each entry is valid (it has a sequence number and file name and it exists)
-    _.each(migrations, function(migration){
-        if (!migration.sequence){
-            logger.log('info', "migration index entry:\n " + JSON.stringify(migration, null, 2) + "\n Is invalid because it does not contain a sequence value");
+migrationService.validateMigrations = function (migrations, migrationDir) {
+    // check that each entry is valid (it has a sequence number and file name and it exists)
+    _.each(migrations, (migration) => {
+        if (!migration.sequence) {
+            logger.log('info', `migration index entry:\n ${JSON.stringify(migration, null, 2)}\n Is invalid because it does not contain a sequence value`);
             process.exit(1);
         }
 
-        if (typeof migration.sequence !== 'number'){
-            logger.log('info', "migration index entry:\n " + JSON.stringify(migration, null, 2) + "\n Is invalid because the sequence value is not a number");
+        if (typeof migration.sequence !== 'number') {
+            logger.log('info', `migration index entry:\n ${JSON.stringify(migration, null, 2)}\n Is invalid because the sequence value is not a number`);
             process.exit(1);
         }
 
-        if (!migration.file){
-            logger.log('info', "migration index entry: \n" + JSON.stringify(migration, null, 2) + "\n Is invalid because it does not contain a file value");
+        if (!migration.file) {
+            logger.log('info', `migration index entry: \n${JSON.stringify(migration, null, 2)}\n Is invalid because it does not contain a file value`);
             process.exit(1);
         }
-        var migrationRefPath = path.join(migrationDir, migration.file);
-        if (!fs.existsSync(migrationRefPath)){
-            logger.log('info', "migration index entry:\n " + JSON.stringify(migration, null, 2) + "\n Is invalid because the the file " + migration.file + " cannot be found");
+        const migrationRefPath = path.join(migrationDir, migration.file);
+        if (!fs.existsSync(migrationRefPath)) {
+            logger.log('info', `migration index entry:\n ${JSON.stringify(migration, null, 2)}\n Is invalid because the the file ${migration.file} cannot be found`);
             process.exit(1);
         }
     });
 
-    //check that the sequence is following a logical order
-    var lastSeq = 0;
-    _.each(migrations, function(migration){
-        if (migration.sequence <= lastSeq){
-            logger.log('info', "migration index contains invalid sequence:");
-            logger.log('info', "entry: \n" + JSON.stringify(migration, null, 2) + "\n has a sequence of " + migration.sequence + " and previous entry has a sequence of " + lastSeq);
+    // check that the sequence is following a logical order
+    let lastSeq = 0;
+    _.each(migrations, (migration) => {
+        if (migration.sequence <= lastSeq) {
+            logger.log('info', 'migration index contains invalid sequence:');
+            logger.log('info', `entry: \n${JSON.stringify(migration, null, 2)}\n has a sequence of ${migration.sequence} and previous entry has a sequence of ${lastSeq}`);
             process.exit(1);
         }
         lastSeq = migration.sequence;
@@ -106,15 +106,15 @@ migrationService.validateMigrations = function(migrations, migrationDir){
     return true;
 };
 
-migrationService.runMigration = function(migration, migrationDir){
-    var migrationRefPath = path.join(migrationDir, migration.file);
-    var migrationCode = require(migrationRefPath);
-    logger.log('info',"Applying migration: " + migration.file);
-    return migrationCode.up().then(function(){
-        logger.log('info',"Applied migration: " + migration.file);
+migrationService.runMigration = function (migration, migrationDir) {
+    const migrationRefPath = path.join(migrationDir, migration.file);
+    const migrationCode = require(migrationRefPath);
+    logger.log('info', `Applying migration: ${migration.file}`);
+    return migrationCode.up().then(() => {
+        logger.log('info', `Applied migration: ${migration.file}`);
         return mongoService.savePromise(new Migration(migration));
-    }).fail(function(err){
-        logger.error("migration " + migration.file + " failed", err);
+    }).fail((err) => {
+        logger.error(`migration ${migration.file} failed`, err);
         process.exit(1);
     });
 };

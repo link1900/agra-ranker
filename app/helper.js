@@ -1,44 +1,44 @@
-var helper = module.exports = {};
+const helper = module.exports = {};
 
-var url = require('url');
-var _ = require('lodash');
-var q = require('q');
+const url = require('url');
+const _ = require('lodash');
+const q = require('q');
 
-helper.changeUrlParam = function(urlString, paramName, paramValue){
-    var urlObject = url.parse(urlString, true);
+helper.changeUrlParam = function (urlString, paramName, paramValue) {
+    const urlObject = url.parse(urlString, true);
     urlObject.query[paramName] = paramValue;
     delete urlObject.search;
     return url.format(urlObject);
 };
 
-helper.buildPagingLinks = function(urlString, currentPage, lastPage){
-    var nextUrl = helper.changeUrlParam(urlString, 'page', currentPage+1);
-    var lastUrl = helper.changeUrlParam(urlString, 'page', lastPage);
+helper.buildPagingLinks = function (urlString, currentPage, lastPage) {
+    const nextUrl = helper.changeUrlParam(urlString, 'page', currentPage + 1);
+    const lastUrl = helper.changeUrlParam(urlString, 'page', lastPage);
     return {
         next: nextUrl,
         last: lastUrl
     };
 };
 
-helper.mergeBody = function(req, res, next) {
+helper.mergeBody = function (req, res, next) {
     req.model = _.extend(req.model, req.body);
     next();
 };
 
-helper.save = function(req, res) {
-    req.model.save(function(err, savedModel) {
+helper.save = function (req, res) {
+    req.model.save((err, savedModel) => {
         if (err) {
-            res.jsonp({"error":err.errors});
+            res.jsonp({ error: err.errors });
         } else {
             res.jsonp(savedModel);
         }
     });
 };
 
-helper.saveEntityRequest = function(entityRequest){
-    var deferred = q.defer();
-    entityRequest.newEntity.save(function(err, entity){
-        if (err){
+helper.saveEntityRequest = function (entityRequest) {
+    const deferred = q.defer();
+    entityRequest.newEntity.save((err, entity) => {
+        if (err) {
             entityRequest.error = err;
             deferred.reject(entityRequest);
         } else {
@@ -49,50 +49,50 @@ helper.saveEntityRequest = function(entityRequest){
     return deferred.promise;
 };
 
-helper.promiseToResponse = function(promise, res){
-    promise.then(function(entityRequestResult){
+helper.promiseToResponse = function (promise, res) {
+    promise.then((entityRequestResult) => {
         res.jsonp(200, entityRequestResult.savedEntity);
     })
-    .fail(function(error){
-        res.jsonp(400, {"error":"failed: " + error});
+    .fail((error) => {
+        res.jsonp(400, { error: `failed: ${error}` });
     });
 };
 
-helper.responseFromPromise = function(res, promise){
-    promise.then(function(result){
+helper.responseFromPromise = function (res, promise) {
+    promise.then((result) => {
         res.jsonp(200, result);
-    },function(error){
+    }, (error) => {
         helper.errorResponse(res, error);
-    }).catch(function(ex){
+    }).catch((ex) => {
         helper.errorResponse(res, ex);
     });
 };
 
-helper.errorResponse = function(res, error){
-    if (error instanceof Error && error.message != null){
-        res.jsonp(400, {"error": error.message});
+helper.errorResponse = function (res, error) {
+    if (error instanceof Error && error.message != null) {
+        res.jsonp(400, { error: error.message });
     } else {
-        res.jsonp(400, {"error": error});
+        res.jsonp(400, { error });
     }
 };
 
-helper.mergeEntityRequest = function(entityRequest) {
-    var existing = _.clone(entityRequest.existingEntity.toObject());
+helper.mergeEntityRequest = function (entityRequest) {
+    const existing = _.clone(entityRequest.existingEntity.toObject());
     entityRequest.newEntity = _.extend(entityRequest.existingEntity, entityRequest.newEntity);
     entityRequest.existingEntity = existing;
     return q(entityRequest);
 };
 
-helper.checkExisting = function(dao, field, entityRequest) {
-    var deferred = q.defer();
-    var query = {};
+helper.checkExisting = function (dao, field, entityRequest) {
+    const deferred = q.defer();
+    const query = {};
     query[field] = entityRequest.newEntity[field];
-    dao.findOne(query, function(err, existingEntity) {
+    dao.findOne(query, (err, existingEntity) => {
         if (err) {
-            deferred.reject('error validate existing check: ' + err);
+            deferred.reject(`error validate existing check: ${err}`);
         }
         if (existingEntity && !(entityRequest.newEntity._id && _.isEqual(existingEntity._id.toString(), entityRequest.newEntity._id.toString()))) {
-            deferred.reject('entity already exists with same ' + field);
+            deferred.reject(`entity already exists with same ${field}`);
         } else {
             deferred.resolve(entityRequest);
         }
@@ -100,43 +100,43 @@ helper.checkExisting = function(dao, field, entityRequest) {
     return deferred.promise;
 };
 
-helper.promiseResult = function(req, res, promise){
-    promise.then(function(result){
+helper.promiseResult = function (req, res, promise) {
+    promise.then((result) => {
         res.jsonp(result.code, result.message);
-    }).fail(function(result){
+    }).fail((result) => {
         res.jsonp(result.code, result.message);
     });
 };
 
-helper.getOne = function(req, res) {
+helper.getOne = function (req, res) {
     res.jsonp(req.model);
 };
 
-helper.runDistinctQuery = function(req, res){
-    req.dao.distinct(req.distinctField, function(err, results){
+helper.runDistinctQuery = function (req, res) {
+    req.dao.distinct(req.distinctField, (err, results) => {
         if (err) {
-            res.jsonp(500, {'error':'failed to run query'});
+            res.jsonp(500, { error: 'failed to run query' });
         } else {
             res.jsonp(results);
         }
     });
 };
 
-helper.runQuery = function(req, res) {
-    var limit = 30;
-    if (req.param('per_page') && req.param('per_page') > 0){
+helper.runQuery = function (req, res) {
+    let limit = 30;
+    if (req.param('per_page') && req.param('per_page') > 0) {
         limit = parseInt(req.param('per_page'));
     }
 
     if (limit > 100) limit = 100;
 
-    var offset = 0;
-    if (req.param('page') && req.param('page') > 0){
-        offset = req.param('page')-1;
+    let offset = 0;
+    if (req.param('page') && req.param('page') > 0) {
+        offset = req.param('page') - 1;
     }
 
-    var sort = {};
-    if (req.param('sort_field') && req.param('sort_direction') && /asc|desc/i.test(req.param('sort_direction'))){
+    const sort = {};
+    if (req.param('sort_field') && req.param('sort_direction') && /asc|desc/i.test(req.param('sort_direction'))) {
         sort[req.param('sort_field')] = req.param('sort_direction');
     }
 
@@ -146,24 +146,24 @@ helper.runQuery = function(req, res) {
         .skip(limit * offset)
         .sort(sort)
         .exec(
-        function(err, entities) {
+        (err, entities) => {
             if (err) {
-                res.jsonp(500, {'error':'failed to run query'});
+                res.jsonp(500, { error: 'failed to run query' });
             } else {
-                req.dao.count(req.searchQuery).exec(function (err, count) {
-                    //add header link info for paging
-                    res.links(helper.buildPagingLinks(req.url, offset+1, count / limit));
+                req.dao.count(req.searchQuery).exec((err, count) => {
+                    // add header link info for paging
+                    res.links(helper.buildPagingLinks(req.url, offset + 1, count / limit));
                     res.set('total', count);
-                    //send result
+                    // send result
                     res.jsonp(entities);
-                })
+                });
             }
         }
     );
 };
 
-helper.addField = function(query, field, statement){
-    if (query[field]){
+helper.addField = function (query, field, statement) {
+    if (query[field]) {
         query[field] = _.extend(query[field], statement);
     } else {
         query[field] = statement;

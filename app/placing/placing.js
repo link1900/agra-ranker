@@ -1,20 +1,20 @@
-var placing = module.exports = {};
+const placing = module.exports = {};
 
-var mongoose = require('mongoose');
-var timestamps = require('mongoose-concrete-timestamps');
-var Schema = mongoose.Schema;
-var RaceSchema = require('../race/race').definition;
-var GreyhoundDefinition = require('../greyhound/greyhound').definition;
+const mongoose = require('mongoose');
+const timestamps = require('mongoose-concrete-timestamps');
+const Schema = mongoose.Schema;
+const RaceSchema = require('../race/race').definition;
+const GreyhoundDefinition = require('../greyhound/greyhound').definition;
 
 placing.definition = {
     placing: { type: String },
-    raceRef: {type: String},
-    race : {type: RaceSchema},
-    greyhoundRef: {type: String},
-    greyhound : {type: GreyhoundDefinition},
-    prizeMoney : {type: Number},
-    time: {type: Number},
-    margin: {type: String }
+    raceRef: { type: String },
+    race: { type: RaceSchema },
+    greyhoundRef: { type: String },
+    greyhound: { type: GreyhoundDefinition },
+    prizeMoney: { type: Number },
+    time: { type: Number },
+    margin: { type: String }
 };
 
 placing.schema = new Schema(placing.definition);

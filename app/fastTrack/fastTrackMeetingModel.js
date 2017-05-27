@@ -1,12 +1,12 @@
-var fastTrackMeetingModel = module.exports = {};
-var mongoose = require('mongoose');
-var timestamps = require('mongoose-concrete-timestamps');
-var Schema = mongoose.Schema;
+const fastTrackMeetingModel = module.exports = {};
+const mongoose = require('mongoose');
+const timestamps = require('mongoose-concrete-timestamps');
+const Schema = mongoose.Schema;
 
 fastTrackMeetingModel.definition = {
-    trackId: {type: String},
-    timeslot: {type: String},
-    date: {type: Date}
+    trackId: { type: String },
+    timeslot: { type: String },
+    date: { type: Date }
 };
 
 fastTrackMeetingModel.schema = new Schema(fastTrackMeetingModel.definition);
