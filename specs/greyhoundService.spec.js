@@ -1,266 +1,266 @@
-var assert = require('assert');
-var Greyhound = require('../app/greyhound/greyhound').model;
-var greyhoundService = null;
-var testHelper = require('./testHelper');
-var eventService = require('../app/event/eventService');
+const assert = require('assert');
+const Greyhound = require('../app/greyhound/greyhound').model;
+let greyhoundService = null;
+const testHelper = require('./testHelper');
+const eventService = require('../app/event/eventService');
 
-describe("greyhoundService", function(){
-    before(function (done) {
-        testHelper.setup(function(){
+describe('greyhoundService', () => {
+    before((done) => {
+        testHelper.setup(() => {
             greyhoundService = require('../app/greyhound/greyhoundService');
             done();
         });
     });
-    var changeModel;
-    before(function(done) {
-        var greyhoundAllen = {
-            "_id": "54a32fbee39b345cff5841b5",
-            "name": "allen deed"
+    let changeModel;
+    before((done) => {
+        const greyhoundAllen = {
+            _id: '54a32fbee39b345cff5841b5',
+            name: 'allen deed'
         };
 
-        var greyhoundDeed = {
-            "_id": "54a32fbee39b345cff5841b9",
-            "name": "deed"
+        const greyhoundDeed = {
+            _id: '54a32fbee39b345cff5841b9',
+            name: 'deed'
         };
 
-        var greyhoundBob = {
-            "_id": "54a32fbee39b345cff5841b8",
-            "name": "bob"
+        const greyhoundBob = {
+            _id: '54a32fbee39b345cff5841b8',
+            name: 'bob'
         };
 
-        var greyhoundChange = {
-            "_id": "54a32fbee39b345cff5841c8",
-            "name": "change me"
+        const greyhoundChange = {
+            _id: '54a32fbee39b345cff5841c8',
+            name: 'change me'
         };
         changeModel = new Greyhound(greyhoundChange);
-        changeModel.save(function(){
-            new Greyhound(greyhoundDeed).save(function () {
-                new Greyhound(greyhoundBob).save(function () {
+        changeModel.save(() => {
+            new Greyhound(greyhoundDeed).save(() => {
+                new Greyhound(greyhoundBob).save(() => {
                     new Greyhound(greyhoundAllen).save(done);
                 });
             });
         });
     });
 
-    describe("#findGreyhoundByName", function(){
-        it("find greyhound bob using different case", function(done){
-            greyhoundService.findGreyhoundByName("boB").then(function(result){
+    describe('#findGreyhoundByName', () => {
+        it('find greyhound bob using different case', (done) => {
+            greyhoundService.findGreyhoundByName('boB').then((result) => {
                 assert(result != null);
-                assert.equal(result.name, "bob");
+                assert.equal(result.name, 'bob');
                 done();
-            },done).then(function(){}, done);
+            }, done).then(() => {}, done);
         });
 
-        it("do not find greyhound bob using bo", function(done){
-            greyhoundService.findGreyhoundByName("bo").then(function(result){
+        it('do not find greyhound bob using bo', (done) => {
+            greyhoundService.findGreyhoundByName('bo').then((result) => {
                 assert(result == null);
                 done();
-            },done).then(function(){}, done);
+            }, done).then(() => {}, done);
         });
 
-        it("find greyhound deed using deed", function(done){
-            greyhoundService.findGreyhoundByName("deed").then(function(result){
+        it('find greyhound deed using deed', (done) => {
+            greyhoundService.findGreyhoundByName('deed').then((result) => {
                 assert(result != null);
-                assert.equal(result.name, "deed");
+                assert.equal(result.name, 'deed');
                 done();
-            },done).then(function(){}, done);
+            }, done).then(() => {}, done);
         });
     });
 
-    describe("#validateSireRef", function() {
-        it("should validate a greyhounds sire ref", function (done) {
-            var grey = new Greyhound({"name":"james", "sireRef": "54a32fbee39b345cff5841b8"});
-            greyhoundService.validateSireRef(grey).then(function (result) {
+    describe('#validateSireRef', () => {
+        it('should validate a greyhounds sire ref', (done) => {
+            const grey = new Greyhound({ name: 'james', sireRef: '54a32fbee39b345cff5841b8' });
+            greyhoundService.validateSireRef(grey).then((result) => {
                 assert(result != null);
-                assert.equal(result.name, "james");
+                assert.equal(result.name, 'james');
                 done();
-            }, done).then(function () {}, done);
+            }, done).then(() => {}, done);
         });
 
-        it("should validate a greyhounds sire ref", function (done) {
-            var grey = new Greyhound({"name":"james", "sireRef": "54a32fbee39b345cff5841b8", "damRef": "54a32fbee39b345cff5841b8"});
-            greyhoundService.validateSireRef(grey).then(function () {
-                done(new Error("this should not pass"));
-            }, function(){done();}).then(function () {}, done);
+        it('should validate a greyhounds sire ref', (done) => {
+            const grey = new Greyhound({ name: 'james', sireRef: '54a32fbee39b345cff5841b8', damRef: '54a32fbee39b345cff5841b8' });
+            greyhoundService.validateSireRef(grey).then(() => {
+                done(new Error('this should not pass'));
+            }, () => { done(); }).then(() => {}, done);
         });
 
-        it("should reject a greyhounds sire ref is invalid", function (done) {
-            var grey = new Greyhound({"name":"james", "sireRef": "oh no"});
-            greyhoundService.validateSireRef(grey).then(function () {
-                done(new Error("this should not pass"));
-            }, function(){done();}).then(function () {}, done);
+        it('should reject a greyhounds sire ref is invalid', (done) => {
+            const grey = new Greyhound({ name: 'james', sireRef: 'oh no' });
+            greyhoundService.validateSireRef(grey).then(() => {
+                done(new Error('this should not pass'));
+            }, () => { done(); }).then(() => {}, done);
         });
 
-        it("should reject a greyhounds sire ref if it is the greyhounds id", function (done) {
-            var grey = new Greyhound({_id: "54a32fbee39b345cff5841b3", "name":"james", "sireRef": "54a32fbee39b345cff5841b3"});
-            greyhoundService.validateSireRef(grey).then(function () {
-                done(new Error("this should not pass"));
-            }, function(){done();}).then(function () {}, done);
+        it('should reject a greyhounds sire ref if it is the greyhounds id', (done) => {
+            const grey = new Greyhound({ _id: '54a32fbee39b345cff5841b3', name: 'james', sireRef: '54a32fbee39b345cff5841b3' });
+            greyhoundService.validateSireRef(grey).then(() => {
+                done(new Error('this should not pass'));
+            }, () => { done(); }).then(() => {}, done);
         });
 
-        it("should reject a greyhounds sire ref cannot be found", function (done) {
-            var grey = new Greyhound({"name":"james", "sireRef": "54a32fbee39b345cff5841b1"});
-            greyhoundService.validateSireRef(grey).then(function () {
-                done(new Error("this should not pass"));
-            }, function(){done();}).then(function () {}, done);
+        it('should reject a greyhounds sire ref cannot be found', (done) => {
+            const grey = new Greyhound({ name: 'james', sireRef: '54a32fbee39b345cff5841b1' });
+            greyhoundService.validateSireRef(grey).then(() => {
+                done(new Error('this should not pass'));
+            }, () => { done(); }).then(() => {}, done);
         });
     });
 
-    describe("#validateDamRef", function() {
-        it("should validate a greyhounds dam ref", function (done) {
-            var grey = new Greyhound({"name":"james", "damRef": "54a32fbee39b345cff5841b8"});
-            greyhoundService.validateDamRef(grey).then(function (result) {
+    describe('#validateDamRef', () => {
+        it('should validate a greyhounds dam ref', (done) => {
+            const grey = new Greyhound({ name: 'james', damRef: '54a32fbee39b345cff5841b8' });
+            greyhoundService.validateDamRef(grey).then((result) => {
                 assert(result != null);
-                assert.equal(result.name, "james");
+                assert.equal(result.name, 'james');
                 done();
-            }, done).then(function () {}, done);
+            }, done).then(() => {}, done);
         });
 
-        it("should validate a greyhounds dam ref but fail as sire and dam are he same", function (done) {
-            var grey = new Greyhound({"name":"james", "sireRef": "54a32fbee39b345cff5841b8", "damRef": "54a32fbee39b345cff5841b8"});
-            greyhoundService.validateDamRef(grey).then(function () {
-                done(new Error("this should not pass"));
-            }, function(){done();}).then(function () {}, done);
+        it('should validate a greyhounds dam ref but fail as sire and dam are he same', (done) => {
+            const grey = new Greyhound({ name: 'james', sireRef: '54a32fbee39b345cff5841b8', damRef: '54a32fbee39b345cff5841b8' });
+            greyhoundService.validateDamRef(grey).then(() => {
+                done(new Error('this should not pass'));
+            }, () => { done(); }).then(() => {}, done);
         });
 
-        it("should reject a greyhounds dam ref is invalid", function (done) {
-            var grey = new Greyhound({"name":"james", "damRef": "oh no"});
-            greyhoundService.validateDamRef(grey).then(function () {
-                done(new Error("this should not pass"));
-            }, function(){done();}).then(function () {}, done);
+        it('should reject a greyhounds dam ref is invalid', (done) => {
+            const grey = new Greyhound({ name: 'james', damRef: 'oh no' });
+            greyhoundService.validateDamRef(grey).then(() => {
+                done(new Error('this should not pass'));
+            }, () => { done(); }).then(() => {}, done);
         });
 
-        it("should reject a greyhounds dam ref if it is the greyhounds id", function (done) {
-            var grey = new Greyhound({_id: "54a32fbee39b345cff5841b3", "name":"james", "damRef": "54a32fbee39b345cff5841b3"});
-            greyhoundService.validateDamRef(grey).then(function () {
-                done(new Error("this should not pass"));
-            }, function(){done();}).then(function () {}, done);
+        it('should reject a greyhounds dam ref if it is the greyhounds id', (done) => {
+            const grey = new Greyhound({ _id: '54a32fbee39b345cff5841b3', name: 'james', damRef: '54a32fbee39b345cff5841b3' });
+            greyhoundService.validateDamRef(grey).then(() => {
+                done(new Error('this should not pass'));
+            }, () => { done(); }).then(() => {}, done);
         });
 
-        it("should reject a greyhounds dam ref cannot be found", function (done) {
-            var grey = new Greyhound({"name":"james", "damRef": "54a32fbee39b345cff5841b1"});
-            greyhoundService.validateDamRef(grey).then(function () {
-                done(new Error("this should not pass"));
-            }, function(){done();}).then(function () {}, done);
+        it('should reject a greyhounds dam ref cannot be found', (done) => {
+            const grey = new Greyhound({ name: 'james', damRef: '54a32fbee39b345cff5841b1' });
+            greyhoundService.validateDamRef(grey).then(() => {
+                done(new Error('this should not pass'));
+            }, () => { done(); }).then(() => {}, done);
         });
     });
 
-    describe("#validateGreyhoundIsNew", function() {
-        it("should reject if greyhound exists", function (done) {
-            var grey = new Greyhound({"name": "bob"});
-            greyhoundService.validateGreyhoundIsNew(grey).then(function () {
-                done(new Error("this should not pass"));
-            }, function () {
+    describe('#validateGreyhoundIsNew', () => {
+        it('should reject if greyhound exists', (done) => {
+            const grey = new Greyhound({ name: 'bob' });
+            greyhoundService.validateGreyhoundIsNew(grey).then(() => {
+                done(new Error('this should not pass'));
+            }, () => {
                 done();
-            }).then(function () {
+            }).then(() => {
             }, done);
         });
 
-        it("should fail when passed and an existing greyhound id", function (done) {
-            var grey = new Greyhound({"_id":"54a32fbee39b345cff5841b8","name": "bob"});
-            greyhoundService.validateGreyhoundIsNew(grey).then(function () {
-                done(new Error("this should not pass"));
-            }, function () {
+        it('should fail when passed and an existing greyhound id', (done) => {
+            const grey = new Greyhound({ _id: '54a32fbee39b345cff5841b8', name: 'bob' });
+            greyhoundService.validateGreyhoundIsNew(grey).then(() => {
+                done(new Error('this should not pass'));
+            }, () => {
                 done();
-            }).then(function () {
+            }).then(() => {
             }, done);
         });
 
-        it("should pass if it is new", function (done) {
-            var grey = new Greyhound({"name": "totes new"});
-            greyhoundService.validateGreyhoundIsNew(grey).then(function (result) {
+        it('should pass if it is new', (done) => {
+            const grey = new Greyhound({ name: 'totes new' });
+            greyhoundService.validateGreyhoundIsNew(grey).then((result) => {
                 assert(result != null);
-                assert.equal(result.name, "totes new");
+                assert.equal(result.name, 'totes new');
                 done();
-            }, done).then(function () {
-            }, done);
-        });
-    });
-
-    describe("#createGreyhoundFromJson", function() {
-        it("should pass if it is new", function (done) {
-            greyhoundService.createGreyhoundFromJson({"name": "really new"}).then(function (result) {
-                assert(result != null);
-                assert.equal(result.name, "REALLY NEW");
-                done();
-            }, done).then(function () {
-            }, done);
-        });
-
-        it("should reject if greyhound exists", function (done) {
-            greyhoundService.createGreyhoundFromJson({"name": "bob"}).then(function () {
-                done(new Error("this should not pass"));
-            }, function () {
-                done();
-            }).then(function () {
+            }, done).then(() => {
             }, done);
         });
     });
 
-    describe("#updateGreyhoundFromJson", function() {
-        it("should change the name", function (done) {
-            greyhoundService.updateGreyhoundFromJson(changeModel, {"name": "new name"}).then(function (result) {
+    describe('#createGreyhoundFromJson', () => {
+        it('should pass if it is new', (done) => {
+            greyhoundService.createGreyhoundFromJson({ name: 'really new' }).then((result) => {
                 assert(result != null);
-                assert.equal(result.name, "NEW NAME");
+                assert.equal(result.name, 'REALLY NEW');
                 done();
-            }, done).then(function () {}, done);
+            }, done).then(() => {
+            }, done);
         });
 
-        it("set sire to bob", function (done) {
-            greyhoundService.updateGreyhoundFromJson(changeModel, {"name": "new name", sireRef: "54a32fbee39b345cff5841b8"}).then(function (result) {
-                assert(result != null);
-                assert.equal(result.name, "NEW NAME");
-                assert.equal(result.sireRef, "54a32fbee39b345cff5841b8");
+        it('should reject if greyhound exists', (done) => {
+            greyhoundService.createGreyhoundFromJson({ name: 'bob' }).then(() => {
+                done(new Error('this should not pass'));
+            }, () => {
                 done();
-            }, done).then(function () {}, done);
-        });
-
-        it("should reject if greyhound exists", function (done) {
-            greyhoundService.updateGreyhoundFromJson(changeModel, {"name": "bob"}).then(function () {
-                done(new Error("this should not pass"));
-            }, function () {done();}).then(function () {}, done);
+            }).then(() => {
+            }, done);
         });
     });
 
-    describe("events", function() {
-        it("should issue create event on creation", function(done){
-            eventService.addListener("testCreate","Created Greyhound", function(){
+    describe('#updateGreyhoundFromJson', () => {
+        it('should change the name', (done) => {
+            greyhoundService.updateGreyhoundFromJson(changeModel, { name: 'new name' }).then((result) => {
+                assert(result != null);
+                assert.equal(result.name, 'NEW NAME');
+                done();
+            }, done).then(() => {}, done);
+        });
+
+        it('set sire to bob', (done) => {
+            greyhoundService.updateGreyhoundFromJson(changeModel, { name: 'new name', sireRef: '54a32fbee39b345cff5841b8' }).then((result) => {
+                assert(result != null);
+                assert.equal(result.name, 'NEW NAME');
+                assert.equal(result.sireRef, '54a32fbee39b345cff5841b8');
+                done();
+            }, done).then(() => {}, done);
+        });
+
+        it('should reject if greyhound exists', (done) => {
+            greyhoundService.updateGreyhoundFromJson(changeModel, { name: 'bob' }).then(() => {
+                done(new Error('this should not pass'));
+            }, () => { done(); }).then(() => {}, done);
+        });
+    });
+
+    describe('events', () => {
+        it('should issue create event on creation', (done) => {
+            eventService.addListener('testCreate', 'Created Greyhound', () => {
                 done();
             });
-            greyhoundService.createGreyhoundFromJson({"name": "event new"}).then(function(){}, done);
+            greyhoundService.createGreyhoundFromJson({ name: 'event new' }).then(() => {}, done);
         });
 
-        it("should issue update event on update", function(done){
-            eventService.addListener("testUpdate","Updated Greyhound", function(){
+        it('should issue update event on update', (done) => {
+            eventService.addListener('testUpdate', 'Updated Greyhound', () => {
                 done();
             });
-            greyhoundService.updateGreyhoundFromJson(changeModel, {"name": "event update"}).then(function(){}, done);
+            greyhoundService.updateGreyhoundFromJson(changeModel, { name: 'event update' }).then(() => {}, done);
         });
 
-        it("should issue delete event on delete", function(done){
-            eventService.addListener("testDelete","Deleted Greyhound", function(){
+        it('should issue delete event on delete', (done) => {
+            eventService.addListener('testDelete', 'Deleted Greyhound', () => {
                 done();
             });
-            greyhoundService.remove(changeModel).then(function(){}, done);
+            greyhoundService.remove(changeModel).then(() => {}, done);
         });
 
-        it("should issue create event on batch import", function(done){
-            eventService.addListener("testBatch","Created Greyhound", function(){
+        it('should issue create event on batch import', (done) => {
+            eventService.addListener('testBatch', 'Created Greyhound', () => {
                 done();
             });
-            greyhoundService.processGreyhoundRow(["batchImportGrey","",""]).then(function(){}, done);
+            greyhoundService.processGreyhoundRow(['batchImportGrey', '', '']).then(() => {}, done);
         });
 
-        afterEach(function(){
-            eventService.removeListenerByName("testCreate");
-            eventService.removeListenerByName("testUpdate");
-            eventService.removeListenerByName("testDelete");
-            eventService.removeListenerByName("testBatch");
+        afterEach(() => {
+            eventService.removeListenerByName('testCreate');
+            eventService.removeListenerByName('testUpdate');
+            eventService.removeListenerByName('testDelete');
+            eventService.removeListenerByName('testBatch');
         });
     });
 
-    after(function (done) {
-        Greyhound.remove({}, function() {
+    after((done) => {
+        Greyhound.remove({}, () => {
             testHelper.tearDown(done);
         });
     });

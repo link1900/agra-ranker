@@ -16,8 +16,8 @@
   "scripts": {
     "start": "node node_modules/gulp/bin/gulp",
     "dev": "npm start",
-    "lint": "node ./node_modules/eslint/bin/eslint.js ./app ./client",
-    "lint-fix": "node ./node_modules/eslint/bin/eslint.js --fix ./app ./client",
+    "lint": "node ./node_modules/eslint/bin/eslint.js ./app ./client ./specs",
+    "lint-fix": "node ./node_modules/eslint/bin/eslint.js --fix ./app ./client ./specs",
     "spec": "./node_modules/.bin/istanbul cover _mocha ./specs/*.js ./app/**/*Test.js",
     "test": "npm run lint && npm run mocha",
     "mocha": "mocha ./specs/*.js ./app/**/*Test.js",

@@ -1,31 +1,30 @@
-var mongoose = require('mongoose');
-var assert = require('assert');
-var testHelper = require('./testHelper');
-var mongoService = require('../app/mongoService');
+const mongoose = require('mongoose');
+const assert = require('assert');
+const testHelper = require('./testHelper');
+const mongoService = require('../app/mongoService');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var TestSchema = mongoose.model('MongoServiceTest', new Schema({
+const TestSchema = mongoose.model('MongoServiceTest', new Schema({
     name: { type: String },
-    amount: {type: Number}
+    amount: { type: Number }
 }));
 
-describe("mongoService", function() {
-
-    before(function (done) {
-        testHelper.setup(function () {
+describe('mongoService', () => {
+    before((done) => {
+        testHelper.setup(() => {
             new TestSchema({
-                "name" : "dog",
-                "amount" : 10
-            }).save(function(){
+                name: 'dog',
+                amount: 10
+            }).save(() => {
                 new TestSchema({
-                    "name" : "dog",
-                    "amount" : 15
-                }).save(function(){
+                    name: 'dog',
+                    amount: 15
+                }).save(() => {
                     new TestSchema({
-                        "name" : "cat",
-                        "amount" : 20
-                    }).save(function(){
+                        name: 'cat',
+                        amount: 20
+                    }).save(() => {
                         done();
                     });
                 });
@@ -33,28 +32,27 @@ describe("mongoService", function() {
         });
     });
 
-    after(function(done){
-        TestSchema.remove({},function(){
+    after((done) => {
+        TestSchema.remove({}, () => {
             done();
         });
     });
 
-    describe("#aggregatePromise", function () {
-        it("it can sum the items", function(done){
-            var pipeline = [
-                { $match :{ 'name': 'dog'}},
-                { $project :{"type" : "$name", amount: "$amount"}},
-                { $group : { _id : {"ref":"type"}, "total": { $sum: "$amount" } }},
-                { $sort: { "total": 1 } }
+    describe('#aggregatePromise', () => {
+        it('it can sum the items', (done) => {
+            const pipeline = [
+                { $match: { name: 'dog' } },
+                { $project: { type: '$name', amount: '$amount' } },
+                { $group: { _id: { ref: 'type' }, total: { $sum: '$amount' } } },
+                { $sort: { total: 1 } }
             ];
-            mongoService.aggregatePromise(TestSchema, pipeline).then(function(result){
+            mongoService.aggregatePromise(TestSchema, pipeline).then((result) => {
                 assert(result != null);
                 assert.equal(result[0].total, 25);
                 done();
-            },done).catch(function(err){
+            }, done).catch((err) => {
                 done(err);
             });
         });
     });
-
 });

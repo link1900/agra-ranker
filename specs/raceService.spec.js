@@ -1,108 +1,109 @@
-var assert = require('assert');
-var testHelper = require('./testHelper');
-var Race = require('../app/race/race').model;
-var eventService = require('../app/event/eventService');
-var raceService = null;
+const assert = require('assert');
+const testHelper = require('./testHelper');
+const Race = require('../app/race/race').model;
+const eventService = require('../app/event/eventService');
 
-var race5;
-describe("raceService", function(){
-    before(function (done) {
-        testHelper.setup(function(){
+let raceService = null;
+
+let race5;
+describe('raceService', () => {
+    before((done) => {
+        testHelper.setup(() => {
             raceService = require('../app/race/raceService');
             done();
         });
     });
 
-    beforeEach(function(done){
-        testHelper.loadRaces(function(){
-            testHelper.loadGreyhounds(function(){
-                race5 = new Race({"_id" : "54e7beb64751d30120fe63b5",
-                    "name" : "race5",
-                    "date": new Date(),
-                    "groupLevelName":"Group 1",
-                    "distanceMeters": 515,
-                    "disqualified":false});
-                race5.save(function(){
+    beforeEach((done) => {
+        testHelper.loadRaces(() => {
+            testHelper.loadGreyhounds(() => {
+                race5 = new Race({ _id: '54e7beb64751d30120fe63b5',
+                    name: 'race5',
+                    date: new Date(),
+                    groupLevelName: 'Group 1',
+                    distanceMeters: 515,
+                    disqualified: false });
+                race5.save(() => {
                     done();
                 });
             });
         });
     });
 
-    describe('#createRaceFromJson', function(){
-        it("should create a race", function(done){
-            var body = {name:"raceCreated",
+    describe('#createRaceFromJson', () => {
+        it('should create a race', (done) => {
+            const body = { name: 'raceCreated',
                 date: new Date(),
-                "groupLevelName":"Group 1",
-                "distanceMeters": 515,
-                "disqualified":false};
-            raceService.createRaceFromJson(body).then(function(result){
+                groupLevelName: 'Group 1',
+                distanceMeters: 515,
+                disqualified: false };
+            raceService.createRaceFromJson(body).then((result) => {
                 assert.notEqual(result, null);
-                assert.equal(result.name,"raceCreated");
+                assert.equal(result.name, 'raceCreated');
                 done();
-            }).then(function(){}, done);
+            }).then(() => {}, done);
         });
     });
 
-    describe('#updateRaceFromJson', function(){
-        it("should update a race", function(done){
-            var body = {name:"raceUpdated",
+    describe('#updateRaceFromJson', () => {
+        it('should update a race', (done) => {
+            const body = { name: 'raceUpdated',
                 date: new Date(),
-                "groupLevelName":"Group 1",
-                "distanceMeters": 515,
-                "disqualified":false};
-            raceService.updateRaceFromJson(race5, body).then(function(result){
+                groupLevelName: 'Group 1',
+                distanceMeters: 515,
+                disqualified: false };
+            raceService.updateRaceFromJson(race5, body).then((result) => {
                 assert.notEqual(result, null);
-                assert.equal(result.name,"raceUpdated");
+                assert.equal(result.name, 'raceUpdated');
                 done();
-            }).then(function(){}, done);
+            }).then(() => {}, done);
         });
     });
 
-    describe("events", function() {
-        it("should issue create event on creation", function(done){
-            eventService.addListener("testCreate","Created Race", function(){
+    describe('events', () => {
+        it('should issue create event on creation', (done) => {
+            eventService.addListener('testCreate', 'Created Race', () => {
                 done();
             });
-            var body = {name:"raceCreated",
+            const body = { name: 'raceCreated',
                 date: new Date(),
-                "groupLevelName":"Group 1",
-                "distanceMeters": 515,
-                "disqualified":false};
-            raceService.createRaceFromJson(body).then(function(){}, done);
+                groupLevelName: 'Group 1',
+                distanceMeters: 515,
+                disqualified: false };
+            raceService.createRaceFromJson(body).then(() => {}, done);
         });
 
-        it("should issue update event on update", function(done){
-            eventService.addListener("testUpdate","Updated Race", function(){
+        it('should issue update event on update', (done) => {
+            eventService.addListener('testUpdate', 'Updated Race', () => {
                 done();
             });
-            var body = {name:"raceUpdated",
+            const body = { name: 'raceUpdated',
                 date: new Date(),
-                "groupLevelName":"Group 1",
-                "distanceMeters": 515,
-                "disqualified":false};
-            raceService.updateRaceFromJson(race5, body).then(function(){}, done);
+                groupLevelName: 'Group 1',
+                distanceMeters: 515,
+                disqualified: false };
+            raceService.updateRaceFromJson(race5, body).then(() => {}, done);
         });
 
-        it("should issue delete event on delete", function(done){
-            eventService.addListener("testDelete","Deleted Race", function(){
+        it('should issue delete event on delete', (done) => {
+            eventService.addListener('testDelete', 'Deleted Race', () => {
                 done();
             });
-            raceService.remove(race5).then(function(){}, done);
+            raceService.remove(race5).then(() => {}, done);
         });
 
-        afterEach(function(){
-            eventService.removeListenerByName("testCreate");
-            eventService.removeListenerByName("testUpdate");
-            eventService.removeListenerByName("testDelete");
+        afterEach(() => {
+            eventService.removeListenerByName('testCreate');
+            eventService.removeListenerByName('testUpdate');
+            eventService.removeListenerByName('testDelete');
         });
     });
 
-    afterEach(function(done){
+    afterEach((done) => {
         testHelper.clearRaces(done);
     });
 
-    after(function (done) {
+    after((done) => {
         testHelper.tearDown(done);
     });
 });

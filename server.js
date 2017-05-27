@@ -1,51 +1,51 @@
-var main = module.exports = {};
-var q = require('q');
-var _ = require('lodash');
-var express = require('express');
-var path = require('path');
-var winston = require('winston');
-var logger = require('winston');
-var dotenv = require('dotenv');
-var mongoose = require('mongoose');
+const main = module.exports = {};
+const q = require('q');
+const _ = require('lodash');
+const express = require('express');
+const path = require('path');
+const winston = require('winston');
+const logger = require('winston');
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 
-var migrationService = require('./app/migration/migrationService');
+const migrationService = require('./app/migration/migrationService');
 
     /**
  * Main application entry file.
  * Please note that the order of loading is important.
  */
 
-main.start = _.once(function(){
-    var mainConfig = {};
+main.start = _.once(() => {
+    const mainConfig = {};
     return main.setupExceptionHandling(mainConfig)
         .then(main.setupLogging)
         .then(main.loadConfig)
         .then(main.checkEnvs)
         .then(main.setupDatabaseConnection)
         .then(main.applyMigrations)
-        .then(main.setupHTTP).then(function(){
-            logger.info("Started system successfully");
-        }, function(err){
+        .then(main.setupHTTP).then(() => {
+            logger.info('Started system successfully');
+        }, (err) => {
             logger.log('error', err.message, err.stack);
             process.exit(1);
         });
 });
 
-main.setupExceptionHandling = function(mainConfig){
-    process.on('uncaughtException', function(ex) {
-        logger.error('Uncaught exception ' + ex);
+main.setupExceptionHandling = function (mainConfig) {
+    process.on('uncaughtException', (ex) => {
+        logger.error(`Uncaught exception ${ex}`);
         process.exit(1);
     });
 
     return q(mainConfig);
 };
 
-main.checkEnvs = function(mainConfig){
-    var requiredEnv = [
+main.checkEnvs = function (mainConfig) {
+    const requiredEnv = [
         'MONGO_URL'
     ];
 
-    if (!process.env.LOGGING_LEVEL){
+    if (!process.env.LOGGING_LEVEL) {
         process.env.LOGGING_LEVEL = 'warn';
     }
 
@@ -54,20 +54,20 @@ main.checkEnvs = function(mainConfig){
     return q(mainConfig);
 };
 
-main.checkEnv = function(envName){
-    if (process.env[envName] == null){
-        logger.log('error',envName + ' environment variable is not set');
+main.checkEnv = function (envName) {
+    if (process.env[envName] == null) {
+        logger.log('error', `${envName} environment variable is not set`);
         process.exit(1);
     }
 };
 
-main.setupLogging = function(mainConfig){
+main.setupLogging = function (mainConfig) {
     winston.remove(winston.transports.Console);
-    winston.add(winston.transports.Console, { level: process.env.LOGGING_LEVEL,timestamp: true});
+    winston.add(winston.transports.Console, { level: process.env.LOGGING_LEVEL, timestamp: true });
     return q(mainConfig);
 };
 
-main.loadConfig = function(mainConfig){
+main.loadConfig = function (mainConfig) {
     // Load configurations
     dotenv.load();
     // Set the node env variable if not set before
@@ -75,36 +75,36 @@ main.loadConfig = function(mainConfig){
     return q(mainConfig);
 };
 
-main.setupDatabaseConnection = function(mainConfig){
-    var deferred = q.defer();
-    logger.info("Opening mongodb connection");
-    var db = mongoose.connect(process.env.MONGO_URL, function (err) {
+main.setupDatabaseConnection = function (mainConfig) {
+    const deferred = q.defer();
+    logger.info('Opening mongodb connection');
+    const db = mongoose.connect(process.env.MONGO_URL, (err) => {
         if (err) {
             logger.error('Unable to connect at startup, exiting', err);
             deferred.resolve(mainConfig);
         }
     });
 
-    mongoose.connection.on("open", function () {
-        logger.info("Mongoose: open");
+    mongoose.connection.on('open', () => {
+        logger.info('Mongoose: open');
         mainConfig.db = db;
         deferred.resolve(mainConfig);
     });
 
-    mongoose.connection.on("error", function (err) {
-        logger.error('Mongoose: ' + err + ' exiting');
+    mongoose.connection.on('error', (err) => {
+        logger.error(`Mongoose: ${err} exiting`);
     });
 
-    mongoose.connection.on("disconnected", function (err) {
-        logger.log("Mongoose: disconnected, exiting", err);
+    mongoose.connection.on('disconnected', (err) => {
+        logger.log('Mongoose: disconnected, exiting', err);
     });
 
     return deferred.promise;
 };
 
-main.setupHTTP = function(mainConfig){
-    var deferred = q.defer();
-    var app = express();
+main.setupHTTP = function (mainConfig) {
+    const deferred = q.defer();
+    const app = express();
 
     // Express settings
     require('./config/express')(app);
@@ -114,32 +114,30 @@ main.setupHTTP = function(mainConfig){
 
 
     // Start the app by listening on <port>
-    var port = process.env.PORT || 3000;
-    var server = require('http').createServer(app);
+    const port = process.env.PORT || 3000;
+    const server = require('http').createServer(app);
 
-    server.on('listening', function(){
+    server.on('listening', () => {
         mainConfig.server = server;
         deferred.resolve(mainConfig);
     });
 
-    server.on('error', function(error){
+    server.on('error', (error) => {
         deferred.reject(error);
     });
 
     server.listen(port);
-    logger.info('Express app started on port ' + port);
+    logger.info(`Express app started on port ${port}`);
     return deferred.promise;
 };
 
-main.applyMigrations = function(mainConfig){
-    var migrationDir = path.join(__dirname, '/app/migrations');
+main.applyMigrations = function (mainConfig) {
+    const migrationDir = path.join(__dirname, '/app/migrations');
 
-    return migrationService.applyMigrations(migrationDir).then(function(){
+    return migrationService.applyMigrations(migrationDir).then(() => {
         return q(mainConfig);
     });
 };
 
 main.start();
-
-
 
