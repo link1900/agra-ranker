@@ -261,6 +261,40 @@ describe("scoreService", function(){
         });
     });
 
+    describe("#createScore", function(){
+        after(function (done) {
+            Score.remove({}, function() {
+                done();
+            });
+        });
+
+        it("creates a correct score", function(done){
+            var rs = {};
+            var fp = "createScoreTest";
+            var pipeline = [
+                { $match :{ 'race.groupLevelName': 'Group 3', 'placing':"3"}},
+                {$project :{"race": "$race",
+                    "placing": "$placing",
+                    "name":"$greyhound.name",
+                    "ref": "$greyhoundRef",
+                    "points":{$literal: 20},
+                    "placingRef":"$_id",
+                    "position" :"$placing",
+                    "raceName":"$race.name"}}
+            ];
+            scoreService.createScore(rs, pipeline, fp).then(function(){
+                Score.find({fingerPrint: "createScoreTest"}, function(err, res){
+                    if (err) {done(err)}
+                    assert.equal(res[0].points, 20);
+                    assert.equal(res[0].name, "dog1");
+                    assert.equal(res[0].position, "3");
+                    assert.equal(res[0].ref, "5517af08f80dcb0000248f87");
+                    done();
+                });
+            });
+        });
+    });
+
     describe("#generateRankingsFromScores", function(){
         it("can create rankings correctly");
     });

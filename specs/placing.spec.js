@@ -400,7 +400,6 @@ describe("Placing", function(){
                 .end(function(err, placingPostRes){
                     if (err){ throw err; }
                     assert.equal(placingPostRes.body.race._id, "531d1f72e407586c21476ea8");
-                    assert.equal(placingPostRes.body.race.name, 'race1');
                     placingId = placingPostRes.body._id;
 
                     var raceBody = {"name": "differentRace"};
