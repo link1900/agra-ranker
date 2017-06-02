@@ -7,6 +7,10 @@ const GreyhoundDefinition = require('../greyhound/greyhound').definition;
 
 const Schema = mongoose.Schema;
 
+const placingScore = {
+    type: { type: String },
+    value: { type: Number }
+};
 
 placing.definition = {
     placing: { type: String },
@@ -16,7 +20,8 @@ placing.definition = {
     greyhound: { type: GreyhoundDefinition },
     prizeMoney: { type: Number },
     time: { type: Number },
-    margin: { type: String }
+    margin: { type: String },
+    scores: { type: [placingScore], default: [] }
 };
 
 placing.schema = new Schema(placing.definition);

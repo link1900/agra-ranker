@@ -261,3 +261,111 @@ rankingSystemService.presetCriteriaFields = {
         value: rankingSystemService.getYearForDate(new Date()).end
     }
 };
+
+rankingSystemService.getScoresForPlacing = async (placing) => {
+    const rankingSystems = await rankingSystemService.find({});
+    return Promise.all(rankingSystems.map(rankingSystem => rankingSystemService.getScoreForPlacing(placing, rankingSystem)));
+};
+
+rankingSystemService.getScoreForPlacing = async (placing, rankingSystem) => {
+    const applyingAllotments = _.filter(rankingSystem.pointAllotments, allotment => rankingSystemService.doesAllotmentApply(placing, allotment));
+    const allotmentPoints = applyingAllotments.map(allotment => allotment.points);
+    console.log('applying appoints', JSON.stringify(applyingAllotments, null, 2));
+    return { type: rankingSystem.name, value: _.sum(allotmentPoints) };
+};
+
+rankingSystemService.doesAllotmentApply = (placing, pointAllotment) => {
+    return _.every(pointAllotment.criteria, criteria => rankingSystemService.doesCriteriaApply(placing, criteria));
+};
+
+rankingSystemService.doesCriteriaApply = (placing, criteria) => {
+    const field = _.get(placing, criteria.field);
+    const value = criteria.value;
+    switch (criteria.comparator) {
+        case '=':
+            return field === value;
+        case '>':
+            return field > value;
+        case '<':
+            return field < value;
+        case '>=':
+            return field >= value;
+        case '<=':
+            return field <= value;
+        case '!=':
+            return field !== value;
+        case 'exists' :
+            return field !== null && field !== undefined;
+        default:
+            return field === value;
+    }
+};
+
+rankingSystemService.getRankingSystem = async function (rankingSystemName) {
+    const rankingSystems = await rankingSystemService.find({ name: rankingSystemName });
+    if (!rankingSystems || rankingSystems.length !== 1) {
+        return null;
+    }
+    let rankingSystem = rankingSystems[0];
+    rankingSystem = rankingSystem.toObject();
+    rankingSystem = rankingSystemService.insertCommonCriteria(rankingSystem);
+    return rankingSystem;
+};
+
+rankingSystemService.insertCommonCriteria = function (rankingSystem) {
+    rankingSystem.pointAllotments.forEach((pointAllotment) => {
+        if (rankingSystem.commonCriteria && rankingSystem.commonCriteria.length > 0) {
+            pointAllotment.criteria = pointAllotment.criteria.concat(rankingSystem.commonCriteria);
+        }
+    });
+    return rankingSystem;
+};
+
+rankingSystemService.generateGreyhoundRankingSystem = () => {
+    const agraRanker = {
+        name: 'Greyhounds',
+        description: 'The main ranking system for agra',
+        equalPositionResolution: 'splitPoints',
+        groupBy: {
+            label: 'greyhound.name',
+            field: 'greyhoundRef'
+        },
+        pointAllotments: [],
+        commonCriteria: [
+            { field: 'race.disqualified', comparator: '=', value: false, type: 'Boolean' }
+        ]
+    };
+
+    // sprint group
+    const baseSprint = [{ field: 'race.distanceMeters', comparator: '<', value: 595, type: 'Number' }];
+    const group1Sprint = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 1', type: 'Text' }].concat(baseSprint);
+    const group2Sprint = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 2', type: 'Text' }].concat(baseSprint);
+    const group3Sprint = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 3', type: 'Text' }].concat(baseSprint);
+    agraRanker.pointAllotments = agraRanker.pointAllotments
+        .concat(rankingSystemService.generateAllotmentSet([70, 35, 20, 15, 10, 8, 7, 6], group1Sprint))
+        .concat(rankingSystemService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sprint))
+        .concat(rankingSystemService.generateAllotmentSet([25, 16, 12, 8, 6, 5, 4, 3], group3Sprint));
+
+    // stay groups
+    const baseStay = [{ field: 'race.distanceMeters', comparator: '>=', value: 595, type: 'Number' }];
+    const group1Stay = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 1', type: 'Text' }].concat(baseStay);
+    const group2Stay = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 2', type: 'Text' }].concat(baseStay);
+    const group3Stay = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 3', type: 'Text' }].concat(baseStay);
+    agraRanker.pointAllotments = agraRanker.pointAllotments
+        .concat(rankingSystemService.generateAllotmentSet([50, 25, 16, 12, 8, 6, 4, 2], group1Stay))
+        .concat(rankingSystemService.generateAllotmentSet([30, 20, 12, 8, 6, 4, 2, 1], group2Stay))
+        .concat(rankingSystemService.generateAllotmentSet([20, 14, 10, 6, 4, 3, 2, 1], group3Stay));
+
+    return agraRanker;
+};
+
+rankingSystemService.generateAllotmentSet = function (pointArray, defaultCriteria) {
+    return pointArray.map((pointValue, index) => {
+        const newCriteria = defaultCriteria.slice();
+        newCriteria.push({ field: 'placing', comparator: '=', value: (index + 1).toString(), type: 'Text' });
+        return {
+            points: pointValue,
+            criteria: newCriteria
+        };
+    });
+};

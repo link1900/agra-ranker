@@ -9,6 +9,7 @@ const raceService = require('../race/raceService');
 const mongoService = require('../mongoService');
 const eventService = require('../event/eventService');
 const baseService = require('../baseService');
+const rankingSystemService = require('../ranking/rankingSystemService');
 
 baseService.addStandardServiceMethods(placingService, Placing);
 
@@ -173,6 +174,12 @@ placingService.checkGreyhoundRefNotAlreadyUsed = function (placing) {
             return q(placing);
         }
     });
+};
+
+placingService.updatePlacingScores = async (placing) => {
+    const scores = await rankingSystemService.getScoresForPlacing(placing);
+    placing.scores = scores.filter(s => s);
+    return placing.save();
 };
 
 eventService.addListener('placing race flyweight updater', 'Updated Race', (event) => {

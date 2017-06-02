@@ -6,6 +6,68 @@ const RankingSystem = require('../app/ranking/rankingSystem').model;
 
 let rankingSystemService = null;
 
+function getExampleData() {
+    const placing1 = {
+        greyhound: {
+            name: 'WIND WHISTLER',
+            sireName: 'PREMIER FANTASY',
+            sireRef: '561271711e9d1d0300ee8d03',
+            damName: 'SEMINOLE',
+            damRef: '561272071e9d1d0300eec748'
+        },
+        race: {
+            distanceMeters: 515,
+            name: 'TOP CAT VIDEO FINAL',
+            disqualified: false,
+            date: new Date(2012, 5, 5),
+            groupLevelName: 'Group 1'
+        },
+        placing: '1',
+        raceRef: '561272931e9d1d0300eed583',
+        greyhoundRef: '561272251e9d1d0300eed38a',
+        scores: []
+    };
+    const placing2 = {
+        greyhound: {
+            name: 'WIND WHISTLER',
+            sireName: 'PREMIER FANTASY',
+            sireRef: '561271711e9d1d0300ee8d03',
+            damName: 'SEMINOLE',
+            damRef: '561272071e9d1d0300eec748'
+        },
+        race: {
+            distanceMeters: 515,
+            name: 'TOP CAT VIDEO FINAL',
+            disqualified: false,
+            date: new Date(2012, 4, 4),
+            groupLevelName: 'Group 3'
+        },
+        placing: '2',
+        raceRef: '561272931e9d1d0300eed583',
+        greyhoundRef: '561272251e9d1d0300eed38a',
+        scores: []
+    };
+    const pointAllotment1 = {
+        criteria: [
+            { field: 'placing', comparator: '=', value: '1' },
+            { field: 'race.groupLevelName', comparator: '=', value: 'Group 1' },
+            { field: 'race.distanceMeters', comparator: '<', value: '715' },
+            { field: 'race.date', comparator: '>=', value: new Date(2011, 5, 5) },
+            { field: 'disqualified', comparator: '!=', value: true }
+        ],
+        points: 70
+    };
+
+    const rankingSystem1 = rankingSystemService.generateGreyhoundRankingSystem();
+
+    return {
+        placing1,
+        placing2,
+        pointAllotment1,
+        rankingSystem1
+    };
+}
+
 describe('rankingService', () => {
     before((done) => {
         testHelper.setup(() => {
@@ -99,6 +161,44 @@ describe('rankingService', () => {
             const result = rankingSystemService.convertPlaceHolder('not place holder');
             assert.equal(result, 'not place holder');
             done();
+        });
+    });
+
+    describe('#doesCriteriaApply', () => {
+        it('return true when equal criteria are equal', () => {
+            const criteria = { field: 'placing', comparator: '=', value: '2' };
+            const { placing2 } = getExampleData();
+            const result = rankingSystemService.doesCriteriaApply(placing2, criteria);
+            assert(result);
+        });
+
+        it('return false when equal criteria are not equal', () => {
+            const criteria = { field: 'placing', comparator: '=', value: '2' };
+            const { placing1 } = getExampleData();
+            const result = rankingSystemService.doesCriteriaApply(placing1, criteria);
+            assert(result !== true);
+        });
+    });
+
+    describe('#doesAllotmentApply', () => {
+        it('return true when all criteria are meet for the placing', () => {
+            const { placing1, pointAllotment1 } = getExampleData();
+            const result = rankingSystemService.doesAllotmentApply(placing1, pointAllotment1);
+            assert(result);
+        });
+
+        it('return false when any criteria are not meet for a placing', () => {
+            const { placing2, pointAllotment1 } = getExampleData();
+            const result = rankingSystemService.doesAllotmentApply(placing2, pointAllotment1);
+            assert(result !== true);
+        });
+    });
+
+    describe('#getScoreForPlacing', () => {
+        it('return score of 70 for placing', async () => {
+            const { placing1, rankingSystem1 } = getExampleData();
+            const result = await rankingSystemService.getScoreForPlacing(placing1, rankingSystem1);
+            assert(result.value === 70);
         });
     });
 
