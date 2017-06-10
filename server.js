@@ -1,6 +1,7 @@
+import _ from 'lodash';
+
 const main = module.exports = {};
 const q = require('q');
-const _ = require('lodash');
 const express = require('express');
 const path = require('path');
 const logger = require('winston');

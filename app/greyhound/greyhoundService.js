@@ -1,8 +1,9 @@
+import logger from 'winston';
+
 const greyhoundService = module.exports = {};
 
 const q = require('q');
 const _ = require('lodash');
-const logger = require('winston');
 
 const Greyhound = require('./greyhound').model;
 const mongoService = require('../mongoService');

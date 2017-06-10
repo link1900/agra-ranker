@@ -16,13 +16,16 @@ gulp.task('nodemon', function (cb) {
 
         // nodemon our expressjs server
         script: 'server.js',
+        exec: 'babel-node',
 
         // watch core server file(s) that require server restart on change
         watch: ['server.js', 'app/**/*.js']
     })
         .on('start', function onStart() {
             // ensure start only got called once
-            if (!called) { cb(); }
+            if (!called) {
+                cb();
+            }
             called = true;
         })
         .on('restart', function onRestart() {
@@ -71,7 +74,7 @@ gulp.task('bs-reload', function () {
 });
 
 gulp.task('default', ['browser-sync'], function () {
-    gulp.watch('client/**/*.js',   ['clean', 'js', browserSync.reload]);
-    gulp.watch('client/**/*.css',  ['css']);
+    gulp.watch('client/**/*.js', ['clean', 'js', browserSync.reload]);
+    gulp.watch('client/**/*.css', ['css']);
     gulp.watch('client/**/*.html', ['bs-reload']);
 });
