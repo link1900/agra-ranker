@@ -270,7 +270,6 @@ rankingSystemService.getScoresForPlacing = async (placing) => {
 rankingSystemService.getScoreForPlacing = async (placing, rankingSystem) => {
     const applyingAllotments = _.filter(rankingSystem.pointAllotments, allotment => rankingSystemService.doesAllotmentApply(placing, allotment));
     const allotmentPoints = applyingAllotments.map(allotment => allotment.points);
-    console.log('applying appoints', JSON.stringify(applyingAllotments, null, 2));
     return { type: rankingSystem.name, value: _.sum(allotmentPoints) };
 };
 
