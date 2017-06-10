@@ -1,4 +1,3 @@
-const bluebird = require('bluebird');
 const scriptStarter = require('./scriptStarter');
 const placingService = require('../app/placing/placingService');
 
