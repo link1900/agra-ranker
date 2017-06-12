@@ -1,3 +1,9 @@
-var winston = require('winston');
+import winston from 'winston';
 
-winston.remove(winston.transports.Console);
+process.on('uncaughtException', (err) => {
+    console.error(err.stack);
+    process.exit(1);
+});
+if (winston.default.transports.console) {
+    winston.remove(winston.transports.Console);
+}
