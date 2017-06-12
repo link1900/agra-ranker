@@ -18,10 +18,9 @@
     "dev": "npm start",
     "lint": "node ./node_modules/eslint/bin/eslint.js ./app ./client ./specs",
     "lint-fix": "node ./node_modules/eslint/bin/eslint.js --fix ./app ./client ./specs",
-    "spec": "mocha --compilers js:babel-core/register ./specs/*.js ./app/**/*Test.js",
     "test": "npm run lint && npm run mocha",
-    "test-one": "mocha --compilers js:babel-core/register",
-    "mocha": "mocha ./specs/*.js ./app/**/*Test.js",
+    "test-one": "mocha --compilers js:babel-core/register --require scripts/mochaBootLoader.js",
+    "mocha": "mocha --compilers js:babel-core/register --require scripts/mochaBootLoader.js ./app/**/*Test*.js ./specs/*.js",
     "postinstall": "node node_modules/bower/bin/bower install && node node_modules/gulp/bin/gulp js"
   },
   "dependencies": {
@@ -49,7 +48,7 @@
     "mongoose-concrete-timestamps": "0.1.0",
     "q": "1.5.0",
     "request": "2.81.0",
-    "winston": "0.8.3",
+    "winston": "2.3.1",
     "x-ray": "2.3.2",
     "xml2js": "0.4.17"
   },
