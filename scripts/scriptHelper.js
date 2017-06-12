@@ -1,7 +1,11 @@
-const scriptStarter = module.exports = {};
 const serverHelper = require('../app/serverHelper.js');
 
-scriptStarter.runSetup = async () => {
+export async function runScriptSetup() {
+    process.on('uncaughtException', (err) => {
+        console.error(err.stack);
+        process.exit(1);
+    });
+
     let serverConfig = {};
     serverConfig = await serverHelper.setupExceptionHandling(serverConfig);
     serverConfig = await serverHelper.setupLogging(serverConfig);
@@ -9,4 +13,13 @@ scriptStarter.runSetup = async () => {
     serverConfig = await serverHelper.checkEnvs(serverConfig);
     serverConfig = await serverHelper.setupDatabaseConnection(serverConfig);
     return serverConfig;
-};
+}
+
+export function runScript(scriptFunction) {
+    scriptFunction().then(() => {
+        process.exit(0);
+    }).catch((err) => {
+        console.error(err);
+        process.exit(1);
+    });
+}

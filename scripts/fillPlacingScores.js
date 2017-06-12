@@ -1,19 +1,23 @@
-const scriptStarter = require('./scriptStarter');
-const placingService = require('../app/placing/placingService');
+import logger from 'winston';
+import { runScriptSetup, runScript } from './scriptHelper';
+import { runFunctionForStream } from '../app/common/streamHelper';
+import { createContext } from '../app/context/contextHelper';
+import placingService from '../app/placing/placingService';
 
 async function run() {
-    await scriptStarter.runSetup();
-    const placings = await placingService.find({ _id: '561272931e9d1d0300eed572' });
-    // run out of memory
-    const updatedPlacings = await Promise.all(placings.map(async (placing) => {
-        return placingService.updatePlacingScores(placing);
-    }));
-    console.log(JSON.stringify(updatedPlacings, null, 2));
+    await runScriptSetup();
+    const context = createContext();
+    const placingStream = context.loaders.placing.queryAsStream({});
+    await runFunctionForStream(placingStream, updatePlacingScores);
+    return true;
 }
 
-run().then(() => {
-    process.exit(0);
-}).catch((err) => {
-    console.err(err);
-    process.exit(1);
-});
+async function updatePlacingScores(placing) {
+    if (!placing) {
+        return null;
+    }
+    logger.info(`Updating placing scores for placing ${placing._id.toString()}`);
+    return placingService.updatePlacingScores(placing);
+}
+
+runScript(run);
