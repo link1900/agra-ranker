@@ -26,6 +26,10 @@ export function createLoaderForMongooseModel(mongoLoader, model) {
         return runMongoFindRequest({ model, query, limit, sort, skip, projection });
     };
 
+    loader.queryAsStream = function (query, limit, sort, skip, projection) {
+        return runMongoFindRequest({ model, query, limit, sort, skip, projection, stream: true });
+    };
+
     loader.create = async function (data) {
         const createdEntity = await createEntity(model, data);
         if (data && data._id) {
@@ -117,6 +121,9 @@ function runMongoFindRequest(findRequest) {
     }
     if (findRequest.sort) {
         mongoQuery = mongoQuery.sort(findRequest.sort);
+    }
+    if (findRequest.stream) {
+        return mongoQuery.stream();
     }
     return mongoQuery;
 }
