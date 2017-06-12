@@ -37,7 +37,9 @@ serverHelper.checkEnv = function (envName) {
 };
 
 serverHelper.setupLogging = function (mainConfig) {
-    winston.remove(winston.transports.Console);
+    if (winston.default.transports.console) {
+        winston.remove(winston.transports.Console);
+    }
     winston.add(winston.transports.Console, { level: process.env.LOGGING_LEVEL, timestamp: true });
     return q(mainConfig);
 };
