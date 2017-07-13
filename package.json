@@ -10,7 +10,7 @@
     "url": "https://github.com/link1900/agra-ranker.git"
   },
   "engines": {
-    "node": "7.10.0",
+    "node": "7.10.1",
     "npm": "4.2.0"
   },
   "scripts": {
