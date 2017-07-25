@@ -7,7 +7,7 @@ import placingService from '../app/placing/placingService';
 async function run() {
     await runScriptSetup();
     const context = createContext();
-    const placingStream = context.loaders.placing.queryAsStream({});
+    const placingStream = context.loaders.placing.queryAsStream({ $or: [{ scores: { $size: 0 } }, { scores: null }] });
     await runFunctionForStream(placingStream, updatePlacingScores);
     return true;
 }
