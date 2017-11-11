@@ -97,9 +97,9 @@ adminService.setupDamRankingSystem = function () {
 };
 
 adminService.setupDefaultRankingSystem = function () {
-    const agraRanker = {
+    const mainRanker = {
         name: 'Greyhounds',
-        description: 'The main ranking system for agra',
+        description: 'The main ranking system',
         equalPositionResolution: 'splitPoints',
         groupBy: {
             label: 'greyhound.name',
@@ -116,7 +116,7 @@ adminService.setupDefaultRankingSystem = function () {
     const group1Sprint = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 1', type: 'Text' }].concat(baseSprint);
     const group2Sprint = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 2', type: 'Text' }].concat(baseSprint);
     const group3Sprint = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 3', type: 'Text' }].concat(baseSprint);
-    agraRanker.pointAllotments = agraRanker.pointAllotments
+    mainRanker.pointAllotments = mainRanker.pointAllotments
         .concat(adminService.generateAllotmentSet([70, 35, 20, 15, 10, 8, 7, 6], group1Sprint))
         .concat(adminService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sprint))
         .concat(adminService.generateAllotmentSet([25, 16, 12, 8, 6, 5, 4, 3], group3Sprint));
@@ -126,12 +126,12 @@ adminService.setupDefaultRankingSystem = function () {
     const group1Stay = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 1', type: 'Text' }].concat(baseStay);
     const group2Stay = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 2', type: 'Text' }].concat(baseStay);
     const group3Stay = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 3', type: 'Text' }].concat(baseStay);
-    agraRanker.pointAllotments = agraRanker.pointAllotments
+    mainRanker.pointAllotments = mainRanker.pointAllotments
         .concat(adminService.generateAllotmentSet([50, 25, 16, 12, 8, 6, 4, 2], group1Stay))
         .concat(adminService.generateAllotmentSet([30, 20, 12, 8, 6, 4, 2, 1], group2Stay))
         .concat(adminService.generateAllotmentSet([20, 14, 10, 6, 4, 3, 2, 1], group3Stay));
 
-    return mongoService.saveAll([new RankingSystem(agraRanker)]);
+    return mongoService.saveAll([new RankingSystem(mainRanker)]);
 };
 
 adminService.setupRankingSystemDefaults = function () {

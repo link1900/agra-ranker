@@ -65,8 +65,8 @@ testHelper.loadRankingSystem = function (done) {
                     description: 'test rankings' }).save(() => {
                         new RankingSystem({
                             _id: '53412feb5c4ac1fdcd4781ff',
-                            name: 'Agra Rankings',
-                            description: 'The main ranking system for agra',
+                            name: 'GCA Rankings',
+                            description: 'The main ranking system',
                             equalPositionResolution: 'splitPoints',
                             pointAllotments: [
                                 {

@@ -99,7 +99,7 @@ describe('Ranking System', () => {
         });
 
         it('with same name', (done) => {
-            const body = { name: 'Agra Rankings', description: 'just another ranking system' };
+            const body = { name: 'GCA Rankings', description: 'just another ranking system' };
             testHelper.authSession
                 .post('/rankingSystem')
                 .set('Authorization', `Bearer ${testHelper.authToken}`)

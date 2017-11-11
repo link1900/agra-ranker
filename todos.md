@@ -203,7 +203,7 @@
 - (DONE) remove point allotment it is not required for storage
 - (DONE) Refactor front end to be via the main groups
 - (DONE) Add ranking system criteria field value replacement for calendar start and end dates
-- (DONE) Add Agra Ranking System (for calendar year)
+- (DONE) Add Ranking System (for calendar year)
 - (DONE) calculate rankings on placing creation
 - (DONE) calculate rankings on placing edit
 - (DONE) calculate rankings on placing delete
@@ -249,7 +249,7 @@
 - (DONE) update ranking display to show placing points on a card(lazyload?)
 - (DONE) update ranking system to use mongo to do the aggregation
 - (DONE) update ranking system to store result to the ranking collection and read from there
-- (DONE) define agra ranking system
+- (DONE) define ranking system
 - (DONE) define sire and dam ranking systems
 
 ## 6.1.0 - Getting to Ranker 6 Level

@@ -321,9 +321,9 @@ rankingSystemService.insertCommonCriteria = function (rankingSystem) {
 };
 
 rankingSystemService.generateGreyhoundRankingSystem = () => {
-    const agraRanker = {
+    const mainRanker = {
         name: 'Greyhounds',
-        description: 'The main ranking system for agra',
+        description: 'The main ranking system',
         equalPositionResolution: 'splitPoints',
         groupBy: {
             label: 'greyhound.name',
@@ -340,7 +340,7 @@ rankingSystemService.generateGreyhoundRankingSystem = () => {
     const group1Sprint = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 1', type: 'Text' }].concat(baseSprint);
     const group2Sprint = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 2', type: 'Text' }].concat(baseSprint);
     const group3Sprint = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 3', type: 'Text' }].concat(baseSprint);
-    agraRanker.pointAllotments = agraRanker.pointAllotments
+    mainRanker.pointAllotments = mainRanker.pointAllotments
         .concat(rankingSystemService.generateAllotmentSet([70, 35, 20, 15, 10, 8, 7, 6], group1Sprint))
         .concat(rankingSystemService.generateAllotmentSet([40, 25, 15, 10, 8, 7, 6, 5], group2Sprint))
         .concat(rankingSystemService.generateAllotmentSet([25, 16, 12, 8, 6, 5, 4, 3], group3Sprint));
@@ -350,12 +350,12 @@ rankingSystemService.generateGreyhoundRankingSystem = () => {
     const group1Stay = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 1', type: 'Text' }].concat(baseStay);
     const group2Stay = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 2', type: 'Text' }].concat(baseStay);
     const group3Stay = [{ field: 'race.groupLevelName', comparator: '=', value: 'Group 3', type: 'Text' }].concat(baseStay);
-    agraRanker.pointAllotments = agraRanker.pointAllotments
+    mainRanker.pointAllotments = mainRanker.pointAllotments
         .concat(rankingSystemService.generateAllotmentSet([50, 25, 16, 12, 8, 6, 4, 2], group1Stay))
         .concat(rankingSystemService.generateAllotmentSet([30, 20, 12, 8, 6, 4, 2, 1], group2Stay))
         .concat(rankingSystemService.generateAllotmentSet([20, 14, 10, 6, 4, 3, 2, 1], group3Stay));
 
-    return agraRanker;
+    return mainRanker;
 };
 
 rankingSystemService.generateAllotmentSet = function (pointArray, defaultCriteria) {

@@ -1,4 +1,4 @@
-## Agra Ranking Server
+## Greyhound Ranking Server
 
 Web server used to rank greyhounds.
 
