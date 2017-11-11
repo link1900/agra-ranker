@@ -17,7 +17,11 @@ serverHelper.setupExceptionHandling = function (mainConfig) {
 
 serverHelper.checkEnvs = function (mainConfig) {
     const requiredEnv = [
-        'MONGO_URL'
+        'MONGO_URL',
+        'AUTH0_CALLBACK_URL',
+        'AUTH0_CLIENT_ID',
+        'AUTH0_CLIENT_SECRET',
+        'AUTH0_DOMAIN'
     ];
 
     if (!process.env.LOGGING_LEVEL) {

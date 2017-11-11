@@ -4,7 +4,6 @@ process.env.MONGO_URL = 'mongodb://localhost/ranker-test';
 process.env.PORT = 3001;
 process.env.NODE_ENV = 'test';
 process.env.testUrl = 'http://localhost:3001';
-process.env.FIRST_USER_PASSCODE = 'teststart';
 
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
