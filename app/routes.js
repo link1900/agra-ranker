@@ -6,6 +6,7 @@ const rankingController = require('./ranking/rankingController');
 const adminController = require('./admin/adminController');
 const settingController = require('./setting/settingController');
 const eventController = require('./event/eventController');
+const envConfigController = require('./env/envConfigController');
 const helper = require('./helper');
 const jwtChecker = require('express-jwt');
 
@@ -80,4 +81,6 @@ module.exports = function (app) {
     app.put('/setting/:settingId', checkAuthentication, settingController.update);
     app.del('/setting/:settingId', checkAuthentication, settingController.destroy);
     app.param('settingId', settingController.setModel);
+
+    app.get('/envConfig.js', envConfigController.getEnvironmentFile);
 };
