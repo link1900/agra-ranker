@@ -26,6 +26,8 @@
   },
   "dependencies": {
     "JSONStream": "1.0.4",
+    "angular-auth0": "3.0.0",
+    "auth0-js": "9.7.3",
     "babel-cli": "6.24.1",
     "babel-preset-env": "1.4.0",
     "babel-preset-stage-0": "6.24.1",
@@ -62,7 +64,7 @@
     "eslint-plugin-jsx-a11y": "5.0.3",
     "eslint-plugin-react": "7.0.1",
     "istanbul": "0.4.5",
-    "mocha": "3.4.2",
+    "mocha": "5.2.0",
     "supertest": "0.10.0"
   }
 }

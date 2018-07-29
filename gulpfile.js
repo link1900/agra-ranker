@@ -58,10 +58,15 @@ gulp.task('clean', function () {
     ]);
 });
 
-gulp.task('js',  function () {
+gulp.task('js', ['nodeModulesCopy'], function () {
     return gulp.src('client/ranker/**/*.js')
         .pipe(concat('all.min.js'))
         .pipe(gulp.dest('client'));
+});
+
+gulp.task('nodeModulesCopy',  function () {
+    return gulp.src(['node_modules/auth0-js/build/**/*.js', 'node_modules/angular-auth0/dist/**/*.js'])
+        .pipe(gulp.dest('client/lib/other'));
 });
 
 gulp.task('css', function () {
