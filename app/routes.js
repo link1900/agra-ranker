@@ -9,9 +9,10 @@ const eventController = require('./event/eventController');
 const helper = require('./helper');
 const jwtChecker = require('express-jwt');
 
+const publicKey = new Buffer(process.env.AUTH0_CERT, 'base64');
+
 const checkAuthentication = jwtChecker({
-    secret: new Buffer(process.env.AUTH0_CLIENT_SECRET, 'base64'),
-    audience: process.env.AUTH0_CLIENT_ID
+    secret: publicKey
 });
 
 module.exports = function (app) {
