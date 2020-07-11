@@ -17,7 +17,7 @@ serverHelper.setupExceptionHandling = function (mainConfig) {
 
 serverHelper.checkEnvs = function (mainConfig) {
     const requiredEnv = [
-        'MONGO_URL',
+        'DB_URI',
         'AUTH0_CALLBACK_URL',
         'AUTH0_CLIENT_ID',
         'AUTH0_CLIENT_SECRET',
@@ -59,7 +59,7 @@ serverHelper.loadConfig = function (mainConfig) {
 serverHelper.setupDatabaseConnection = function (mainConfig) {
     const deferred = q.defer();
     logger.info('Opening mongodb connection');
-    const db = mongoose.connect(process.env.MONGO_URL, (err) => {
+    const db = mongoose.connect(process.env.DB_URI, (err) => {
         if (err) {
             logger.error('Unable to connect at startup, exiting', err);
             deferred.resolve(mainConfig);
