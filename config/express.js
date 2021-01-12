@@ -13,7 +13,7 @@ module.exports = function(app) {
     app.locals.pretty = true;
 
     app.locals.cache = 'memory';
-		
+
     // Should be placed before express.static
     // To ensure that all assets and data are compressed (utilize bandwidth)
     app.use(express.compress({
@@ -53,19 +53,23 @@ module.exports = function(app) {
             });
         });
 
-        // Routes should be at the last
-        app.use(app.router);
-
-        app.use(function(err, req, res, next) { // eslint-disable-line no-unused-vars
-            res.status(err.status || 500);
-            res.jsonp({
-                message: err.message
-            });
+        app.use(function redirectUnmatched(req, res) {
+            res.redirect(process.env.REDIRECT);
         });
 
+        // Routes should be at the last
+        // app.use(app.router);
+
+        // app.use(function(err, req, res, next) { // eslint-disable-line no-unused-vars
+        //     res.status(err.status || 500);
+        //     res.jsonp({
+        //         message: err.message
+        //     });
+        // });
+
         // Setting static folder
-        var staticPath = path.normalize(__dirname + '/../client');
-        app.use(express.static(staticPath));
+        // var staticPath = path.normalize(__dirname + '/../client');
+        // app.use(express.static(staticPath));
 
     });
 };

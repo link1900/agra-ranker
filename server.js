@@ -18,9 +18,9 @@ main.start = _.once(() => {
     return serverHelper.setupExceptionHandling(mainConfig)
         .then(serverHelper.setupLogging)
         .then(serverHelper.loadConfig)
-        .then(serverHelper.checkEnvs)
-        .then(serverHelper.setupDatabaseConnection)
-        .then(main.applyMigrations)
+        // .then(serverHelper.checkEnvs)
+        // .then(serverHelper.setupDatabaseConnection)
+        // .then(main.applyMigrations)
         .then(main.setupHTTP).then(() => {
             logger.info('Started system successfully');
         }, (err) => {
@@ -37,7 +37,8 @@ main.setupHTTP = function (mainConfig) {
     require('./config/express')(app);
 
     // Rest routes
-    require('./app/routes.js')(app);
+
+    // require('./app/routes.js')(app);
 
 
     // Start the app by listening on <port>
