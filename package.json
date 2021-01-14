@@ -27,7 +27,7 @@
   "dependencies": {
     "JSONStream": "1.0.4",
     "angular-auth0": "3.0.0",
-    "auth0-js": "9.7.3",
+    "auth0-js": "9.13.2",
     "babel-cli": "6.24.1",
     "babel-preset-env": "1.4.0",
     "babel-preset-stage-0": "6.24.1",
