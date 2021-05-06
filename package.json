@@ -45,7 +45,7 @@
     "gulp-nodemon": "2.2.1",
     "highland": "2.10.5",
     "jsonwebtoken": "7.1.9",
-    "lodash": "4.17.19",
+    "lodash": "4.17.21",
     "moment-timezone": "0.5.14",
     "mongoose": "5.7.5",
     "mongoose-concrete-timestamps": "0.1.0",
